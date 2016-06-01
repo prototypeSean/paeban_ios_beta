@@ -1,0 +1,16 @@
+PODS:
+  - JSQMessagesViewController (7.3.1):
+    - JSQSystemSoundPlayer (~> 2.0.1)
+  - JSQSystemSoundPlayer (2.0.1)
+  - Starscream (1.1.3)
+
+DEPENDENCIES:
+  - JSQMessagesViewController
+  - Starscream (~> 1.1.3)
+
+SPEC CHECKSUMS:
+  JSQMessagesViewController: 3847120a97a7ab3bdc701f166c59f3955f7801c7
+  JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  Starscream: d662732354b40dd19ed1ece3e3c44c80b536b83c
+
+COCOAPODS: 0.39.0

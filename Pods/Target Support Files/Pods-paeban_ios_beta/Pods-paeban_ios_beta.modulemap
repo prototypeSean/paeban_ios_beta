@@ -1,0 +1,6 @@
+framework module Pods_paeban_ios_beta {
+  umbrella header "Pods-paeban_ios_beta-umbrella.h"
+
+  export *
+  module * { export * }
+}
