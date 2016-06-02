@@ -10,18 +10,18 @@ import UIKit
 
 class LaunchScreenViewController: UIViewController {
 
-//    @IBOutlet weak var launchTextBG: UIView!
-//    
-//    @IBOutlet weak var label1: UILabel!
-//   
-//    @IBOutlet weak var label2: UILabel!
-//    
+    @IBOutlet weak var launchTextBG: UIView!
+    
+    @IBOutlet weak var label1: UILabel!
+   
+    @IBOutlet weak var label2: UILabel!
+    
 //    @IBOutlet weak var launchTexts: UIStackView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        performSelector(Selector("showLoginView"), withObject: nil, afterDelay: 1)
+        performSelector(#selector(LaunchScreenViewController.showLoginView), withObject: nil, afterDelay: 1)
     }
     
     func showLoginView() {
@@ -32,15 +32,15 @@ class LaunchScreenViewController: UIViewController {
         super.viewDidAppear(animated)
 
         // 原本的手動漸層改為圖片
-//        let launchTextBGLayer = CAGradientLayer()
-//        launchTextBGLayer.frame = launchTextBG.bounds
-//        let color1 = UIColor(red:0.5, green:0.5, blue:0.5, alpha:1).CGColor as CGColorRef
-//        let color2 = UIColor(red:0.99, green:0.50, blue:0.14, alpha:1.0).CGColor as CGColorRef
-//        launchTextBGLayer.colors = [color1, color2]
-//        launchTextBG.layer.addSublayer(launchTextBGLayer)
-//        
-//        launchTextBGLayer.mask = label1.layer
-//        label1.layer.addSublayer(label2.layer)
+        let launchTextBGLayer = CAGradientLayer()
+        launchTextBGLayer.frame = launchTextBG.bounds
+        let color1 = UIColor(red:0.5, green:0.5, blue:0.5, alpha:1).CGColor as CGColorRef
+        let color2 = UIColor(red:0.99, green:0.50, blue:0.14, alpha:1.0).CGColor as CGColorRef
+        launchTextBGLayer.colors = [color1, color2]
+        launchTextBG.layer.addSublayer(launchTextBGLayer)
+        
+        launchTextBGLayer.mask = label1.layer
+        label1.layer.addSublayer(label2.layer)
     }
     
     override func didReceiveMemoryWarning() {
