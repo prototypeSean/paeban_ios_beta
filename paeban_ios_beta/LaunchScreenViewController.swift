@@ -21,7 +21,7 @@ class LaunchScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        performSelector(Selector("showLoginView"), withObject: nil, afterDelay: 1)
+        performSelector(Selector("showLoginView"), withObject: nil, afterDelay: 0)
     }
     
     func showLoginView() {

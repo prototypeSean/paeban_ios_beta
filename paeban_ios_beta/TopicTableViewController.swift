@@ -8,21 +8,42 @@
 
 import UIKit
 
-var ttt = true
+
 
 class TopicTableViewController: UITableViewController,httpResquestDelegate {
     // MARK: Properties
     
-    var topics = [Topic]()
+    var topics:[Topic] = []
+    var x:[Topic]{
+        get{return topics}
+        set{
+            print("didset")
+            self.tableView.reloadData()
+        }
+    }
     var sss = httpRequsetCenter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if ttt{
-            sss.delegate = self
-            sss.getTopic()
-            ttt = false
+        loadSampleTopics()
+        sss.delegate = self
+        
+        let loading_lable = UILabel()
+        loading_lable.center = self.view.center
+        loading_lable.text = "讀取中..."
+        self.tableView.addSubview(loading_lable)
+        
+        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+        dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+            self.sss.getTopic()
+            let temp_topic = self.sss.topic_list
+            dispatch_async(dispatch_get_main_queue(), {
+                self.topics = self.topics + temp_topic
+                self.tableView.reloadData()
+            })
         }
+        
+        
         
 
         // Uncomment the following line to preserve selection between presentations
@@ -39,17 +60,14 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
         topics.append(topic_1)
     }
     func new_topic_did_load(http_obj:httpRequsetCenter){
-        print("123123")
-        topics = topics + sss.topic_list
-        self.tableView.reloadData()
+        print("didload")
+        //topics = topics + sss.topic_list
+        //x = topics
+        //self.tableView.reloadData()
+
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: - Table view data source
+    
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -80,50 +98,4 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
         return cell
     }
  
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
