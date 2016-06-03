@@ -36,11 +36,11 @@ func json_load(input_data:String) ->NSDictionary{
 func getCSRFToken(cookie:String) -> String? {
     var state = false, state2 = false, count = 1, result = [Character]()
     let key = "csrftoken=s"
-    print(cookie)
+    //print(cookie)
     for word in cookie.characters.indices{
         if state{
-            print(cookie[word])
-            print(key[key.startIndex.advancedBy(count)])
+            //print(cookie[word])
+            //print(key[key.startIndex.advancedBy(count)])
             
             if cookie[word] == key[key.startIndex.advancedBy(count)]{
                 count += 1
