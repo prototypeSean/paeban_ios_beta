@@ -108,8 +108,8 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="453" placeholderIntrinsicHeight="103" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="D15-PF-O7o">
                                                     <rect key="frame" x="48" y="0.0" width="536" height="64"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="" lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb4-kw-iy4" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="536" height="42"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" misplaced="YES" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="" lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb4-kw-iy4" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="536" height="12"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="2dS-ij-Pwx"/>
                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="mCM-2h-Jun"/>
@@ -128,27 +128,9 @@
                                                                 </mask>
                                                             </variation>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="20" text="#hashtag #關鍵字標籤  #長度測試 #長度測試 #長度測試 #長度測試 #長度測試 #長度測試 #長度測試 #長度測試 #長度測試 #長度測試 #長度測試 #長度測試 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4FN-bR-57x" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="44" width="536" height="20"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="26" id="7Vt-Ca-BQj"/>
-                                                                <constraint firstAttribute="height" constant="30" id="aNV-Dv-OJt"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                            <color key="textColor" red="0.5807645173" green="0.5807645173" blue="0.5807645173" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="paddingLeft">
-                                                                    <real key="value" value="10"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <variation key="default">
-                                                                <mask key="constraints">
-                                                                    <exclude reference="7Vt-Ca-BQj"/>
-                                                                    <exclude reference="aNV-Dv-OJt"/>
-                                                                </mask>
-                                                            </variation>
-                                                        </label>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FXw-jh-YEN">
+                                                            <rect key="frame" x="0.0" y="14" width="536" height="50"/>
+                                                        </stackView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="WDI-9S-IYt"/>
@@ -183,7 +165,6 @@
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="labels" destination="CYX-FE-IxU" id="0HB-hP-Wmv"/>
-                                    <outlet property="topicHashtags" destination="4FN-bR-57x" id="9M9-Mt-PIv"/>
                                     <outlet property="topicOwnerImage" destination="eQS-sT-Ohi" id="Zxc-zD-Jhg"/>
                                     <outlet property="topicTitle" destination="wb4-kw-iy4" id="XGU-cm-a77"/>
                                     <segue destination="FBi-3N-jAs" kind="show" id="Whz-V0-qTy"/>
@@ -337,7 +318,7 @@
                                             </constraints>
                                         </stackView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucJ-JD-Ste" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
-                                            <rect key="frame" x="8" y="8" width="540.5" height="63.5"/>
+                                            <rect key="frame" x="8" y="8" width="541" height="64"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>

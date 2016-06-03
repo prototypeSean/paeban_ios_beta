@@ -44,6 +44,7 @@ class httpRequsetCenter{
     }
     
     func getTopic(){
+        sleep(5)
         let url = "http://www.paeban.com/topic_update/"
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.HTTPMethod = "POST"
@@ -61,7 +62,7 @@ class httpRequsetCenter{
                 let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
                 let ouput_json = json_load(ouput) as Dictionary
                 self.topic_list = self.topic_type(ouput_json)
-                sleep(2)
+                
                 self.delegate?.new_topic_did_load(self)
 
                 //print(topic_list)
@@ -73,12 +74,12 @@ class httpRequsetCenter{
             
         })
         task.resume()
-//        var while_protect = 0
-//        while topic_list.isEmpty || while_protect < 100{
-//            sleep(1/10)
-//            while_protect += 1
-//            
-//        }
+        var while_protect = 0
+        while topic_list.isEmpty || while_protect < 100{
+            sleep(1/10)
+            while_protect += 1
+            
+        }
         
     }
     
