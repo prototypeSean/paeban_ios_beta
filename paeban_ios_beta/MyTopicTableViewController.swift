@@ -1,6 +1,6 @@
 //
 //  MyTopicTableViewController.swift
-//  paeban_ios_test_3
+//  paeban_ios_beta
 //
 //  Created by 尚義 高 on 2016/5/6.
 //  Copyright © 2016年 尚義 高. All rights reserved.
@@ -8,16 +8,18 @@
 
 import UIKit
 
+// 我的話題清單
 class MyTopicTableViewController: UITableViewController {
 
     // MARK: Properties
-    var recievedContent = [Topic]()
+    var mytopic : [MyTopic] = []
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        loadSampleMyTopics()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -25,6 +27,12 @@ class MyTopicTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
+    func loadSampleMyTopics() {
+        let photo_1 = UIImage(named: "logo")!
+        let topic_1 = MyTopic(owner: "DK", photo: photo_1, title: "範例標題", hashtags: ["tag","tag2"],lastline:"最後一句對話" ,topicID: "001")!
+        mytopic.append(topic_1)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -34,23 +42,28 @@ class MyTopicTableViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return mytopic.count
     }
 
-    /*
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
+        let cellID = "myTopicCell"
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! MyTopicTableViewCell
+        
+        let topic = mytopic[indexPath.row]
+        
+        cell.repliedContent.text = topic.title
+        cell.repliedImage.image = topic.photo
 
         return cell
     }
-    */
+ 
 
     /*
     // Override to support conditional editing of the table view.

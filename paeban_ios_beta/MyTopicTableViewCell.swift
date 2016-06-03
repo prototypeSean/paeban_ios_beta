@@ -11,7 +11,7 @@ import UIKit
 class MyTopicTableViewCell: UITableViewCell {
 
     @IBOutlet weak var repliedImage: UIImageView!
-    @IBOutlet weak var repliedLabel: UILabelPadding!
+
     @IBOutlet weak var repliedContent: UILabelPadding!
     
     override func awakeFromNib() {

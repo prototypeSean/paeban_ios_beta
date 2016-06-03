@@ -38,7 +38,19 @@ class TopicViewController: UIViewController {
         myPhotoShadow.layer.cornerRadius = myPhoto.frame.size.width/2
         myPhotoShadow.clipsToBounds = false
         myPhotoShadow.addSubview(myPhoto)
+        
+        let guestPhotoShadow = UIView(frame: guestPhoto.frame)
+        guestPhoto.frame = CGRectMake(0, 0, guestPhoto.frame.size.width, guestPhoto.frame.size.height)
+        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).CGColor
+        myPhotoShadow.layer.shadowOffset = CGSizeMake(1.5, 1.5)
+        myPhotoShadow.layer.shadowOpacity = 1
+        myPhotoShadow.layer.shadowRadius = 1
+        myPhotoShadow.layer.cornerRadius = guestPhoto.frame.size.width/2
+        myPhotoShadow.clipsToBounds = false
+        myPhotoShadow.addSubview(guestPhoto)
+        
         self.view.addSubview(myPhotoShadow)
+        self.view.addSubview(guestPhotoShadow)
         
         // MARK: 作邊框
         topicInfoBG.layer.borderWidth = 1

@@ -195,7 +195,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ZH-7d-0if">
-                                <rect key="frame" x="0.0" y="154" width="600" height="397"/>
+                                <rect key="frame" x="0.0" y="164" width="600" height="387"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="Pk2-do-hj9"/>
                                 </constraints>
@@ -209,23 +209,23 @@
                                 </connections>
                             </containerView>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="aEh-SV-29s">
-                                <rect key="frame" x="0.0" y="64" width="600" height="90"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="100"/>
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="小明" translatesAutoresizingMaskIntoConstraints="NO" id="kY5-PA-Ibk">
-                                <rect key="frame" x="20" y="72" width="74" height="74"/>
+                                <rect key="frame" x="20" y="74" width="78" height="78"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="kY5-PA-Ibk" secondAttribute="height" multiplier="1:1" id="BTV-26-PYc"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="42" placeholderIntrinsicHeight="90" text="話題標題" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yud-7a-qK2">
-                                <rect key="frame" x="102" y="72" width="396" height="74"/>
+                                <rect key="frame" x="106" y="72" width="388" height="84"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="如如" translatesAutoresizingMaskIntoConstraints="NO" id="mWy-Dk-LKg">
-                                <rect key="frame" x="506" y="72" width="74" height="74"/>
+                                <rect key="frame" x="502" y="74" width="78" height="78"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="mWy-Dk-LKg" secondAttribute="height" multiplier="1:1" id="VTk-vX-4tq"/>
                                 </constraints>
@@ -238,18 +238,18 @@
                             <constraint firstAttribute="trailingMargin" secondItem="kY5-PA-Ibk" secondAttribute="trailing" id="As7-Gg-EWa"/>
                             <constraint firstItem="mWy-Dk-LKg" firstAttribute="leading" secondItem="yud-7a-qK2" secondAttribute="trailing" constant="8" symbolic="YES" id="FJH-2v-al9"/>
                             <constraint firstItem="yud-7a-qK2" firstAttribute="top" secondItem="q6V-0w-5Pl" secondAttribute="bottom" constant="8" symbolic="YES" id="GcF-ne-aHl"/>
-                            <constraint firstItem="1ZH-7d-0if" firstAttribute="top" secondItem="kY5-PA-Ibk" secondAttribute="bottom" constant="8" symbolic="YES" id="Kgo-Tq-WZC"/>
-                            <constraint firstItem="mWy-Dk-LKg" firstAttribute="top" secondItem="q6V-0w-5Pl" secondAttribute="bottom" constant="8" symbolic="YES" id="Mxm-1d-Ekw"/>
+                            <constraint firstItem="1ZH-7d-0if" firstAttribute="top" secondItem="kY5-PA-Ibk" secondAttribute="bottom" constant="12" id="Kgo-Tq-WZC"/>
+                            <constraint firstItem="mWy-Dk-LKg" firstAttribute="top" secondItem="q6V-0w-5Pl" secondAttribute="bottom" constant="10" id="Mxm-1d-Ekw"/>
                             <constraint firstItem="aEh-SV-29s" firstAttribute="leading" secondItem="6Yb-S9-ebd" secondAttribute="leadingMargin" constant="-20" id="Nf2-lQ-GkA"/>
                             <constraint firstAttribute="trailingMargin" secondItem="1ZH-7d-0if" secondAttribute="trailing" constant="-20" id="Ovv-Lg-idn"/>
                             <constraint firstItem="Rog-Sp-21z" firstAttribute="top" secondItem="1ZH-7d-0if" secondAttribute="bottom" id="V3d-3c-WsZ"/>
                             <constraint firstItem="kY5-PA-Ibk" firstAttribute="leading" secondItem="6Yb-S9-ebd" secondAttribute="leadingMargin" id="W6x-Bv-rRW"/>
-                            <constraint firstItem="1ZH-7d-0if" firstAttribute="top" secondItem="mWy-Dk-LKg" secondAttribute="bottom" constant="8" symbolic="YES" id="YWH-1B-hvS"/>
+                            <constraint firstItem="1ZH-7d-0if" firstAttribute="top" secondItem="mWy-Dk-LKg" secondAttribute="bottom" constant="12" id="YWH-1B-hvS"/>
                             <constraint firstItem="1ZH-7d-0if" firstAttribute="top" secondItem="yud-7a-qK2" secondAttribute="bottom" constant="8" symbolic="YES" id="b2i-wV-R22"/>
                             <constraint firstItem="1ZH-7d-0if" firstAttribute="leading" secondItem="6Yb-S9-ebd" secondAttribute="leadingMargin" constant="-20" id="fwo-iL-uPO"/>
                             <constraint firstItem="1ZH-7d-0if" firstAttribute="top" secondItem="aEh-SV-29s" secondAttribute="bottom" id="hkZ-sH-wQq"/>
-                            <constraint firstItem="1ZH-7d-0if" firstAttribute="top" secondItem="q6V-0w-5Pl" secondAttribute="bottom" constant="90" id="hwM-cY-qsG"/>
-                            <constraint firstItem="kY5-PA-Ibk" firstAttribute="top" secondItem="q6V-0w-5Pl" secondAttribute="bottom" constant="8" symbolic="YES" id="l7C-qV-rF8"/>
+                            <constraint firstItem="1ZH-7d-0if" firstAttribute="top" secondItem="q6V-0w-5Pl" secondAttribute="bottom" constant="100" id="hwM-cY-qsG"/>
+                            <constraint firstItem="kY5-PA-Ibk" firstAttribute="top" secondItem="q6V-0w-5Pl" secondAttribute="bottom" constant="10" id="l7C-qV-rF8"/>
                             <constraint firstItem="1ZH-7d-0if" firstAttribute="top" secondItem="q6V-0w-5Pl" secondAttribute="bottom" id="oIj-94-A6w"/>
                             <constraint firstItem="yud-7a-qK2" firstAttribute="leading" secondItem="kY5-PA-Ibk" secondAttribute="trailing" constant="8" symbolic="YES" id="reE-U7-cS4"/>
                             <constraint firstAttribute="trailingMargin" secondItem="mWy-Dk-LKg" secondAttribute="trailing" id="woV-gl-dSX"/>
@@ -284,7 +284,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="80" id="ukk-Cg-AaJ" customClass="MyTopicTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myTopicCell" rowHeight="80" id="ukk-Cg-AaJ" customClass="MyTopicTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ukk-Cg-AaJ" id="ZAm-Bu-LPF">
@@ -292,32 +292,29 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="npR-fO-eP0">
-                                            <rect key="frame" x="549" y="8" width="50" height="64"/>
+                                            <rect key="frame" x="549" y="8" width="44" height="64"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aQL-UI-8ul">
-                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="aQL-UI-8ul" secondAttribute="height" multiplier="1:1" id="bTp-Tr-DUQ"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLm-nZ-MRP" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="50" width="50" height="14"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dw5-lt-REr" customClass="Labels" customModule="paeban_ios_beta" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="44" width="44" height="20"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="rD1-3a-Uf2"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="HLm-nZ-MRP" secondAttribute="bottom" id="BrA-hr-jtY"/>
                                                 <constraint firstItem="aQL-UI-8ul" firstAttribute="leading" secondItem="npR-fO-eP0" secondAttribute="leading" id="Mcj-Qy-vml"/>
-                                                <constraint firstAttribute="trailing" secondItem="HLm-nZ-MRP" secondAttribute="trailing" id="XKz-AY-2hV"/>
-                                                <constraint firstItem="HLm-nZ-MRP" firstAttribute="top" secondItem="aQL-UI-8ul" secondAttribute="bottom" id="axv-dp-7WL"/>
                                                 <constraint firstAttribute="trailing" secondItem="aQL-UI-8ul" secondAttribute="trailing" id="cdy-Hf-Ohp"/>
                                                 <constraint firstItem="aQL-UI-8ul" firstAttribute="top" secondItem="npR-fO-eP0" secondAttribute="top" id="gGl-o0-G3y"/>
-                                                <constraint firstItem="HLm-nZ-MRP" firstAttribute="leading" secondItem="npR-fO-eP0" secondAttribute="leading" id="mGe-Ii-UrM"/>
                                             </constraints>
                                         </stackView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucJ-JD-Ste" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="我的話題" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucJ-JD-Ste" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
                                             <rect key="frame" x="8" y="8" width="541" height="64"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -335,10 +332,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="replideLabel" destination="HLm-nZ-MRP" id="Xmk-da-9bi"/>
                                     <outlet property="repliedContent" destination="ucJ-JD-Ste" id="UYo-0R-XSm"/>
                                     <outlet property="repliedImage" destination="aQL-UI-8ul" id="aL2-st-oF6"/>
-                                    <outlet property="repliedLabel" destination="HLm-nZ-MRP" id="SGS-Mx-vPB"/>
                                     <segue destination="XNg-Ou-R1E" kind="show" id="a3t-t2-GRm"/>
                                 </connections>
                             </tableViewCell>
@@ -490,7 +485,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Agd-9n-p2Q"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="68R-qK-mqe">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="397"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="387"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
