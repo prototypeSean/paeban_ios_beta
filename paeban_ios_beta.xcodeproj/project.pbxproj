@@ -107,31 +107,71 @@
 		931FF1931CFEA848000E7F8A /* paeban_ios_beta */ = {
 			isa = PBXGroup;
 			children = (
-				93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */,
 				932A00D01CFEBA460036E1EA /* AppDelegate.swift */,
 				932A00D11CFEBA460036E1EA /* ToolsFunction.swift */,
-				932A00D21CFEBA460036E1EA /* ViewController.swift */,
 				932A00D31CFEBA460036E1EA /* httpRequestCenter.swift */,
-				932A00D41CFEBA460036E1EA /* Topic.swift */,
-				932A00D51CFEBA460036E1EA /* TopicTableViewController.swift */,
-				932A00D61CFEBA460036E1EA /* TopicCellTableViewCell.swift */,
-				932A00D71CFEBA460036E1EA /* Main.storyboard */,
-				932A00D91CFEBA460036E1EA /* TopicNavViewController.swift */,
-				932A00DA1CFEBA460036E1EA /* TopicViewController.swift */,
-				932A00DB1CFEBA460036E1EA /* Labels.swift */,
-				932A00DC1CFEBA460036E1EA /* MyTopicTableViewCell.swift */,
-				932A00DD1CFEBA460036E1EA /* MyTopicTableViewController.swift */,
-				932A00DE1CFEBA460036E1EA /* ChatViewController.swift */,
-				932A00DF1CFEBA460036E1EA /* LaunchScreenViewController.swift */,
 				932A00E01CFEBA460036E1EA /* Login_paeban.swift */,
+				932A00D21CFEBA460036E1EA /* ViewController.swift */,
 				932A00E11CFEBA460036E1EA /* web_socket.swift */,
+				93AEF2901D0141FB007FDE51 /* topic */,
+				93AEF28D1D0140DC007FDE51 /* myTopics */,
+				93AEF2911D01427D007FDE51 /* recent */,
+				93AEF28E1D01410A007FDE51 /* friends */,
+				93AEF28F1D01419D007FDE51 /* launchScreen */,
+				932A00DE1CFEBA460036E1EA /* ChatViewController.swift */,
+				932A00D71CFEBA460036E1EA /* Main.storyboard */,
+				932A00DB1CFEBA460036E1EA /* Labels.swift */,
+				932A00D41CFEBA460036E1EA /* Topic.swift */,
 				931FF1A61CFEAFB2000E7F8A /* FBSDKCoreKit.framework */,
 				931FF1A71CFEAFB2000E7F8A /* FBSDKLoginKit.framework */,
 				931FF1A81CFEAFB2000E7F8A /* FBSDKShareKit.framework */,
-				931FF1A01CFEA848000E7F8A /* Info.plist */,
 				932A00F41D0025AC0036E1EA /* Assets.xcassets */,
+				931FF1A01CFEA848000E7F8A /* Info.plist */,
 			);
 			path = paeban_ios_beta;
+			sourceTree = "<group>";
+		};
+		93AEF28D1D0140DC007FDE51 /* myTopics */ = {
+			isa = PBXGroup;
+			children = (
+				932A00DD1CFEBA460036E1EA /* MyTopicTableViewController.swift */,
+				932A00DC1CFEBA460036E1EA /* MyTopicTableViewCell.swift */,
+			);
+			name = myTopics;
+			sourceTree = "<group>";
+		};
+		93AEF28E1D01410A007FDE51 /* friends */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = friends;
+			sourceTree = "<group>";
+		};
+		93AEF28F1D01419D007FDE51 /* launchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */,
+				932A00DF1CFEBA460036E1EA /* LaunchScreenViewController.swift */,
+			);
+			name = launchScreen;
+			sourceTree = "<group>";
+		};
+		93AEF2901D0141FB007FDE51 /* topic */ = {
+			isa = PBXGroup;
+			children = (
+				932A00D61CFEBA460036E1EA /* TopicCellTableViewCell.swift */,
+				932A00D91CFEBA460036E1EA /* TopicNavViewController.swift */,
+				932A00D51CFEBA460036E1EA /* TopicTableViewController.swift */,
+				932A00DA1CFEBA460036E1EA /* TopicViewController.swift */,
+			);
+			name = topic;
+			sourceTree = "<group>";
+		};
+		93AEF2911D01427D007FDE51 /* recent */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = recent;
 			sourceTree = "<group>";
 		};
 		A62994FD89CDC3F0BA218BD0 /* Frameworks */ = {
