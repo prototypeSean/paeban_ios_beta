@@ -14,16 +14,18 @@ class HashTagsContorller: UIView {
     
     var rating = 0
     var ratingButtons = [UIButton]()
-    
-
-    
+    var tagListForCell = tagList
+    var tagPositionDic:[String:[String]] = [:]
+    var tagPostionDicKey = 0
     
     // MARK: Initialization
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        
-        for _ in 0..<5 {
+        print("1")
+        //print(tagList)
+        for _ in 0..<tagList.count {
+            
+            //tagPositionDic = [tagPostionDicKey as String:]
             let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 25))
             button.backgroundColor = UIColor.orangeColor()
             
@@ -40,11 +42,22 @@ class HashTagsContorller: UIView {
         var buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 25)
         
         // Offset each button's origin by the length of the button plus spacing.
+        var tagCount = 0
+        print("2")
         for (index, button) in ratingButtons.enumerate() {
+            print("index")
+            print(index)
             buttonFrame.origin.x = CGFloat(index * (44 + 5))
             button.frame = buttonFrame
+            let tagText = "123"
+                        //print(tagListForCell)
+//            if tagListForCell.count > tagCount{
+//                print(tagListForCell)
+//                tagText = tagListForCell[tagCount]
+//            }
             
-            button.setTitle("123", forState: UIControlState.Normal)
+            button.setTitle(tagText, forState: UIControlState.Normal)
+            tagCount += 1
         }
     }
 

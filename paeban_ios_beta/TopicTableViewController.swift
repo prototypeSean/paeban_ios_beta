@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+public var tagList:[String] = []
 // 所有話題清單
 class TopicTableViewController: UITableViewController,httpResquestDelegate {
     // MARK: Properties
@@ -24,13 +24,8 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadSampleTopics()
+        //loadSampleTopics()
         sss.delegate = self
-        
-        let loading_lable = UILabel()
-        loading_lable.center = self.view.center
-        loading_lable.text = "讀取中..."
-        self.tableView.addSubview(loading_lable)
         
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
@@ -91,7 +86,8 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
         
         cell.topicTitle.text = topic.title
         cell.topicOwnerImage.image = topic.photo
-        
+        tagList = topic.hashtags!
+        print("5")
 
         // Configure the cell...
 

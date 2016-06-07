@@ -44,7 +44,7 @@ class httpRequsetCenter{
     }
     
     func getTopic(){
-        sleep(5)
+        //sleep(5)
         let url = "http://www.paeban.com/topic_update/"
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.HTTPMethod = "POST"
@@ -65,7 +65,7 @@ class httpRequsetCenter{
                 
                 self.delegate?.new_topic_did_load(self)
 
-                //print(topic_list)
+                print(ouput_json)
                 //print(self.topic_list)
                 print("data===================")
                 //print(response)
