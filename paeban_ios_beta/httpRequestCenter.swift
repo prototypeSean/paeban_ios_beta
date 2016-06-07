@@ -44,7 +44,7 @@ class httpRequsetCenter{
     }
     
     func getTopic(){
-        //sleep(5)
+        //sleep(2)
         let url = "http://www.paeban.com/topic_update/"
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.HTTPMethod = "POST"
