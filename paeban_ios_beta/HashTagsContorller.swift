@@ -14,16 +14,15 @@ class HashTagsContorller: UIView {
     
     var rating = 0
     var ratingButtons = [UIButton]()
-    var tagListForCell = tagList
+    //var tagListForCell = tagList
     var tagPositionDic:[String:[String]] = [:]
     var tagPostionDicKey = 0
-    
+    var tagList_cc:[String] = []
     // MARK: Initialization
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         print("1")
-        //print(tagList)
-        for _ in 0..<tagList.count {
+        for x in 0..<tagList.count {
             
             //tagPositionDic = [tagPostionDicKey as String:]
             let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 25))
@@ -32,34 +31,41 @@ class HashTagsContorller: UIView {
             button.addTarget(self, action: #selector(HashTagsContorller.ratingButtonTapped(_:)), forControlEvents: .TouchDown)
             
             
-            ratingButtons += [button]
+            //ratingButtons += [button]
+            
+            var buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 25)
+            buttonFrame.origin.x = CGFloat(x * (44 + 5))
+            button.frame = buttonFrame
+            button.setTitle(tagList[x], forState: UIControlState.Normal)
             
             addSubview(button)
+            
         }
+        print("==============")
     }
     
-    override func layoutSubviews() {
-        var buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 25)
-        
-        // Offset each button's origin by the length of the button plus spacing.
-        var tagCount = 0
-        print("2")
-        for (index, button) in ratingButtons.enumerate() {
-            print("index")
-            print(index)
-            buttonFrame.origin.x = CGFloat(index * (44 + 5))
-            button.frame = buttonFrame
-            let tagText = "123"
-                        //print(tagListForCell)
-//            if tagListForCell.count > tagCount{
-//                print(tagListForCell)
-//                tagText = tagListForCell[tagCount]
-//            }
-            
-            button.setTitle(tagText, forState: UIControlState.Normal)
-            tagCount += 1
-        }
-    }
+//    override func layoutSubviews() {
+//        var buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 25)
+//        
+//        // Offset each button's origin by the length of the button plus spacing.
+//        var tagCount = 0
+//        print("2")
+//        for (index, button) in ratingButtons.enumerate() {
+//            //print("index")
+//            print("3")
+//            buttonFrame.origin.x = CGFloat(index * (44 + 5))
+//            button.frame = buttonFrame
+//            let tagText = "123"
+//                        //print(tagListForCell)
+////            if tagListForCell.count > tagCount{
+////                print(tagListForCell)
+////                tagText = tagListForCell[tagCount]
+////            }
+//            
+//            button.setTitle(tagText, forState: UIControlState.Normal)
+//            tagCount += 1
+//        }
+//    }
 
     // MARK: Button Action
     func ratingButtonTapped(button: UIButton) {

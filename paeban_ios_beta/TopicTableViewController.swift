@@ -30,8 +30,8 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
             self.sss.getTopic()
-            let temp_topic = self.sss.topic_list
             dispatch_async(dispatch_get_main_queue(), {
+                let temp_topic = self.sss.topic_list
                 self.topics = self.topics + temp_topic
                 self.tableView.reloadData()
             })
@@ -83,11 +83,20 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! TopicCellTableViewCell
         
         let topic = topics[indexPath.row]
-        
+        cell.hashtags.tagList_cc = topic.hashtags!
+        if topic.hashtags?.count == 0{
+            tagList = [""]
+        }
+        else{
+            tagList = topic.hashtags!
+        }
+        print(cell.hashtags.tagList_cc)
         cell.topicTitle.text = topic.title
+        print(cell.topicTitle.text)
         cell.topicOwnerImage.image = topic.photo
-        tagList = topic.hashtags!
-        print("5")
+        //cell.tagList_cc = topic.hashtags!
+        
+        
 
         // Configure the cell...
 

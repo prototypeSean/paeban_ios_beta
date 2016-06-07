@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class TopicCellTableViewCell: UITableViewCell {
 
     // MARK: Properties
@@ -18,6 +19,7 @@ class TopicCellTableViewCell: UITableViewCell {
     @IBOutlet weak var labels: Labels!
         
     @IBOutlet weak var hashtags: HashTagsContorller!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
