@@ -24,7 +24,7 @@ class HashTagsContorller: UIView {
         
         
         for _ in 0..<5 {
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 25))
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 8))
             button.backgroundColor = UIColor.orangeColor()
             
             button.addTarget(self, action: #selector(HashTagsContorller.ratingButtonTapped(_:)), forControlEvents: .TouchDown)
@@ -37,7 +37,7 @@ class HashTagsContorller: UIView {
     }
     
     override func layoutSubviews() {
-        var buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 25)
+        var buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 8)
         
         // Offset each button's origin by the length of the button plus spacing.
         for (index, button) in ratingButtons.enumerate() {
