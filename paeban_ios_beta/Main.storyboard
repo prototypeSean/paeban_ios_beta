@@ -108,8 +108,8 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="453" placeholderIntrinsicHeight="103" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="D15-PF-O7o">
                                                     <rect key="frame" x="48" y="0.0" width="536" height="64"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" misplaced="YES" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="" lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb4-kw-iy4" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="536" height="12"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="" lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb4-kw-iy4" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="0.0" width="536" height="42"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="2dS-ij-Pwx"/>
                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="mCM-2h-Jun"/>
@@ -128,16 +128,25 @@
                                                                 </mask>
                                                             </variation>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FXw-jh-YEN">
-                                                            <rect key="frame" x="0.0" y="14" width="536" height="50"/>
-                                                        </stackView>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uS3-xb-XE1" customClass="HashTagsContorller" customModule="paeban_ios_beta" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="44" width="536" height="20"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" id="mnd-fP-B2u"/>
+                                                            </constraints>
+                                                        </view>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="uS3-xb-XE1" firstAttribute="top" secondItem="wb4-kw-iy4" secondAttribute="bottom" id="Mom-Ct-NjI"/>
+                                                        <constraint firstAttribute="trailing" secondItem="uS3-xb-XE1" secondAttribute="trailing" id="O3b-PV-Lcq"/>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="WDI-9S-IYt"/>
+                                                        <constraint firstItem="uS3-xb-XE1" firstAttribute="leading" secondItem="D15-PF-O7o" secondAttribute="leading" id="ZWS-2F-Pod"/>
+                                                        <constraint firstAttribute="bottom" secondItem="uS3-xb-XE1" secondAttribute="bottom" id="cwC-Pc-pT4"/>
                                                     </constraints>
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="WDI-9S-IYt"/>
+                                                            <exclude reference="Mom-Ct-NjI"/>
                                                         </mask>
                                                     </variation>
                                                 </stackView>
@@ -164,6 +173,7 @@
                                 <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="8" right="8"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
+                                    <outlet property="hashtags" destination="uS3-xb-XE1" id="eyH-Gf-xgI"/>
                                     <outlet property="labels" destination="CYX-FE-IxU" id="0HB-hP-Wmv"/>
                                     <outlet property="topicOwnerImage" destination="eQS-sT-Ohi" id="Zxc-zD-Jhg"/>
                                     <outlet property="topicTitle" destination="wb4-kw-iy4" id="XGU-cm-a77"/>
@@ -347,7 +357,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="veQ-fo-LWe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2777" y="74"/>
+            <point key="canvasLocation" x="-2777" y="86"/>
         </scene>
         <!--我的話題-->
         <scene sceneID="hT1-sP-pLa">

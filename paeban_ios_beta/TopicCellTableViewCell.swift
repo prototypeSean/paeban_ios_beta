@@ -16,8 +16,8 @@ class TopicCellTableViewCell: UITableViewCell {
     @IBOutlet weak var topicOwnerImage: UIImageView!
     
     @IBOutlet weak var labels: Labels!
-    @IBOutlet weak var topicHashtags: UILabel!
-    
+        
+    @IBOutlet weak var hashtags: HashTagsContorller!
     
     override func awakeFromNib() {
         super.awakeFromNib()

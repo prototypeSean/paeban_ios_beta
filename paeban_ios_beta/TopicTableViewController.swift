@@ -55,7 +55,8 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
     func loadSampleTopics() {
         
         let photo_1 = UIImage(named: "logo")!
-        let topic_1 = Topic(owner: "DK", photo: photo_1, title: "範例標題", hashtags: ["tag","tag2"],lastline:"最後一句對話" ,topicID: "001")!
+        let topic_1 = Topic(owner: "DK", photo: photo_1, title: "泛泛標題", hashtags: ["tag","tag2","tag3"],lastline:"最後一句對話" ,topicID: "001")!
+        
         topics.append(topic_1)
     }
     func new_topic_did_load(http_obj:httpRequsetCenter){
@@ -90,7 +91,7 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
         
         cell.topicTitle.text = topic.title
         cell.topicOwnerImage.image = topic.photo
-//        cell.topicHashtags.text = topic.hashtags!
+        
 
         // Configure the cell...
 

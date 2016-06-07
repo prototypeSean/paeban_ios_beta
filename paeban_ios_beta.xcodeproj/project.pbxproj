@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		930983E21D0166F5005B8E3B /* MyTopics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930983E11D0166F5005B8E3B /* MyTopics.swift */; };
+		930983E81D056971005B8E3B /* HashTagsContorller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930983E71D056971005B8E3B /* HashTagsContorller.swift */; };
 		931FF1A91CFEAFB2000E7F8A /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931FF1A61CFEAFB2000E7F8A /* FBSDKCoreKit.framework */; };
 		931FF1AA1CFEAFB2000E7F8A /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931FF1A71CFEAFB2000E7F8A /* FBSDKLoginKit.framework */; };
 		931FF1AB1CFEAFB2000E7F8A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931FF1A81CFEAFB2000E7F8A /* FBSDKShareKit.framework */; };
@@ -37,6 +38,7 @@
 		32578316BF0D1896CBB03988 /* Pods_paeban_ios_beta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_paeban_ios_beta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		841E6117BF157D5E5686EF8E /* Pods-paeban_ios_beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.debug.xcconfig"; sourceTree = "<group>"; };
 		930983E11D0166F5005B8E3B /* MyTopics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopics.swift; sourceTree = "<group>"; };
+		930983E71D056971005B8E3B /* HashTagsContorller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTagsContorller.swift; sourceTree = "<group>"; };
 		931FF1911CFEA848000E7F8A /* paeban_ios_beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = paeban_ios_beta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		931FF1A01CFEA848000E7F8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		931FF1A61CFEAFB2000E7F8A /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -123,7 +125,6 @@
 				932A00DE1CFEBA460036E1EA /* ChatViewController.swift */,
 				932A00D71CFEBA460036E1EA /* Main.storyboard */,
 				932A00DB1CFEBA460036E1EA /* Labels.swift */,
-				932A00D41CFEBA460036E1EA /* Topic.swift */,
 				930983E11D0166F5005B8E3B /* MyTopics.swift */,
 				931FF1A61CFEAFB2000E7F8A /* FBSDKCoreKit.framework */,
 				931FF1A71CFEAFB2000E7F8A /* FBSDKLoginKit.framework */,
@@ -162,10 +163,12 @@
 		93AEF2901D0141FB007FDE51 /* topic */ = {
 			isa = PBXGroup;
 			children = (
-				932A00D61CFEBA460036E1EA /* TopicCellTableViewCell.swift */,
 				932A00D91CFEBA460036E1EA /* TopicNavViewController.swift */,
+				932A00D61CFEBA460036E1EA /* TopicCellTableViewCell.swift */,
 				932A00D51CFEBA460036E1EA /* TopicTableViewController.swift */,
 				932A00DA1CFEBA460036E1EA /* TopicViewController.swift */,
+				932A00D41CFEBA460036E1EA /* Topic.swift */,
+				930983E71D056971005B8E3B /* HashTagsContorller.swift */,
 			);
 			name = topic;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				932A00E51CFEBA460036E1EA /* httpRequestCenter.swift in Sources */,
 				932A00F31CFEBA460036E1EA /* web_socket.swift in Sources */,
 				932A00F21CFEBA460036E1EA /* Login_paeban.swift in Sources */,
+				930983E81D056971005B8E3B /* HashTagsContorller.swift in Sources */,
 				932A00E81CFEBA460036E1EA /* TopicCellTableViewCell.swift in Sources */,
 				932A00EB1CFEBA460036E1EA /* TopicNavViewController.swift in Sources */,
 				932A00E71CFEBA460036E1EA /* TopicTableViewController.swift in Sources */,
