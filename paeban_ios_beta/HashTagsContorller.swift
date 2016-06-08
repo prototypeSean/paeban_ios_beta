@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+var ccc:[String] = []
 class HashTagsContorller: UIView {
     
     // MARK: Properties
@@ -15,34 +15,34 @@ class HashTagsContorller: UIView {
     var rating = 0
     var ratingButtons = [UIButton]()
     //var tagListForCell = tagList
-    var tagPositionDic:[String:[String]] = [:]
     var tagPostionDicKey = 0
-    var tagList_cc:[String] = []
+    var tagListInContorller:[String]{
+        get{
+            return tagList
+        }
+    }
     // MARK: Initialization
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        print("1")
-        for x in 0..<tagList.count {
-            
+
+    func DrawButton(){
+        for x in 0..<tagListInContorller.count {
             //tagPositionDic = [tagPostionDicKey as String:]
             let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 25))
             button.backgroundColor = UIColor.orangeColor()
             
             button.addTarget(self, action: #selector(HashTagsContorller.ratingButtonTapped(_:)), forControlEvents: .TouchDown)
-            
-            
-            //ratingButtons += [button]
-            
             var buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 25)
             buttonFrame.origin.x = CGFloat(x * (44 + 5))
             button.frame = buttonFrame
-            button.setTitle(tagList[x], forState: UIControlState.Normal)
-            
+            button.setTitle(tagListInContorller[x], forState: UIControlState.Normal)
             addSubview(button)
             
         }
-        print("==============")
     }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        DrawButton()
+    }
+
     
 //    override func layoutSubviews() {
 //        var buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 25)
