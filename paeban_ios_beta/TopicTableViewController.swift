@@ -8,6 +8,7 @@
 
 import UIKit
 public var tagList:[String] = []
+
 // 所有話題清單
 class TopicTableViewController: UITableViewController,httpResquestDelegate {
     // MARK: Properties
@@ -78,25 +79,14 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         // Table view cells are reused and should be dequeued using a cell identifier.
+        let topic = topics[indexPath.row]
+        tagList = topic.hashtags!
         let cellIdentifier = "TopicCellTableViewCell"
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! TopicCellTableViewCell
         
-        let topic = topics[indexPath.row]
-        cell.hashtags.tagList_cc = topic.hashtags!
-        if topic.hashtags?.count == 0{
-            tagList = [""]
-        }
-        else{
-            tagList = topic.hashtags!
-        }
-        print(cell.hashtags.tagList_cc)
         cell.topicTitle.text = topic.title
-        print(cell.topicTitle.text)
         cell.topicOwnerImage.image = topic.photo
-        //cell.tagList_cc = topic.hashtags!
-        
-        
 
         // Configure the cell...
 
