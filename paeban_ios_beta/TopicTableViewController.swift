@@ -86,7 +86,6 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! TopicCellTableViewCell
         
         cell.topicTitle.text = topic.title
-        print(cell.topicTitle.text)
         cell.topicOwnerImage.image = topic.photo
 
         // Configure the cell...
