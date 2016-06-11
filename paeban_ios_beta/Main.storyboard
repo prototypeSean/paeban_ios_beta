@@ -109,7 +109,7 @@
                                                     <rect key="frame" x="48" y="0.0" width="536" height="64"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="" lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb4-kw-iy4" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="536" height="42"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="536" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="2dS-ij-Pwx"/>
                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="mCM-2h-Jun"/>
@@ -128,25 +128,38 @@
                                                                 </mask>
                                                             </variation>
                                                         </label>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uS3-xb-XE1" customClass="HashTagsContorller" customModule="paeban_ios_beta" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="44" width="536" height="20"/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sD7-us-beO">
+                                                            <rect key="frame" x="0.0" y="46" width="536" height="18"/>
+                                                            <subviews>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jhx-Yg-QvH">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="10" height="18"/>
+                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="10" id="QKw-Hm-4QJ"/>
+                                                                    </constraints>
+                                                                </view>
+                                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="536" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="uS3-xb-XE1" customClass="HashTagsContorller" customModule="paeban_ios_beta" customModuleProvider="target">
+                                                                    <rect key="frame" x="10" y="0.0" width="526" height="18"/>
+                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="18" id="mnd-fP-B2u"/>
+                                                                    </constraints>
+                                                                </view>
+                                                            </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="20" id="mnd-fP-B2u"/>
+                                                                <constraint firstItem="uS3-xb-XE1" firstAttribute="leading" secondItem="Jhx-Yg-QvH" secondAttribute="trailing" id="5me-VV-aBI"/>
+                                                                <constraint firstItem="Jhx-Yg-QvH" firstAttribute="leading" secondItem="sD7-us-beO" secondAttribute="leading" id="6PY-XF-uvD"/>
+                                                                <constraint firstAttribute="bottom" secondItem="Jhx-Yg-QvH" secondAttribute="bottom" id="e4Z-mw-1Aa"/>
+                                                                <constraint firstItem="Jhx-Yg-QvH" firstAttribute="top" secondItem="sD7-us-beO" secondAttribute="top" id="syj-kw-MAu"/>
                                                             </constraints>
-                                                        </view>
+                                                        </stackView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="uS3-xb-XE1" firstAttribute="top" secondItem="wb4-kw-iy4" secondAttribute="bottom" id="Mom-Ct-NjI"/>
-                                                        <constraint firstAttribute="trailing" secondItem="uS3-xb-XE1" secondAttribute="trailing" id="O3b-PV-Lcq"/>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="WDI-9S-IYt"/>
-                                                        <constraint firstItem="uS3-xb-XE1" firstAttribute="leading" secondItem="D15-PF-O7o" secondAttribute="leading" id="ZWS-2F-Pod"/>
-                                                        <constraint firstAttribute="bottom" secondItem="uS3-xb-XE1" secondAttribute="bottom" id="cwC-Pc-pT4"/>
                                                     </constraints>
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="WDI-9S-IYt"/>
-                                                            <exclude reference="Mom-Ct-NjI"/>
                                                         </mask>
                                                     </variation>
                                                 </stackView>

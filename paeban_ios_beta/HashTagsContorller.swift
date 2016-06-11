@@ -23,24 +23,31 @@ class HashTagsContorller: UIView {
     }
     // MARK: Initialization
 
-    func DrawButton(){
+    func drawButton(){
         for x in 0..<tagListInContorller.count {
             //tagPositionDic = [tagPostionDicKey as String:]
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 25))
+            
+            
+            
+            let button = UIButton()
+            button.setTitle(tagListInContorller[x], forState: UIControlState.Normal)
+            
             button.backgroundColor = UIColor.orangeColor()
             
             button.addTarget(self, action: #selector(HashTagsContorller.ratingButtonTapped(_:)), forControlEvents: .TouchDown)
-            var buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 25)
-            buttonFrame.origin.x = CGFloat(x * (44 + 5))
+            
+            var buttonFrame = CGRect(x: 0, y: 0, width:(button.titleLabel?.frame.width)!, height: 18)
+            
+            buttonFrame.origin.x = CGFloat(x * (15 + 5))
+            
             button.frame = buttonFrame
-            button.setTitle(tagListInContorller[x], forState: UIControlState.Normal)
             addSubview(button)
             
         }
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        DrawButton()
+        drawButton()
     }
 
     
