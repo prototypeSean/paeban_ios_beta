@@ -35,17 +35,13 @@ class HashTagsContorller: UIView {
             button.backgroundColor = UIColor.orangeColor()
             
             button.addTarget(self, action: #selector(HashTagsContorller.ratingButtonTapped(_:)), forControlEvents: .TouchDown)
-            let stringLen = tagListInContorller[x].characters.count
-            print(stringLen)
-            //var size = CGRect();
-            //var size2 = CGSize();
-            //size = string.boundingRectWithSize(size2, options: NSStringDrawingOptions.UsesFontLeading, attributes: nil, context: nil);
             
-            var buttonFrame = CGRect(x: 0, y: 0, width:stringLen * 20, height: 18)
+            var buttonFrame = CGRect(x: 0, y: 0, width:0, height: 0)
             
             buttonFrame.origin.x = CGFloat(x * (15 + 5))
             
             button.frame = buttonFrame
+            button.sizeToFit()
             addSubview(button)
             
         }
