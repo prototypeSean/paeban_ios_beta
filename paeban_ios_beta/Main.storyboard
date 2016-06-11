@@ -108,13 +108,13 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="453" placeholderIntrinsicHeight="103" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="D15-PF-O7o">
                                                     <rect key="frame" x="48" y="0.0" width="536" height="64"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="" lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb4-kw-iy4" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="中文 En" lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb4-kw-iy4" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="0.0" width="536" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="2dS-ij-Pwx"/>
                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="mCM-2h-Jun"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <color key="textColor" red="0.4039215686" green="0.4039215686" blue="0.4039215686" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                             <userDefinedRuntimeAttributes>
@@ -149,9 +149,15 @@
                                                             <constraints>
                                                                 <constraint firstItem="uS3-xb-XE1" firstAttribute="leading" secondItem="Jhx-Yg-QvH" secondAttribute="trailing" id="5me-VV-aBI"/>
                                                                 <constraint firstItem="Jhx-Yg-QvH" firstAttribute="leading" secondItem="sD7-us-beO" secondAttribute="leading" id="6PY-XF-uvD"/>
+                                                                <constraint firstAttribute="bottom" secondItem="uS3-xb-XE1" secondAttribute="bottom" constant="20" symbolic="YES" id="AOE-hh-Jxi"/>
                                                                 <constraint firstAttribute="bottom" secondItem="Jhx-Yg-QvH" secondAttribute="bottom" id="e4Z-mw-1Aa"/>
                                                                 <constraint firstItem="Jhx-Yg-QvH" firstAttribute="top" secondItem="sD7-us-beO" secondAttribute="top" id="syj-kw-MAu"/>
                                                             </constraints>
+                                                            <variation key="default">
+                                                                <mask key="constraints">
+                                                                    <exclude reference="AOE-hh-Jxi"/>
+                                                                </mask>
+                                                            </variation>
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>

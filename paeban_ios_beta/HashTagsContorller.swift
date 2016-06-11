@@ -30,18 +30,22 @@ class HashTagsContorller: UIView {
             
             
             let button = UIButton()
+            button.titleLabel!.font = UIFont(name: "Arial Hebrew", size: 16)
+
             button.setTitle(tagListInContorller[x], forState: UIControlState.Normal)
             
             button.backgroundColor = UIColor.orangeColor()
             
             button.addTarget(self, action: #selector(HashTagsContorller.ratingButtonTapped(_:)), forControlEvents: .TouchDown)
             
-            var buttonFrame = CGRect(x: 0, y: 0, width:0, height: 0)
+            var buttonFrame = CGRect(x: 0, y: 0, width:60, height: 2)
             
-            buttonFrame.origin.x = CGFloat(x * (15 + 5))
-            
+            buttonFrame.origin.x = CGFloat(x * (60 + 5))
+            button.layer.cornerRadius = 5
             button.frame = buttonFrame
             button.sizeToFit()
+            
+            
             addSubview(button)
             
         }
