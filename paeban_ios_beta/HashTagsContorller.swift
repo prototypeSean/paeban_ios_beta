@@ -24,7 +24,7 @@ class HashTagsContorller: UIView {
     // MARK: Initialization
 
     func drawButton(){
-        var actually_btn_width = 0
+        var btn_x_start = 0
         for x in 0..<tagListInContorller.count {
             //tagPositionDic = [tagPostionDicKey as String:]
             
@@ -45,16 +45,11 @@ class HashTagsContorller: UIView {
             // 我也不知道位啥上下顛倒
             button.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
             
-            // 這邊可以抓到目前這個按鈕的寬度
+            // 抓取按鈕起始位置 第一個從 0 開始
+            buttonFrame.origin.x = CGFloat(btn_x_start)
             
-            
-            // 每個按鈕的 x 位置都要重劃
-            // 第一個 ＝ 0 + 常數
-            // 第二個 ＝ 前一個寬度 ＋ 常數
-            buttonFrame.origin.x = CGFloat(actually_btn_width)
-            
-            actually_btn_width += Int(button.frame.width) + 10
-            print(actually_btn_width)
+            // 修改下一個按鈕起始位置 = 前一個位置＋現在按鈕寬度＋常數
+            btn_x_start += Int(button.frame.width) + 12
             
             button.layer.cornerRadius = 3
             button.frame = buttonFrame
@@ -66,31 +61,8 @@ class HashTagsContorller: UIView {
         drawButton()
     }
 
-    
-//    override func layoutSubviews() {
-//        var buttonFrame = CGRect(x: 0, y: 0, width: 44, height: 25)
-//        
-//        // Offset each button's origin by the length of the button plus spacing.
-//        var tagCount = 0
-//        print("2")
-//        for (index, button) in ratingButtons.enumerate() {
-//            //print("index")
-//            print("3")
-//            buttonFrame.origin.x = CGFloat(index * (44 + 5))
-//            button.frame = buttonFrame
-//            let tagText = "123"
-//                        //print(tagListForCell)
-////            if tagListForCell.count > tagCount{
-////                print(tagListForCell)
-////                tagText = tagListForCell[tagCount]
-////            }
-//            
-//            button.setTitle(tagText, forState: UIControlState.Normal)
-//            tagCount += 1
-//        }
-//    }
+    //  還沒作標籤太多太長的應對方式 （最多兩行，超過隱藏）
 
-    // MARK: Button Action
     func ratingButtonTapped(button: UIButton) {
         
         print("Button pressed 👍")
