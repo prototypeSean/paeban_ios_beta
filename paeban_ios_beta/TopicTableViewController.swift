@@ -10,11 +10,12 @@ import UIKit
 public var tagList:[String] = []
 
 // 所有話題清單
-class TopicTableViewController: UITableViewController,httpResquestDelegate {
+class TopicTableViewController: UITableViewController,httpResquestDelegate{
     // MARK: Properties
     
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
+    var requestOldDataSwitch = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,15 +31,14 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
                 self.tableView.reloadData()
             })
         }
-        
-        
-        
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl = refreshControl
+    }
+    func update(){
+        print("rrr")
+        sleep(2)
+        refreshControl?.endRefreshing()
     }
     
     func loadSampleTopics() {
@@ -50,14 +50,8 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
     }
     func new_topic_did_load(http_obj:httpRequsetCenter){
         print("websocket data did load")
-        //topics = topics + sss.topic_list
-        //x = topics
-        //self.tableView.reloadData()
-
     }
     
-    
-
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -85,5 +79,41 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
 
         return cell
     }
- 
+    //-----------test---------
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        let scroolHeight = self.tableView.contentOffset.y + self.tableView.frame.height
+        let contentHeight = self.tableView.contentSize.height
+        if scroolHeight >= contentHeight && contentHeight > 0
+            && requestOldDataSwitch == true{
+            requestOldDataSwitch = false
+            print("撞...撞到最底了 >///<")
+            
+            let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+                if !self.topics.isEmpty{
+                    var minTopicId:Int = Int(self.topics[0].topicID)!
+                    for topicS in self.topics{
+                        let topicIdS = Int(topicS.topicID)
+                        minTopicId = min(minTopicId, topicIdS!)
+                    }
+                    print("最小ＩＤ\(String(minTopicId))")
+                    self.httpOBJ.getOldTopic(minTopicId)
+                    self.topics += self.httpOBJ.topic_list
+                }
+                
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.tableView.reloadData()
+                    self.requestOldDataSwitch = true
+                    //print(self.httpOBJ.topic_list)
+                    //print(self.topics)
+                })
+            }
+            
+        }
+    }
+    
+    //NSIndexPath* ipath = [NSIndexPath indexPathForRow: cells_count-1 inSection: sections_count-1];
+    //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
+    //-----------test---------
 }
