@@ -12,7 +12,7 @@ class HashTagsContorller: UIView {
     
     // MARK: Properties
     
-    var ratingButtons = [UIButton]()
+    var hashtagButtons = [UIButton]()
     //var tagListForCell = tagList
     var tagPostionDicKey = 0
     var tagListInContorller:[String]{
