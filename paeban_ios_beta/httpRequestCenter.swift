@@ -64,7 +64,7 @@ class httpRequsetCenter{
                 self.topic_list = self.topic_type(ouput_json)
                 
                 self.delegate?.new_topic_did_load(self)
-
+                
                 //print(ouput_json)
                 //print(self.topic_list)
                 print("data===================")
