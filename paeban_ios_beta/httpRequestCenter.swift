@@ -17,27 +17,31 @@ protocol httpResquestDelegate {
 class httpRequsetCenter{
     var delegate:httpResquestDelegate?
     var topic_list = [Topic]()
+    
     private func topic_type(ouput_json:Dictionary<NSObject, AnyObject>)->Array<Topic>{
         let type_key:NSObject = "msg_type"
         var topic_list_temp = [Topic]()
         //print(ouput_json)
         if ouput_json[type_key] as! String == "new_topic"{
+            var dataKeyList:[String] = []   //排序topicId清單
             for data_key in ouput_json.keys{
-                //print(data_key)
                 if data_key as! String != "msg_type"{
-                    //print(ouput_json[data_key]!["topic_publisher"] as? String)
-                    let photo_temp = UIImage(named: "logo")!
-                    
-                    let topic_temp = Topic(
-                        owner: ouput_json[data_key]!["topic_publisher"] as! String,
-                        photo: photo_temp,
-                        title: ouput_json[data_key]!["title"] as! String,
-                        hashtags: ouput_json[data_key]!["tag"] as! Array,
-                        lastline:"最後一句對話" ,
-                        topicID: data_key as! String)!
-                    topic_list_temp.append(topic_temp)
+                    dataKeyList.append(data_key as! String)
                 }
-                
+            }
+            dataKeyList = dataKeyList.sort(>)
+            //print(dataKeyList)
+            for dataKey in dataKeyList{
+                let photo_temp = UIImage(named: "logo")!
+                let topic_temp = Topic(
+                    owner: ouput_json[dataKey]!["topic_publisher"] as! String,
+                    photo: photo_temp,
+                    title: ouput_json[dataKey]!["title"] as! String,
+                    hashtags: ouput_json[dataKey]!["tag"] as! Array,
+                    lastline:"最後一句對話" ,
+                    topicID: String(dataKey)
+                    )!
+                topic_list_temp.append(topic_temp)
             }
         }
         return topic_list_temp
@@ -58,7 +62,7 @@ class httpRequsetCenter{
                 print("連線錯誤\(error)")
             }
             else{
-                print("data===================")
+                //print("data===================")
                 let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
                 let ouput_json = json_load(ouput) as Dictionary
                 self.topic_list = self.topic_type(ouput_json)
@@ -67,9 +71,7 @@ class httpRequsetCenter{
 
                 //print(ouput_json)
                 //print(self.topic_list)
-                print("data===================")
-                //print(response)
-                //print("文檔結束=============")
+                
             }
             
         })

@@ -14,25 +14,18 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
     // MARK: Properties
     
     var topics:[Topic] = []
-    var x:[Topic]{
-        get{return topics}
-        set{
-            print("didset")
-            self.tableView.reloadData()
-        }
-    }
-    var sss = httpRequsetCenter()
+    var httpOBJ = httpRequsetCenter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         //loadSampleTopics()
-        sss.delegate = self
+        httpOBJ.delegate = self
         
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-            self.sss.getTopic()
+            self.httpOBJ.getTopic()
             dispatch_async(dispatch_get_main_queue(), {
-                let temp_topic = self.sss.topic_list
+                let temp_topic = self.httpOBJ.topic_list
                 self.topics = self.topics + temp_topic
                 self.tableView.reloadData()
             })
@@ -56,7 +49,7 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate {
         topics.append(topic_1)
     }
     func new_topic_did_load(http_obj:httpRequsetCenter){
-        print("didload")
+        print("websocket data did load")
         //topics = topics + sss.topic_list
         //x = topics
         //self.tableView.reloadData()
