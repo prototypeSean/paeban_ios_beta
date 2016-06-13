@@ -10,7 +10,7 @@ import UIKit
 public var tagList:[String] = []
 
 // 所有話題清單
-class TopicTableViewController: UITableViewController,httpResquestDelegate {
+class TopicTableViewController: UIViewController,httpResquestDelegate,UITableViewDelegate {
     // MARK: Properties
     
     @IBOutlet weak var newTopicInput: UITextField!
