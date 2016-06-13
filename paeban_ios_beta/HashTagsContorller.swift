@@ -27,8 +27,6 @@ class HashTagsContorller: UIView {
         for x in 0..<tagListInContorller.count {
             //tagPositionDic = [tagPostionDicKey as String:]
             
-            
-            
             let button = UIButton()
             button.titleLabel!.font = UIFont(name: "Arial Hebrew", size: 16)
 
@@ -38,14 +36,24 @@ class HashTagsContorller: UIView {
             
             button.addTarget(self, action: #selector(HashTagsContorller.ratingButtonTapped(_:)), forControlEvents: .TouchDown)
             
-            var buttonFrame = CGRect(x: 0, y: 0, width:60, height: 2)
-            
-            buttonFrame.origin.x = CGFloat(x * (60 + 5))
-            button.layer.cornerRadius = 5
-            button.frame = buttonFrame
+            // 先用一次魔法 讓按鈕的長寬都長出來
             button.sizeToFit()
+
+            var buttonFrame = CGRect(x: 0, y: 0, width:button.frame.width + 4, height:button.frame.height - 6)
             
+            // 我也不知道位啥上下顛倒
+            button.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
             
+            // 這邊可以抓到目前這個按鈕的寬度
+            let actually_btn_width:Int = Int(button.frame.width)
+            
+            // 每個按鈕的 x 位置都要重劃
+            // 第一個 ＝ 0 + 常數
+            // 第二個 ＝ 前一個寬度 ＋ 常數
+            buttonFrame.origin.x = CGFloat(x * (actually_btn_width + 10))
+            
+            button.layer.cornerRadius = 3
+            button.frame = buttonFrame
             addSubview(button)
             
         }
