@@ -78,7 +78,12 @@ class httpRequsetCenter{
     }
     func getOldTopic(topicID:Int){
         self.topic_list = []
-        print("Old啟動")
+        let topicIdToString = String(topicID)
+        let sentData = "mode=old;min_topic_id=\(topicIdToString)"
+        topicUpdate(sentData)
+    }
+    func getNewTopic(topicID:Int){
+        self.topic_list = []
         let topicIdToString = String(topicID)
         let sentData = "mode=old;min_topic_id=\(topicIdToString)"
         topicUpdate(sentData)

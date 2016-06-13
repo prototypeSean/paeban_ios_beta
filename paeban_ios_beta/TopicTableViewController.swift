@@ -36,9 +36,25 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
         self.refreshControl = refreshControl
     }
     func update(){
-        print("rrr")
-        sleep(2)
-        refreshControl?.endRefreshing()
+        if requestOldDataSwitch == true{
+            print("刷新中")
+            self.requestOldDataSwitch = false
+            let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+                self.httpOBJ.getTopic()
+                let temp_topic = self.httpOBJ.topic_list
+                self.topics = temp_topic
+                dispatch_async(dispatch_get_main_queue(), {
+                    print(self.topics[0].hashtags)
+                    self.tableView.reloadData()
+                    self.refreshControl?.endRefreshing()
+                    self.requestOldDataSwitch = true
+                })
+            }
+        }
+        else{
+            self.refreshControl?.endRefreshing()
+        }
     }
     
     func loadSampleTopics() {
@@ -68,6 +84,7 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
         // Table view cells are reused and should be dequeued using a cell identifier.
         let topic = topics[indexPath.row]
         tagList = topic.hashtags!
+        print(tagList)
         let cellIdentifier = "TopicCellTableViewCell"
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! TopicCellTableViewCell
