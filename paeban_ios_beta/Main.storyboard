@@ -63,9 +63,78 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="IJj-uo-XID">
+                            <rect key="frame" x="0.0" y="64" width="600" height="97"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="今天想聊點什麼 ？" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="BtG-yR-iu8">
+                                    <rect key="frame" x="20" y="0.0" width="441.5" height="48.5"/>
+                                    <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                </textField>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h34-ps-Z5P">
+                                    <rect key="frame" x="469" y="0.0" width="110.5" height="48.5"/>
+                                    <color key="tintColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    <state key="normal" title="開啟話題"/>
+                                    <connections>
+                                        <action selector="newTopicBtn:" destination="5cg-aO-49e" eventType="touchUpInside" id="Gkr-am-Igz"/>
+                                    </connections>
+                                </button>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="搜尋 ＃hashtag" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="EQy-zH-21L">
+                                    <rect key="frame" x="20" y="48" width="441.5" height="48.5"/>
+                                    <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                </textField>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rrN-hb-U34">
+                                    <rect key="frame" x="469.5" y="48" width="110.5" height="48.5"/>
+                                    <color key="tintColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    <state key="normal" title="搜尋 #"/>
+                                    <connections>
+                                        <action selector="searchTagBtn:" destination="5cg-aO-49e" eventType="touchUpInside" id="6VK-xY-D3I"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="EQy-zH-21L" secondAttribute="trailing" id="2zL-4x-eUB"/>
+                                <constraint firstItem="rrN-hb-U34" firstAttribute="leading" secondItem="IJj-uo-XID" secondAttribute="leading" id="49q-C4-NVA"/>
+                                <constraint firstItem="h34-ps-Z5P" firstAttribute="leading" secondItem="IJj-uo-XID" secondAttribute="leading" id="61P-D1-zEd"/>
+                                <constraint firstItem="rrN-hb-U34" firstAttribute="top" secondItem="h34-ps-Z5P" secondAttribute="bottom" id="6S6-V2-0jD"/>
+                                <constraint firstItem="BtG-yR-iu8" firstAttribute="top" secondItem="IJj-uo-XID" secondAttribute="top" id="754-Md-qN8"/>
+                                <constraint firstItem="rrN-hb-U34" firstAttribute="top" secondItem="BtG-yR-iu8" secondAttribute="bottom" id="8PC-x9-wSX"/>
+                                <constraint firstItem="EQy-zH-21L" firstAttribute="top" secondItem="BtG-yR-iu8" secondAttribute="bottom" id="8QA-dj-sA1"/>
+                                <constraint firstAttribute="bottom" secondItem="rrN-hb-U34" secondAttribute="bottom" id="DuO-Iz-Pvd"/>
+                                <constraint firstItem="EQy-zH-21L" firstAttribute="leading" secondItem="IJj-uo-XID" secondAttribute="leading" id="G6c-jy-3hw"/>
+                                <constraint firstItem="EQy-zH-21L" firstAttribute="width" secondItem="BtG-yR-iu8" secondAttribute="width" id="H1m-b5-n5K"/>
+                                <constraint firstItem="BtG-yR-iu8" firstAttribute="width" secondItem="h34-ps-Z5P" secondAttribute="width" multiplier="8:2" id="LJ6-6h-qFg"/>
+                                <constraint firstItem="h34-ps-Z5P" firstAttribute="height" secondItem="rrN-hb-U34" secondAttribute="height" id="MNX-6j-iOQ"/>
+                                <constraint firstAttribute="bottom" secondItem="EQy-zH-21L" secondAttribute="bottom" id="V8T-tW-fDO"/>
+                                <constraint firstItem="EQy-zH-21L" firstAttribute="top" secondItem="IJj-uo-XID" secondAttribute="top" id="VHy-nV-cFG"/>
+                                <constraint firstAttribute="bottom" secondItem="EQy-zH-21L" secondAttribute="bottom" id="WMM-aH-EkL"/>
+                                <constraint firstItem="h34-ps-Z5P" firstAttribute="top" secondItem="IJj-uo-XID" secondAttribute="top" id="XRw-pN-zCE"/>
+                                <constraint firstItem="rrN-hb-U34" firstAttribute="leading" secondItem="EQy-zH-21L" secondAttribute="trailing" constant="8" symbolic="YES" id="dOz-i7-I08"/>
+                                <constraint firstAttribute="trailing" secondItem="h34-ps-Z5P" secondAttribute="trailing" constant="20" symbolic="YES" id="jv4-HT-ika"/>
+                                <constraint firstAttribute="trailing" secondItem="rrN-hb-U34" secondAttribute="trailing" constant="20" symbolic="YES" id="kTl-Lp-Qm6"/>
+                                <constraint firstItem="BtG-yR-iu8" firstAttribute="leading" secondItem="IJj-uo-XID" secondAttribute="leading" constant="20" symbolic="YES" id="sTE-2j-iJ5"/>
+                                <constraint firstItem="EQy-zH-21L" firstAttribute="leading" secondItem="IJj-uo-XID" secondAttribute="leading" constant="20" symbolic="YES" id="tHS-Me-J0r"/>
+                                <constraint firstItem="h34-ps-Z5P" firstAttribute="leading" secondItem="BtG-yR-iu8" secondAttribute="trailing" constant="8" symbolic="YES" id="v7g-4R-CaU"/>
+                                <constraint firstItem="rrN-hb-U34" firstAttribute="top" secondItem="h34-ps-Z5P" secondAttribute="bottom" id="zhN-gg-DRg"/>
+                            </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="2zL-4x-eUB"/>
+                                    <exclude reference="G6c-jy-3hw"/>
+                                    <exclude reference="VHy-nV-cFG"/>
+                                    <exclude reference="WMM-aH-EkL"/>
+                                    <exclude reference="49q-C4-NVA"/>
+                                    <exclude reference="61P-D1-zEd"/>
+                                </mask>
+                            </variation>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCellTableViewCell" rowHeight="80" id="Wjc-mK-FT3" customClass="TopicCellTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="600" height="80"/>
+                                <rect key="frame" x="0.0" y="189" width="600" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
@@ -206,6 +275,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="話題" id="qfz-1V-mlW"/>
+                    <connections>
+                        <outlet property="newTopicInput" destination="BtG-yR-iu8" id="RsL-Ch-7QV"/>
+                        <outlet property="searchTagInput" destination="EQy-zH-21L" id="emf-n4-oLK"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NN8-8j-wVd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

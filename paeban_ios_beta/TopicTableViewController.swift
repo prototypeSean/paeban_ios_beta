@@ -13,6 +13,18 @@ public var tagList:[String] = []
 class TopicTableViewController: UITableViewController,httpResquestDelegate {
     // MARK: Properties
     
+    @IBOutlet weak var newTopicInput: UITextField!
+    
+    @IBAction func newTopicBtn(sender: AnyObject) {
+    }
+    
+    @IBOutlet weak var searchTagInput: UITextField!
+    
+    
+    @IBAction func searchTagBtn(sender: AnyObject) {
+    }
+    
+    
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
 
