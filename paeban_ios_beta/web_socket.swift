@@ -30,7 +30,7 @@ func ws_onmsg(text:String){
 
 func ws_connect_fun(ws:WebSocket){
     ws.onConnect = {
-        print("ccccccc")
+        //print("ccccccc")
     }
     ws.connect()
 }
