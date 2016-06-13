@@ -12,7 +12,6 @@ class HashTagsContorller: UIView {
     
     // MARK: Properties
     
-    var rating = 0
     var ratingButtons = [UIButton]()
     //var tagListForCell = tagList
     var tagPostionDicKey = 0
