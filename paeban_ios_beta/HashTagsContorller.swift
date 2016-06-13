@@ -24,6 +24,7 @@ class HashTagsContorller: UIView {
     // MARK: Initialization
 
     func drawButton(){
+        var actually_btn_width = 0
         for x in 0..<tagListInContorller.count {
             //tagPositionDic = [tagPostionDicKey as String:]
             
@@ -38,24 +39,26 @@ class HashTagsContorller: UIView {
             
             // 先用一次魔法 讓按鈕的長寬都長出來
             button.sizeToFit()
-
+            
             var buttonFrame = CGRect(x: 0, y: 0, width:button.frame.width + 4, height:button.frame.height - 6)
             
             // 我也不知道位啥上下顛倒
             button.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
             
             // 這邊可以抓到目前這個按鈕的寬度
-            let actually_btn_width:Int = Int(button.frame.width)
+            
             
             // 每個按鈕的 x 位置都要重劃
             // 第一個 ＝ 0 + 常數
             // 第二個 ＝ 前一個寬度 ＋ 常數
-            buttonFrame.origin.x = CGFloat(x * (actually_btn_width + 10))
+            buttonFrame.origin.x = CGFloat(actually_btn_width)
+            
+            actually_btn_width += Int(button.frame.width) + 10
+            print(actually_btn_width)
             
             button.layer.cornerRadius = 3
             button.frame = buttonFrame
             addSubview(button)
-            
         }
     }
     required init?(coder aDecoder: NSCoder) {
