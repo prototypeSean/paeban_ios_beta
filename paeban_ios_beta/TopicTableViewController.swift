@@ -16,6 +16,7 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
     var requestOldDataSwitch = true
+    var requestUpDataSwitch = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +36,11 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
         refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
         self.refreshControl = refreshControl
     }
+    // MARk:更新程式
     func update(){
-        if requestOldDataSwitch == true{
+        if requestUpDataSwitch == true{
             print("刷新中")
-            self.requestOldDataSwitch = false
+            self.requestUpDataSwitch = false
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
                 self.httpOBJ.getTopic()
@@ -48,7 +50,7 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
                     print(self.topics[0].hashtags)
                     self.tableView.reloadData()
                     self.refreshControl?.endRefreshing()
-                    self.requestOldDataSwitch = true
+                    self.requestUpDataSwitch = true
                 })
             }
         }
@@ -57,13 +59,6 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
         }
     }
     
-    func loadSampleTopics() {
-        
-        let photo_1 = UIImage(named: "logo")!
-        let topic_1 = Topic(owner: "DK", photo: photo_1, title: "泛泛標題", hashtags: ["tag","tag2","tag3"],lastline:"最後一句對話" ,topicID: "001")!
-        
-        topics.append(topic_1)
-    }
     func new_topic_did_load(http_obj:httpRequsetCenter){
         print("websocket data did load")
     }
