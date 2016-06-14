@@ -15,7 +15,7 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
     
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
-    var requestOldDataSwitch = false
+    var requestOldDataSwitch = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
