@@ -15,7 +15,7 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
     
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
-    var requestOldDataSwitch = true
+    var requestOldDataSwitch = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,12 +83,13 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
         
         // Table view cells are reused and should be dequeued using a cell identifier.
         let topic = topics[indexPath.row]
-        tagList = topic.hashtags!
-        print(tagList)
+//        tagList = topic.hashtags!
+//        print(tagList)
         let cellIdentifier = "TopicCellTableViewCell"
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! TopicCellTableViewCell
-        
+        cell.hashtags.tagListInContorller = topic.hashtags
+        cell.hashtags.drawButton()
         cell.topicTitle.text = topic.title
         cell.topicOwnerImage.image = topic.photo
 
