@@ -130,19 +130,19 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="tttt" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="O0h-4r-Zjc">
-                                <rect key="frame" x="20" y="162" width="560" height="389"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="tttt" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="O0h-4r-Zjc" userLabel="topicList">
+                                <rect key="frame" x="0.0" y="162" width="600" height="389"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCellTableViewCell" rowHeight="80" id="Wjc-mK-FT3" customClass="TopicCellTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="560" height="80"/>
+                                        <rect key="frame" x="0.0" y="28" width="600" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
-                                            <rect key="frame" x="0.0" y="0.0" width="560" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="hVQ-wd-blz">
-                                                    <rect key="frame" x="8" y="8" width="544" height="64"/>
+                                                    <rect key="frame" x="8" y="8" width="584" height="64"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="1Fk-yD-Efo">
                                                             <rect key="frame" x="0.0" y="0.0" width="46" height="64"/>
@@ -176,10 +176,10 @@
                                                             </variation>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="453" placeholderIntrinsicHeight="103" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="D15-PF-O7o">
-                                                            <rect key="frame" x="48" y="0.0" width="496" height="64"/>
+                                                            <rect key="frame" x="48" y="0.0" width="536" height="64"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="中文 En" lineBreakMode="tailTruncation" numberOfLines="3" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb4-kw-iy4" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="496" height="44"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="536" height="44"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="2dS-ij-Pwx"/>
                                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="mCM-2h-Jun"/>
@@ -199,7 +199,7 @@
                                                                     </variation>
                                                                 </label>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sD7-us-beO">
-                                                                    <rect key="frame" x="0.0" y="46" width="496" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="46" width="536" height="18"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jhx-Yg-QvH">
                                                                             <rect key="frame" x="0.0" y="0.0" width="10" height="18"/>
@@ -209,7 +209,7 @@
                                                                             </constraints>
                                                                         </view>
                                                                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="536" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="uS3-xb-XE1" customClass="HashTagsContorller" customModule="paeban_ios_beta" customModuleProvider="target">
-                                                                            <rect key="frame" x="10" y="0.0" width="486" height="18"/>
+                                                                            <rect key="frame" x="10" y="0.0" width="526" height="18"/>
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="18" id="mnd-fP-B2u"/>
@@ -281,8 +281,8 @@
                             <constraint firstItem="O0h-4r-Zjc" firstAttribute="top" secondItem="gVH-aT-5zH" secondAttribute="topMargin" constant="90" id="azC-e2-PjX"/>
                             <constraint firstItem="O0h-4r-Zjc" firstAttribute="top" secondItem="IJj-uo-XID" secondAttribute="bottom" constant="8" symbolic="YES" id="dpm-F2-XfC"/>
                             <constraint firstItem="XzG-35-cBS" firstAttribute="top" secondItem="IJj-uo-XID" secondAttribute="bottom" id="oTP-TB-5KU"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="O0h-4r-Zjc" secondAttribute="trailing" id="vc3-Jd-efD"/>
-                            <constraint firstItem="O0h-4r-Zjc" firstAttribute="leading" secondItem="gVH-aT-5zH" secondAttribute="leadingMargin" id="yWu-0F-4wT"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="O0h-4r-Zjc" secondAttribute="trailing" constant="-20" id="vc3-Jd-efD"/>
+                            <constraint firstItem="O0h-4r-Zjc" firstAttribute="leading" secondItem="gVH-aT-5zH" secondAttribute="leadingMargin" constant="-20" id="yWu-0F-4wT"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -293,7 +293,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="話題" id="vG6-IY-Ij6"/>
                     <connections>
-                        <outlet property="tttt" destination="O0h-4r-Zjc" id="7qf-sF-VBX"/>
+                        <outlet property="topicList" destination="O0h-4r-Zjc" id="eDN-Rq-DvL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4c-w9-wSg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -406,7 +406,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ukk-Cg-AaJ" id="ZAm-Bu-LPF">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="npR-fO-eP0">
@@ -524,7 +524,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Dl-Ir-3qU" id="ye2-tl-eKv">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -553,7 +553,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wyy-m4-pc7" id="jFT-Dx-Yka">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

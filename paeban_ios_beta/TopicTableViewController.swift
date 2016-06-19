@@ -9,7 +9,7 @@
 import UIKit
 public var tagList:[String] = []
 
-// 所有話題清單
+// 所有話題清單 其實不是tabelveiw 是 UIview
 
 class TopicTableViewController:UIViewController, httpResquestDelegate,UITableViewDelegate,UITableViewDataSource{
     // MARK: Properties
@@ -25,7 +25,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     @IBAction func searchTagBtn(sender: AnyObject) {
     }
     
-    @IBOutlet weak var tttt: UITableView!
+    @IBOutlet weak var topicList: UITableView!
     
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
@@ -34,8 +34,8 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         super.viewDidLoad()
         //loadSampleTopics()
         httpOBJ.delegate = self
-        tttt.delegate = self
-        tttt.dataSource = self
+        topicList.delegate = self
+        topicList.dataSource = self
         
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
@@ -43,7 +43,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
             dispatch_async(dispatch_get_main_queue(), {
                 let temp_topic = self.httpOBJ.topic_list
                 self.topics = self.topics + temp_topic
-                self.tttt.reloadData()
+                self.topicList.reloadData()
             })
         }
         
