@@ -26,9 +26,11 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     
     @IBOutlet weak var topicList: UITableView!
     
+    
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
     var requestUpDataSwitch = true
+    //var refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +38,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         httpOBJ.delegate = self
         topicList.delegate = self
         topicList.dataSource = self
+        
         
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
@@ -48,12 +51,12 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         }
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
-        self.refreshControl = refreshControl
+        topicList.addSubview(refreshControl)
+        
     }
     // MARk:更新程式
-    func update(){
+    func update(refreshControl:UIRefreshControl){
         if requestUpDataSwitch == true{
-            print("刷新中")
             self.requestUpDataSwitch = false
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
@@ -61,15 +64,15 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
                 let temp_topic = self.httpOBJ.topic_list
                 self.topics = temp_topic
                 dispatch_async(dispatch_get_main_queue(), {
-                    print(self.topics[0].hashtags)
-                    self.tableView.reloadData()
-                    self.refreshControl?.endRefreshing()
+                    //print(self.topics[0].hashtags)
+                    self.topicList.reloadData()
+                    refreshControl.endRefreshing()
                     self.requestUpDataSwitch = true
                 })
             }
         }
         else{
-            self.refreshControl?.endRefreshing()
+            refreshControl.endRefreshing()
         }
     }
     
@@ -109,9 +112,9 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         return cell
     }
     //-----------test---------
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
-        let scroolHeight = self.tableView.contentOffset.y + self.tableView.frame.height
-        let contentHeight = self.tableView.contentSize.height
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let scroolHeight = self.topicList.contentOffset.y + self.topicList.frame.height
+        let contentHeight = self.topicList.contentSize.height
         if scroolHeight >= contentHeight && contentHeight > 0
             && requestUpDataSwitch == true{
             requestUpDataSwitch = false
@@ -127,15 +130,13 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
                     }
                     print("最小ＩＤ\(String(minTopicId))")
                     self.httpOBJ.getOldTopic(minTopicId)
-                    self.topics += self.httpOBJ.topic_list
                 }
                 
                 
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.tableView.reloadData()
+                    self.topics += self.httpOBJ.topic_list
+                    self.topicList.reloadData()
                     self.requestUpDataSwitch = true
-                    //print(self.httpOBJ.topic_list)
-                    //print(self.topics)
                 })
             }
             
