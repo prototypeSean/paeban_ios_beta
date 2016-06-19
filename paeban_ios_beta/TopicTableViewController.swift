@@ -29,6 +29,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
+    var requestUpDataSwitch = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,30 +47,35 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
                 self.topicList.reloadData()
             })
         }
-        
-        
-        
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl = refreshControl
+    }
+    // MARk:更新程式
+    func update(){
+        if requestUpDataSwitch == true{
+            print("刷新中")
+            self.requestUpDataSwitch = false
+            let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+                self.httpOBJ.getTopic()
+                let temp_topic = self.httpOBJ.topic_list
+                self.topics = temp_topic
+                dispatch_async(dispatch_get_main_queue(), {
+                    print(self.topics[0].hashtags)
+                    self.tableView.reloadData()
+                    self.refreshControl?.endRefreshing()
+                    self.requestUpDataSwitch = true
+                })
+            }
+        }
+        else{
+            self.refreshControl?.endRefreshing()
+        }
     }
     
-    func loadSampleTopics() {
-        
-        let photo_1 = UIImage(named: "logo")!
-        let topic_1 = Topic(owner: "DK", photo: photo_1, title: "泛泛標題", hashtags: ["tag","tag2","tag3"],lastline:"最後一句對話" ,topicID: "001")!
-        
-        topics.append(topic_1)
-    }
     func new_topic_did_load(http_obj:httpRequsetCenter){
         print("websocket data did load")
-        //topics = topics + sss.topic_list
-        //x = topics
-        //self.tableView.reloadData()
-
     }
     
     
@@ -89,11 +95,13 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         
         // Table view cells are reused and should be dequeued using a cell identifier.
         let topic = topics[indexPath.row]
-        tagList = topic.hashtags!
+//        tagList = topic.hashtags!
+//        print(tagList)
         let cellIdentifier = "TopicCellTableViewCell"
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! TopicCellTableViewCell
-        
+        cell.hashtags.tagListInContorller = topic.hashtags
+        cell.hashtags.drawButton()
         cell.topicTitle.text = topic.title
         cell.topicOwnerImage.image = topic.photo
 
@@ -101,6 +109,42 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
 
         return cell
     }
- 
+    //-----------test---------
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        let scroolHeight = self.tableView.contentOffset.y + self.tableView.frame.height
+        let contentHeight = self.tableView.contentSize.height
+        if scroolHeight >= contentHeight && contentHeight > 0
+            && requestUpDataSwitch == true{
+            requestUpDataSwitch = false
+            print("撞...撞到最底了 >///<")
+            
+            let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+                if !self.topics.isEmpty{
+                    var minTopicId:Int = Int(self.topics[0].topicID)!
+                    for topicS in self.topics{
+                        let topicIdS = Int(topicS.topicID)
+                        minTopicId = min(minTopicId, topicIdS!)
+                    }
+                    print("最小ＩＤ\(String(minTopicId))")
+                    self.httpOBJ.getOldTopic(minTopicId)
+                    self.topics += self.httpOBJ.topic_list
+                }
+                
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.tableView.reloadData()
+                    self.requestUpDataSwitch = true
+                    //print(self.httpOBJ.topic_list)
+                    //print(self.topics)
+                })
+            }
+            
+        }
+    }
+    
+    //NSIndexPath* ipath = [NSIndexPath indexPathForRow: cells_count-1 inSection: sections_count-1];
+    //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
+    //-----------test---------
 }
 
