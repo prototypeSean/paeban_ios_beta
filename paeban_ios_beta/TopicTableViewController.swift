@@ -10,7 +10,6 @@ import UIKit
 public var tagList:[String] = []
 
 // 所有話題清單 其實不是tabelveiw 是 UIview
-
 class TopicTableViewController:UIViewController, httpResquestDelegate,UITableViewDelegate,UITableViewDataSource{
     // MARK: Properties
     
