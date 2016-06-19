@@ -29,15 +29,45 @@ class httpRequsetCenter{
                 }
             }
             dataKeyList = dataKeyList.sort(>)
+            print("------")
+            
+            
             for dataKey in dataKeyList{
-                let photo_temp = UIImage(named: "logo")!
+                //MARK:--base64--
+                let encodedImageData = ouput_json[dataKey]!["img"] as! String
+
+                let index = encodedImageData.characters.startIndex.advancedBy(23)
+                let out = encodedImageData.substringFromIndex(index)
+                let dataDecoded:NSData? = NSData(base64EncodedString: out, options: NSDataBase64DecodingOptions())
+                var  decodedimage:UIImage?
+                if dataDecoded != nil{
+                    decodedimage = UIImage(data: dataDecoded!)
+                }
+                
+                var iimg:UIImage
+                if decodedimage != nil{
+                    iimg = decodedimage!
+                }
+                else{
+                    iimg = UIImage(named: "logo")!
+                }
+                // --base64--end
+                var isMe:Bool = false
+                
+                if ouput_json[dataKey]!["is_me"] as! Bool == true{
+                    isMe = true
+                }
+                
+                
                 let topic_temp = Topic(
                     owner: ouput_json[dataKey]!["topic_publisher"] as! String,
-                    photo: photo_temp,
+                    photo: iimg,
                     title: ouput_json[dataKey]!["title"] as! String,
                     hashtags: ouput_json[dataKey]!["tag"] as! Array,
                     lastline:"最後一句對話" ,
-                    topicID: String(dataKey)
+                    topicID: String(dataKey),
+                    sex:ouput_json[dataKey]!["sex"] as! String,
+                    isMe:isMe
                     )!
                 topic_list_temp.append(topic_temp)
             }
@@ -61,6 +91,7 @@ class httpRequsetCenter{
             else{
                 let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
                 let ouput_json = json_load(ouput) as Dictionary
+                //print(ouput_json)
                 self.topic_list = self.topic_type(ouput_json)
                 self.delegate?.new_topic_did_load(self)
             }

@@ -15,7 +15,6 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
     
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
-    var requestOldDataSwitch = true
     var requestUpDataSwitch = true
 
     override func viewDidLoad() {
@@ -97,8 +96,8 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
         let scroolHeight = self.tableView.contentOffset.y + self.tableView.frame.height
         let contentHeight = self.tableView.contentSize.height
         if scroolHeight >= contentHeight && contentHeight > 0
-            && requestOldDataSwitch == true{
-            requestOldDataSwitch = false
+            && requestUpDataSwitch == true{
+            requestUpDataSwitch = false
             print("撞...撞到最底了 >///<")
             
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
@@ -117,7 +116,7 @@ class TopicTableViewController: UITableViewController,httpResquestDelegate{
                 
                 dispatch_async(dispatch_get_main_queue(), {
                     self.tableView.reloadData()
-                    self.requestOldDataSwitch = true
+                    self.requestUpDataSwitch = true
                     //print(self.httpOBJ.topic_list)
                     //print(self.topics)
                 })
