@@ -25,6 +25,10 @@ class TopicCellTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
+        let myPhotoLayer:CALayer = topicOwnerImage.layer
+        myPhotoLayer.masksToBounds = true
+        myPhotoLayer.cornerRadius = 9
+        
     }
     
     

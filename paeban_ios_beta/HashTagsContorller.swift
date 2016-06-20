@@ -29,7 +29,7 @@ class HashTagsContorller: UIView {
                     //tagPositionDic = [tagPostionDicKey as String:]
                     
                     let button = UIButton()
-                    button.titleLabel!.font = UIFont(name: "Arial Hebrew", size: 16)
+                    button.titleLabel!.font = UIFont(name: "Arial Hebrew", size: 12)
                     
                     button.setTitle(tagListInContorller![x], forState: UIControlState.Normal)
                     
@@ -40,7 +40,7 @@ class HashTagsContorller: UIView {
                     // 先用一次魔法 讓按鈕的長寬都長出來
                     button.sizeToFit()
                     
-                    var buttonFrame = CGRect(x: 0, y: 0, width:button.frame.width + 4, height:button.frame.height - 6)
+                    var buttonFrame = CGRect(x: 0, y: -14, width:button.frame.width + 4, height:button.frame.height - 4)
                     
                     // 我也不知道位啥上下顛倒
                     button.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
