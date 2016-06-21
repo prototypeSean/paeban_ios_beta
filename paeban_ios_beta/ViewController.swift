@@ -11,10 +11,11 @@ import Starscream
 import FBSDKLoginKit
 
 
+public var socket:WebSocket!
 public var cookie:String?
 
 class ViewController: UIViewController,FBSDKLoginButtonDelegate{
-    var socket:WebSocket!
+    
     
     
     override func viewDidLoad() {
