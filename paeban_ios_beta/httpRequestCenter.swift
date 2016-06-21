@@ -53,9 +53,13 @@ class httpRequsetCenter{
                 }
                 // --base64--end
                 var isMe:Bool = false
+                var online:Bool = false
                 
                 if ouput_json[dataKey]!["is_me"] as! Bool == true{
                     isMe = true
+                }
+                if ouput_json[dataKey]!["online"] as! Bool == true{
+                    online = true
                 }
                 
                 
@@ -67,7 +71,8 @@ class httpRequsetCenter{
                     lastline:"最後一句對話" ,
                     topicID: String(dataKey),
                     sex:ouput_json[dataKey]!["sex"] as! String,
-                    isMe:isMe
+                    isMe:isMe,
+                    online:online
                     )!
                 topic_list_temp.append(topic_temp)
             }

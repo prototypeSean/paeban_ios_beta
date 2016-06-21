@@ -30,10 +30,6 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     @IBOutlet weak var isMe: UIImageView!
     
     
-    @IBOutlet weak var sex: UIImageView!
-    
-    @IBOutlet weak var online: UIImageView!
-    
     
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
@@ -114,6 +110,42 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         cell.hashtags.drawButton()
         cell.topicTitle.text = topic.title
         cell.topicOwnerImage.image = topic.photo
+        
+        var isMeImg:UIImage
+        if topic.isMe{
+            isMeImg = UIImage(named:"True_photo")!
+        }
+        else{
+            isMeImg = UIImage(named:"Fake_photo")!
+        }
+        cell.isMe.image = isMeImg
+        
+        
+        var sexImg:UIImage
+        print(topic.sex)
+        if topic.sex == "男"{
+            sexImg = UIImage(named: "male")!
+        }
+        else if topic.sex == "女"{
+            sexImg = UIImage(named: "female")!
+        }
+        else if topic.sex == "男同"{
+            sexImg = UIImage(named:"gay")!
+        }
+        else{
+            sexImg = UIImage(named:"lesbain")!
+        }
+        cell.sex.image = sexImg
+        
+        var onlineImg:UIImage
+        if topic.online{
+            onlineImg = UIImage(named:"texting")!
+        }
+        //MARK:下面那張圖請改 “不在線上的人圖示”
+        else{
+            onlineImg = UIImage(named:"topic")!
+        }
+        cell.online.image = onlineImg
 
         // Configure the cell...
 
@@ -155,10 +187,12 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
     //-----------test---------
     //MARK:websocketDelegate
-    func websocketDidConnect(socket: WebSocket){}
+    func websocketDidConnect(socket: WebSocket){
+        
+    }
     func websocketDidDisconnect(socket: WebSocket, error: NSError?){}
     func websocketDidReceiveMessage(socket: WebSocket, text: String){
-        print(text)
+        print("MMsg")
     }
     func websocketDidReceiveData(socket: WebSocket, data: NSData){}
 }

@@ -14,7 +14,7 @@ import FBSDKLoginKit
 public var socket:WebSocket!
 public var cookie:String?
 
-class ViewController: UIViewController,FBSDKLoginButtonDelegate{
+class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelegate{
     
     
     
@@ -26,15 +26,12 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate{
 //        loginButton.center = view.center
         view.addSubview(loginButton)
         loginButton.delegate = self
+        
         paeban_login()
         
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    //===============ET===================
+        //===============ET===================
     
     
     
@@ -73,6 +70,7 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate{
                 print("登入成功!!!")
                 socket = WebSocket(url: NSURL(string: "ws://www.paeban.com/ws_test/none/")!, protocols: ["chat", "superchat"])
                 socket.headers["Cookie"] = cookie
+                socket.delegate = self
                 ws_connect_fun(socket)
             }
             else{
@@ -84,7 +82,21 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate{
             print("還沒登入ＦＢ!!!")
         }
     }
+    
+    func websocketDidConnect(socket: WebSocket){
+        print("connected")
+    }
+    func websocketDidDisconnect(socket: WebSocket, error: NSError?){
+        print("disConnect")
+    }
+    func websocketDidReceiveMessage(socket: WebSocket, text: String){
+        print("msg")
+    }
+    func websocketDidReceiveData(socket: WebSocket, data: NSData){
+        print("data")
+    }
 
+    
 }
 
 
