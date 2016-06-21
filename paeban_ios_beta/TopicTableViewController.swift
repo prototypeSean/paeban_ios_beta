@@ -11,7 +11,7 @@ import Starscream
 public var tagList:[String] = []
 
 // 所有話題清單 其實不是tabelveiw 是 UIview
-class TopicTableViewController:UIViewController, httpResquestDelegate,UITableViewDelegate, UITableViewDataSource{
+class TopicTableViewController:UIViewController, httpResquestDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate{
     // MARK: Properties
     
     @IBOutlet weak var newTopicInput: UITextField!
@@ -30,10 +30,11 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     @IBOutlet weak var isMe: UIImageView!
     
     
-    
     var topics:[Topic] = []
     var httpOBJ = httpRequsetCenter()
     var requestUpDataSwitch = true
+    
+    
     //var refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
@@ -42,6 +43,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         httpOBJ.delegate = self
         topicList.delegate = self
         topicList.dataSource = self
+        WSActive.WSActiveDelegateForTopicView = self
         //socket.delegate = self
         
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
@@ -122,7 +124,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         
         
         var sexImg:UIImage
-        print(topic.sex)
+        
         if topic.sex == "男"{
             sexImg = UIImage(named: "male")!
         }
@@ -187,6 +189,13 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
     //-----------test---------
     //MARK:websocketDelegate
+    func WSOnMsg(msg:Dictionary<String,AnyObject>) {
+        if let msg_type:String =  msg["msg_type"] as? String{
+            if msg_type == "off_line"{}
+            else if msg_type == "new_member"{}
+        }
+        
+    }
     
 }
 

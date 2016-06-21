@@ -15,6 +15,11 @@ func ws_connected(ws:WebSocket){
     ws.writeData(online_msg)
 }
 
+func ws_stay_connect(ws:WebSocket) {
+    let online_msg = json_dumps(["msg_type":"test"])
+    ws.writeData(online_msg)
+}
+
 
 func ws_onmsg(text:String)-> Dictionary<String,AnyObject>{
     //print(text)
@@ -34,16 +39,21 @@ func ws_connect_fun(ws:WebSocket){
 }
 
 public protocol webSocketActiveCenterDelegate{
-    func WSDisConnect()
-    func WSOnMsg()
-
+    func WSOnMsg(msg:Dictionary<String,AnyObject>)
 }
 
 public class webSocketActiveCenter{
+    
     var WSActiveDelegateForTopicView:webSocketActiveCenterDelegate?
+    let WSActiveDelegateForTopicViewWorkList = ["off_line","new_member"]
+    
     func WSOnMsg(msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
             print(msgtype)
+            
+            if WSActiveDelegateForTopicViewWorkList.indexOf(msgtype as! String) != nil {
+                WSActiveDelegateForTopicView?.WSOnMsg(msg)
+            }
         }
     }
 }
