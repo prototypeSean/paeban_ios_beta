@@ -11,7 +11,7 @@ import Starscream
 public var tagList:[String] = []
 
 // 所有話題清單 其實不是tabelveiw 是 UIview
-class TopicTableViewController:UIViewController, httpResquestDelegate,UITableViewDelegate, UITableViewDataSource, WebSocketDelegate{
+class TopicTableViewController:UIViewController, httpResquestDelegate,UITableViewDelegate, UITableViewDataSource{
     // MARK: Properties
     
     @IBOutlet weak var newTopicInput: UITextField!
@@ -42,7 +42,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         httpOBJ.delegate = self
         topicList.delegate = self
         topicList.dataSource = self
-        socket.delegate = self
+        //socket.delegate = self
         
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
@@ -187,13 +187,6 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
     //-----------test---------
     //MARK:websocketDelegate
-    func websocketDidConnect(socket: WebSocket){
-        
-    }
-    func websocketDidDisconnect(socket: WebSocket, error: NSError?){}
-    func websocketDidReceiveMessage(socket: WebSocket, text: String){
-        print("MMsg")
-    }
-    func websocketDidReceiveData(socket: WebSocket, data: NSData){}
+    
 }
 

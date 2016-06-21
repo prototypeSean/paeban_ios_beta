@@ -68,7 +68,7 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
             cookie = login_obj.get_cookie()
             if cookie != "login_no"{
                 print("登入成功!!!")
-                socket = WebSocket(url: NSURL(string: "ws://www.paeban.com/ws_test/none/")!, protocols: ["chat", "superchat"])
+                socket = WebSocket(url: NSURL(string: "ws://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
                 socket.headers["Cookie"] = cookie
                 socket.delegate = self
                 ws_connect_fun(socket)
@@ -82,15 +82,20 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
             print("還沒登入ＦＢ!!!")
         }
     }
+    var WSActive = webSocketActiveCenter()
     
     func websocketDidConnect(socket: WebSocket){
         print("connected")
+        ws_connected(socket)
     }
     func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         print("disConnect")
     }
     func websocketDidReceiveMessage(socket: WebSocket, text: String){
-        print("msg")
+        print("msgincome=======")
+        let msgPack = ws_onmsg(text)
+        WSActive.WSOnMsg(msgPack)
+        
     }
     func websocketDidReceiveData(socket: WebSocket, data: NSData){
         print("data")

@@ -14,16 +14,14 @@ func ws_connected(ws:WebSocket){
     let online_msg = json_dumps(["msg_type":"online"])
     ws.writeData(online_msg)
 }
-func ws_onmsg(text:String){
-    print(text)
+
+
+func ws_onmsg(text:String)-> Dictionary<String,AnyObject>{
+    //print(text)
     let unzip_data :NSDictionary = json_load(text)
     //print(unzip_data)
-    if unzip_data["msg_type"] as? String == "online"{
-        print("online...")
-    }
-    else{
-        print(unzip_data["msg_type"])
-    }
+    let unzip_data_output:Dictionary = unzip_data as! Dictionary<String,AnyObject>
+    return unzip_data_output
     
 }
 
@@ -35,5 +33,18 @@ func ws_connect_fun(ws:WebSocket){
     ws.connect()
 }
 
+public protocol webSocketActiveCenterDelegate{
+    func WSDisConnect()
+    func WSOnMsg()
 
+}
+
+public class webSocketActiveCenter{
+    var WSActiveDelegateForTopicView:webSocketActiveCenterDelegate?
+    func WSOnMsg(msg:Dictionary<String,AnyObject>){
+        if let msgtype = msg["msg_type"]{
+            print(msgtype)
+        }
+    }
+}
 
