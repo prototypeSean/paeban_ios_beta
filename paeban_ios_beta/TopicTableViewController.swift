@@ -11,19 +11,20 @@ import Starscream
 public var tagList:[String] = []
 
 // 所有話題清單 其實不是tabelveiw 是 UIview
-class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate{
+class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate{
     // MARK: Properties
     
-    @IBOutlet weak var newTopicInput: UITextField!
+    var topicSearchController: TopicSearchController!
     
-    @IBAction func newTopicBtn(sender: AnyObject) {
-    }
+    // 用來控制要顯示上面哪個清單
+    var shouldShowSearchResults = false
     
-    @IBOutlet weak var searchTagInput: UITextField!
+    // 所有清單 ＆ 資料來源
+    var dataArray = [String]()
     
-    
-    @IBAction func searchTagBtn(sender: AnyObject) {
-    }
+    // 搜尋時的清單 ＆ 資料來源
+    var filteredArray = [String]()
+
     
     @IBOutlet weak var topicList: UITableView!
     
@@ -61,6 +62,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
         topicList.addSubview(refreshControl)
         
+        configureTopicSearchController()
     }
     // MARk:更新程式
     func update(refreshControl:UIRefreshControl){
@@ -214,6 +216,54 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             }
         }
         
+    }
+    
+    // MARK: 設定搜尋列
+    func configureTopicSearchController() {
+        topicSearchController = TopicSearchController(
+            searchResultsController: self,
+            searchBarFrame: CGRectMake(0.0, 0.0, topicList.frame.size.width, 30.0),
+            searchBarFont: UIFont(name: "Futura", size: 14.0)!,
+            searchBarTextColor: UIColor.orangeColor(),
+            searchBarTintColor: UIColor.blackColor())
+        
+        topicSearchController.customSearchBar.placeholder = "搜尋  #關鍵字"
+        
+        topicList.tableHeaderView = topicSearchController.customSearchBar
+        
+        topicSearchController   .customDelegate = self
+    }
+    
+    // 客製化的代理功能在這
+    
+    func didStartSearching() {
+        shouldShowSearchResults = true
+        topicList.reloadData()
+    }
+    
+    
+    func didTapOnSearchButton() {
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            topicList.reloadData()
+        }
+    }
+    
+    func didTapOnCancelButton() {
+        shouldShowSearchResults = false
+        topicList.reloadData()
+    }
+    
+    func didChangeSearchText(searchText: String) {
+        // Filter the data array and get only those countries that match the search text.
+        filteredArray = dataArray.filter({ (country) -> Bool in
+            let countryText: NSString = country
+            
+            return (countryText.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch).location) != NSNotFound
+        })
+        
+        // Reload the tableview.
+        topicList.reloadData()
     }
     
 }
