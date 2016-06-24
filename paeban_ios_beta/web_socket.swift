@@ -39,20 +39,20 @@ func ws_connect_fun(ws:WebSocket){
 }
 
 public protocol webSocketActiveCenterDelegate{
-    func WSOnMsg(msg:Dictionary<String,AnyObject>)
+    func wsOnMsg(msg:Dictionary<String,AnyObject>)
 }
 
 public class webSocketActiveCenter{
     
-    var WSActiveDelegateForTopicView:webSocketActiveCenterDelegate?
-    let WSActiveDelegateForTopicViewWorkList = ["off_line","new_member"]
+    var wsActiveDelegateForTopicView:webSocketActiveCenterDelegate?
+    let wsActiveDelegateForTopicViewWorkList = ["off_line","new_member"]
     
-    func WSOnMsg(msg:Dictionary<String,AnyObject>){
+    func wsOnMsg(msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
             print(msgtype)
             
-            if WSActiveDelegateForTopicViewWorkList.indexOf(msgtype as! String) != nil {
-                WSActiveDelegateForTopicView?.WSOnMsg(msg)
+            if wsActiveDelegateForTopicViewWorkList.indexOf(msgtype as! String) != nil {
+                wsActiveDelegateForTopicView?.wsOnMsg(msg)
             }
         }
     }

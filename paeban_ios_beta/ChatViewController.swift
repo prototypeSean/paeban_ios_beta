@@ -32,6 +32,7 @@ class ChatViewController: JSQMessagesViewController {
         setupBubbles()
         
         // 這兩個是初始化一定要有的參數
+        //MARK:自己的參數
         senderId = "111222"
         senderDisplayName = "DK"
         
@@ -97,7 +98,7 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     
-    
+    //MARK:送出按鈕按下後
     override func didPressSendButton(button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: NSDate?) {
         
         // This is where you would impliment your method for saving the message to your backend.

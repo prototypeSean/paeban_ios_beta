@@ -9,13 +9,13 @@
 import Foundation
 import UIKit
 
-protocol httpResquestDelegate {
-    func new_topic_did_load(http_obj:httpRequsetCenter)
+protocol ＨttpResquestDelegate {
+    func new_topic_did_load(http_obj:ＨttpRequsetCenter)
 }
 
 
-class httpRequsetCenter{
-    var delegate:httpResquestDelegate?
+class ＨttpRequsetCenter{
+    var delegate:ＨttpResquestDelegate?
     var topic_list = [Topic]()
     // MARK:轉換為Topic的標準格式
     private func topic_type(ouput_json:Dictionary<NSObject, AnyObject>)->Array<Topic>{
@@ -96,7 +96,7 @@ class httpRequsetCenter{
             else{
                 let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
                 let ouput_json = json_load(ouput) as Dictionary
-                //print(ouput_json)
+                print(ouput_json)
                 self.topic_list = self.topic_type(ouput_json)
                 self.delegate?.new_topic_did_load(self)
             }

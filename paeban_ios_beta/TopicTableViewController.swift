@@ -11,7 +11,7 @@ import Starscream
 public var tagList:[String] = []
 
 // 所有話題清單 其實不是tabelveiw 是 UIview
-class TopicTableViewController:UIViewController, httpResquestDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate{
+class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate{
     // MARK: Properties
     
     @IBOutlet weak var newTopicInput: UITextField!
@@ -31,7 +31,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     
     
     var topics:[Topic] = []
-    var httpOBJ = httpRequsetCenter()
+    var httpOBJ = ＨttpRequsetCenter()
     var requestUpDataSwitch = true
     
     
@@ -43,7 +43,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         httpOBJ.delegate = self
         topicList.delegate = self
         topicList.dataSource = self
-        WSActive.WSActiveDelegateForTopicView = self
+        wsActive.wsActiveDelegateForTopicView = self
         //socket.delegate = self
         
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
@@ -82,7 +82,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         }
     }
     
-    func new_topic_did_load(http_obj:httpRequsetCenter){
+    func new_topic_did_load(http_obj:ＨttpRequsetCenter){
         print("websocket data did load")
     }
     
@@ -189,10 +189,28 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
     //-----------test---------
     //MARK:websocketDelegate
-    func WSOnMsg(msg:Dictionary<String,AnyObject>) {
+    func wsOnMsg(msg:Dictionary<String,AnyObject>) {
         if let msg_type:String =  msg["msg_type"] as? String{
-            if msg_type == "off_line"{}
-            else if msg_type == "new_member"{}
+            if msg_type == "off_line"{
+                //print(msg)
+                let offLineUser = msg["user_id"] as! String
+                
+                if let topic_sIndex = topics.indexOf({$0.owner==offLineUser}){
+                    topics[topic_sIndex].online = false
+                    let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
+                    self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+                
+            }
+            else if msg_type == "new_member"{
+                //print(msg)
+                let onLineUser = msg["user_id"] as! String
+                if let topic_sIndex = topics.indexOf({$0.owner==onLineUser}){
+                    topics[topic_sIndex].online = true
+                    let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
+                    self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+            }
         }
         
     }

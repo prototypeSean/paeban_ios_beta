@@ -12,7 +12,7 @@ import FBSDKLoginKit
 
 
 public var socket:WebSocket!
-public var WSActive = webSocketActiveCenter()
+public var wsActive = webSocketActiveCenter()
 public var cookie:String?
 
 class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelegate{
@@ -93,7 +93,7 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
     
     func reConnect(){
         ws_connect_fun(socket)
-        if reConnectCount > 100{
+        if reConnectCount < 100{
             wsTimer?.invalidate()
         }
     }
@@ -103,20 +103,20 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
         print("connected")
         reConnectCount = 0
         //print(NSDate())
-        wsTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
+        wsTimer = NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
         ws_connected(socket)
     }
     func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         print("disConnect")
         wsTimer?.invalidate()
-        wsTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
+        wsTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
         
         //print(NSDate())
     }
     func websocketDidReceiveMessage(socket: WebSocket, text: String){
         print("msgincome=======")
         let msgPack = ws_onmsg(text)
-        WSActive.WSOnMsg(msgPack)
+        wsActive.wsOnMsg(msgPack)
         
     }
     func websocketDidReceiveData(socket: WebSocket, data: NSData){

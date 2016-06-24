@@ -34,39 +34,47 @@ func json_load(input_data:String) ->NSDictionary{
 }
 
 func getCSRFToken(cookie:String) -> String? {
-    var state = false, state2 = false, count = 1, result = [Character]()
-    let key = "csrftoken=s"
-    //print(cookie)
-    for word in cookie.characters.indices{
-        if state{
-            //print(cookie[word])
-            //print(key[key.startIndex.advancedBy(count)])
-            
-            if cookie[word] == key[key.startIndex.advancedBy(count)]{
-                count += 1
-                if cookie[word] == "="{
-                    state = false
-                    state2 = true
+    let keyWord = "csrftoken="
+    
+    func getWord(str:String, index:Int) -> String {
+        return String(str[str.characters.startIndex.advancedBy(index)])
+    }
+    
+    var stopSwitch = false
+    var ouputCookie = ""
+    for x in 0..<(cookie.characters.count as Int){
+        if getWord(cookie,index: x) == "c"{
+            var keyWordCheck = true
+            for x2 in 0..<(keyWord.characters.count as Int){
+                
+                let posion = x+x2
+                if posion < (cookie.characters.count as Int){
+                    if getWord(cookie,index: posion) != getWord(keyWord,index: x2){
+                        keyWordCheck = false
+                    }
                 }
             }
-            else{
-                state = false
+            if keyWordCheck{
+                let getCookStartCount = x+(keyWord.characters.count as Int)
+                let endCount = (cookie.characters.count as Int)
+                
+                if endCount > getCookStartCount{
+                    for x3 in getCookStartCount..<endCount{
+                        if getWord(cookie, index: x3) != ";"{
+                            ouputCookie += getWord(cookie, index: x3)
+                        }
+                        else{
+                            break
+                        }
+                    }
+                    stopSwitch = true
+                }
             }
         }
-        else if state2{
-            if cookie[word] != ";"{
-                result.append(cookie[word] as Character)
-            }
-            else{
-                state2 = false
-            }
-        }
-        else{
-            if cookie[word] == "c"{
-                state = true
-            }
+        if stopSwitch{
+            break
         }
     }
-    return String(result)
+    return String(ouputCookie)
 }
 
