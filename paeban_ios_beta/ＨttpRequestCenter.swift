@@ -9,13 +9,13 @@
 import Foundation
 import UIKit
 
-protocol httpResquestDelegate {
-    func new_topic_did_load(http_obj:httpRequsetCenter)
+protocol ＨttpResquestDelegate {
+    func new_topic_did_load(http_obj:ＨttpRequsetCenter)
 }
 
 
-class httpRequsetCenter{
-    var delegate:httpResquestDelegate?
+class ＨttpRequsetCenter{
+    var delegate:ＨttpResquestDelegate?
     var topic_list = [Topic]()
     // MARK:轉換為Topic的標準格式
     private func topic_type(ouput_json:Dictionary<NSObject, AnyObject>)->Array<Topic>{
@@ -53,9 +53,13 @@ class httpRequsetCenter{
                 }
                 // --base64--end
                 var isMe:Bool = false
+                var online:Bool = false
                 
                 if ouput_json[dataKey]!["is_me"] as! Bool == true{
                     isMe = true
+                }
+                if ouput_json[dataKey]!["online"] as! Bool == true{
+                    online = true
                 }
                 
                 
@@ -67,7 +71,8 @@ class httpRequsetCenter{
                     lastline:"最後一句對話" ,
                     topicID: String(dataKey),
                     sex:ouput_json[dataKey]!["sex"] as! String,
-                    isMe:isMe
+                    isMe:isMe,
+                    online:online
                     )!
                 topic_list_temp.append(topic_temp)
             }

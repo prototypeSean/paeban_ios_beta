@@ -14,16 +14,19 @@ func ws_connected(ws:WebSocket){
     let online_msg = json_dumps(["msg_type":"online"])
     ws.writeData(online_msg)
 }
-func ws_onmsg(text:String){
-    print(text)
+
+func ws_stay_connect(ws:WebSocket) {
+    let online_msg = json_dumps(["msg_type":"test"])
+    ws.writeData(online_msg)
+}
+
+
+func ws_onmsg(text:String)-> Dictionary<String,AnyObject>{
+    //print(text)
     let unzip_data :NSDictionary = json_load(text)
     //print(unzip_data)
-    if unzip_data["msg_type"] as? String == "online"{
-        print("online...")
-    }
-    else{
-        print(unzip_data["msg_type"])
-    }
+    let unzip_data_output:Dictionary = unzip_data as! Dictionary<String,AnyObject>
+    return unzip_data_output
     
 }
 
@@ -35,5 +38,23 @@ func ws_connect_fun(ws:WebSocket){
     ws.connect()
 }
 
+public protocol webSocketActiveCenterDelegate{
+    func wsOnMsg(msg:Dictionary<String,AnyObject>)
+}
 
+public class webSocketActiveCenter{
+    
+    var wsActiveDelegateForTopicView:webSocketActiveCenterDelegate?
+    let wsActiveDelegateForTopicViewWorkList = ["off_line","new_member"]
+    
+    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+        if let msgtype = msg["msg_type"]{
+            print(msgtype)
+            
+            if wsActiveDelegateForTopicViewWorkList.indexOf(msgtype as! String) != nil {
+                wsActiveDelegateForTopicView?.wsOnMsg(msg)
+            }
+        }
+    }
+}
 

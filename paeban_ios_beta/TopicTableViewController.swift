@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Starscream
 public var tagList:[String] = []
 
 // 所有話題清單 其實不是tabelveiw 是 UIview
-class TopicTableViewController:UIViewController, httpResquestDelegate,UITableViewDelegate,UITableViewDataSource{
+class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate{
     // MARK: Properties
     
     @IBOutlet weak var newTopicInput: UITextField!
@@ -26,10 +27,14 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
     
     @IBOutlet weak var topicList: UITableView!
     
+    @IBOutlet weak var isMe: UIImageView!
+    
     
     var topics:[Topic] = []
-    var httpOBJ = httpRequsetCenter()
+    var httpOBJ = ＨttpRequsetCenter()
     var requestUpDataSwitch = true
+    
+    
     //var refreshControl = UIRefreshControl()
 
     override func viewDidLoad() {
@@ -40,7 +45,8 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         httpOBJ.delegate = self
         topicList.delegate = self
         topicList.dataSource = self
-        
+        wsActive.wsActiveDelegateForTopicView = self
+        //socket.delegate = self
         
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
@@ -78,7 +84,7 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         }
     }
     
-    func new_topic_did_load(http_obj:httpRequsetCenter){
+    func new_topic_did_load(http_obj:ＨttpRequsetCenter){
         print("websocket data did load")
     }
     
@@ -108,6 +114,42 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
         cell.hashtags.drawButton()
         cell.topicTitle.text = topic.title
         cell.topicOwnerImage.image = topic.photo
+        
+        var isMeImg:UIImage
+        if topic.isMe{
+            isMeImg = UIImage(named:"True_photo")!
+        }
+        else{
+            isMeImg = UIImage(named:"Fake_photo")!
+        }
+        cell.isMe.image = isMeImg
+        
+        
+        var sexImg:UIImage
+        
+        if topic.sex == "男"{
+            sexImg = UIImage(named: "male")!
+        }
+        else if topic.sex == "女"{
+            sexImg = UIImage(named: "female")!
+        }
+        else if topic.sex == "男同"{
+            sexImg = UIImage(named:"gay")!
+        }
+        else{
+            sexImg = UIImage(named:"lesbain")!
+        }
+        cell.sex.image = sexImg
+        
+        var onlineImg:UIImage
+        if topic.online{
+            onlineImg = UIImage(named:"texting")!
+        }
+        //MARK:下面那張圖請改 “不在線上的人圖示”
+        else{
+            onlineImg = UIImage(named:"topic")!
+        }
+        cell.online.image = onlineImg
 
         // Configure the cell...
 
@@ -141,12 +183,38 @@ class TopicTableViewController:UIViewController, httpResquestDelegate,UITableVie
                     self.requestUpDataSwitch = true
                 })
             }
-            
         }
     }
     
     //NSIndexPath* ipath = [NSIndexPath indexPathForRow: cells_count-1 inSection: sections_count-1];
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
     //-----------test---------
+    //MARK:websocketDelegate
+    func wsOnMsg(msg:Dictionary<String,AnyObject>) {
+        if let msg_type:String =  msg["msg_type"] as? String{
+            if msg_type == "off_line"{
+                //print(msg)
+                let offLineUser = msg["user_id"] as! String
+                
+                if let topic_sIndex = topics.indexOf({$0.owner==offLineUser}){
+                    topics[topic_sIndex].online = false
+                    let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
+                    self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+                
+            }
+            else if msg_type == "new_member"{
+                //print(msg)
+                let onLineUser = msg["user_id"] as! String
+                if let topic_sIndex = topics.indexOf({$0.owner==onLineUser}){
+                    topics[topic_sIndex].online = true
+                    let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
+                    self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+            }
+        }
+        
+    }
+    
 }
 

@@ -381,7 +381,10 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="hashtags" destination="uS3-xb-XE1" id="eyH-Gf-xgI"/>
+                                            <outlet property="isMe" destination="Efe-P4-ZU2" id="deY-Id-wB7"/>
                                             <outlet property="labels" destination="CYX-FE-IxU" id="0HB-hP-Wmv"/>
+                                            <outlet property="online" destination="fug-jH-rwJ" id="POs-bN-OGW"/>
+                                            <outlet property="sex" destination="Rq4-LV-33L" id="Ies-SZ-Ihe"/>
                                             <outlet property="topicOwnerImage" destination="eQS-sT-Ohi" id="Zxc-zD-Jhg"/>
                                             <outlet property="topicTitle" destination="wb4-kw-iy4" id="XGU-cm-a77"/>
                                             <segue destination="FBi-3N-jAs" kind="show" id="Whz-V0-qTy"/>

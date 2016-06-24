@@ -20,6 +20,12 @@ class TopicCellTableViewCell: UITableViewCell {
         
     @IBOutlet weak var hashtags: HashTagsContorller!
     
+    @IBOutlet weak var isMe: UIImageView!
+    
+    @IBOutlet weak var sex: UIImageView!
+    
+    @IBOutlet weak var online: UIImageView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()

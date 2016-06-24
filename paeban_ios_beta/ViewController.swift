@@ -11,10 +11,12 @@ import Starscream
 import FBSDKLoginKit
 
 
+public var socket:WebSocket!
+public var wsActive = webSocketActiveCenter()
 public var cookie:String?
 
-class ViewController: UIViewController,FBSDKLoginButtonDelegate{
-    var socket:WebSocket!
+class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelegate{
+    
     
     
     override func viewDidLoad() {
@@ -25,15 +27,12 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate{
 //        loginButton.center = view.center
         view.addSubview(loginButton)
         loginButton.delegate = self
+        
         paeban_login()
         
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    //===============ET===================
+        //===============ET===================
     
     
     
@@ -70,8 +69,9 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate{
             cookie = login_obj.get_cookie()
             if cookie != "login_no"{
                 print("登入成功!!!")
-                socket = WebSocket(url: NSURL(string: "ws://www.paeban.com/ws_test/none/")!, protocols: ["chat", "superchat"])
+                socket = WebSocket(url: NSURL(string: "ws://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
                 socket.headers["Cookie"] = cookie
+                socket.delegate = self
                 ws_connect_fun(socket)
             }
             else{
@@ -83,7 +83,47 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate{
             print("還沒登入ＦＢ!!!")
         }
     }
+    var wsTimer:NSTimer?
+    var reConnectCount:Int = 0
+    
+    func stayConnect() {
+        print(NSDate())
+        ws_stay_connect(socket)
+    }
+    
+    func reConnect(){
+        ws_connect_fun(socket)
+        if reConnectCount < 100{
+            wsTimer?.invalidate()
+        }
+    }
+    
+    
+    func websocketDidConnect(socket: WebSocket){
+        print("connected")
+        reConnectCount = 0
+        //print(NSDate())
+        wsTimer = NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
+        ws_connected(socket)
+    }
+    func websocketDidDisconnect(socket: WebSocket, error: NSError?){
+        print("disConnect")
+        wsTimer?.invalidate()
+        wsTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
+        
+        //print(NSDate())
+    }
+    func websocketDidReceiveMessage(socket: WebSocket, text: String){
+        print("msgincome=======")
+        let msgPack = ws_onmsg(text)
+        wsActive.wsOnMsg(msgPack)
+        
+    }
+    func websocketDidReceiveData(socket: WebSocket, data: NSData){
+        print("data")
+    }
 
+    
 }
 
 
