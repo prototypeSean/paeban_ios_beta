@@ -96,7 +96,7 @@ class ＨttpRequsetCenter{
             else{
                 let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
                 let ouput_json = json_load(ouput) as Dictionary
-                print(ouput_json)
+                //print(ouput_json)
                 self.topic_list = self.topic_type(ouput_json)
                 self.delegate?.new_topic_did_load(self)
             }

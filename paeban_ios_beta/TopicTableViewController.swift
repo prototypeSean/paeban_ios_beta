@@ -181,7 +181,6 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                     self.requestUpDataSwitch = true
                 })
             }
-            
         }
     }
     
