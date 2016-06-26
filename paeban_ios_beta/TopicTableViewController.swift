@@ -43,17 +43,27 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         httpOBJ.delegate = self
         topicList.delegate = self
         topicList.dataSource = self
-        wsActive.wsActiveDelegateForTopicView = self
+        wsActive.wsad_ForTopicTableViewController = self
         //socket.delegate = self
         
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-            self.httpOBJ.getTopic()
-            dispatch_async(dispatch_get_main_queue(), {
-                let temp_topic = self.httpOBJ.topic_list
-                self.topics = self.topics + temp_topic
-                self.topicList.reloadData()
+            var temp_topic:Array<Topic>{
+                get{
+                    return []
+                }
+                set{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.topics = self.topics + newValue
+                        self.topicList.reloadData()
+                    })
+                }
+            }
+            self.httpOBJ.getTopic({ (temp_topic2) in
+                temp_topic = temp_topic2
+                //print("1111")
             })
+            
         }
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
@@ -66,7 +76,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             self.requestUpDataSwitch = false
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-                self.httpOBJ.getTopic()
+                self.httpOBJ.getTopic2()
                 let temp_topic = self.httpOBJ.topic_list
                 self.topics = temp_topic
                 dispatch_async(dispatch_get_main_queue(), {
@@ -83,7 +93,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     }
     
     func new_topic_did_load(http_obj:ＨttpRequsetCenter){
-        print("websocket data did load")
+        //print("websocket data did load")
     }
     
     
@@ -114,35 +124,28 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         cell.topicOwnerImage.image = topic.photo
         
         var isMeImg:UIImage
-        if topic.isMe{
-            isMeImg = UIImage(named:"True_photo")!
-        }
-        else{
-            isMeImg = UIImage(named:"Fake_photo")!
-        }
+        if topic.isMe{isMeImg = UIImage(named:"True_photo")!}
+        else{isMeImg = UIImage(named:"Fake_photo")!}
         cell.isMe.image = isMeImg
-        
-        
-        var sexImg:UIImage
-        
-        if topic.sex == "男"{
+        var sexImg:UIImage?
+        switch topic.sex {
+        case "男":
             sexImg = UIImage(named: "male")!
-        }
-        else if topic.sex == "女"{
-            sexImg = UIImage(named: "female")!
-        }
-        else if topic.sex == "男同"{
+        case "女":
             sexImg = UIImage(named:"gay")!
-        }
-        else{
+        case "男同":
+            sexImg = UIImage(named:"gay")!
+        case "女同":
             sexImg = UIImage(named:"lesbain")!
+        default:
+            sexImg = UIImage(named: "male")!
+            print("性別圖示分類失敗")
         }
-        cell.sex.image = sexImg
         
+        
+        cell.sex.image = sexImg
         var onlineImg:UIImage
-        if topic.online{
-            onlineImg = UIImage(named:"texting")!
-        }
+        if topic.online{onlineImg = UIImage(named:"texting")!}
         //MARK:下面那張圖請改 “不在線上的人圖示”
         else{
             onlineImg = UIImage(named:"topic")!
@@ -160,7 +163,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         if scroolHeight >= contentHeight && contentHeight > 0
             && requestUpDataSwitch == true{
             requestUpDataSwitch = false
-            print("撞...撞到最底了 >///<")
+            //print("撞...撞到最底了 >///<")
             
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
@@ -170,7 +173,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                         let topicIdS = Int(topicS.topicID)
                         minTopicId = min(minTopicId, topicIdS!)
                     }
-                    print("最小ＩＤ\(String(minTopicId))")
+                    //print("最小ＩＤ\(String(minTopicId))")
                     self.httpOBJ.getOldTopic(minTopicId)
                 }
                 
@@ -187,11 +190,13 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     //NSIndexPath* ipath = [NSIndexPath indexPathForRow: cells_count-1 inSection: sections_count-1];
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
     //-----------test---------
+    
     //MARK:websocketDelegate
     func wsOnMsg(msg:Dictionary<String,AnyObject>) {
         if let msg_type:String =  msg["msg_type"] as? String{
+            
+            //有人離線
             if msg_type == "off_line"{
-                //print(msg)
                 let offLineUser = msg["user_id"] as! String
                 
                 if let topic_sIndex = topics.indexOf({$0.owner==offLineUser}){
@@ -201,8 +206,9 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                 }
                 
             }
+                
+            //有人上線
             else if msg_type == "new_member"{
-                //print(msg)
                 let onLineUser = msg["user_id"] as! String
                 if let topic_sIndex = topics.indexOf({$0.owner==onLineUser}){
                     topics[topic_sIndex].online = true
@@ -213,6 +219,23 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         }
         
     }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let indexPath = topicList.indexPathForSelectedRow!
+        //print(indexPath.row)
+        let dataposition:Int = indexPath.row
+        let topicID = topics[dataposition].topicID
+        let topicViewCon = segue.destinationViewController as! TopicViewController
+        topicViewCon.topicID = topicID
+        //print(topicOwnerID)
+        
+    }
     
 }
+
+
+
+
+
+
+
 

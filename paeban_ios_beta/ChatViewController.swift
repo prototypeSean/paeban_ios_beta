@@ -16,6 +16,8 @@ class ChatViewController: JSQMessagesViewController {
     var messages = [JSQMessage]()
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
+    var setID:String? = "anyone"
+    var setName:String? = "anyone"
     
     // 設定訊息顏色，用JSQ的套件
     private func setupBubbles() {
@@ -33,8 +35,8 @@ class ChatViewController: JSQMessagesViewController {
         
         // 這兩個是初始化一定要有的參數
         //MARK:自己的參數
-        senderId = "111222"
-        senderDisplayName = "DK"
+        senderId = setID
+        senderDisplayName = setName
         
         // No avatars
         collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
@@ -60,6 +62,20 @@ class ChatViewController: JSQMessagesViewController {
     override func collectionView(collectionView: JSQMessagesCollectionView!,
                                  messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
+        
+        
+        
+        //MARK:飛行前移除
+        if senderId == "anyone"{
+            print("id尚未設定成功")
+        }
+        else{
+            print(senderId)
+        }
+        //MARK:飛行前移除
+        
+        
+        
         if message.senderId == senderId { // 2
             return outgoingBubbleImageView
         } else { // 3
@@ -101,11 +117,8 @@ class ChatViewController: JSQMessagesViewController {
     //MARK:送出按鈕按下後
     override func didPressSendButton(button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: NSDate?) {
         
-        // This is where you would impliment your method for saving the message to your backend.
-        //
-        // For this Demo I will just add it to the messages list localy
-        //
-        self.messages.append(JSQMessage(senderId: "111222", displayName: "", text: text))
+        
+        self.messages.append(JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text))
         self.finishSendingMessageAnimated(true)
         self.collectionView?.reloadData()
     }
@@ -122,15 +135,7 @@ class ChatViewController: JSQMessagesViewController {
         }
     }
     
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
+
+//未送訊息解法，在每一訊息上綁定click功能，在Ｊmsg屬性裡自訂未讀狀態：Ｂool
+//並利用uincode寫入驚嘆號及“未送出”字樣

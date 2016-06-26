@@ -424,7 +424,7 @@
         <!--加入的話題-->
         <scene sceneID="xNr-Pe-fgg">
             <objects>
-                <viewController id="FBi-3N-jAs" customClass="TopicViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FBi-3N-jAs" customClass="TopicViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="q6V-0w-5Pl"/>
                         <viewControllerLayoutGuide type="bottom" id="Rog-Sp-21z"/>
@@ -693,7 +693,7 @@
         <!--Chat View Controller-->
         <scene sceneID="KMX-ba-Jnp">
             <objects>
-                <viewController id="IOb-kc-fVr" customClass="ChatViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatView2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="IOb-kc-fVr" customClass="ChatViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qb8-gr-tuQ"/>
                         <viewControllerLayoutGuide type="bottom" id="Agd-9n-p2Q"/>

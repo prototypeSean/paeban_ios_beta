@@ -17,6 +17,10 @@ class TopicViewController: UIViewController {
     
     @IBOutlet weak var topicInfoBG: UIView!
     
+    var setID:String?
+    var setName:String?
+    var topicID:String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -65,23 +69,16 @@ class TopicViewController: UIViewController {
         gradientLayer.locations = [0.0, 1.0]
         
         topicInfoBG.layer.addSublayer(gradientLayer)
+        
+        // MARK:請求topic模式
+        
     }
     
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let chatViewCon = segue.destinationViewController as! ChatViewController
+        chatViewCon.setID = userData.id
+        chatViewCon.setName = userData.name
     }
-    */
 
 }

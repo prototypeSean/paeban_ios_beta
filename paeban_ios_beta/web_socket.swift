@@ -38,22 +38,42 @@ func ws_connect_fun(ws:WebSocket){
     ws.connect()
 }
 
+
+
+
+
 public protocol webSocketActiveCenterDelegate{
     func wsOnMsg(msg:Dictionary<String,AnyObject>)
 }
 
+//MARK:webSocket 資料接收中心
 public class webSocketActiveCenter{
     
-    var wsActiveDelegateForTopicView:webSocketActiveCenterDelegate?
-    let wsActiveDelegateForTopicViewWorkList = ["off_line","new_member"]
+    let mainWorkList = ["online"]
+    
+    var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
+    let wsad_ForTopicTableViewControllerList = ["off_line","new_member"]
+    var wasd_ForTopicViewController:webSocketActiveCenterDelegate?
+    let wasd_ForTopicViewControllerList = []
+    
     
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
-            print(msgtype)
+            let msgtypeString = msgtype as! String
+            print(msgtypeString)
             
-            if wsActiveDelegateForTopicViewWorkList.indexOf(msgtype as! String) != nil {
-                wsActiveDelegateForTopicView?.wsOnMsg(msg)
+            if mainWorkList.indexOf(msgtypeString) != nil {
+                if msgtypeString == "online"{
+                    userData.id = msg["user_id"] as? String
+                    userData.name = msg["user_name"] as? String
+                    userData.imgString  = msg["user_pic"] as? String
+                }
             }
+            
+            if wsad_ForTopicTableViewControllerList.indexOf(msgtypeString) != nil {
+                wsad_ForTopicTableViewController?.wsOnMsg(msg)
+            }
+            
         }
     }
 }

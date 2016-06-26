@@ -14,6 +14,12 @@ import FBSDKLoginKit
 public var socket:WebSocket!
 public var wsActive = webSocketActiveCenter()
 public var cookie:String?
+public struct setUserData{
+    var id:String?
+    var name:String?
+    var imgString:String?
+}
+public var userData = setUserData()
 
 class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelegate{
     
