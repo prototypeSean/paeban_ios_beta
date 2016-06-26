@@ -18,38 +18,48 @@ class ＨttpRequsetCenter{
     var delegate:ＨttpResquestDelegate?
     var topic_list = [Topic]()
     
-    func getTopic2(){
-        topicUpdate("mode=new")
-    }
-    func getTopic(Dic2:[Topic] -> Void){
-        print("start")
+
+    func getTopic(topicData:[Topic] -> Void){
         let url = "http://www.paeban.com/topic_update/"
-        let sendDate = "mode=new"
-        
-        //var topicData:Dictionary<String,AnyObject>?
-        ajax(url, sendDate: sendDate) { (Dic) -> Void in
-            let turnToType = self.topic_type(Dic)
-            Dic2(turnToType)
+        let sendData = "mode=new"
+        ajax(url, sendDate: sendData) { (returnData) -> Void in
+            let turnToType = self.topic_type(returnData)
+            topicData(turnToType)
         }
     }
     
     
-    func getOldTopic(topicID:Int){
-        self.topic_list = []
+    func getOldTopic(topicID:Int,topicData:[Topic]->Void){
         let topicIdToString = String(topicID)
-        let sentData = "mode=old;min_topic_id=\(topicIdToString)"
-        topicUpdate(sentData)
+        let sendData = "mode=old;min_topic_id=\(topicIdToString)"
+        let url = "http://www.paeban.com/topic_update/"
+        ajax(url, sendDate: sendData) { (returnData) -> Void in
+            let turnToType = self.topic_type(returnData)
+            topicData(turnToType)
+        }
+        
     }
-    func getNewTopic(topicID:Int){
-        self.topic_list = []
-        let topicIdToString = String(topicID)
-        let sentData = "mode=old;min_topic_id=\(topicIdToString)"
-        topicUpdate(sentData)
-    }
+//    func getNewTopic(topicID:Int){
+//        self.topic_list = []
+//        let topicIdToString = String(topicID)
+//        let sentData = "mode=old;min_topic_id=\(topicIdToString)"
+//        topicUpdate(sentData)
+//    }
     
     func topicUserMode(topicId:String){
-        
-        //let data = "mode=check_user_mode;topic_id=\(topicId)"
+        let url = "http://www.paeban.com/topic_user_mode/"
+        let sendData = "mode=check_user_mode;topic_id=\(topicId)"
+        ajax(url, sendDate: sendData) { (returnData) in
+            let ccc = returnData as Dictionary
+            for x in ccc{
+                print(x.0)
+                //照片應該是自己的
+//                topic_s
+//                img
+//                my_topic_id_list
+//                check_user_mode
+            }
+        }
         
         
     }
@@ -117,34 +127,34 @@ class ＨttpRequsetCenter{
         return topic_list_temp
     }
     // MARK:請求Topic公用部份
-    private func topicUpdate(sendDate:String){
-        let url = "http://www.paeban.com/topic_update/"
-        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
-        request.HTTPMethod = "POST"
-        let csrf = getCSRFToken(cookie!)
-        request.allHTTPHeaderFields = ["Cookie":cookie!]
-        request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
-        request.HTTPBody = sendDate.dataUsingEncoding(NSUTF8StringEncoding)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-            if error != nil{
-                print("連線錯誤\(error)")
-            }
-            else{
-                let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
-                let ouput_json = json_load(ouput) as Dictionary
-                //print(ouput_json)
-                self.topic_list = self.topic_type(ouput_json)
-                self.delegate?.new_topic_did_load(self)
-            }
-        })
-        task.resume()
-        var while_protect = 0
-        while topic_list.isEmpty || while_protect < 100{
-            sleep(1/10)
-            while_protect += 1
-        }
-    }
+//    private func topicUpdate(sendDate:String){
+//        let url = "http://www.paeban.com/topic_update/"
+//        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
+//        request.HTTPMethod = "POST"
+//        let csrf = getCSRFToken(cookie!)
+//        request.allHTTPHeaderFields = ["Cookie":cookie!]
+//        request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
+//        request.HTTPBody = sendDate.dataUsingEncoding(NSUTF8StringEncoding)
+//        let session = NSURLSession.sharedSession()
+//        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+//            if error != nil{
+//                print("連線錯誤\(error)")
+//            }
+//            else{
+//                let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
+//                let ouput_json = json_load(ouput) as Dictionary
+//                //print(ouput_json)
+//                self.topic_list = self.topic_type(ouput_json)
+//                self.delegate?.new_topic_did_load(self)
+//            }
+//        })
+//        task.resume()
+//        var while_protect = 0
+//        while topic_list.isEmpty || while_protect < 100{
+//            sleep(1/10)
+//            while_protect += 1
+//        }
+//    }
     private func ajax(url:String,sendDate:String,outPutDic:Dictionary<String,AnyObject> -> Void){
         var ouput:String?
         var ouput_json = [String:AnyObject]()

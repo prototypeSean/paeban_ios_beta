@@ -71,6 +71,8 @@ class TopicViewController: UIViewController {
         topicInfoBG.layer.addSublayer(gradientLayer)
         
         // MARK:請求topic模式
+        let httpObj = ＨttpRequsetCenter()
+        httpObj.topicUserMode(self.topicID!)
         
     }
     

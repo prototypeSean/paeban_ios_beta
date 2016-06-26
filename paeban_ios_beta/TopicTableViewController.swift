@@ -76,15 +76,23 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             self.requestUpDataSwitch = false
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-                self.httpOBJ.getTopic2()
-                let temp_topic = self.httpOBJ.topic_list
-                self.topics = temp_topic
-                dispatch_async(dispatch_get_main_queue(), {
-                    //print(self.topics[0].hashtags)
-                    self.topicList.reloadData()
-                    refreshControl.endRefreshing()
-                    self.requestUpDataSwitch = true
+                var temp_topic:Array<Topic>{
+                    get{
+                        return []
+                    }
+                    set{
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.topics = self.topics + newValue
+                            self.topicList.reloadData()
+                            refreshControl.endRefreshing()
+                            self.requestUpDataSwitch = true
+                        })
+                    }
+                }
+                self.httpOBJ.getTopic({ (temp_topic2) in
+                    temp_topic = temp_topic2
                 })
+                
             }
         }
         else{
@@ -156,7 +164,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
 
         return cell
     }
-    //-----------test---------
+    // MARK:向下滾動更新
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let scroolHeight = self.topicList.contentOffset.y + self.topicList.frame.height
         let contentHeight = self.topicList.contentSize.height
@@ -168,28 +176,38 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
                 if !self.topics.isEmpty{
+                    
                     var minTopicId:Int = Int(self.topics[0].topicID)!
                     for topicS in self.topics{
                         let topicIdS = Int(topicS.topicID)
                         minTopicId = min(minTopicId, topicIdS!)
                     }
                     //print("最小ＩＤ\(String(minTopicId))")
-                    self.httpOBJ.getOldTopic(minTopicId)
+                    var temp_topic:[Topic]{
+                        get{return []}
+                        set{
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.topics += newValue
+                                self.topicList.reloadData()
+                                self.requestUpDataSwitch = true
+                            })
+                        }
+                    }
+                    self.httpOBJ.getOldTopic(minTopicId, topicData: { (temp_topic2) in
+                        temp_topic = temp_topic2
+                    })
                 }
                 
                 
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.topics += self.httpOBJ.topic_list
-                    self.topicList.reloadData()
-                    self.requestUpDataSwitch = true
-                })
+                
+                
             }
         }
     }
     
     //NSIndexPath* ipath = [NSIndexPath indexPathForRow: cells_count-1 inSection: sections_count-1];
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
-    //-----------test---------
+
     
     //MARK:websocketDelegate
     func wsOnMsg(msg:Dictionary<String,AnyObject>) {
