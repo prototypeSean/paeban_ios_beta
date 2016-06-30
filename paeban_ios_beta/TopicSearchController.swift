@@ -52,7 +52,7 @@ class TopicSearchController: UISearchController, UISearchBarDelegate {
         customSearchBar.barTintColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
         customSearchBar.tintColor = textColor
         customSearchBar.showsBookmarkButton = false
-        customSearchBar.showsCancelButton = true
+        customSearchBar.showsCancelButton = false
         
         customSearchBar.delegate = self
     }

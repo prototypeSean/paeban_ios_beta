@@ -61,8 +61,12 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
         topicList.addSubview(refreshControl)
-        
         configureTopicSearchController()
+        
+        // 我不知道為什麼-1 就可以了 高度明明是35....
+        topicList.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
+
+        
     }
     // MARk:更新程式
     func update(refreshControl:UIRefreshControl){
@@ -222,16 +226,16 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     func configureTopicSearchController() {
         topicSearchController = TopicSearchController(
             searchResultsController: self,
-            searchBarFrame: CGRectMake(0.0, 0.0, topicList.frame.size.width, 30.0),
+            searchBarFrame: CGRectMake(0.0, 0.0, topicList.frame.size.width, 40.0),
             searchBarFont: UIFont(name: "Futura", size: 14.0)!,
             searchBarTextColor: UIColor.orangeColor(),
             searchBarTintColor: UIColor.blackColor())
         
-        topicSearchController.customSearchBar.placeholder = "搜尋  #關鍵字"
+        topicSearchController.customSearchBar.placeholder = "搜尋"
         
         topicList.tableHeaderView = topicSearchController.customSearchBar
         
-        topicSearchController   .customDelegate = self
+        topicSearchController.customDelegate = self
     }
     
     // 客製化的代理功能在這

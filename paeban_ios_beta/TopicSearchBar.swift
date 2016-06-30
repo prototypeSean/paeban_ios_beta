@@ -48,7 +48,7 @@ class TopicSearchBar: UISearchBar {
             let searchField: UITextField = subviews[0].subviews[index] as! UITextField
             
             // Set its frame.
-            searchField.frame = CGRectMake(5.0, 5.0, frame.size.width - 20.0, frame.size.height - 10.0)
+//            searchField.frame = CGRectMake(5.0, 1.0, frame.size.width - 10.0, frame.size.height - 15.0)
             
             // Set the font and text color of the search field.
             searchField.font = preferredFont
@@ -56,7 +56,8 @@ class TopicSearchBar: UISearchBar {
 //            searchField.attributedPlaceholder = NSAttributedString(string:"點擊搜尋 #關鍵字標籤", attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
             
             // Set the background color of the search field.
-            searchField.backgroundColor = barTintColor
+            searchField.backgroundColor = UIColor.whiteColor()
+            
         }
         
         let startPoint = CGPointMake(0.0, frame.size.height)
@@ -67,7 +68,7 @@ class TopicSearchBar: UISearchBar {
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.CGPath
-        shapeLayer.strokeColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1.0).CGColor
+        shapeLayer.strokeColor = UIColor(red:0.78, green:0.78, blue:0.80, alpha:1.0).CGColor
         shapeLayer.lineWidth = 1.5
         
         layer.addSublayer(shapeLayer)
