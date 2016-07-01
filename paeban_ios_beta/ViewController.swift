@@ -120,7 +120,7 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
         //print(NSDate())
     }
     func websocketDidReceiveMessage(socket: WebSocket, text: String){
-        print("msgincome=======")
+        //print("msgincome=======")
         let msgPack = ws_onmsg(text)
         wsActive.wsOnMsg(msgPack)
         

@@ -60,7 +60,7 @@ public class webSocketActiveCenter{
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
             let msgtypeString = msgtype as! String
-            print(msgtypeString)
+            //print(msgtypeString)
             
             if mainWorkList.indexOf(msgtypeString) != nil {
                 if msgtypeString == "online"{

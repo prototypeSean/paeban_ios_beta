@@ -13,11 +13,46 @@ class ChatViewController: JSQMessagesViewController {
     @IBOutlet weak var topicTitle: UILabelPadding!
     
         // MARK: Properties
-    var messages = [JSQMessage]()
+    var messages = [JSQMessage2]()
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
-    var setID:String? = "anyone"
-    var setName:String? = "anyone"
+    var setID:String? = "anonymous"
+    var setName:String? = "anonymous"
+    var topicId:String?
+    var ownerId:String?
+    
+    
+    var historyMsg:Dictionary<String,AnyObject>{
+        get{return [:]}
+        set{
+            var tempMsgList = [JSQMessage2]()
+            for msg_s in newValue{
+//                read = 1;
+//                receiver = "\U674e\U7b56\U58eb";
+//                sender = "\U9ad8\U5929\U627f";
+//                text = "\U518d\U4f86";
+                let sender = msg_s.1["sender"] as! String
+                let text = msg_s.1["text"] as! String
+                let tempMsg_s = JSQMessage2(senderId: sender, displayName: "anonymous", text: text)
+                tempMsg_s.topicContentId = msg_s.0
+                tempMsgList += [tempMsg_s]
+            }
+            let retureList = tempMsgList.sort { (msg0, msg1) -> Bool in
+                let msg0Int = Int(msg0.topicContentId!)
+                let msg1Int = Int(msg1.topicContentId!)
+                return msg0Int < msg1Int
+            }
+            if self.messages.isEmpty{
+                self.messages = retureList
+            }
+            else{
+                self.messages = retureList + self.messages
+            }
+            self.finishSendingMessageAnimated(true)
+            self.collectionView?.reloadData()
+        }
+    }
+    
     
     // 設定訊息顏色，用JSQ的套件
     private func setupBubbles() {
@@ -62,20 +97,7 @@ class ChatViewController: JSQMessagesViewController {
     override func collectionView(collectionView: JSQMessagesCollectionView!,
                                  messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
-        
-        
-        
-        //MARK:飛行前移除
-        if senderId == "anyone"{
-            print("id尚未設定成功")
-        }
-        else{
-            print(senderId)
-        }
-        //MARK:飛行前移除
-        
-        
-        
+     
         if message.senderId == senderId { // 2
             return outgoingBubbleImageView
         } else { // 3
@@ -109,7 +131,7 @@ class ChatViewController: JSQMessagesViewController {
     
     
     func addMessage(id: String, text: String) {
-        let message = JSQMessage(senderId: id, displayName: "", text: text)
+        let message = JSQMessage2(senderId: id, displayName: "", text: text)
         messages.append(message)
     }
     
@@ -118,9 +140,11 @@ class ChatViewController: JSQMessagesViewController {
     override func didPressSendButton(button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: NSDate?) {
         
         
-        self.messages.append(JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text))
+        self.messages.append(JSQMessage2(senderId: senderId, displayName: senderDisplayName, text: text))
         self.finishSendingMessageAnimated(true)
         self.collectionView?.reloadData()
+        print("=====================")
+        print(self.messages)
     }
     var aspectRatioConstraint: NSLayoutConstraint? {
         willSet {
@@ -136,6 +160,15 @@ class ChatViewController: JSQMessagesViewController {
     }
     
 }
+class JSQMessage2:JSQMessage{
+    var topicContentId:String?  //來自server定義的id
+    var topicTempid:String? //臨時自定義id
+    //16 118  127
+}
 
 //未送訊息解法，在每一訊息上綁定click功能，在Ｊmsg屬性裡自訂未讀狀態：Ｂool
 //並利用uincode寫入驚嘆號及“未送出”字樣
+
+
+
+

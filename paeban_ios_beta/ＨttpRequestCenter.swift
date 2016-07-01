@@ -46,22 +46,26 @@ class ＨttpRequsetCenter{
 //        topicUpdate(sentData)
 //    }
     
-    func topicUserMode(topicId:String){
+    func topicUserMode(topicId:String,InViewAct: (returnData2:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/topic_user_mode/"
         let sendData = "mode=check_user_mode;topic_id=\(topicId)"
         ajax(url, sendDate: sendData) { (returnData) in
-            let ccc = returnData as Dictionary
-            for x in ccc{
-                print(x.0)
-                //照片應該是自己的
-//                topic_s
-//                img
-//                my_topic_id_list
-//                check_user_mode
-            }
+            InViewAct(returnData2: returnData as Dictionary)
+            
         }
         
-        
+//        returnData:
+//        topic_s 歷史紀錄
+//        img  我的模糊照
+//        my_topic_id_list 我開的topic id列表
+//        check_user_mode 對話模式
+    }
+    func getTopicContentHistory(topicReceiverId:String,topicId:String,InViewAct: (returnData2:Dictionary<String,AnyObject>)->Void){
+        let url = "http://www.paeban.com/topic_user_mode/"
+        let sendData = "mode=get_topic_content_history;topic_receiver_id=\(topicReceiverId);topic_id=\(topicId)"
+        ajax(url, sendDate: sendData) { (returnData) in
+            InViewAct(returnData2: returnData as Dictionary)
+        }
     }
     // MARK:================私有函數===============
     
@@ -82,21 +86,15 @@ class ＨttpRequsetCenter{
             for dataKey in dataKeyList{
                 //--base64--
                 let encodedImageData = ouput_json[dataKey]!["img"] as! String
-
-                let index = encodedImageData.characters.startIndex.advancedBy(23)
-                let out = encodedImageData.substringFromIndex(index)
-                let dataDecoded:NSData? = NSData(base64EncodedString: out, options: NSDataBase64DecodingOptions())
-                var  decodedimage:UIImage?
-                if dataDecoded != nil{
-                    decodedimage = UIImage(data: dataDecoded!)
-                }
                 
-                var iimg:UIImage
+                let decodedimage = base64ToImage(encodedImageData)
+                
+                var finalimg:UIImage
                 if decodedimage != nil{
-                    iimg = decodedimage!
+                    finalimg = decodedimage!
                 }
                 else{
-                    iimg = UIImage(named: "logo")!
+                    finalimg = UIImage(named: "logo")!
                 }
                 //--base64--end
                 var isMe:Bool = false
@@ -112,7 +110,7 @@ class ＨttpRequsetCenter{
                 
                 let topic_temp = Topic(
                     owner: ouput_json[dataKey]!["topic_publisher"] as! String,
-                    photo: iimg,
+                    photo: finalimg,
                     title: ouput_json[dataKey]!["title"] as! String,
                     hashtags: ouput_json[dataKey]!["tag"] as! Array,
                     lastline:"最後一句對話" ,
@@ -171,6 +169,7 @@ class ＨttpRequsetCenter{
             }
             else{
                 ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
+                //print(ouput)
                 ouput_json = json_load(ouput!) as! Dictionary
                 //print(ouput_json)
                 outPutDic(ouput_json)

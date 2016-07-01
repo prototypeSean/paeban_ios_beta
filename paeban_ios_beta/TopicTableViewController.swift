@@ -44,8 +44,15 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         topicList.delegate = self
         topicList.dataSource = self
         wsActive.wsad_ForTopicTableViewController = self
+        gettopic()
         //socket.delegate = self
         
+        
+        
+    }
+    // MARk:更新程式
+    
+    private func gettopic(){
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
             var temp_topic:Array<Topic>{
@@ -61,16 +68,14 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             }
             self.httpOBJ.getTopic({ (temp_topic2) in
                 temp_topic = temp_topic2
-                //print("1111")
             })
             
         }
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
         topicList.addSubview(refreshControl)
-        
     }
-    // MARk:更新程式
+    
     func update(refreshControl:UIRefreshControl){
         if requestUpDataSwitch == true{
             self.requestUpDataSwitch = false
@@ -109,6 +114,18 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
+    }
+    //MARK
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let indexPath = topicList.indexPathForSelectedRow!
+        let dataposition:Int = indexPath.row
+        let ownerID = topics[dataposition].owner
+        if userData.id == ownerID{
+            performSegueWithIdentifier("masterModeSegue", sender: self)
+        }
+        else{
+            performSegueWithIdentifier("clientModeSegue", sender: self)
+        }
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -197,10 +214,6 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                         temp_topic = temp_topic2
                     })
                 }
-                
-                
-                
-                
             }
         }
     }
@@ -238,15 +251,93 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print(segue.identifier)
         let indexPath = topicList.indexPathForSelectedRow!
         //print(indexPath.row)
         let dataposition:Int = indexPath.row
-        let topicID = topics[dataposition].topicID
-        let topicViewCon = segue.destinationViewController as! TopicViewController
-        topicViewCon.topicID = topicID
+        
+        if segue.identifier == "masterModeSegue"{
+            // MARK: master模式看要做啥
+        }
+        else{
+            let topicViewCon = segue.destinationViewController as! TopicViewController
+            let selectTopicData = topics[dataposition]
+            topicViewCon.topicId = selectTopicData.topicID
+            topicViewCon.ownerId = selectTopicData.owner
+            topicViewCon.ownerImg = selectTopicData.photo
+            topicViewCon.topicTitle = selectTopicData.title
+            topicViewCon.title = "你要插啥？"
+            
+            
+            
+//            let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+//            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+//                let httpObj = ＨttpRequsetCenter()
+//                httpObj.getTopicContentHistory(selectTopicData.owner,topicId: selectTopicData.topicID, InViewAct: { (returnData2) in
+//                    //                returnData2:
+//                    //                unblock_level
+//                    //                img
+//                    //                my_img
+//                    //                msg
+//                    let myImg = base64ToImage(returnData2["my_img"] as! String)
+//                    
+//                    let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
+//                    
+//                    dispatch_async(dispatch_get_main_queue(), {
+//                        topicViewCon.myPhoto.image = myImg
+//                        
+//                        topicViewCon.msg = msg
+//                        
+//                        
+//                        
+//                        //chatViewCon.historyMsg = msg
+//                    })
+//                    
+//                    
+//                })
+//            }
+            
+            
+            
+            
+        }
+        
+        
+        
         //print(topicOwnerID)
         
     }
+    
+//    func getHttpData() {
+//        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+//        dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+//            let httpObj = ＨttpRequsetCenter()
+//            httpObj.getTopicContentHistory(self.ownerId!,topicId: self.topicId!, InViewAct: { (returnData2) in
+//                //                returnData2:
+//                //                unblock_level
+//                //                img
+//                //                my_img
+//                //                msg
+//                let myImg = base64ToImage(returnData2["my_img"] as! String)
+//                
+//                let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
+//                
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    self.myPhoto.image = myImg
+//                    
+//                    let chatViewCon = self.storyboard?.instantiateViewControllerWithIdentifier("chatView2") as! ChatViewController
+//                    
+//                    
+//                    
+//                    //chatViewCon.historyMsg = msg
+//                })
+//                
+//                
+//            })
+//        }
+//        //dispatch_async(dispatch_get_main_queue(), {})
+//    }
+    
     
 }
 
