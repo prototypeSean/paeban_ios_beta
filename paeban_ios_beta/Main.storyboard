@@ -455,7 +455,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O6Z-c3-l05" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3546" y="930"/>
+            <point key="canvasLocation" x="-3490" y="866"/>
         </scene>
         <!--我的-->
         <scene sceneID="Rjg-9b-c6S">
@@ -532,9 +532,9 @@
                                                                     </constraints>
                                                                     <variation key="default">
                                                                         <mask key="constraints">
-                                                                            <exclude reference="bEG-1m-mfd"/>
                                                                             <exclude reference="GT2-0R-CEc"/>
                                                                             <exclude reference="NX5-3C-nZm"/>
+                                                                            <exclude reference="bEG-1m-mfd"/>
                                                                         </mask>
                                                                     </variation>
                                                                 </imageView>
@@ -557,18 +557,18 @@
                                                             </constraints>
                                                             <variation key="default">
                                                                 <mask key="constraints">
-                                                                    <exclude reference="Ir1-d5-u8w"/>
                                                                     <exclude reference="1zY-wJ-a5L"/>
+                                                                    <exclude reference="Ir1-d5-u8w"/>
                                                                     <exclude reference="QlR-4J-1Np"/>
                                                                     <exclude reference="Dsq-j6-J8w"/>
-                                                                    <exclude reference="gN9-cA-slv"/>
                                                                     <exclude reference="NKB-ga-e1D"/>
-                                                                    <exclude reference="UQU-rF-YiL"/>
                                                                     <exclude reference="PPA-Nd-yDf"/>
+                                                                    <exclude reference="UQU-rF-YiL"/>
+                                                                    <exclude reference="gN9-cA-slv"/>
                                                                     <exclude reference="Hj6-5g-2n7"/>
+                                                                    <exclude reference="kK9-gc-Vdl"/>
                                                                     <exclude reference="pMM-3d-5N9"/>
                                                                     <exclude reference="z1E-pp-GcJ"/>
-                                                                    <exclude reference="kK9-gc-Vdl"/>
                                                                 </mask>
                                                             </variation>
                                                         </stackView>
@@ -587,8 +587,8 @@
                                                         <mask key="constraints">
                                                             <exclude reference="0en-nb-TjJ"/>
                                                             <exclude reference="I1C-5u-Bqq"/>
-                                                            <exclude reference="cDu-9X-ynv"/>
                                                             <exclude reference="NsV-cH-GWt"/>
+                                                            <exclude reference="cDu-9X-ynv"/>
                                                         </mask>
                                                     </variation>
                                                 </view>
@@ -604,9 +604,9 @@
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="jG2-Iu-Sq5"/>
-                                                    <exclude reference="Ohe-2e-Ng2"/>
                                                     <exclude reference="6qT-au-EwJ"/>
                                                     <exclude reference="AHl-TK-6St"/>
+                                                    <exclude reference="Ohe-2e-Ng2"/>
                                                     <exclude reference="dbw-zT-kh0"/>
                                                 </mask>
                                             </variation>
@@ -703,7 +703,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gCa-up-kTF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2797" y="930"/>
+            <point key="canvasLocation" x="-2777" y="866"/>
         </scene>
         <!--我的-->
         <scene sceneID="OpS-3a-p5B">
@@ -804,7 +804,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lQw-ap-tyI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3490" y="1599.5"/>
+            <point key="canvasLocation" x="-3490" y="1475.5"/>
         </scene>
         <!--Launch Screen View Controller-->
         <scene sceneID="UD4-uD-nM2">

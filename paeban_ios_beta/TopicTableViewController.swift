@@ -176,6 +176,9 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             print("性別圖示分類失敗")
         }
         
+        
+        cell.sex.image = sexImg
+        
         let onlineimage = cell.online
         
         onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
@@ -318,37 +321,6 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         //print(topicOwnerID)
         
     }
-    
-//    func getHttpData() {
-//        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
-//        dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-//            let httpObj = ＨttpRequsetCenter()
-//            httpObj.getTopicContentHistory(self.ownerId!,topicId: self.topicId!, InViewAct: { (returnData2) in
-//                //                returnData2:
-//                //                unblock_level
-//                //                img
-//                //                my_img
-//                //                msg
-//                let myImg = base64ToImage(returnData2["my_img"] as! String)
-//                
-//                let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
-//                
-//                dispatch_async(dispatch_get_main_queue(), {
-//                    self.myPhoto.image = myImg
-//                    
-//                    let chatViewCon = self.storyboard?.instantiateViewControllerWithIdentifier("chatView2") as! ChatViewController
-//                    
-//                    
-//                    
-//                    //chatViewCon.historyMsg = msg
-//                })
-//                
-//                
-//            })
-//        }
-//        //dispatch_async(dispatch_get_main_queue(), {})
-//    }
-    
     
     // MARK: 設定搜尋列
     func configureTopicSearchController() {
