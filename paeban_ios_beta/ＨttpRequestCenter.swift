@@ -9,18 +9,71 @@
 import Foundation
 import UIKit
 
+
 protocol ＨttpResquestDelegate {
     func new_topic_did_load(http_obj:ＨttpRequsetCenter)
 }
 
-
 class ＨttpRequsetCenter{
     var delegate:ＨttpResquestDelegate?
     var topic_list = [Topic]()
+    
+
+    func getTopic(topicData:[Topic] -> Void){
+        let url = "http://www.paeban.com/topic_update/"
+        let sendData = "mode=new"
+        ajax(url, sendDate: sendData) { (returnData) -> Void in
+            let turnToType = self.topic_type(returnData)
+            topicData(turnToType)
+        }
+    }
+    
+    
+    func getOldTopic(topicID:Int,topicData:[Topic]->Void){
+        let topicIdToString = String(topicID)
+        let sendData = "mode=old;min_topic_id=\(topicIdToString)"
+        let url = "http://www.paeban.com/topic_update/"
+        ajax(url, sendDate: sendData) { (returnData) -> Void in
+            let turnToType = self.topic_type(returnData)
+            topicData(turnToType)
+        }
+        
+    }
+//    func getNewTopic(topicID:Int){
+//        self.topic_list = []
+//        let topicIdToString = String(topicID)
+//        let sentData = "mode=old;min_topic_id=\(topicIdToString)"
+//        topicUpdate(sentData)
+//    }
+    
+    func topicUserMode(topicId:String,InViewAct: (returnData2:Dictionary<String,AnyObject>)->Void){
+        let url = "http://www.paeban.com/topic_user_mode/"
+        let sendData = "mode=check_user_mode;topic_id=\(topicId)"
+        ajax(url, sendDate: sendData) { (returnData) in
+            InViewAct(returnData2: returnData as Dictionary)
+            
+        }
+        
+//        returnData:
+//        topic_s 歷史紀錄
+//        img  我的模糊照
+//        my_topic_id_list 我開的topic id列表
+//        check_user_mode 對話模式
+    }
+    func getTopicContentHistory(topicReceiverId:String,topicId:String,InViewAct: (returnData2:Dictionary<String,AnyObject>)->Void){
+        let url = "http://www.paeban.com/topic_user_mode/"
+        let sendData = "mode=get_topic_content_history;topic_receiver_id=\(topicReceiverId);topic_id=\(topicId)"
+        ajax(url, sendDate: sendData) { (returnData) in
+            InViewAct(returnData2: returnData as Dictionary)
+        }
+    }
+    // MARK:================私有函數===============
+    
     // MARK:轉換為Topic的標準格式
     private func topic_type(ouput_json:Dictionary<NSObject, AnyObject>)->Array<Topic>{
         let type_key:NSObject = "msg_type"
         var topic_list_temp = [Topic]()
+        
         if ouput_json[type_key] as! String == "new_topic"{
             var dataKeyList:[String] = []   //排序topicId清單
             for data_key in ouput_json.keys{
@@ -29,29 +82,21 @@ class ＨttpRequsetCenter{
                 }
             }
             dataKeyList = dataKeyList.sort(>)
-            print("------")
-            
-            
+            //print("------")
             for dataKey in dataKeyList{
-                //MARK:--base64--
+                //--base64--
                 let encodedImageData = ouput_json[dataKey]!["img"] as! String
-
-                let index = encodedImageData.characters.startIndex.advancedBy(23)
-                let out = encodedImageData.substringFromIndex(index)
-                let dataDecoded:NSData? = NSData(base64EncodedString: out, options: NSDataBase64DecodingOptions())
-                var  decodedimage:UIImage?
-                if dataDecoded != nil{
-                    decodedimage = UIImage(data: dataDecoded!)
-                }
                 
-                var iimg:UIImage
+                let decodedimage = base64ToImage(encodedImageData)
+                
+                var finalimg:UIImage
                 if decodedimage != nil{
-                    iimg = decodedimage!
+                    finalimg = decodedimage!
                 }
                 else{
-                    iimg = UIImage(named: "logo")!
+                    finalimg = UIImage(named: "logo")!
                 }
-                // --base64--end
+                //--base64--end
                 var isMe:Bool = false
                 var online:Bool = false
                 
@@ -65,7 +110,7 @@ class ＨttpRequsetCenter{
                 
                 let topic_temp = Topic(
                     owner: ouput_json[dataKey]!["topic_publisher"] as! String,
-                    photo: iimg,
+                    photo: finalimg,
                     title: ouput_json[dataKey]!["title"] as! String,
                     hashtags: ouput_json[dataKey]!["tag"] as! Array,
                     lastline:"最後一句對話" ,
@@ -80,8 +125,37 @@ class ＨttpRequsetCenter{
         return topic_list_temp
     }
     // MARK:請求Topic公用部份
-    private func topicUpdate(sendDate:String){
-        let url = "http://www.paeban.com/topic_update/"
+//    private func topicUpdate(sendDate:String){
+//        let url = "http://www.paeban.com/topic_update/"
+//        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
+//        request.HTTPMethod = "POST"
+//        let csrf = getCSRFToken(cookie!)
+//        request.allHTTPHeaderFields = ["Cookie":cookie!]
+//        request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
+//        request.HTTPBody = sendDate.dataUsingEncoding(NSUTF8StringEncoding)
+//        let session = NSURLSession.sharedSession()
+//        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+//            if error != nil{
+//                print("連線錯誤\(error)")
+//            }
+//            else{
+//                let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
+//                let ouput_json = json_load(ouput) as Dictionary
+//                //print(ouput_json)
+//                self.topic_list = self.topic_type(ouput_json)
+//                self.delegate?.new_topic_did_load(self)
+//            }
+//        })
+//        task.resume()
+//        var while_protect = 0
+//        while topic_list.isEmpty || while_protect < 100{
+//            sleep(1/10)
+//            while_protect += 1
+//        }
+//    }
+    private func ajax(url:String,sendDate:String,outPutDic:Dictionary<String,AnyObject> -> Void){
+        var ouput:String?
+        var ouput_json = [String:AnyObject]()
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.HTTPMethod = "POST"
         let csrf = getCSRFToken(cookie!)
@@ -94,34 +168,24 @@ class ＨttpRequsetCenter{
                 print("連線錯誤\(error)")
             }
             else{
-                let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
-                let ouput_json = json_load(ouput) as Dictionary
+                ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
+                //print(ouput)
+                ouput_json = json_load(ouput!) as! Dictionary
                 //print(ouput_json)
-                self.topic_list = self.topic_type(ouput_json)
-                self.delegate?.new_topic_did_load(self)
+                outPutDic(ouput_json)
             }
         })
+        
         task.resume()
-        var while_protect = 0
-        while topic_list.isEmpty || while_protect < 100{
-            sleep(1/10)
-            while_protect += 1
-        }
     }
     
-    func getTopic(){
-        topicUpdate("mode=new")
-    }
-    func getOldTopic(topicID:Int){
-        self.topic_list = []
-        let topicIdToString = String(topicID)
-        let sentData = "mode=old;min_topic_id=\(topicIdToString)"
-        topicUpdate(sentData)
-    }
-    func getNewTopic(topicID:Int){
-        self.topic_list = []
-        let topicIdToString = String(topicID)
-        let sentData = "mode=old;min_topic_id=\(topicIdToString)"
-        topicUpdate(sentData)
+    
+    
+    private func topiceUserMode(){
+        
     }
 }
+
+
+
+

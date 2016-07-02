@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JSQMessagesViewController
 
 class TopicViewController: UIViewController {
     // 替漸層增加一個圖層
@@ -17,8 +18,60 @@ class TopicViewController: UIViewController {
     
     @IBOutlet weak var topicInfoBG: UIView!
     
+    var setID:String?
+    var setName:String?
+    var topicId:String?
+    var ownerImg:UIImage?
+    var topicTitle:String?
+    var ownerId:String?
+    var contanterView:ChatViewController?
+    var msg:Dictionary<String,AnyObject>?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setImage()
+        getHttpData()
+        
+    }
+    
+    func getHttpData() {
+        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+        dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+            let httpObj = ＨttpRequsetCenter()
+            httpObj.getTopicContentHistory(self.ownerId!,topicId: self.topicId!, InViewAct: { (returnData2) in
+//                returnData2:
+//                unblock_level
+//                img
+//                my_img
+//                msg
+                let myImg = base64ToImage(returnData2["my_img"] as! String)
+                
+                let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
+
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.myPhoto.image = myImg
+                    
+                    let chatViewCon = self.contanterView
+                    chatViewCon?.historyMsg = msg
+                    self.msg = msg
+                })
+            })
+        }
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let chatViewCon = segue.destinationViewController as! ChatViewController
+        chatViewCon.setID = userData.id
+        chatViewCon.setName = userData.name
+        chatViewCon.topicId = self.topicId
+        chatViewCon.ownerId = self.ownerId
+        if self.msg == nil {
+            self.contanterView = chatViewCon
+        }
+    }
+    
+    
+    func setImage(){
+        guestPhoto.image = ownerImg
         
         // MARK: 試著把照片切成圓形
         let myPhotoLayer:CALayer = myPhoto.layer
@@ -68,20 +121,6 @@ class TopicViewController: UIViewController {
     }
     
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

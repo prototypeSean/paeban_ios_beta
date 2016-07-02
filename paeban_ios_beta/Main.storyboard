@@ -334,7 +334,6 @@
                                             <outlet property="topicOwner" destination="jPN-A9-vyF" id="RtP-hm-eUv"/>
                                             <outlet property="topicOwnerImage" destination="eQS-sT-Ohi" id="Zxc-zD-Jhg"/>
                                             <outlet property="topicTitle" destination="wb4-kw-iy4" id="XGU-cm-a77"/>
-                                            <segue destination="FBi-3N-jAs" kind="show" id="Whz-V0-qTy"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -357,6 +356,8 @@
                     <navigationItem key="navigationItem" title="話題" id="vG6-IY-Ij6"/>
                     <connections>
                         <outlet property="topicList" destination="O0h-4r-Zjc" id="eDN-Rq-DvL"/>
+                        <segue destination="FBi-3N-jAs" kind="show" identifier="clientModeSegue" id="wZO-VC-xmQ"/>
+                        <segue destination="XNg-Ou-R1E" kind="show" identifier="masterModeSegue" id="7X4-14-auM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4c-w9-wSg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -366,7 +367,7 @@
         <!--加入的話題-->
         <scene sceneID="xNr-Pe-fgg">
             <objects>
-                <viewController id="FBi-3N-jAs" customClass="TopicViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FBi-3N-jAs" customClass="TopicViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="q6V-0w-5Pl"/>
                         <viewControllerLayoutGuide type="bottom" id="Rog-Sp-21z"/>
@@ -386,7 +387,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <segue destination="IOb-kc-fVr" kind="embed" id="YJy-XE-LcM"/>
+                                    <segue destination="IOb-kc-fVr" kind="embed" identifier="sec" id="YJy-XE-LcM"/>
                                 </connections>
                             </containerView>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="aEh-SV-29s">
@@ -454,7 +455,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O6Z-c3-l05" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3490" y="798"/>
+            <point key="canvasLocation" x="-3546" y="930"/>
         </scene>
         <!--我的-->
         <scene sceneID="Rjg-9b-c6S">
@@ -688,7 +689,7 @@
         <!--我的話題-->
         <scene sceneID="hT1-sP-pLa">
             <objects>
-                <viewController id="XNg-Ou-R1E" customClass="TopicViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XNg-Ou-R1E" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="46t-v5-NUe"/>
                         <viewControllerLayoutGuide type="bottom" id="41z-EK-EYj"/>
@@ -702,7 +703,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gCa-up-kTF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2777" y="798"/>
+            <point key="canvasLocation" x="-2797" y="930"/>
         </scene>
         <!--我的-->
         <scene sceneID="OpS-3a-p5B">
@@ -790,12 +791,12 @@
         <!--Chat View Controller-->
         <scene sceneID="KMX-ba-Jnp">
             <objects>
-                <viewController id="IOb-kc-fVr" customClass="ChatViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatView2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="IOb-kc-fVr" customClass="ChatViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qb8-gr-tuQ"/>
                         <viewControllerLayoutGuide type="bottom" id="Agd-9n-p2Q"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="68R-qK-mqe">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="68R-qK-mqe">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="387"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -803,12 +804,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lQw-ap-tyI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3490" y="1408.5"/>
+            <point key="canvasLocation" x="-3490" y="1599.5"/>
         </scene>
         <!--Launch Screen View Controller-->
         <scene sceneID="UD4-uD-nM2">
             <objects>
-                <viewController id="V2w-fW-NvN" customClass="LaunchScreenViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="paebain" useStoryboardIdentifierAsRestorationIdentifier="YES" id="V2w-fW-NvN" customClass="LaunchScreenViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bna-fg-gak"/>
                         <viewControllerLayoutGuide type="bottom" id="F8n-Xj-9Eh"/>
@@ -999,4 +1000,7 @@
         <image name="如如" width="25" height="25"/>
         <image name="小明" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="7X4-14-auM"/>
+    </inferredMetricsTieBreakers>
 </document>

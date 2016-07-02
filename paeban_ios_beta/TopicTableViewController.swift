@@ -46,17 +46,33 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         httpOBJ.delegate = self
         topicList.delegate = self
         topicList.dataSource = self
-        wsActive.wsActiveDelegateForTopicView = self
+        wsActive.wsad_ForTopicTableViewController = self
+        gettopic()
         //socket.delegate = self
         
+        
+        
+    }
+    // MARk:更新程式
+    
+    private func gettopic(){
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-            self.httpOBJ.getTopic()
-            dispatch_async(dispatch_get_main_queue(), {
-                let temp_topic = self.httpOBJ.topic_list
-                self.topics = self.topics + temp_topic
-                self.topicList.reloadData()
+            var temp_topic:Array<Topic>{
+                get{
+                    return []
+                }
+                set{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.topics = self.topics + newValue
+                        self.topicList.reloadData()
+                    })
+                }
+            }
+            self.httpOBJ.getTopic({ (temp_topic2) in
+                temp_topic = temp_topic2
             })
+            
         }
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
@@ -68,21 +84,29 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
 
         
     }
-    // MARk:更新程式
+    
     func update(refreshControl:UIRefreshControl){
         if requestUpDataSwitch == true{
             self.requestUpDataSwitch = false
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-                self.httpOBJ.getTopic()
-                let temp_topic = self.httpOBJ.topic_list
-                self.topics = temp_topic
-                dispatch_async(dispatch_get_main_queue(), {
-                    //print(self.topics[0].hashtags)
-                    self.topicList.reloadData()
-                    refreshControl.endRefreshing()
-                    self.requestUpDataSwitch = true
+                var temp_topic:Array<Topic>{
+                    get{
+                        return []
+                    }
+                    set{
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.topics = self.topics + newValue
+                            self.topicList.reloadData()
+                            refreshControl.endRefreshing()
+                            self.requestUpDataSwitch = true
+                        })
+                    }
+                }
+                self.httpOBJ.getTopic({ (temp_topic2) in
+                    temp_topic = temp_topic2
                 })
+                
             }
         }
         else{
@@ -91,7 +115,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     }
     
     func new_topic_did_load(http_obj:ＨttpRequsetCenter){
-        print("websocket data did load")
+        //print("websocket data did load")
     }
     
     
@@ -99,6 +123,18 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
+    }
+    //MARK
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let indexPath = topicList.indexPathForSelectedRow!
+        let dataposition:Int = indexPath.row
+        let ownerID = topics[dataposition].owner
+        if userData.id == ownerID{
+            performSegueWithIdentifier("masterModeSegue", sender: self)
+        }
+        else{
+            performSegueWithIdentifier("clientModeSegue", sender: self)
+        }
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -122,30 +158,23 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         cell.topicOwnerImage.image = topic.photo
         
         var isMeImg:UIImage
-        if topic.isMe{
-            isMeImg = UIImage(named:"True_photo")!
-        }
-        else{
-            isMeImg = UIImage(named:"Fake_photo")!
-        }
+        if topic.isMe{isMeImg = UIImage(named:"True_photo")!}
+        else{isMeImg = UIImage(named:"Fake_photo")!}
         cell.isMe.image = isMeImg
-        
-        
-        var sexImg:UIImage
-        
-        if topic.sex == "男"{
+        var sexImg:UIImage?
+        switch topic.sex {
+        case "男":
             sexImg = UIImage(named: "male")!
-        }
-        else if topic.sex == "女"{
-            sexImg = UIImage(named: "female")!
-        }
-        else if topic.sex == "男同"{
+        case "女":
             sexImg = UIImage(named:"gay")!
-        }
-        else{
+        case "男同":
+            sexImg = UIImage(named:"gay")!
+        case "女同":
             sexImg = UIImage(named:"lesbain")!
+        default:
+            sexImg = UIImage(named: "male")!
+            print("性別圖示分類失敗")
         }
-        cell.sex.image = sexImg
         
         let onlineimage = cell.online
         
@@ -163,45 +192,53 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
 
         return cell
     }
-    //-----------test---------
+    // MARK:向下滾動更新
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let scroolHeight = self.topicList.contentOffset.y + self.topicList.frame.height
         let contentHeight = self.topicList.contentSize.height
         if scroolHeight >= contentHeight && contentHeight > 0
             && requestUpDataSwitch == true{
             requestUpDataSwitch = false
-            print("撞...撞到最底了 >///<")
+            //print("撞...撞到最底了 >///<")
             
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
                 if !self.topics.isEmpty{
+                    
                     var minTopicId:Int = Int(self.topics[0].topicID)!
                     for topicS in self.topics{
                         let topicIdS = Int(topicS.topicID)
                         minTopicId = min(minTopicId, topicIdS!)
                     }
-                    print("最小ＩＤ\(String(minTopicId))")
-                    self.httpOBJ.getOldTopic(minTopicId)
+                    //print("最小ＩＤ\(String(minTopicId))")
+                    var temp_topic:[Topic]{
+                        get{return []}
+                        set{
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.topics += newValue
+                                self.topicList.reloadData()
+                                self.requestUpDataSwitch = true
+                            })
+                        }
+                    }
+                    self.httpOBJ.getOldTopic(minTopicId, topicData: { (temp_topic2) in
+                        temp_topic = temp_topic2
+                    })
                 }
-                
-                
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.topics += self.httpOBJ.topic_list
-                    self.topicList.reloadData()
-                    self.requestUpDataSwitch = true
-                })
             }
         }
     }
     
     //NSIndexPath* ipath = [NSIndexPath indexPathForRow: cells_count-1 inSection: sections_count-1];
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
-    //-----------test---------
+
+    
     //MARK:websocketDelegate
     func wsOnMsg(msg:Dictionary<String,AnyObject>) {
         if let msg_type:String =  msg["msg_type"] as? String{
+            
+            //有人離線
             if msg_type == "off_line"{
-                //print(msg)
                 let offLineUser = msg["user_id"] as! String
                 
                 if let topic_sIndex = topics.indexOf({$0.owner==offLineUser}){
@@ -211,8 +248,9 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                 }
                 
             }
+                
+            //有人上線
             else if msg_type == "new_member"{
-                //print(msg)
                 let onLineUser = msg["user_id"] as! String
                 if let topic_sIndex = topics.indexOf({$0.owner==onLineUser}){
                     topics[topic_sIndex].online = true
@@ -223,6 +261,94 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         }
         
     }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print(segue.identifier)
+        let indexPath = topicList.indexPathForSelectedRow!
+        //print(indexPath.row)
+        let dataposition:Int = indexPath.row
+        
+        if segue.identifier == "masterModeSegue"{
+            // MARK: master模式看要做啥
+        }
+        else{
+            let topicViewCon = segue.destinationViewController as! TopicViewController
+            let selectTopicData = topics[dataposition]
+            topicViewCon.topicId = selectTopicData.topicID
+            topicViewCon.ownerId = selectTopicData.owner
+            topicViewCon.ownerImg = selectTopicData.photo
+            topicViewCon.topicTitle = selectTopicData.title
+            topicViewCon.title = "你要插啥？"
+            
+            
+            
+//            let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+//            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+//                let httpObj = ＨttpRequsetCenter()
+//                httpObj.getTopicContentHistory(selectTopicData.owner,topicId: selectTopicData.topicID, InViewAct: { (returnData2) in
+//                    //                returnData2:
+//                    //                unblock_level
+//                    //                img
+//                    //                my_img
+//                    //                msg
+//                    let myImg = base64ToImage(returnData2["my_img"] as! String)
+//                    
+//                    let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
+//                    
+//                    dispatch_async(dispatch_get_main_queue(), {
+//                        topicViewCon.myPhoto.image = myImg
+//                        
+//                        topicViewCon.msg = msg
+//                        
+//                        
+//                        
+//                        //chatViewCon.historyMsg = msg
+//                    })
+//                    
+//                    
+//                })
+//            }
+            
+            
+            
+            
+        }
+        
+        
+        
+        //print(topicOwnerID)
+        
+    }
+    
+//    func getHttpData() {
+//        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+//        dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+//            let httpObj = ＨttpRequsetCenter()
+//            httpObj.getTopicContentHistory(self.ownerId!,topicId: self.topicId!, InViewAct: { (returnData2) in
+//                //                returnData2:
+//                //                unblock_level
+//                //                img
+//                //                my_img
+//                //                msg
+//                let myImg = base64ToImage(returnData2["my_img"] as! String)
+//                
+//                let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
+//                
+//                dispatch_async(dispatch_get_main_queue(), {
+//                    self.myPhoto.image = myImg
+//                    
+//                    let chatViewCon = self.storyboard?.instantiateViewControllerWithIdentifier("chatView2") as! ChatViewController
+//                    
+//                    
+//                    
+//                    //chatViewCon.historyMsg = msg
+//                })
+//                
+//                
+//            })
+//        }
+//        //dispatch_async(dispatch_get_main_queue(), {})
+//    }
+    
     
     // MARK: 設定搜尋列
     func configureTopicSearchController() {
@@ -276,4 +402,11 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     }
     
 }
+
+
+
+
+
+
+
 

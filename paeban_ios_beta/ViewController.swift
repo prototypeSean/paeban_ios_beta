@@ -14,6 +14,12 @@ import FBSDKLoginKit
 public var socket:WebSocket!
 public var wsActive = webSocketActiveCenter()
 public var cookie:String?
+public struct setUserData{
+    var id:String?
+    var name:String?
+    var imgString:String?
+}
+public var userData = setUserData()
 
 class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelegate{
     
@@ -114,7 +120,7 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
         //print(NSDate())
     }
     func websocketDidReceiveMessage(socket: WebSocket, text: String){
-        print("msgincome=======")
+        //print("msgincome=======")
         let msgPack = ws_onmsg(text)
         wsActive.wsOnMsg(msgPack)
         

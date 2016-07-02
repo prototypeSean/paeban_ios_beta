@@ -7,7 +7,9 @@
 //
 
 import Foundation
+import UIKit
 
+//MARK: 封裝成json
 func json_dumps(input_data:NSDictionary) ->NSData{
     var ouput_data:NSData?
     do {
@@ -20,6 +22,8 @@ func json_dumps(input_data:NSDictionary) ->NSData{
     return ouput_data!
 }
 
+
+//MARK: 解封json
 func json_load(input_data:String) ->NSDictionary{
     var ouput : NSDictionary?
     let input_data_2 = input_data.dataUsingEncoding(NSUTF8StringEncoding)
@@ -33,6 +37,8 @@ func json_load(input_data:String) ->NSDictionary{
     return ouput!
 }
 
+
+//MARK: 擷取cookie裡的csrftoken值
 func getCSRFToken(cookie:String) -> String? {
     let keyWord = "csrftoken="
     
@@ -76,5 +82,18 @@ func getCSRFToken(cookie:String) -> String? {
         }
     }
     return String(ouputCookie)
+}
+
+
+//MARK: base64轉換成UIImage
+func base64ToImage(encodedImageData:String) -> UIImage?{
+    let index = encodedImageData.characters.startIndex.advancedBy(23)
+    let out = encodedImageData.substringFromIndex(index)
+    let dataDecoded:NSData? = NSData(base64EncodedString: out, options: NSDataBase64DecodingOptions())
+    var  decodedimage:UIImage?
+    if dataDecoded != nil{
+        decodedimage = UIImage(data: dataDecoded!)
+    }
+    return decodedimage
 }
 
