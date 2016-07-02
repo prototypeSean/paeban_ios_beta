@@ -147,16 +147,18 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         }
         cell.sex.image = sexImg
         
-        var onlineImg:UIImage
+        let onlineimage = cell.online
+        
+        onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+
         if topic.online{
-            onlineImg = UIImage(named:"texting")!
+            onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
         //MARK:下面那張圖請改 “不在線上的人圖示”
         else{
-            onlineImg = UIImage(named:"topic")!
+            onlineimage.tintColor = UIColor.grayColor()
         }
-        cell.online.image = onlineImg
-
+//        cell.online.image = onlineimage.image
         // Configure the cell...
 
         return cell
@@ -242,6 +244,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     
     func didStartSearching() {
         shouldShowSearchResults = true
+        self.topicSearchController.customSearchBar.showsCancelButton = true
         topicList.reloadData()
     }
     
@@ -255,6 +258,8 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     
     func didTapOnCancelButton() {
         shouldShowSearchResults = false
+        self.topicSearchController.customSearchBar.text = ""
+        self.topicSearchController.customSearchBar.setShowsCancelButton(false, animated: true)
         topicList.reloadData()
     }
     

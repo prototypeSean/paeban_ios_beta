@@ -26,6 +26,8 @@ class TopicCellTableViewCell: UITableViewCell {
     
     @IBOutlet weak var online: UIImageView!
     
+    // 記得控制的時候要用sizeToFit()讓他自動調整長度
+    @IBOutlet weak var topicOwner: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

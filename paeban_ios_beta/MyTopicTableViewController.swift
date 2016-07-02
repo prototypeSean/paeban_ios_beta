@@ -58,8 +58,8 @@ class MyTopicTableViewController: UITableViewController {
         
         let topic = mytopic[indexPath.row]
         
-        cell.repliedContent.text = topic.title
-        cell.repliedImage.image = topic.photo
+//        cell.repliedContent.text = topic.title
+//        cell.repliedImage.image = topic.photo
 
         return cell
     }
