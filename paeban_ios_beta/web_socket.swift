@@ -55,6 +55,8 @@ public class webSocketActiveCenter{
     let wsad_ForTopicTableViewControllerList = ["off_line","new_member"]
     var wasd_ForTopicViewController:webSocketActiveCenterDelegate?
     let wasd_ForTopicViewControllerList = []
+    var wasd_ForChatViewController:webSocketActiveCenterDelegate?
+    let wasd_ForChatViewControllerList = ["topic_msg"]
     
     
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
@@ -72,6 +74,9 @@ public class webSocketActiveCenter{
             
             if wsad_ForTopicTableViewControllerList.indexOf(msgtypeString) != nil {
                 wsad_ForTopicTableViewController?.wsOnMsg(msg)
+            }
+            if wasd_ForChatViewControllerList.indexOf(msgtypeString) != nil {
+                wasd_ForChatViewController?.wsOnMsg(msg)
             }
             
         }

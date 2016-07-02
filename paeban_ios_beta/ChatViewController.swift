@@ -9,7 +9,7 @@
 import UIKit
 import JSQMessagesViewController
 
-class ChatViewController: JSQMessagesViewController {
+class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegate {
     @IBOutlet weak var topicTitle: UILabelPadding!
     
         // MARK: Properties
@@ -78,6 +78,7 @@ class ChatViewController: JSQMessagesViewController {
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
 //      上面要留白多高
 //      self.topContentAdditionalInset = 90
+        wsActive.wasd_ForChatViewController = self
     }
     
     // 下面兩個負責讀取訊息
@@ -138,14 +139,48 @@ class ChatViewController: JSQMessagesViewController {
     
     //MARK:送出按鈕按下後
     override func didPressSendButton(button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: NSDate?) {
+        //送出WS訊息
+        let tempTopicMsgId = String(NSDate().timeIntervalSince1970)
+        let dataDic:NSDictionary = [
+            "msg_type":"topic_msg",
+            "msg":text!,
+            "receiver":ownerId!,
+            "temp_topic_msg_id":tempTopicMsgId,
+            "topic_id":topicId!
+        ]
+        let sendData = json_dumps(dataDic)
+        socket.writeData(sendData)
+        
         
         
         self.messages.append(JSQMessage2(senderId: senderId, displayName: senderDisplayName, text: text))
         self.finishSendingMessageAnimated(true)
         self.collectionView?.reloadData()
-        print("=====================")
-        print(self.messages)
     }
+    
+    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+        let msgType =  msg["msg_type"] as! String
+        if msgType == "topic_msg"{
+            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
+            for dicKey in resultDic{
+                let msgData = dicKey.1 as! Dictionary<String,AnyObject>
+                if msgData["sender"] as? String == setID{
+                    //移除送出中的符號
+                    print("自己說話回傳確認")
+                }
+                else{
+                    print(msgData)
+                    let msgToJSQ = JSQMessage2(senderId: msgData["sender"] as? String, displayName: "non", text: msgData["topic_content"] as? String)
+                    messages += [msgToJSQ]
+                    self.finishSendingMessageAnimated(true)
+                    self.collectionView?.reloadData()
+                }
+            }
+            //let msgPack = JSQMessage2(senderId: <#T##String!#>, displayName: <#T##String!#>, text: <#T##String!#>)
+        }
+    
+    }
+    
     var aspectRatioConstraint: NSLayoutConstraint? {
         willSet {
             if let existingConstraint = aspectRatioConstraint {

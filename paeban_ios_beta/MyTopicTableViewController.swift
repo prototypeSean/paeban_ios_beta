@@ -56,7 +56,7 @@ class MyTopicTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! MyTopicTableViewCell
         
-        let topic = mytopic[indexPath.row]
+        //let topic = mytopic[indexPath.row]
         
 //        cell.repliedContent.text = topic.title
 //        cell.repliedImage.image = topic.photo
