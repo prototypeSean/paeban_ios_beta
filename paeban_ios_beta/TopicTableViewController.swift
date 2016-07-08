@@ -167,6 +167,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         cell.hashtags.tagListInContorller = topic.hashtags
         cell.hashtags.drawButton()
         cell.topicTitle.text = topic.title
+        cell.topicOwner.text = topic.ownerName
         cell.topicOwnerImage.image = topic.photo
         
         var isMeImg:UIImage
@@ -204,7 +205,9 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         }
 //        cell.online.image = onlineimage.image
         // Configure the cell...
-
+        
+        
+        
         return cell
     }
     // MARK:向下滾動更新

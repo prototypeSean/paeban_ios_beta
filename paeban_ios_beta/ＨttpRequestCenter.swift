@@ -73,7 +73,6 @@ class ＨttpRequsetCenter{
     private func topic_type(ouput_json:Dictionary<NSObject, AnyObject>)->Array<Topic>{
         let type_key:NSObject = "msg_type"
         var topic_list_temp = [Topic]()
-        
         if ouput_json[type_key] as! String == "new_topic"{
             var dataKeyList:[String] = []   //排序topicId清單
             for data_key in ouput_json.keys{
@@ -117,7 +116,8 @@ class ＨttpRequsetCenter{
                     topicID: String(dataKey),
                     sex:ouput_json[dataKey]!["sex"] as! String,
                     isMe:isMe,
-                    online:online
+                    online:online,
+                    ownerName:ouput_json[dataKey]!["name"] as! String
                     )!
                 topic_list_temp.append(topic_temp)
             }

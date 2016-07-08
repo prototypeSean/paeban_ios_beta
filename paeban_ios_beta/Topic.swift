@@ -18,10 +18,11 @@ class Topic {
     var sex:String
     var isMe:Bool
     var online:Bool
+    var ownerName:String
     
     // MARK: Initialization
     
-    init?(owner: String, photo: UIImage, title: String, hashtags:[String], lastline: String, topicID:String, sex:String, isMe:Bool, online:Bool){
+    init?(owner: String, photo: UIImage, title: String, hashtags:[String], lastline: String, topicID:String, sex:String, isMe:Bool, online:Bool, ownerName:String){
         self.owner = owner
         self.photo = photo
         self.title = title
@@ -31,6 +32,7 @@ class Topic {
         self.isMe = isMe
         self.online = online
         self.topicID = topicID
+        self.ownerName = ownerName
         
         if owner.isEmpty || title.isEmpty {
             return nil
