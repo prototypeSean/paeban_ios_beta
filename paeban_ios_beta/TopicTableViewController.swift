@@ -11,7 +11,7 @@ import Starscream
 public var tagList:[String] = []
 
 // 所有話題清單 其實不是tabelveiw 是 UIview
-class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate{
+class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate,TopicViewControllerDelegate{
     // MARK: Properties
     
     var topicSearchController: TopicSearchController!
@@ -51,7 +51,14 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         //socket.delegate = self
         
         
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
+        topicList.addSubview(refreshControl)
+        configureTopicSearchController()
         
+        // 我不知道為什麼-1 就可以了 高度明明是35....
+        topicList.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
+
     }
     // MARk:更新程式
     
@@ -64,7 +71,12 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                 }
                 set{
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.topics = self.topics + newValue
+                        for newValue_s in newValue{
+                            if newValue_s.owner != userData.id{
+                                self.topics += [newValue_s]
+                            }
+                        }
+
                         self.topicList.reloadData()
                     })
                 }
@@ -74,19 +86,14 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             })
             
         }
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
-        topicList.addSubview(refreshControl)
-        configureTopicSearchController()
         
-        // 我不知道為什麼-1 就可以了 高度明明是35....
-        topicList.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
 
         
     }
     
-    func update(refreshControl:UIRefreshControl){
+    func update(refreshControl:UIRefreshControl?){
         if requestUpDataSwitch == true{
+            print("updataing")
             self.requestUpDataSwitch = false
             let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
@@ -96,9 +103,14 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                     }
                     set{
                         dispatch_async(dispatch_get_main_queue(), {
-                            self.topics = self.topics + newValue
+                            self.topics = []
+                            for newValue_s in newValue{
+                                if newValue_s.owner != userData.id{
+                                    self.topics += [newValue_s]
+                                }
+                            }
                             self.topicList.reloadData()
-                            refreshControl.endRefreshing()
+                            refreshControl?.endRefreshing()
                             self.requestUpDataSwitch = true
                         })
                     }
@@ -110,7 +122,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             }
         }
         else{
-            refreshControl.endRefreshing()
+            refreshControl?.endRefreshing()
         }
     }
     
@@ -228,11 +240,14 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                         temp_topic = temp_topic2
                     })
                 }
+                else{
+                    self.requestUpDataSwitch = true
+                }
+                
             }
         }
     }
-    
-    //NSIndexPath* ipath = [NSIndexPath indexPathForRow: cells_count-1 inSection: sections_count-1];
+        //NSIndexPath* ipath = [NSIndexPath indexPathForRow: cells_count-1 inSection: sections_count-1];
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
 
     
@@ -261,11 +276,42 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                     self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
                 }
             }
+                
+            //關閉話題
+            else if msg_type == "topic_closed"{
+                let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
+                if closeTopicIdList != nil{
+                    var removeTopicIndexList:Array<Int> = []
+                    for closeTopicId in closeTopicIdList!{
+                        let closeTopicIndex = topics.indexOf({ (Topic) -> Bool in
+                            if Topic.topicID == closeTopicId{
+                                return true
+                            }
+                            else{return false}
+                        })
+                        if closeTopicIndex != nil{
+                            removeTopicIndexList.append(closeTopicIndex! as Int)
+                        }
+                    }
+                    removeTopicIndexList = removeTopicIndexList.sort(>)
+                    for removeTopicIndex in removeTopicIndexList{
+                        topics.removeAtIndex(removeTopicIndex)
+                    }
+                    topicList.reloadData()
+                }
+            }
+            
+            
+            
+            
+            
+            
+            
         }
         
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        print(segue.identifier)
+        //print(segue.identifier)
         let indexPath = topicList.indexPathForSelectedRow!
         //print(indexPath.row)
         let dataposition:Int = indexPath.row
@@ -281,39 +327,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             topicViewCon.ownerImg = selectTopicData.photo
             topicViewCon.topicTitle = selectTopicData.title
             topicViewCon.title = "你要插啥？"
-            
-            
-            
-//            let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
-//            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-//                let httpObj = ＨttpRequsetCenter()
-//                httpObj.getTopicContentHistory(selectTopicData.owner,topicId: selectTopicData.topicID, InViewAct: { (returnData2) in
-//                    //                returnData2:
-//                    //                unblock_level
-//                    //                img
-//                    //                my_img
-//                    //                msg
-//                    let myImg = base64ToImage(returnData2["my_img"] as! String)
-//                    
-//                    let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
-//                    
-//                    dispatch_async(dispatch_get_main_queue(), {
-//                        topicViewCon.myPhoto.image = myImg
-//                        
-//                        topicViewCon.msg = msg
-//                        
-//                        
-//                        
-//                        //chatViewCon.historyMsg = msg
-//                    })
-//                    
-//                    
-//                })
-//            }
-            
-            
-            
-            
+            topicViewCon.delegate = self
         }
         
         
@@ -372,7 +386,19 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         // Reload the tableview.
         topicList.reloadData()
     }
-    
+    func reLoadTopic(topicId:String){
+        let removeTopicPosition = topics.indexOf { (Topic) -> Bool in
+            if Topic.topicID == topicId{
+                return true
+            }
+            else{return false}
+        }
+        if removeTopicPosition != nil{
+            topics.removeAtIndex(removeTopicPosition! as Int)
+            topicList.reloadData()
+        }
+        
+    }
 }
 
 

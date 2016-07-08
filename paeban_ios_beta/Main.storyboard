@@ -357,7 +357,7 @@
                     <connections>
                         <outlet property="topicList" destination="O0h-4r-Zjc" id="eDN-Rq-DvL"/>
                         <segue destination="FBi-3N-jAs" kind="show" identifier="clientModeSegue" id="wZO-VC-xmQ"/>
-                        <segue destination="hyw-hk-lQB" kind="show" identifier="masterModeSegue" id="z2m-li-IEv"/>
+                        <segue destination="Vi6-O5-kqk" kind="show" identifier="masterModeSegue" id="sI7-K5-nbz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4c-w9-wSg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1001,6 +1001,6 @@
         <image name="小明" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="z2m-li-IEv"/>
+        <segue reference="sI7-K5-nbz"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -93,7 +93,7 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
     var reConnectCount:Int = 0
     
     func stayConnect() {
-        print(NSDate())
+        //print(NSDate())
         ws_stay_connect(socket)
     }
     

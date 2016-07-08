@@ -51,18 +51,19 @@ public class webSocketActiveCenter{
     
     let mainWorkList = ["online"]
     
+    var test_List = ["remove_old_topics","topic_closed","new_topic"]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
-    let wsad_ForTopicTableViewControllerList = ["off_line","new_member"]
+    let wsad_ForTopicTableViewControllerList = ["off_line","new_member","topic_closed"]
     var wasd_ForTopicViewController:webSocketActiveCenterDelegate?
-    let wasd_ForTopicViewControllerList = []
+    let wasd_ForTopicViewControllerList = ["topic_msg","topic_closed"]
     var wasd_ForChatViewController:webSocketActiveCenterDelegate?
-    let wasd_ForChatViewControllerList = ["topic_msg"]
+    let wasd_ForChatViewControllerList = ["topic_msg","topic_content_been_read"]
     
     
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
             let msgtypeString = msgtype as! String
-            //print(msgtypeString)
+            //print("======\(msgtypeString)=========")
             
             if mainWorkList.indexOf(msgtypeString) != nil {
                 if msgtypeString == "online"{
@@ -77,6 +78,17 @@ public class webSocketActiveCenter{
             }
             if wasd_ForChatViewControllerList.indexOf(msgtypeString) != nil {
                 wasd_ForChatViewController?.wsOnMsg(msg)
+            }
+            if wasd_ForTopicViewControllerList.indexOf(msgtypeString) != nil {
+                wasd_ForTopicViewController?.wsOnMsg(msg)
+            }
+            if test_List.indexOf(msgtypeString) != nil {
+                print("======\(msgtypeString)=========")
+                print(msg)
+//                if msgtypeString == "remove_old_topics"{
+//                    let list = msg["old_topic_list"] as! Array<String>
+//                    print(list)
+//                }
             }
             
         }

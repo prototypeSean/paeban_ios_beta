@@ -170,9 +170,9 @@
 				932A00D91CFEBA460036E1EA /* TopicNavViewController.swift */,
 				932A00D61CFEBA460036E1EA /* TopicCellTableViewCell.swift */,
 				932A00D51CFEBA460036E1EA /* TopicTableViewController.swift */,
+				932A00DA1CFEBA460036E1EA /* TopicViewController.swift */,
 				9301F6031D1D16F900D1F8C0 /* TopicSearchBar.swift */,
 				9301F6051D1D1A2800D1F8C0 /* TopicSearchController.swift */,
-				932A00DA1CFEBA460036E1EA /* TopicViewController.swift */,
 				932A00D41CFEBA460036E1EA /* Topic.swift */,
 				930983E71D056971005B8E3B /* HashTagsContorller.swift */,
 			);

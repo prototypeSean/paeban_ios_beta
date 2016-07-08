@@ -21,7 +21,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     var topicId:String?
     var ownerId:String?
     
-    
+    //collectionView(_:attributedTextForMessageBubbleTopLabelAtIndexPath:)
+    //MARK:讀入歷史訊息
     var historyMsg:Dictionary<String,AnyObject>{
         get{return [:]}
         set{
@@ -35,6 +36,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 let text = msg_s.1["text"] as! String
                 let tempMsg_s = JSQMessage2(senderId: sender, displayName: "anonymous", text: text)
                 tempMsg_s.topicContentId = msg_s.0
+                if sender == setID && msg_s.1["read"] as! Bool == true{
+                    tempMsg_s.isRead = true
+                }
                 tempMsgList += [tempMsg_s]
             }
             let retureList = tempMsgList.sort { (msg0, msg1) -> Bool in
@@ -52,7 +56,27 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             self.collectionView?.reloadData()
         }
     }
+    var topicNotExist:String?{
+        get{return ""}
+        set{
+            navigationController?.popViewControllerAnimated(true)
+        }
+    }
     
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        return CGFloat(20)
+    }
+    //MARK:顯示"已讀"
+    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+        if messages[indexPath.item].isRead == true{
+            return NSAttributedString(string:"已讀")
+        }
+        else{
+            return NSAttributedString(string:"")
+        }
+    }
+
     
     // 設定訊息顏色，用JSQ的套件
     private func setupBubbles() {
@@ -140,7 +164,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     //MARK:送出按鈕按下後
     override func didPressSendButton(button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: NSDate?) {
         //送出WS訊息
-        let tempTopicMsgId = String(NSDate().timeIntervalSince1970)
+        let timeNow = Int(NSDate().timeIntervalSince1970)
+        let tempTopicMsgId = String(timeNow)
         let dataDic:NSDictionary = [
             "msg_type":"topic_msg",
             "msg":text!,
@@ -148,16 +173,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             "temp_topic_msg_id":tempTopicMsgId,
             "topic_id":topicId!
         ]
-        let sendData = json_dumps(dataDic)
-        socket.writeData(sendData)
+        let appendMsg = JSQMessage2(senderId: senderId, displayName: senderDisplayName, text: text)
+        appendMsg.topicTempid = tempTopicMsgId
+        self.messages.append(appendMsg)
         
-        
-        
-        self.messages.append(JSQMessage2(senderId: senderId, displayName: senderDisplayName, text: text))
         self.finishSendingMessageAnimated(true)
         self.collectionView?.reloadData()
+        let sendData = json_dumps(dataDic)
+        socket.writeData(sendData)
     }
-    
+    //MARK:ws回傳信號
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
         if msgType == "topic_msg"{
@@ -165,18 +190,59 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             for dicKey in resultDic{
                 let msgData = dicKey.1 as! Dictionary<String,AnyObject>
                 if msgData["sender"] as? String == setID{
-                    //移除送出中的符號
-                    print("自己說話回傳確認")
+                    //自己說的話
+                    //可插入“移除送出中的符號”的code
+                    //print(msg)
+                    
+                    let temp_topic_msg_id = msgData["temp_topic_msg_id"] as! String
+                    let findElement = messages.indexOf({ (target) -> Bool in
+                        if target.topicTempid == temp_topic_msg_id{
+                            return true
+                        }
+                        else{return false}
+                    })
+                    if let targetPosition = findElement{
+                        messages[targetPosition].topicContentId = dicKey.0
+                    }
                 }
                 else{
-                    print(msgData)
+                    //別人說的話
+                    //topic_content_read
+                    //topic_content_id
+                    //print(msg)
                     let msgToJSQ = JSQMessage2(senderId: msgData["sender"] as? String, displayName: "non", text: msgData["topic_content"] as? String)
+                    msgToJSQ.topicContentId = dicKey.0
                     messages += [msgToJSQ]
+                    
+                    let sendData = [
+                        "msg_type":"topic_content_read",
+                        "topic_content_id":dicKey.0
+                    ]
+                    socket.writeData(json_dumps(sendData))
                     self.finishSendingMessageAnimated(true)
                     self.collectionView?.reloadData()
                 }
             }
-            //let msgPack = JSQMessage2(senderId: <#T##String!#>, displayName: <#T##String!#>, text: <#T##String!#>)
+            
+        }
+        else if msgType == "topic_content_been_read"{
+            let topicContentId = msg["topic_content_id"] as! String
+            //print(msg)
+            let topicContentPosition = messages.indexOf({ (target) -> Bool in
+                let targetId = target.topicContentId
+                if targetId == topicContentId{
+                    return true
+                }
+                else{
+                    return false
+                }
+            })
+            if topicContentPosition != nil{
+                messages[topicContentPosition!].isRead = true
+                //print("xxx")
+                self.collectionView?.reloadData()
+            }
+            
         }
     
     }
@@ -198,6 +264,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
 class JSQMessage2:JSQMessage{
     var topicContentId:String?  //來自server定義的id
     var topicTempid:String? //臨時自定義id
+    var isRead:Bool?
     //16 118  127
 }
 
