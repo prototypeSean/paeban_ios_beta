@@ -18,7 +18,6 @@ class ＨttpRequsetCenter{
     var delegate:ＨttpResquestDelegate?
     var topic_list = [Topic]()
     
-
     func getTopic(topicData:[Topic] -> Void){
         let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=new"
@@ -27,7 +26,6 @@ class ＨttpRequsetCenter{
             topicData(turnToType)
         }
     }
-    
     
     func getOldTopic(topicID:Int,topicData:[Topic]->Void){
         let topicIdToString = String(topicID)
@@ -39,13 +37,7 @@ class ＨttpRequsetCenter{
         }
         
     }
-//    func getNewTopic(topicID:Int){
-//        self.topic_list = []
-//        let topicIdToString = String(topicID)
-//        let sentData = "mode=old;min_topic_id=\(topicIdToString)"
-//        topicUpdate(sentData)
-//    }
-    
+
     func topicUserMode(topicId:String,InViewAct: (returnData2:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/topic_user_mode/"
         let sendData = "mode=check_user_mode;topic_id=\(topicId)"
@@ -54,17 +46,22 @@ class ＨttpRequsetCenter{
             
         }
         
-//        returnData:
-//        topic_s 歷史紀錄
-//        img  我的模糊照
-//        my_topic_id_list 我開的topic id列表
-//        check_user_mode 對話模式
+
     }
+    
     func getTopicContentHistory(topicReceiverId:String,topicId:String,InViewAct: (returnData2:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/topic_user_mode/"
         let sendData = "mode=get_topic_content_history;topic_receiver_id=\(topicReceiverId);topic_id=\(topicId)"
         ajax(url, sendDate: sendData) { (returnData) in
             InViewAct(returnData2: returnData as Dictionary)
+        }
+    }
+    
+    func requestMyTopic(InViewAct: (returnData:Dictionary<String,AnyObject>)->Void){
+        let url = "http://www.paeban.com/topic_update/"
+        let sendData = "mode=request_my_topic"
+        ajax(url, sendDate: sendData) { (returnDic) in
+            InViewAct(returnData: returnDic)
         }
     }
     // MARK:================私有函數===============
@@ -124,35 +121,6 @@ class ＨttpRequsetCenter{
         }
         return topic_list_temp
     }
-    // MARK:請求Topic公用部份
-//    private func topicUpdate(sendDate:String){
-//        let url = "http://www.paeban.com/topic_update/"
-//        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
-//        request.HTTPMethod = "POST"
-//        let csrf = getCSRFToken(cookie!)
-//        request.allHTTPHeaderFields = ["Cookie":cookie!]
-//        request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
-//        request.HTTPBody = sendDate.dataUsingEncoding(NSUTF8StringEncoding)
-//        let session = NSURLSession.sharedSession()
-//        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-//            if error != nil{
-//                print("連線錯誤\(error)")
-//            }
-//            else{
-//                let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
-//                let ouput_json = json_load(ouput) as Dictionary
-//                //print(ouput_json)
-//                self.topic_list = self.topic_type(ouput_json)
-//                self.delegate?.new_topic_did_load(self)
-//            }
-//        })
-//        task.resume()
-//        var while_protect = 0
-//        while topic_list.isEmpty || while_protect < 100{
-//            sleep(1/10)
-//            while_protect += 1
-//        }
-//    }
     private func ajax(url:String,sendDate:String,outPutDic:Dictionary<String,AnyObject> -> Void){
         var ouput:String?
         var ouput_json = [String:AnyObject]()

@@ -1,24 +1,19 @@
 //
-//  MyTopicTableViewCell.swift
-//  paeban_ios_test_3
+//  TopicSecTableViewCell.swift
+//  paeban_ios_beta
 //
-//  Created by 尚義 高 on 2016/5/6.
+//  Created by 工作用 on 2016/7/9.
 //  Copyright © 2016年 尚義 高. All rights reserved.
 //
 
 import UIKit
 
-class MyTopicTableViewCell: UITableViewCell {
+class TopicSecTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var topicTitle: UILabel!
-    @IBOutlet weak var unRead: UILabel!
-    @IBOutlet weak var topicTableDetail: topicSecTableView!
-    
-    var tempList:Array<MyTopicTitle>?
+    @IBOutlet weak var clientName: UILabel!
     
     
     
-
     
     override func awakeFromNib() {
         super.awakeFromNib()
