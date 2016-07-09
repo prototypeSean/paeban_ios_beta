@@ -33,7 +33,6 @@
 		932A00F31CFEBA460036E1EA /* web_socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00E11CFEBA460036E1EA /* web_socket.swift */; };
 		932A00F51D0025AC0036E1EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 932A00F41D0025AC0036E1EA /* Assets.xcassets */; };
 		93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */; };
-		CFAC257D1D310A5A00149CC6 /* TopicSecTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257C1D310A5A00149CC6 /* TopicSecTableView.swift */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
 		E94BDD381436514219660B42 /* Pods_paeban_ios_beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32578316BF0D1896CBB03988 /* Pods_paeban_ios_beta.framework */; };
 /* End PBXBuildFile section */
@@ -69,7 +68,6 @@
 		932A00E11CFEBA460036E1EA /* web_socket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = web_socket.swift; sourceTree = "<group>"; };
 		932A00F41D0025AC0036E1EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		CFAC257C1D310A5A00149CC6 /* TopicSecTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableView.swift; sourceTree = "<group>"; };
 		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
 		EB67E2D41D7B1D1796AAE10D /* Pods-paeban_ios_beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.release.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -147,7 +145,6 @@
 			children = (
 				932A00DD1CFEBA460036E1EA /* MyTopicTableViewController.swift */,
 				932A00DC1CFEBA460036E1EA /* MyTopicTableViewCell.swift */,
-				CFAC257C1D310A5A00149CC6 /* TopicSecTableView.swift */,
 				CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */,
 				930983E11D0166F5005B8E3B /* MyTopics.swift */,
 			);
@@ -342,7 +339,6 @@
 				932A00E31CFEBA460036E1EA /* ToolsFunction.swift in Sources */,
 				932A00F01CFEBA460036E1EA /* ChatViewController.swift in Sources */,
 				932A00EE1CFEBA460036E1EA /* MyTopicTableViewCell.swift in Sources */,
-				CFAC257D1D310A5A00149CC6 /* TopicSecTableView.swift in Sources */,
 				932A00EF1CFEBA460036E1EA /* MyTopicTableViewController.swift in Sources */,
 				932A00EC1CFEBA460036E1EA /* TopicViewController.swift in Sources */,
 			);
