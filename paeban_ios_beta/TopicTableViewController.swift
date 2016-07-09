@@ -60,8 +60,8 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         topicList.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
 
     }
-    // MARk:更新程式
     
+    // MARk:更新程式
     private func gettopic(){
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
@@ -84,11 +84,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             self.httpOBJ.getTopic({ (temp_topic2) in
                 temp_topic = temp_topic2
             })
-            
         }
-        
-
-        
     }
     
     func update(refreshControl:UIRefreshControl?){
@@ -130,13 +126,12 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         //print("websocket data did load")
     }
     
-    
-
+    // MARK: TableView 的內建功能
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-    //MARK
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let indexPath = topicList.indexPathForSelectedRow!
         let dataposition:Int = indexPath.row
@@ -154,7 +149,6 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         return topics.count
     }
 
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         // Table view cells are reused and should be dequeued using a cell identifier.
@@ -210,7 +204,8 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         
         return cell
     }
-    // MARK:向下滾動更新
+    
+    // MARK: 向下滾動更新
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let scroolHeight = self.topicList.contentOffset.y + self.topicList.frame.height
         let contentHeight = self.topicList.contentSize.height
@@ -253,8 +248,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         //NSIndexPath* ipath = [NSIndexPath indexPathForRow: cells_count-1 inSection: sections_count-1];
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
 
-    
-    //MARK:websocketDelegate
+    // MARK: websocketDelegate
     func wsOnMsg(msg:Dictionary<String,AnyObject>) {
         if let msg_type:String =  msg["msg_type"] as? String{
             
@@ -313,6 +307,8 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         }
         
     }
+    
+    // MARK: 準備跳頁
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         //print(segue.identifier)
         let indexPath = topicList.indexPathForSelectedRow!
@@ -363,7 +359,6 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         topicList.reloadData()
     }
     
-    
     func didTapOnSearchButton() {
         if !shouldShowSearchResults {
             shouldShowSearchResults = true
@@ -389,6 +384,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         // Reload the tableview.
         topicList.reloadData()
     }
+    
     func reLoadTopic(topicId:String){
         let removeTopicPosition = topics.indexOf { (Topic) -> Bool in
             if Topic.topicID == topicId{
@@ -400,7 +396,6 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             topics.removeAtIndex(removeTopicPosition! as Int)
             topicList.reloadData()
         }
-        
     }
 }
 
