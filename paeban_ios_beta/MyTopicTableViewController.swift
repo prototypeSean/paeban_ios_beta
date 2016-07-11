@@ -143,6 +143,11 @@ class MyTopicTableViewController: UITableViewController {
         cell.heightOfCell = heightOfSecCell
         cell.reloadCell()
         
+        // 修改按下顏色
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.whiteColor()
+        cell.selectedBackgroundView = backgroundView
+        
         //cell.setDelegate()
         return cell
     }

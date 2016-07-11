@@ -235,7 +235,7 @@
 				TargetAttributes = {
 					931FF1901CFEA848000E7F8A = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 473T6T639P;
+						DevelopmentTeam = 4HS2232BLN;
 					};
 				};
 			};
@@ -441,14 +441,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/paeban_ios_beta",
 				);
 				INFOPLIST_FILE = paeban_ios_beta/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "DK.paeban-ios-beta";
+				PRODUCT_BUNDLE_IDENTIFIER = "denniskao1986-gmail.com";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -460,14 +462,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/paeban_ios_beta",
 				);
 				INFOPLIST_FILE = paeban_ios_beta/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "DK.paeban-ios-beta";
+				PRODUCT_BUNDLE_IDENTIFIER = "denniskao1986-gmail.com";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
