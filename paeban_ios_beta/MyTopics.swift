@@ -11,21 +11,25 @@ import UIKit
 class MyTopicTitle {
     var topicTitle:String
     var topics:Array<MyTopicDetail>
-    var unRead:String{
+    var topicId:String
+    var unReadS:Int{
         get{
             var unReadCount = 0
             for MyTopicDetail_s in topics{
-                if MyTopicDetail_s.unRead == true{
+                if MyTopicDetail_s.read == false{
                     unReadCount += 1
                 }
             }
-            return "未讀：\(unReadCount)/\(topics.count)"
+            return unReadCount
         }
     }
-    
-    init(topicTitle:String, topics:Array<MyTopicDetail>){
+    var unReadM:Int{
+        get{return topics.count}
+    }
+    init(topicTitle:String, topics:Array<MyTopicDetail>, topicId:String){
         self.topicTitle = topicTitle
         self.topics = topics
+        self.topicId = topicId
     }
 
 }
@@ -40,12 +44,12 @@ class MyTopicDetail {
     var clientOnline:Bool
     var lastLine: String
     var lastSpeaker:String
-    var unRead:Bool = false
+    var read:Bool = false
     
     
     // MARK: Initialization
     
-    init(clientId:String, clientName:String, clientPhoto: UIImage?, clientIsRealPhoto:Bool, clientSex:String, clientOnline:Bool, lastLine: String, lastSpeaker:String){
+    init(clientId:String, clientName:String, clientPhoto: UIImage?, clientIsRealPhoto:Bool, clientSex:String, clientOnline:Bool, lastLine: String, lastSpeaker:String, read:Bool){
         
         self.clientId = clientId
         self.clientName = clientName
@@ -55,6 +59,7 @@ class MyTopicDetail {
         self.clientOnline = clientOnline
         self.lastLine = lastLine
         self.lastSpeaker = lastSpeaker
+        self.read = read
         
     }
     

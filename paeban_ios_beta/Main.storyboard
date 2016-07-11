@@ -519,14 +519,14 @@
                                             </constraints>
                                         </stackView>
                                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="129" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kzr-5b-o2E">
-                                            <rect key="frame" x="8" y="73" width="584" height="181"/>
+                                            <rect key="frame" x="8" y="73" width="584" height="182"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="32d-40-RpX"/>
                                                 <constraint firstAttribute="height" constant="50" id="TBh-gO-0rp"/>
                                             </constraints>
                                             <prototypes>
-                                                <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="95" id="YR8-FS-JTg" customClass="TopicSecTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
+                                                <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell2" rowHeight="95" id="YR8-FS-JTg" customClass="TopicSecTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="28" width="584" height="95"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YR8-FS-JTg" id="Xdk-wf-EhQ">
@@ -683,7 +683,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="喵喵" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ssQ-Mf-2P6">
-                                                                <rect key="frame" x="74" y="8" width="34" height="21"/>
+                                                                <rect key="frame" x="523" y="8" width="53" height="28"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -713,6 +713,12 @@
                                                     </tableViewCellContentView>
                                                     <connections>
                                                         <outlet property="clientName" destination="ssQ-Mf-2P6" id="3Bq-GT-yrM"/>
+                                                        <outlet property="isTruePhoto" destination="zxL-0G-c5B" id="UEc-Ml-dtb"/>
+                                                        <outlet property="lastLine" destination="6q6-cM-8k4" id="2Ij-0z-yDr"/>
+                                                        <outlet property="onlineLogo" destination="emj-9P-mzy" id="wiP-1k-kno"/>
+                                                        <outlet property="photo" destination="7eN-S9-UjC" id="8pE-Fh-p4x"/>
+                                                        <outlet property="sexLogo" destination="De9-Ng-agf" id="m5k-jA-pbU"/>
+                                                        <outlet property="speaker" destination="qe8-9p-RhF" id="l98-VZ-Wsp"/>
                                                     </connections>
                                                 </tableViewCell>
                                             </prototypes>
@@ -754,7 +760,8 @@
                                 <connections>
                                     <outlet property="topicTableDetail" destination="kzr-5b-o2E" id="cLj-Dw-CBP"/>
                                     <outlet property="topicTitle" destination="eYJ-3A-UKG" id="cNH-5o-l5U"/>
-                                    <outlet property="unRead" destination="G7c-JF-Jmy" id="m9t-3C-voE"/>
+                                    <outlet property="unReadM" destination="OQY-K7-R9L" id="v9g-HU-R6g"/>
+                                    <outlet property="unReadS" destination="cz8-aV-839" id="p7M-KV-j5d"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

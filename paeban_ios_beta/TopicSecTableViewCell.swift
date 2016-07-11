@@ -11,6 +11,12 @@ import UIKit
 class TopicSecTableViewCell: UITableViewCell {
 
     @IBOutlet weak var clientName: UILabel!
+    @IBOutlet weak var speaker: UILabel!
+    @IBOutlet weak var lastLine: UILabel!
+    @IBOutlet weak var photo: UIImageView!
+    @IBOutlet weak var isTruePhoto: UIImageView!
+    @IBOutlet weak var sexLogo: UIImageView!
+    @IBOutlet weak var onlineLogo: UIImageView!
     
     
     

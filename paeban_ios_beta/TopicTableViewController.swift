@@ -120,6 +120,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         else{
             refreshControl?.endRefreshing()
         }
+        
     }
     
     func new_topic_did_load(http_obj:ＨttpRequsetCenter){
