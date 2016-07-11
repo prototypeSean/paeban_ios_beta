@@ -14,9 +14,10 @@ class MyTopicTableViewController: UITableViewController {
 
     // MARK: Properties
     var mytopic:Array<MyTopicTitle> = []
-    let heightOfCell:CGFloat = 80
-    var heightOfSecCell:CGFloat = 100
+    let heightOfCell:CGFloat = 85
+    var heightOfSecCell:CGFloat = 130
     var selectItemId:String?
+    var switchFirst = true
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,13 +33,12 @@ class MyTopicTableViewController: UITableViewController {
             let httpObj = ＨttpRequsetCenter()
             httpObj.requestMyTopic { (returnData) in
                 dispatch_async(dispatch_get_main_queue(), {
-                    //print(returnData)
                     self.mytopic = self.transferToStandardType(returnData)
-                    for c in self.mytopic{
-                        for cc in c.topics{
-                            print(cc.clientId)
-                        }
-                    }
+//                    for c in self.mytopic{
+//                        for cc in c.topics{
+//                            print(cc.clientId)
+//                        }
+//                    }
                     self.tableView.reloadData()
                 })
             }
@@ -50,7 +50,6 @@ class MyTopicTableViewController: UITableViewController {
         var tempTopicList:Array<MyTopicTitle> = []
         
         for topicid in topicDic {
-            //print(topicid)
             let topicContents = topicid.1["topic_contents"]
             
             var tempDetailList:Array<MyTopicDetail> = []
@@ -122,8 +121,8 @@ class MyTopicTableViewController: UITableViewController {
                 selectItemId = nil
             }
         }
-        print(selectPosition)
-        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+
+        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Middle)
     }
     
     
@@ -137,10 +136,9 @@ class MyTopicTableViewController: UITableViewController {
         cell.topicTitle.text = topic.topicTitle
         cell.unReadM.text = "/\(topic.unReadM)"
         cell.unReadS.text = "\(topic.unReadS)"
-        print(topic.topicTitle)
         cell.dataList = topic.topics
         cell.setDelegate()
-        cell.heightOfCell = heightOfSecCell
+        cell.heightOfCell = heightOfSecCell - 10
         cell.reloadCell()
         
         // 修改按下顏色
@@ -150,6 +148,10 @@ class MyTopicTableViewController: UITableViewController {
         
         //cell.setDelegate()
         return cell
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print(segue.identifier)
     }
 
 }

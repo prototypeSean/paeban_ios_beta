@@ -46,7 +46,7 @@ class MyTopicTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDat
         let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! TopicSecTableViewCell
         
         let topic = dataList![indexPath.row]
-        print(topic.clientName)
+        
         cell.clientName.text = topic.clientName
         cell.speaker.text = topic.lastSpeaker
         cell.lastLine.text = topic.lastLine
@@ -54,9 +54,7 @@ class MyTopicTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDat
         cell.sexLogo.image = letoutSexLogo(topic.clientSex)
         cell.isTruePhoto.image = letoutIsTruePhoto(topic.clientIsRealPhoto)
         letoutOnlineLogo(topic.clientOnline,cellOnlineLogo: cell.onlineLogo)
-        
-        
-        
+
         return cell
     }
     
@@ -117,5 +115,31 @@ class MyTopicTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDat
 
         // Configure the view for the selected state
     }
+    
+    
+    //MARK:施工中
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        print("xxx")
+    }
+    
+    
+    
+    
+    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let chatViewCon = segue.destinationViewController as! ChatViewController
+        print("segue")
+        chatViewCon.setID = userData.id
+        chatViewCon.setName = userData.name
+//        chatViewCon.topicId = self.topicId
+//        chatViewCon.ownerId = self.ownerId
+//        if self.msg == nil {
+//            self.contanterView = chatViewCon
+//        }
+//        else{
+//            chatViewCon.historyMsg = self.msg!
+//        }
+    }
+    
 
 }
