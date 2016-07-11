@@ -461,7 +461,7 @@
         <scene sceneID="Rjg-9b-c6S">
             <objects>
                 <tableViewController id="hyw-hk-lQB" customClass="MyTopicTableViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="263" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ypk-Kz-F4J" userLabel="MyRelatedTopics">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="263" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ypk-Kz-F4J" userLabel="MyRelatedTopics">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -470,7 +470,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="263"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ukk-Cg-AaJ" id="ZAm-Bu-LPF">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="262.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="263"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的話題標題" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eYJ-3A-UKG">
@@ -730,6 +730,7 @@
                                             </variation>
                                         </tableView>
                                     </subviews>
+                                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="trailingMargin" secondItem="eYJ-3A-UKG" secondAttribute="trailing" id="BB9-1c-hf1"/>
                                         <constraint firstItem="eYJ-3A-UKG" firstAttribute="leading" secondItem="ZAm-Bu-LPF" secondAttribute="leadingMargin" id="CLm-L0-epD"/>
