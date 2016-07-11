@@ -357,7 +357,6 @@
                     <connections>
                         <outlet property="topicList" destination="O0h-4r-Zjc" id="eDN-Rq-DvL"/>
                         <segue destination="FBi-3N-jAs" kind="show" identifier="clientModeSegue" id="wZO-VC-xmQ"/>
-                        <segue destination="Vi6-O5-kqk" kind="show" identifier="masterModeSegue" id="sI7-K5-nbz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4c-w9-wSg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -719,6 +718,7 @@
                                                         <outlet property="photo" destination="7eN-S9-UjC" id="8pE-Fh-p4x"/>
                                                         <outlet property="sexLogo" destination="De9-Ng-agf" id="m5k-jA-pbU"/>
                                                         <outlet property="speaker" destination="qe8-9p-RhF" id="l98-VZ-Wsp"/>
+                                                        <segue destination="Ja9-R7-Uzb" kind="show" id="6Nf-iV-5VP"/>
                                                     </connections>
                                                 </tableViewCell>
                                             </prototypes>
@@ -775,25 +775,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="veQ-fo-LWe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2777" y="66"/>
-        </scene>
-        <!--我的話題-->
-        <scene sceneID="hT1-sP-pLa">
-            <objects>
-                <viewController id="XNg-Ou-R1E" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="46t-v5-NUe"/>
-                        <viewControllerLayoutGuide type="bottom" id="41z-EK-EYj"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="JqH-Oj-ZJV">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="我的話題" id="h3U-s3-UqX"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gCa-up-kTF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2777" y="866"/>
         </scene>
         <!--我的-->
         <scene sceneID="OpS-3a-p5B">
@@ -1077,6 +1058,117 @@
             </objects>
             <point key="canvasLocation" x="-3490" y="-646"/>
         </scene>
+        <!--加入的話題-->
+        <scene sceneID="tYw-DN-mh1">
+            <objects>
+                <viewController storyboardIdentifier="myChatView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ja9-R7-Uzb" customClass="TopicViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jtI-Tj-aSF"/>
+                        <viewControllerLayoutGuide type="bottom" id="0JD-6l-vuf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dIE-cL-wIn">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Za-fo-cil">
+                                <rect key="frame" x="0.0" y="164" width="600" height="387"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="ipn-Sp-GJV"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="ipn-Sp-GJV"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <segue destination="gS7-1h-r4Q" kind="embed" identifier="myTopicSec" id="397-qb-XYZ"/>
+                                </connections>
+                            </containerView>
+                            <view contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="prb-En-HFE">
+                                <rect key="frame" x="0.0" y="64" width="600" height="100"/>
+                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pm3-Tf-gsa">
+                                <rect key="frame" x="20" y="74" width="78" height="78"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Pm3-Tf-gsa" secondAttribute="height" multiplier="1:1" id="HpL-m1-B0N"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" placeholderIntrinsicWidth="42" placeholderIntrinsicHeight="90" text="話題標題" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R0H-yc-Mw0">
+                                <rect key="frame" x="106" y="72" width="388" height="84"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gBk-tx-VKS">
+                                <rect key="frame" x="502" y="74" width="78" height="78"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="gBk-tx-VKS" secondAttribute="height" multiplier="1:1" id="qDt-Nn-m6Z"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="gBk-tx-VKS" secondAttribute="trailing" id="0Pi-Uy-19s"/>
+                            <constraint firstItem="0JD-6l-vuf" firstAttribute="top" secondItem="0Za-fo-cil" secondAttribute="bottom" id="3P0-iR-exl"/>
+                            <constraint firstItem="0Za-fo-cil" firstAttribute="leading" secondItem="dIE-cL-wIn" secondAttribute="leadingMargin" constant="-20" id="9uR-Mv-ufJ"/>
+                            <constraint firstItem="0Za-fo-cil" firstAttribute="top" secondItem="jtI-Tj-aSF" secondAttribute="bottom" constant="100" id="Cqr-9Z-XCC"/>
+                            <constraint firstItem="0Za-fo-cil" firstAttribute="top" secondItem="jtI-Tj-aSF" secondAttribute="bottom" id="Ht1-8N-FHi"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Pm3-Tf-gsa" secondAttribute="trailing" id="IlS-QW-w4K"/>
+                            <constraint firstItem="0Za-fo-cil" firstAttribute="top" secondItem="Pm3-Tf-gsa" secondAttribute="bottom" constant="12" id="LOw-9Z-bWO"/>
+                            <constraint firstItem="prb-En-HFE" firstAttribute="top" secondItem="jtI-Tj-aSF" secondAttribute="bottom" id="Otb-7T-O1k"/>
+                            <constraint firstItem="Pm3-Tf-gsa" firstAttribute="top" secondItem="jtI-Tj-aSF" secondAttribute="bottom" constant="10" id="QEJ-V6-zjg"/>
+                            <constraint firstItem="prb-En-HFE" firstAttribute="leading" secondItem="dIE-cL-wIn" secondAttribute="leadingMargin" constant="-20" id="RDA-eJ-gb1"/>
+                            <constraint firstItem="gBk-tx-VKS" firstAttribute="top" secondItem="jtI-Tj-aSF" secondAttribute="bottom" constant="10" id="StU-eb-G7u"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="0Za-fo-cil" secondAttribute="trailing" constant="-20" id="Una-3u-xxz"/>
+                            <constraint firstItem="0Za-fo-cil" firstAttribute="top" secondItem="gBk-tx-VKS" secondAttribute="bottom" constant="12" id="Xnz-rT-4Xu"/>
+                            <constraint firstItem="Pm3-Tf-gsa" firstAttribute="leading" secondItem="dIE-cL-wIn" secondAttribute="leadingMargin" id="iwD-Mr-1VA"/>
+                            <constraint firstItem="0Za-fo-cil" firstAttribute="top" secondItem="prb-En-HFE" secondAttribute="bottom" id="lxv-9O-1Ok"/>
+                            <constraint firstItem="R0H-yc-Mw0" firstAttribute="leading" secondItem="Pm3-Tf-gsa" secondAttribute="trailing" constant="8" symbolic="YES" id="ogb-SU-Tus"/>
+                            <constraint firstItem="0Za-fo-cil" firstAttribute="top" secondItem="R0H-yc-Mw0" secondAttribute="bottom" constant="8" symbolic="YES" id="rYf-kT-0zU"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="prb-En-HFE" secondAttribute="trailing" constant="-20" id="szQ-p4-gXu"/>
+                            <constraint firstItem="gBk-tx-VKS" firstAttribute="leading" secondItem="R0H-yc-Mw0" secondAttribute="trailing" constant="8" symbolic="YES" id="wgQ-78-zdL"/>
+                            <constraint firstItem="R0H-yc-Mw0" firstAttribute="top" secondItem="jtI-Tj-aSF" secondAttribute="bottom" constant="8" symbolic="YES" id="z5b-JU-MDt"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="IlS-QW-w4K"/>
+                                <exclude reference="Ht1-8N-FHi"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="加入的話題" id="aKa-er-nN8"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="hidesBottomBarWhenPushed" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="guestPhoto" destination="Pm3-Tf-gsa" id="hvJ-Ll-hUp"/>
+                        <outlet property="myPhoto" destination="gBk-tx-VKS" id="nat-ro-tcC"/>
+                        <outlet property="topicInfoBG" destination="prb-En-HFE" id="iPn-Aj-1Ja"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0e7-F2-twW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2777" y="866"/>
+        </scene>
+        <!--Chat View Controller-->
+        <scene sceneID="2f6-Hp-Fz2">
+            <objects>
+                <viewController storyboardIdentifier="myChatView2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gS7-1h-r4Q" customClass="ChatViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TFv-8f-xGm"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZtK-CF-k7I"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="6IV-t0-gJo">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="387"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="17e-mL-d54" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2777" y="1475.5"/>
+        </scene>
     </scenes>
     <resources>
         <image name="True_photo" width="128" height="128"/>
@@ -1088,7 +1180,4 @@
         <image name="texting" width="25" height="25"/>
         <image name="topic" width="25" height="25"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="sI7-K5-nbz"/>
-    </inferredMetricsTieBreakers>
 </document>

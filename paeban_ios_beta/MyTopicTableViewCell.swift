@@ -23,6 +23,7 @@ class MyTopicTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDat
         topicTableDetail.delegate = self
         topicTableDetail.dataSource = self
         topicTableDetail.scrollEnabled = false
+        
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
