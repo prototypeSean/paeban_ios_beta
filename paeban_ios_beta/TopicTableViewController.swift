@@ -41,7 +41,6 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         //loadSampleTopics()
-        
         // 具體要怎麼作 由這個class自己來決定
         httpOBJ.delegate = self
         topicList.delegate = self

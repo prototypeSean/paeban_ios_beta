@@ -45,8 +45,6 @@ class ＨttpRequsetCenter{
             InViewAct(returnData2: returnData as Dictionary)
             
         }
-        
-
     }
     
     func getTopicContentHistory(topicReceiverId:String,topicId:String,InViewAct: (returnData2:Dictionary<String,AnyObject>)->Void){
@@ -60,6 +58,21 @@ class ＨttpRequsetCenter{
     func requestMyTopic(InViewAct: (returnData:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=request_my_topic"
+        ajax(url, sendDate: sendData) { (returnDic) in
+            InViewAct(returnData: returnDic)
+        }
+    }
+    
+    func get_my_topic_title(InViewAct: (returnData:Dictionary<String,AnyObject>)->Void){
+        let url = "http://www.paeban.com/topic_update/"
+        let sendData = "mode=get_my_topic_title"
+        ajax(url, sendDate: sendData) { (returnDic) in
+            InViewAct(returnData: returnDic)
+        }
+    }
+    func get_my_topic_detail(topicId:String,InViewAct: (returnData:Dictionary<String,AnyObject>)->Void) {
+        let url = "http://www.paeban.com/topic_update/"
+        let sendData = "mode=get_my_topic_detail;topic_id=topicId"
         ajax(url, sendDate: sendData) { (returnDic) in
             InViewAct(returnData: returnDic)
         }

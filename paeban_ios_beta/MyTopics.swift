@@ -8,30 +8,46 @@
 
 import UIKit
 
-class MyTopicTitle {
-    var topicTitle:String
-    var topics:Array<MyTopicDetail>
-    var topicId:String
-    var unReadS:Int{
+class MyTopicStandardType {
+    var dataType:String
+    // === title類型資料變數 ===
+    var topicTitle_title:String?
+    var topicId_title:String?
+    var topicWithWhoDic_title:Dictionary<String,Bool>?
+    var unReadMsg_title:Int{
         get{
             var unReadCount = 0
-            for MyTopicDetail_s in topics{
-                if MyTopicDetail_s.read == false{
+            for topicWithWho in topicWithWhoDic_title!{
+                if topicWithWho.1 == false{
                     unReadCount += 1
                 }
             }
             return unReadCount
         }
     }
-    var unReadM:Int{
-        get{return topics.count}
+    var allMsg_title:Int{
+        get{return topicWithWhoDic_title!.count}
     }
-    init(topicTitle:String, topics:Array<MyTopicDetail>, topicId:String){
-        self.topicTitle = topicTitle
-        self.topics = topics
-        self.topicId = topicId
-    }
+    
+    // === title類型資料變數 ===
+    
+    
+    // === detail類型資料變數 ===
+    var clientId_detial:String?
+    var clientName_detial:String?
+    var clientPhoto_detial: UIImage?
+    var clientIsRealPhoto_detial:Bool?
+    var clientSex_detial:String?
+    var clientOnline_detial:Bool?
+    var lastLine_detial: String?
+    var lastSpeaker_detial:String?
+    var read_detial:Bool?
+    // === detail類型資料變數 ===
 
+    init(dataType:String){
+        // title  or  detial
+        self.dataType = dataType
+    }
 }
 
 

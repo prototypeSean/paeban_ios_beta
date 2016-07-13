@@ -34,6 +34,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("ssss")
         wsActive.wasd_ForTopicViewController = self
         setImage()
         getHttpData()

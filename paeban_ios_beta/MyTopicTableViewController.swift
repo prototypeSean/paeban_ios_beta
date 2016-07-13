@@ -13,74 +13,53 @@ class MyTopicTableViewController: UITableViewController {
 
 
     // MARK: Properties
-    var mytopic:Array<MyTopicTitle> = []
+    var mytopic:Array<MyTopicStandardType> = []
     let heightOfCell:CGFloat = 85
     var heightOfSecCell:CGFloat = 130
     var selectItemId:String?
     var switchFirst = true
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        getMyTopic()
+        get_my_topic_title()
     }
     
     
     
     
-    func getMyTopic() {
+    func get_my_topic_title() {
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
             let httpObj = ＨttpRequsetCenter()
-            httpObj.requestMyTopic { (returnData) in
+            httpObj.get_my_topic_title { (returnData) in
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.mytopic = self.transferToStandardType(returnData)
-//                    for c in self.mytopic{
-//                        for cc in c.topics{
-//                            print(cc.clientId)
-//                        }
-//                    }
+                    self.mytopic = self.transferToStandardType_title(returnData)
+
                     self.tableView.reloadData()
                 })
             }
         }
     }
     
-    func transferToStandardType(inputData:Dictionary<String,AnyObject>) -> Array<MyTopicTitle>{
-        let topicDic:Dictionary<String,AnyObject> = inputData["topic_dic"] as! Dictionary
-        var tempTopicList:Array<MyTopicTitle> = []
-        
-        for topicid in topicDic {
-            let topicContents = topicid.1["topic_contents"]
-            
-            var tempDetailList:Array<MyTopicDetail> = []
-            for topicWithWho in topicContents as! Dictionary<String,AnyObject>{
-                let imgString = topicWithWho.1["img"] as! String
-                
-                
-                let clientId:String = topicWithWho.0
-                let clientName:String = topicWithWho.1["topic_with_who_name"] as! String
-                let clientPhoto: UIImage? = base64ToImage(imgString)
-                let clientIsRealPhoto:Bool = topicWithWho.1["is_real_pic"] as! Bool
-                let clientSex:String = topicWithWho.1["sex"] as! String
-                let clientOnline:Bool = topicWithWho.1["online"] as! Bool
-                let lastLine: String = topicWithWho.1["topic_content"] as! String
-                let lastSpeaker:String = topicWithWho.1["last_speaker_name"] as! String
-                let read:Bool = topicWithWho.1["read"] as! Bool
-                //待新增物件 對方的名字 照片(有了還沒轉換) 已讀狀態
-                
-                let tempTopicDetail = MyTopicDetail(clientId: clientId, clientName: clientName, clientPhoto: clientPhoto, clientIsRealPhoto: clientIsRealPhoto, clientSex: clientSex, clientOnline: clientOnline, lastLine: lastLine, lastSpeaker: lastSpeaker, read:read)
-                
-                tempDetailList += [tempTopicDetail]
-                
-                
+    func transferToStandardType_title(inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
+        // return_dic = topic_id* -- topic_title : String
+        //                        -- topic_with_who_id* -- read:Bool
+        var tempMytopicList = [MyTopicStandardType]()
+        for topic_id in inputData{
+            let topicTitleData = MyTopicStandardType(dataType:"title")
+            let topicTitle = (topic_id.1 as! Dictionary<String,AnyObject>)["topic_title"] as! String
+            let topicId = topic_id.0
+            var topicWithWhoDic: Dictionary<String,Bool> = [:]
+            for topic_with_who_id in (topic_id.1 as! Dictionary<String,AnyObject>){
+                let read = (topic_with_who_id.1 as! Dictionary<String,Bool>)["read"]
+                topicWithWhoDic[topic_with_who_id.0] = read
             }
-            
-            let topicConfig = topicid.1["topic_config"] as! Dictionary<String,String>
-            let topicTitle = topicConfig["topic_title"]
-            let topicUnit = MyTopicTitle(topicTitle: topicTitle!, topics: tempDetailList, topicId:topicid.0)
-            tempTopicList += [topicUnit]
+            topicTitleData.topicTitle_title = topicTitle
+            topicTitleData.topicId_title = topicId
+            topicTitleData.topicWithWhoDic_title = topicWithWhoDic
+            tempMytopicList += [topicTitleData]
         }
-        return tempTopicList
+        
+        return tempMytopicList
     }
     
     
@@ -90,64 +69,39 @@ class MyTopicTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return mytopic.count}
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
-        let topic = mytopic[indexPath.row]
-        //let height2 = Int(heightOfCell) + (Int(heightOfSecCell) * topic.topics.count)
-        if selectItemId != nil{
-            if topic.topicId == selectItemId{
-                let heightOfSecCellInt = Int(heightOfSecCell)
-                let height = Int(heightOfCell) + (heightOfSecCellInt * topic.topics.count)
-                return CGFloat(height)
-            }
-            else{
-                return heightOfCell
-            }
-        }
-        else{
-            return heightOfCell
-        }
-        
-    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let selectPosition:Int = indexPath.row
-        if selectItemId == nil{
-            selectItemId = mytopic[selectPosition].topicId
-        }
-        else{
-            if selectItemId != mytopic[selectPosition].topicId{
-                selectItemId = mytopic[selectPosition].topicId
-            }
-            else{
-                selectItemId = nil
-            }
-        }
-
-        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Middle)
+        // code
     }
     
     
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cellID = "myTopicCell"
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellID, forIndexPath: indexPath) as! MyTopicTableViewCell
-        //cell.didLoad()
-        let topic = mytopic[indexPath.row]
-        cell.topicTitle.text = topic.topicTitle
-        cell.unReadM.text = "/\(topic.unReadM)"
-        cell.unReadS.text = "\(topic.unReadS)"
-        cell.dataList = topic.topics
-        cell.setDelegate()
-        cell.heightOfCell = heightOfSecCell - 10
-        cell.reloadCell()
-        
-        // 修改按下顏色
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.whiteColor()
-        cell.selectedBackgroundView = backgroundView
-        
-        //cell.setDelegate()
-        return cell
+        let topicWriteToRow = mytopic[indexPath.row]
+        if topicWriteToRow.dataType == "title"{
+            // 標題型cell
+            let cell = tableView.dequeueReusableCellWithIdentifier("myTopicCell_1", forIndexPath: indexPath) as! MyTopicTableViewCell
+            cell.topicTitle.text = topicWriteToRow.topicTitle_title
+            cell.unReadM.text = String(topicWriteToRow.allMsg_title)
+            cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
+            
+            return cell
+        }
+        else{
+            let cell = tableView.dequeueReusableCellWithIdentifier("myTopicCell_2", forIndexPath: indexPath) as! TopicSecTableViewCell
+            cell.clientName.text = topicWriteToRow.clientName_detial
+            cell.speaker.text = topicWriteToRow.lastSpeaker_detial
+            cell.lastLine.text = topicWriteToRow.lastLine_detial
+            cell.photo.image = topicWriteToRow.clientPhoto_detial
+            if topicWriteToRow.clientPhoto_detial! == true{
+                
+            }
+            else{
+            
+            }
+            
+            return cell
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

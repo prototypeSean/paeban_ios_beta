@@ -127,10 +127,10 @@ class MyTopicTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDat
     
     
     func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let chatViewCon = segue.destinationViewController as! ChatViewController
+        //let chatViewCon = segue.destinationViewController as! ChatViewController
         print("segue")
-        chatViewCon.setID = userData.id
-        chatViewCon.setName = userData.name
+        //chatViewCon.setID = userData.id
+        //chatViewCon.setName = userData.name
 //        chatViewCon.topicId = self.topicId
 //        chatViewCon.ownerId = self.ownerId
 //        if self.msg == nil {
