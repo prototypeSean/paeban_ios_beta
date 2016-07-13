@@ -465,11 +465,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myTopicCell_1" rowHeight="90" id="ukk-Cg-AaJ" customClass="MyTopicTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="600" height="90"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myTopicCell_1" rowHeight="100" id="ukk-Cg-AaJ" customClass="MyTopicTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ukk-Cg-AaJ" id="ZAm-Bu-LPF">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="90"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的話題標題" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eYJ-3A-UKG">
@@ -545,7 +545,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myTopicCell_2" rowHeight="90" id="YR8-FS-JTg" customClass="TopicSecTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="182" width="600" height="90"/>
+                                <rect key="frame" x="0.0" y="192" width="600" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YR8-FS-JTg" id="Xdk-wf-EhQ">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="90"/>

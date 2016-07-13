@@ -14,6 +14,7 @@ class MyTopicTableViewController: UITableViewController {
 
     // MARK: Properties
     var mytopic:Array<MyTopicStandardType> = []
+    var secTopic:Dictionary<String,AnyObject> = [:]
     let heightOfCell:CGFloat = 85
     var heightOfSecCell:CGFloat = 130
     var selectItemId:String?
@@ -40,16 +41,32 @@ class MyTopicTableViewController: UITableViewController {
         }
     }
     
+    func get_my_topic_detail(topicId:String){
+        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+        dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+            let httpObj = ＨttpRequsetCenter()
+            httpObj.get_my_topic_detail(topicId, InViewAct: { (returnData) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    let topicId = returnData["topic_id"] as! String
+                    self.secTopic[topicId] = returnData
+                    print(self.secTopic.count)
+                })
+            })
+        }
+    }
+    
     func transferToStandardType_title(inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
         // return_dic = topic_id* -- topic_title : String
-        //                        -- topic_with_who_id* -- read:Bool
+        //                        -- topics               -- topic_with_who_id* -- read:Bool
         var tempMytopicList = [MyTopicStandardType]()
         for topic_id in inputData{
             let topicTitleData = MyTopicStandardType(dataType:"title")
             let topicTitle = (topic_id.1 as! Dictionary<String,AnyObject>)["topic_title"] as! String
             let topicId = topic_id.0
+            print(topicId)
+            get_my_topic_detail(topicId)
             var topicWithWhoDic: Dictionary<String,Bool> = [:]
-            for topic_with_who_id in (topic_id.1 as! Dictionary<String,AnyObject>){
+            for topic_with_who_id in (topic_id.1 as! Dictionary<String,AnyObject>)["topics"] as! Dictionary<String,AnyObject>{
                 let read = (topic_with_who_id.1 as! Dictionary<String,Bool>)["read"]
                 topicWithWhoDic[topic_with_who_id.0] = read
             }
@@ -62,18 +79,92 @@ class MyTopicTableViewController: UITableViewController {
         return tempMytopicList
     }
     
+    func transferToStandardType_detail(inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType> {
+        // return_dic --topic_id:String
+        //            --topic_contents  --topic_with_who_id* -- topic_with_who_name:String
+        //                                     last_speaker:String
+        //                                     ...
+        var tempMytopicList = [MyTopicStandardType]()
+        for topicWithWhoId in inputData["topic_contents"] as! Dictionary<String,Dictionary<String,AnyObject>>{
+            let topicTitleData = MyTopicStandardType(dataType:"detail")
+            topicTitleData.clientId_detial = topicWithWhoId.0
+            topicTitleData.clientName_detial = topicWithWhoId.1["topic_with_who_name"] as? String
+            let img = base64ToImage(topicWithWhoId.1["img"] as! String)
+            topicTitleData.clientPhoto_detial = img
+            topicTitleData.clientIsRealPhoto_detial = topicWithWhoId.1["is_real_pic"] as? Bool
+            topicTitleData.clientSex_detial = topicWithWhoId.1["sex"] as? String
+            topicTitleData.clientOnline_detial = topicWithWhoId.1["online"] as? Bool
+            topicTitleData.lastLine_detial = topicWithWhoId.1["topic_content"] as? String
+            topicTitleData.lastSpeaker_detial = topicWithWhoId.1["last_speaker_name"] as? String
+            topicTitleData.read_detial = topicWithWhoId.1["read"] as? Bool
+            tempMytopicList += [topicTitleData]
+        }
+        return tempMytopicList
+    }
     
-    // MARK: - Table view data source
-
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {return 1}
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return mytopic.count}
     
-    
+    // MARK: 選擇cell後
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // code
+        let cellIndex = indexPath.row
+        var actMode = false
+        if mytopic[cellIndex].dataType == "title"{
+            if cellIndex == mytopic.count-1{
+                actMode = true
+            }
+            else if mytopic[cellIndex + 1].dataType == "title"{
+                actMode = true
+            }
+        }
+        if actMode{
+            // 伸展子cell
+            getSecCellData(mytopic[cellIndex].topicId_title!,selectIndex: cellIndex)
+        }
+        else{
+            //縮回子cell
+        }
+        
     }
     
+    func getSecCellData(topicId:String,selectIndex:Int){
+        let secCellDataIndex = secTopic.indexOf { (topicIdInIndex, _) -> Bool in
+            if topicIdInIndex == topicId{
+                return true
+            }
+            else{return false}
+        }
+        if secCellDataIndex == nil{
+            //資料還沒進來
+        }
+        else{
+            //資料進來了
+            insertSecCell(secTopic[topicId] as! Dictionary<String,AnyObject>, selectIndex: selectIndex)
+        }
+    }
+    
+    func insertSecCell(inputDic:Dictionary<String,AnyObject>, selectIndex:Int) {
+        let insertDataList = transferToStandardType_detail(inputDic)
+        var updataIndexList = [NSIndexPath]()
+        var updataIndexInt = selectIndex
+        for insertData in insertDataList{
+            updataIndexInt += 1
+            let updataIndex = NSIndexPath(forRow: updataIndexInt, inSection: 0)
+            updataIndexList.append(updataIndex)
+            mytopic.insert(insertData, atIndex: selectIndex + 1)
+        }
+        
+        self.tableView.beginUpdates()
+        self.tableView.insertRowsAtIndexPaths(updataIndexList, withRowAnimation: UITableViewRowAnimation.Automatic)
+        self.tableView.endUpdates()
+        
+    }
+    
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 70
+    }
     
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -88,17 +179,15 @@ class MyTopicTableViewController: UITableViewController {
             return cell
         }
         else{
+            // 子對話型cell
             let cell = tableView.dequeueReusableCellWithIdentifier("myTopicCell_2", forIndexPath: indexPath) as! TopicSecTableViewCell
             cell.clientName.text = topicWriteToRow.clientName_detial
             cell.speaker.text = topicWriteToRow.lastSpeaker_detial
             cell.lastLine.text = topicWriteToRow.lastLine_detial
             cell.photo.image = topicWriteToRow.clientPhoto_detial
-            if topicWriteToRow.clientPhoto_detial! == true{
-                
-            }
-            else{
-            
-            }
+            cell.sexLogo.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
+            cell.isTruePhoto.image = letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!)
+            letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
             
             return cell
         }
@@ -107,7 +196,44 @@ class MyTopicTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         print(segue.identifier)
     }
-
+    
+    
+    func letoutSexLogo(sex:String) -> UIImage {
+        var sexImg:UIImage
+        switch sex {
+        case "男":
+            sexImg = UIImage(named: "male")!
+        case "女":
+            sexImg = UIImage(named:"gay")!
+        case "男同":
+            sexImg = UIImage(named:"gay")!
+        case "女同":
+            sexImg = UIImage(named:"lesbain")!
+        default:
+            sexImg = UIImage(named: "male")!
+            print("性別圖示分類失敗")
+        }
+        return sexImg
+    }
+    func letoutIsTruePhoto(isTruePhoto:Bool) -> UIImage {
+        var isMeImg:UIImage
+        if isTruePhoto{isMeImg = UIImage(named:"True_photo")!}
+        else{isMeImg = UIImage(named:"Fake_photo")!}
+        return isMeImg
+    }
+    func letoutOnlineLogo(isOnline:Bool,cellOnlineLogo:UIImageView){
+        
+        cellOnlineLogo.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        
+        if isOnline{
+            cellOnlineLogo.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
+        }
+            //MARK:下面那張圖請改 “不在線上的人圖示”
+        else{
+            //print("online:false")
+            cellOnlineLogo.tintColor = UIColor.grayColor()
+        }
+    }
 }
 
 

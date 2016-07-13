@@ -72,7 +72,7 @@ class ＨttpRequsetCenter{
     }
     func get_my_topic_detail(topicId:String,InViewAct: (returnData:Dictionary<String,AnyObject>)->Void) {
         let url = "http://www.paeban.com/topic_update/"
-        let sendData = "mode=get_my_topic_detail;topic_id=topicId"
+        let sendData = "mode=get_my_topic_detail;topic_id=\(topicId)"
         ajax(url, sendDate: sendData) { (returnDic) in
             InViewAct(returnData: returnDic)
         }
