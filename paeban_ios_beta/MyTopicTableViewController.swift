@@ -122,7 +122,7 @@ class MyTopicTableViewController: UITableViewController {
     
     // MARK: 選擇cell後
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
         let cellIndex = indexPath.row
         var actMode = false
         if mytopic[cellIndex].dataType == "title"{
@@ -168,6 +168,7 @@ class MyTopicTableViewController: UITableViewController {
             self.tableView.deleteRowsAtIndexPaths(removeRowList, withRowAnimation: UITableViewRowAnimation.Automatic)
             self.tableView.endUpdates()
             self.readyAcceptClick = true
+            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
         
     }
