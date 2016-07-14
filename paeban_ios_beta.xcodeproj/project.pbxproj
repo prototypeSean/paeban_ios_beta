@@ -447,7 +447,7 @@
 					"$(PROJECT_DIR)/paeban_ios_beta",
 				);
 				INFOPLIST_FILE = paeban_ios_beta/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "a110482-yahoo.com.tw";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -469,7 +469,7 @@
 					"$(PROJECT_DIR)/paeban_ios_beta",
 				);
 				INFOPLIST_FILE = paeban_ios_beta/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "a110482-yahoo.com.tw";
 				PRODUCT_NAME = "$(TARGET_NAME)";

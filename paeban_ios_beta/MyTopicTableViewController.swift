@@ -129,7 +129,6 @@ class MyTopicTableViewController: UITableViewController {
         let cellIndex = indexPath.row
         var actMode = false
         if mytopic[cellIndex].dataType == "title"{
-            nowAcceptTopicId = mytopic[cellIndex].topicId_title
             if cellIndex == mytopic.count-1{
                 actMode = true
             }
@@ -247,7 +246,7 @@ class MyTopicTableViewController: UITableViewController {
             }
         }
         nowAcceptTopicId = topicId
-        
+        print("AcceptThisClick\(AcceptThisClick)")
         if AcceptThisClick{
             
             let qos = DISPATCH_QUEUE_PRIORITY_LOW
@@ -314,6 +313,7 @@ class MyTopicTableViewController: UITableViewController {
     }
     
     func insertLoadingCell(selectIndex:Int) {
+        print("insertLoadingCell")
         let insertObj = MyTopicStandardType(dataType: "reloading")
         mytopic.insert(insertObj, atIndex: selectIndex+1)
         self.tableView.beginUpdates()
@@ -322,6 +322,7 @@ class MyTopicTableViewController: UITableViewController {
     }
     
     func removeLoadingCell() {
+        print("removeLoadingCell")
         var removeTopicObjIndexList = [Int]()
         var removeNSIndexPachList = [NSIndexPath]()
         for topicObj_s in 0..<mytopic.count{
