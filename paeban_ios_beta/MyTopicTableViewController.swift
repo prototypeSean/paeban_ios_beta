@@ -21,6 +21,7 @@ class MyTopicTableViewController: UITableViewController {
     var switchFirst = true
     var readyAcceptClick = true
     var nowAcceptTopicId:String?
+    var selectIndex:Int?
     override func viewDidLoad() {
         super.viewDidLoad()
         get_my_topic_title()
@@ -104,6 +105,16 @@ class MyTopicTableViewController: UITableViewController {
         }
         return tempMytopicList
     }
+    func updateSelectIndex(topicId:String, anyFunction: () -> Void){
+        anyFunction()
+        let newCellIndex = mytopic.indexOf({ (MyTopicStandardTypeObj) -> Bool in
+            if MyTopicStandardTypeObj.topicId_title! == topicId{
+                return true
+            }
+            else{return false}
+        })
+        self.selectIndex = newCellIndex
+    }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {return 1}
 
@@ -125,15 +136,14 @@ class MyTopicTableViewController: UITableViewController {
         if actMode{
             //self.readyAcceptClick = false
             // 伸展子cell
+            
             let topicId_title = mytopic[cellIndex].topicId_title
-            collectCell()
-            let newCellIndex = mytopic.indexOf({ (MyTopicStandardTypeObj) -> Bool in
-                if MyTopicStandardTypeObj.topicId_title! == topicId_title{
-                    return true
-                }
-                else{return false}
+            
+            updateSelectIndex(topicId_title!, anyFunction: {
+                self.collectCell()
             })
-            getSecCellData(mytopic[newCellIndex!].topicId_title!,selectIndex: Int(newCellIndex!))
+
+            getSecCellData(mytopic[self.selectIndex!].topicId_title!,selectIndex: Int(self.selectIndex!))
         }
         else{
             //縮回子cell
