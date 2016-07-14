@@ -737,8 +737,15 @@
                                     <outlet property="photo" destination="7eN-S9-UjC" id="8pE-Fh-p4x"/>
                                     <outlet property="sexLogo" destination="De9-Ng-agf" id="m5k-jA-pbU"/>
                                     <outlet property="speaker" destination="qe8-9p-RhF" id="l98-VZ-Wsp"/>
-                                    <segue destination="FBi-3N-jAs" kind="show" identifier="masModeSegue" id="lIk-Ha-Eyv"/>
                                 </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="loadingCell" rowHeight="90" id="rK6-2L-EpZ" customClass="TableViewLoadingCell" customModule="paeban_ios_beta" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="282" width="600" height="90"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rK6-2L-EpZ" id="JhQ-Bl-RbK">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="90"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -1045,7 +1052,4 @@
         <image name="texting" width="25" height="25"/>
         <image name="topic" width="25" height="25"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="lIk-Ha-Eyv"/>
-    </inferredMetricsTieBreakers>
 </document>

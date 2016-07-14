@@ -19,7 +19,6 @@ class MyTopicTableViewController: UITableViewController {
     var heightOfSecCell:CGFloat = 130
     var selectItemId:String?
     var switchFirst = true
-    var readyAcceptClick = true
     var nowAcceptTopicId:String?
     var selectIndex:Int?
     override func viewDidLoad() {
@@ -108,8 +107,11 @@ class MyTopicTableViewController: UITableViewController {
     func updateSelectIndex(topicId:String, anyFunction: () -> Void){
         anyFunction()
         let newCellIndex = mytopic.indexOf({ (MyTopicStandardTypeObj) -> Bool in
-            if MyTopicStandardTypeObj.topicId_title! == topicId{
-                return true
+            if MyTopicStandardTypeObj.dataType == "title"{
+                if MyTopicStandardTypeObj.topicId_title! == topicId{
+                    return true
+                }
+                else{return false}
             }
             else{return false}
         })
@@ -122,7 +124,8 @@ class MyTopicTableViewController: UITableViewController {
     
     // MARK: 選擇cell後
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        print("list_len:\(mytopic.count)")
+        print("click")
         let cellIndex = indexPath.row
         var actMode = false
         if mytopic[cellIndex].dataType == "title"{
@@ -130,28 +133,37 @@ class MyTopicTableViewController: UITableViewController {
             if cellIndex == mytopic.count-1{
                 actMode = true
             }
-            else if mytopic[cellIndex + 1].dataType == "title"{
+            else if mytopic[cellIndex + 1].dataType != "detail"{
                 actMode = true
             }
         }
+        print(actMode)
         if actMode{
-            //self.readyAcceptClick = false
             // 伸展子cell
             
             let topicId_title = mytopic[cellIndex].topicId_title
             
             updateSelectIndex(topicId_title!, anyFunction: {
+                self.removeLoadingCell()
                 self.collectCell()
             })
+            
 
             getSecCellData(mytopic[self.selectIndex!].topicId_title!,selectIndex: Int(self.selectIndex!))
         }
         else{
             //縮回子cell
+            if let topicId_title = mytopic[cellIndex].topicId_title{
+                updateSelectIndex(topicId_title, anyFunction: {
+                    self.removeLoadingCell()
+                })
+            }
+            
+            
             let dataLen = mytopic.count
             var removeRowList = [NSIndexPath]()
             var removeIndexList = [Int]()
-            for removeIndex in (cellIndex+1)..<dataLen{
+            for removeIndex in (selectIndex!+1)..<dataLen{
                 if mytopic[removeIndex].dataType == "detail"{
                     removeIndexList.insert(removeIndex, atIndex: 0)
                     let removeRow = NSIndexPath(forRow: removeIndex, inSection: 0)
@@ -167,7 +179,6 @@ class MyTopicTableViewController: UITableViewController {
             self.tableView.beginUpdates()
             self.tableView.deleteRowsAtIndexPaths(removeRowList, withRowAnimation: UITableViewRowAnimation.Automatic)
             self.tableView.endUpdates()
-            self.readyAcceptClick = true
             self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
         
@@ -222,22 +233,23 @@ class MyTopicTableViewController: UITableViewController {
         self.tableView.beginUpdates()
         self.tableView.insertRowsAtIndexPaths(updataIndexList, withRowAnimation: UITableViewRowAnimation.Automatic)
         self.tableView.endUpdates()
-        self.readyAcceptClick = true
+
     }
     
     // MARK:等待中
     func waitSecTopicData(topicId:String,selectIndex:Int) {
-        //插入讀取cell畫面
+        
         var toExecution = true
         var AcceptThisClick = true
-        if nowAcceptTopicId != nil && readyAcceptClick == false{
-            AcceptThisClick = false
+        if nowAcceptTopicId != nil {
+            if nowAcceptTopicId == topicId{
+                AcceptThisClick = false
+            }
         }
-        else{
-            readyAcceptClick = false
-        }
-        print(AcceptThisClick)
+        nowAcceptTopicId = topicId
+        
         if AcceptThisClick{
+            
             let qos = DISPATCH_QUEUE_PRIORITY_LOW
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
                 var waitTime:Int = 5000
@@ -249,6 +261,22 @@ class MyTopicTableViewController: UITableViewController {
                 }
                 
                 while waitTime >= 0 && sexDataIndex == nil {
+                    // ===插入讀取cell畫面===
+                    if self.mytopic.count-1 == selectIndex{
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.insertLoadingCell(selectIndex)
+                        })
+                    }
+                    else if self.mytopic.count-1 > selectIndex{
+                        if self.mytopic[selectIndex+1].dataType != "reloading"{
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.insertLoadingCell(selectIndex)
+                            })
+                        }
+                    }
+                    // ===插入讀取cell畫面===
+                    
+                    
                     usleep(20000)
                     //200ms = 20000us
                     if self.nowAcceptTopicId != nil{
@@ -269,6 +297,9 @@ class MyTopicTableViewController: UITableViewController {
                     if sexDataIndex != nil{
                         //資料進來了
                         dispatch_async(dispatch_get_main_queue(), {
+                            self.updateSelectIndex(topicId, anyFunction: {
+                                self.removeLoadingCell()
+                            })
                             self.insertSecCell(self.secTopic[topicId] as! Dictionary<String,AnyObject>, selectIndex: selectIndex)
                         })
                     }
@@ -279,6 +310,33 @@ class MyTopicTableViewController: UITableViewController {
                 }
             }
         }
+        
+    }
+    
+    func insertLoadingCell(selectIndex:Int) {
+        let insertObj = MyTopicStandardType(dataType: "reloading")
+        mytopic.insert(insertObj, atIndex: selectIndex+1)
+        self.tableView.beginUpdates()
+        self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: selectIndex+1, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+        self.tableView.endUpdates()
+    }
+    
+    func removeLoadingCell() {
+        var removeTopicObjIndexList = [Int]()
+        var removeNSIndexPachList = [NSIndexPath]()
+        for topicObj_s in 0..<mytopic.count{
+            if mytopic[topicObj_s].dataType == "reloading"{
+                removeTopicObjIndexList.insert(topicObj_s, atIndex: 0)
+                let removeNSIndexPach = NSIndexPath(forRow: topicObj_s, inSection: 0)
+                removeNSIndexPachList.insert(removeNSIndexPach, atIndex: 0)
+            }
+        }
+        for removeTopicObjIndex in removeTopicObjIndexList{
+            mytopic.removeAtIndex(removeTopicObjIndex)
+        }
+        self.tableView.beginUpdates()
+        self.tableView.deleteRowsAtIndexPaths(removeNSIndexPachList, withRowAnimation: UITableViewRowAnimation.Automatic)
+        self.tableView.endUpdates()
         
     }
     
@@ -298,7 +356,7 @@ class MyTopicTableViewController: UITableViewController {
             
             return cell
         }
-        else{
+        else if topicWriteToRow.dataType == "detail"{
             // 子對話型cell
             let cell = tableView.dequeueReusableCellWithIdentifier("myTopicCell_2", forIndexPath: indexPath) as! TopicSecTableViewCell
             cell.clientName.text = topicWriteToRow.clientName_detial
@@ -308,6 +366,19 @@ class MyTopicTableViewController: UITableViewController {
             cell.sexLogo.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
             cell.isTruePhoto.image = letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!)
             letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
+            
+            return cell
+        }
+        else{
+            let cell = tableView.dequeueReusableCellWithIdentifier("loadingCell", forIndexPath: indexPath) as! TableViewLoadingCell
+            // MARK:調整刷新圖示的地方
+            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+            activityIndicator.frame = CGRect(x: 0, y: 0, width: cell.frame.maxX, height: 70)
+            //activityIndicator.center = cell.center
+            activityIndicator.transform = CGAffineTransformMakeScale(1.3, 1.3)
+            activityIndicator.startAnimating()
+            print(activityIndicator)
+            cell.addSubview(activityIndicator)
             
             return cell
         }
@@ -348,9 +419,7 @@ class MyTopicTableViewController: UITableViewController {
         if isOnline{
             cellOnlineLogo.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
-            //MARK:下面那張圖請改 “不在線上的人圖示”
         else{
-            //print("online:false")
             cellOnlineLogo.tintColor = UIColor.grayColor()
         }
     }
