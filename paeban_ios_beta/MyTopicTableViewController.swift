@@ -19,6 +19,8 @@ class MyTopicTableViewController: UITableViewController {
     var heightOfSecCell:CGFloat = 130
     var selectItemId:String?
     var switchFirst = true
+    var readyAcceptClick = true
+    var nowAcceptTopicId:String?
     override func viewDidLoad() {
         super.viewDidLoad()
         get_my_topic_title()
@@ -42,14 +44,15 @@ class MyTopicTableViewController: UITableViewController {
     }
     
     func get_my_topic_detail(topicId:String){
-        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
+        
+        let qos = DISPATCH_QUEUE_PRIORITY_DEFAULT
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
             let httpObj = ＨttpRequsetCenter()
             httpObj.get_my_topic_detail(topicId, InViewAct: { (returnData) in
                 dispatch_async(dispatch_get_main_queue(), {
                     let topicId = returnData["topic_id"] as! String
                     self.secTopic[topicId] = returnData
-                    print(self.secTopic.count)
+                    print("第\(self.secTopic.count)筆詳細資料下載完畢")
                 })
             })
         }
@@ -63,7 +66,7 @@ class MyTopicTableViewController: UITableViewController {
             let topicTitleData = MyTopicStandardType(dataType:"title")
             let topicTitle = (topic_id.1 as! Dictionary<String,AnyObject>)["topic_title"] as! String
             let topicId = topic_id.0
-            print(topicId)
+            print("編號\(topicId)Topic標題下載完畢")
             get_my_topic_detail(topicId)
             var topicWithWhoDic: Dictionary<String,Bool> = [:]
             for topic_with_who_id in (topic_id.1 as! Dictionary<String,AnyObject>)["topics"] as! Dictionary<String,AnyObject>{
@@ -111,6 +114,7 @@ class MyTopicTableViewController: UITableViewController {
         let cellIndex = indexPath.row
         var actMode = false
         if mytopic[cellIndex].dataType == "title"{
+            nowAcceptTopicId = mytopic[cellIndex].topicId_title
             if cellIndex == mytopic.count-1{
                 actMode = true
             }
@@ -119,13 +123,60 @@ class MyTopicTableViewController: UITableViewController {
             }
         }
         if actMode{
+            //self.readyAcceptClick = false
             // 伸展子cell
-            getSecCellData(mytopic[cellIndex].topicId_title!,selectIndex: cellIndex)
+            let topicId_title = mytopic[cellIndex].topicId_title
+            collectCell()
+            let newCellIndex = mytopic.indexOf({ (MyTopicStandardTypeObj) -> Bool in
+                if MyTopicStandardTypeObj.topicId_title! == topicId_title{
+                    return true
+                }
+                else{return false}
+            })
+            getSecCellData(mytopic[newCellIndex!].topicId_title!,selectIndex: Int(newCellIndex!))
         }
         else{
             //縮回子cell
+            let dataLen = mytopic.count
+            var removeRowList = [NSIndexPath]()
+            var removeIndexList = [Int]()
+            for removeIndex in (cellIndex+1)..<dataLen{
+                if mytopic[removeIndex].dataType == "detail"{
+                    removeIndexList.insert(removeIndex, atIndex: 0)
+                    let removeRow = NSIndexPath(forRow: removeIndex, inSection: 0)
+                    removeRowList += [removeRow]
+                }
+                else{
+                    break
+                }
+            }
+            for removeIndex in removeIndexList{
+                mytopic.removeAtIndex(removeIndex)
+            }
+            self.tableView.beginUpdates()
+            self.tableView.deleteRowsAtIndexPaths(removeRowList, withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.tableView.endUpdates()
+            self.readyAcceptClick = true
         }
         
+    }
+    
+    func collectCell(){
+        var removeList = [Int]()
+        var removeNSIndexPathList = [NSIndexPath]()
+        for cell_s_Index in 0..<mytopic.count{
+            if mytopic[cell_s_Index].dataType == "detail"{
+                removeList.insert(cell_s_Index, atIndex: 0)
+                let removeNSIndexPath = NSIndexPath(forRow: cell_s_Index, inSection: 0)
+                removeNSIndexPathList.insert(removeNSIndexPath, atIndex: 0)
+            }
+        }
+        for removeIndex in removeList{
+            mytopic.removeAtIndex(removeIndex)
+        }
+        self.tableView.beginUpdates()
+        self.tableView.deleteRowsAtIndexPaths(removeNSIndexPathList, withRowAnimation: UITableViewRowAnimation.Automatic)
+        self.tableView.endUpdates()
     }
     
     func getSecCellData(topicId:String,selectIndex:Int){
@@ -137,6 +188,7 @@ class MyTopicTableViewController: UITableViewController {
         }
         if secCellDataIndex == nil{
             //資料還沒進來
+            waitSecTopicData(topicId, selectIndex: selectIndex)
         }
         else{
             //資料進來了
@@ -158,9 +210,65 @@ class MyTopicTableViewController: UITableViewController {
         self.tableView.beginUpdates()
         self.tableView.insertRowsAtIndexPaths(updataIndexList, withRowAnimation: UITableViewRowAnimation.Automatic)
         self.tableView.endUpdates()
-        
+        self.readyAcceptClick = true
     }
     
+    // MARK:等待中
+    func waitSecTopicData(topicId:String,selectIndex:Int) {
+        //插入讀取cell畫面
+        var toExecution = true
+        var AcceptThisClick = true
+        if nowAcceptTopicId != nil && readyAcceptClick == false{
+            AcceptThisClick = false
+        }
+        else{
+            readyAcceptClick = false
+        }
+        print(AcceptThisClick)
+        if AcceptThisClick{
+            let qos = DISPATCH_QUEUE_PRIORITY_LOW
+            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+                var waitTime:Int = 5000
+                var sexDataIndex = self.secTopic.indexOf { (topicIdInIndex, _) -> Bool in
+                    if topicIdInIndex == topicId{
+                        return true
+                    }
+                    else{return false}
+                }
+                
+                while waitTime >= 0 && sexDataIndex == nil {
+                    usleep(20000)
+                    //200ms = 20000us
+                    if self.nowAcceptTopicId != nil{
+                        if self.nowAcceptTopicId! != topicId{
+                            toExecution = false
+                            break
+                        }
+                    }
+                    sexDataIndex = self.secTopic.indexOf { (topicIdInIndex, _) -> Bool in
+                        if topicIdInIndex == topicId{
+                            return true
+                        }
+                        else{return false}
+                    }
+                    waitTime -= 200
+                }
+                if toExecution{
+                    if sexDataIndex != nil{
+                        //資料進來了
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.insertSecCell(self.secTopic[topicId] as! Dictionary<String,AnyObject>, selectIndex: selectIndex)
+                        })
+                    }
+                    else{
+                        print("timeOut")
+                        // 顯示手動更新按鈕
+                    }
+                }
+            }
+        }
+        
+    }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 70
@@ -235,10 +343,4 @@ class MyTopicTableViewController: UITableViewController {
         }
     }
 }
-
-
-
-
-
-
 
