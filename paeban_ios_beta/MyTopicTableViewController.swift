@@ -118,70 +118,6 @@ class MyTopicTableViewController: UITableViewController {
         self.selectIndex = newCellIndex
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {return 1}
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return mytopic.count}
-    
-    // MARK: 選擇cell後
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print("list_len:\(mytopic.count)")
-        print("click")
-        let cellIndex = indexPath.row
-        var actMode = false
-        if mytopic[cellIndex].dataType == "title"{
-            if cellIndex == mytopic.count-1{
-                actMode = true
-            }
-            else if mytopic[cellIndex + 1].dataType != "detail"{
-                actMode = true
-            }
-        }
-        print(actMode)
-        if actMode{
-            // 伸展子cell
-            
-            let topicId_title = mytopic[cellIndex].topicId_title
-            
-            updateSelectIndex(topicId_title!, anyFunction: {
-                self.removeLoadingCell()
-                self.collectCell()
-            })
-            
-
-            getSecCellData(mytopic[self.selectIndex!].topicId_title!,selectIndex: Int(self.selectIndex!))
-        }
-        else{
-            //縮回子cell
-            if let topicId_title = mytopic[cellIndex].topicId_title{
-                updateSelectIndex(topicId_title, anyFunction: {
-                    self.removeLoadingCell()
-                })
-            }
-            
-            
-            let dataLen = mytopic.count
-            var removeRowList = [NSIndexPath]()
-            var removeIndexList = [Int]()
-            for removeIndex in (selectIndex!+1)..<dataLen{
-                if mytopic[removeIndex].dataType == "detail"{
-                    removeIndexList.insert(removeIndex, atIndex: 0)
-                    let removeRow = NSIndexPath(forRow: removeIndex, inSection: 0)
-                    removeRowList += [removeRow]
-                }
-                else{
-                    break
-                }
-            }
-            for removeIndex in removeIndexList{
-                mytopic.removeAtIndex(removeIndex)
-            }
-            self.tableView.beginUpdates()
-            self.tableView.deleteRowsAtIndexPaths(removeRowList, withRowAnimation: UITableViewRowAnimation.Automatic)
-            self.tableView.endUpdates()
-            self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        }
-        
-    }
     
     func collectCell(){
         var removeList = [Int]()
@@ -246,7 +182,6 @@ class MyTopicTableViewController: UITableViewController {
             }
         }
         nowAcceptTopicId = topicId
-        print("AcceptThisClick\(AcceptThisClick)")
         if AcceptThisClick{
             
             let qos = DISPATCH_QUEUE_PRIORITY_LOW
@@ -313,7 +248,6 @@ class MyTopicTableViewController: UITableViewController {
     }
     
     func insertLoadingCell(selectIndex:Int) {
-        print("insertLoadingCell")
         let insertObj = MyTopicStandardType(dataType: "reloading")
         mytopic.insert(insertObj, atIndex: selectIndex+1)
         self.tableView.beginUpdates()
@@ -322,7 +256,6 @@ class MyTopicTableViewController: UITableViewController {
     }
     
     func removeLoadingCell() {
-        print("removeLoadingCell")
         var removeTopicObjIndexList = [Int]()
         var removeNSIndexPachList = [NSIndexPath]()
         for topicObj_s in 0..<mytopic.count{
@@ -344,7 +277,6 @@ class MyTopicTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 70
     }
-    
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let topicWriteToRow = mytopic[indexPath.row]
@@ -378,7 +310,6 @@ class MyTopicTableViewController: UITableViewController {
             //activityIndicator.center = cell.center
             activityIndicator.transform = CGAffineTransformMakeScale(1.3, 1.3)
             activityIndicator.startAnimating()
-            print(activityIndicator)
             cell.addSubview(activityIndicator)
             
             return cell
@@ -389,6 +320,68 @@ class MyTopicTableViewController: UITableViewController {
         print(segue.identifier)
     }
     
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {return 1}
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return mytopic.count}
+    
+    // MARK: 選擇cell後
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cellIndex = indexPath.row
+        var actMode = false
+        if mytopic[cellIndex].dataType == "title"{
+            if cellIndex == mytopic.count-1{
+                actMode = true
+            }
+            else if mytopic[cellIndex + 1].dataType != "detail"{
+                actMode = true
+            }
+            if actMode{
+                // 伸展子cell
+                
+                let topicId_title = mytopic[cellIndex].topicId_title
+                
+                updateSelectIndex(topicId_title!, anyFunction: {
+                    self.removeLoadingCell()
+                    self.collectCell()
+                })
+                
+                
+                getSecCellData(mytopic[self.selectIndex!].topicId_title!,selectIndex: Int(self.selectIndex!))
+            }
+            else{
+                //縮回子cell
+                if let topicId_title = mytopic[cellIndex].topicId_title{
+                    updateSelectIndex(topicId_title, anyFunction: {
+                        self.removeLoadingCell()
+                    })
+                }
+                
+                
+                let dataLen = mytopic.count
+                var removeRowList = [NSIndexPath]()
+                var removeIndexList = [Int]()
+                for removeIndex in (selectIndex!+1)..<dataLen{
+                    if mytopic[removeIndex].dataType == "detail"{
+                        removeIndexList.insert(removeIndex, atIndex: 0)
+                        let removeRow = NSIndexPath(forRow: removeIndex, inSection: 0)
+                        removeRowList += [removeRow]
+                    }
+                    else{
+                        break
+                    }
+                }
+                for removeIndex in removeIndexList{
+                    mytopic.removeAtIndex(removeIndex)
+                }
+                self.tableView.beginUpdates()
+                self.tableView.deleteRowsAtIndexPaths(removeRowList, withRowAnimation: UITableViewRowAnimation.Automatic)
+                self.tableView.endUpdates()
+                self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            }
+        }
+        
+        
+    }
     
     func letoutSexLogo(sex:String) -> UIImage {
         var sexImg:UIImage
