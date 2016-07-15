@@ -34,6 +34,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("ssss")
         wsActive.wasd_ForTopicViewController = self
         setImage()
         getHttpData()
@@ -55,11 +56,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                 let checkMsgType = returnData2.indexOf({ (msg_type, _) -> Bool in
                     if msg_type == "msg_type"{
                         //話題已關閉
-                        //print("msg_type")
                         return true
                     }
                     else{
-                        //print("no_msg_type")
                         return false
                     }
                 })

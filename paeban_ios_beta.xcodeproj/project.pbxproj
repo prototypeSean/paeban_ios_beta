@@ -33,6 +33,8 @@
 		932A00F31CFEBA460036E1EA /* web_socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00E11CFEBA460036E1EA /* web_socket.swift */; };
 		932A00F51D0025AC0036E1EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 932A00F41D0025AC0036E1EA /* Assets.xcassets */; };
 		93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */; };
+		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
+		CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */; };
 		E94BDD381436514219660B42 /* Pods_paeban_ios_beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32578316BF0D1896CBB03988 /* Pods_paeban_ios_beta.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +69,8 @@
 		932A00E11CFEBA460036E1EA /* web_socket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = web_socket.swift; sourceTree = "<group>"; };
 		932A00F41D0025AC0036E1EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
+		CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewLoadingCell.swift; sourceTree = "<group>"; };
 		EB67E2D41D7B1D1796AAE10D /* Pods-paeban_ios_beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.release.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -129,7 +133,6 @@
 				932A00DE1CFEBA460036E1EA /* ChatViewController.swift */,
 				932A00D71CFEBA460036E1EA /* Main.storyboard */,
 				932A00DB1CFEBA460036E1EA /* Labels.swift */,
-				930983E11D0166F5005B8E3B /* MyTopics.swift */,
 				931FF1A61CFEAFB2000E7F8A /* FBSDKCoreKit.framework */,
 				931FF1A71CFEAFB2000E7F8A /* FBSDKLoginKit.framework */,
 				931FF1A81CFEAFB2000E7F8A /* FBSDKShareKit.framework */,
@@ -144,6 +147,9 @@
 			children = (
 				932A00DD1CFEBA460036E1EA /* MyTopicTableViewController.swift */,
 				932A00DC1CFEBA460036E1EA /* MyTopicTableViewCell.swift */,
+				CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */,
+				CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */,
+				930983E11D0166F5005B8E3B /* MyTopics.swift */,
 			);
 			name = myTopics;
 			sourceTree = "<group>";
@@ -320,6 +326,7 @@
 				930983E21D0166F5005B8E3B /* MyTopics.swift in Sources */,
 				932A00E51CFEBA460036E1EA /* ＨttpRequestCenter.swift in Sources */,
 				932A00F31CFEBA460036E1EA /* web_socket.swift in Sources */,
+				CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */,
 				932A00F21CFEBA460036E1EA /* Login_paeban.swift in Sources */,
 				930983E81D056971005B8E3B /* HashTagsContorller.swift in Sources */,
 				9301F6041D1D16F900D1F8C0 /* TopicSearchBar.swift in Sources */,
@@ -332,6 +339,7 @@
 				932A00F11CFEBA460036E1EA /* LaunchScreenViewController.swift in Sources */,
 				932A00ED1CFEBA460036E1EA /* Labels.swift in Sources */,
 				932A00E21CFEBA460036E1EA /* AppDelegate.swift in Sources */,
+				CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */,
 				932A00E31CFEBA460036E1EA /* ToolsFunction.swift in Sources */,
 				932A00F01CFEBA460036E1EA /* ChatViewController.swift in Sources */,
 				932A00EE1CFEBA460036E1EA /* MyTopicTableViewCell.swift in Sources */,
@@ -433,14 +441,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/paeban_ios_beta",
 				);
 				INFOPLIST_FILE = paeban_ios_beta/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "DK.paeban-ios-beta";
+				PRODUCT_BUNDLE_IDENTIFIER = "a110482-yahoo.com.tw";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -452,14 +463,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/paeban_ios_beta",
 				);
 				INFOPLIST_FILE = paeban_ios_beta/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "DK.paeban-ios-beta";
+				PRODUCT_BUNDLE_IDENTIFIER = "a110482-yahoo.com.tw";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
