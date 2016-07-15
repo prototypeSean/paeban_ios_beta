@@ -14,7 +14,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
 
     // MARK: Properties
     var mytopic:Array<MyTopicStandardType> = []
-    var secTopic:Dictionary<String,AnyObject> = [:]
+    var secTopic:Dictionary = [String: [MyTopicStandardType]]()
     let heightOfCell:CGFloat = 85
     var heightOfSecCell:CGFloat = 130
     var selectItemId:String?
@@ -30,11 +30,53 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     
     
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
-        // msg -- topic_msg:String
+        // msg -- msg_type:"topic_msg"
         //     -- img:Dtring
-        //     -- result_dic --
+        //     -- result_dic -- sender:String
+        //                   -- temp_topic_msg_id
+        //                   -- topic_content
+        //                   -- receiver
+        //                   -- topic_id
+
         if msg["msg_type"] as! String == "topic_msg"{
-            //code
+            //改cell資料  改secTopic字典裡的資料
+            //let result_dic = msg["result_dic"] as! Dictionary<String,String>
+            //let topic_id = result_dic["topic_id"]
+            //updatasecTopic(msg)
+            
+        }
+    }
+    
+    func updatasecTopic(msg:Dictionary<String,AnyObject>){
+        // msg -- msg_type:"topic_msg"
+        //     -- img:Dtring
+        //     -- result_dic -- sender:String
+        //                   -- temp_topic_msg_id
+        //                   -- topic_content
+        //                   -- receiver
+        //                   -- topic_id
+        let result_dic = msg["result_dic"] as! Dictionary<String,String>
+        let topic_id = result_dic["topic_id"]
+        let secTopicIndex = secTopic.indexOf({ (key, _) -> Bool in
+            if key == topic_id{
+                return true
+            }
+            else{return false}
+        })
+        if secTopicIndex != nil{
+//            let oldDic = secTopic[topic_id!] as! Dictionary<String,AnyObject>
+//            let topic_contents = (oldDic["topic_contents"] as! Dictionary<String,AnyObject>).first!
+//            let topic_with_who_id = topic_contents.0
+//            //var last_speaker:String?
+//            if topic_with_who_id == result_dic["sender"]! as String{
+//                
+//            }
+        }
+        else{
+            //增加新資料
+            //資料暫存本地
+            //向伺服器要求更多訊息(如果已經發出請求就不請求 -- 設計timeout功能
+            //合併資料
             
         }
     }
@@ -61,7 +103,10 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             httpObj.get_my_topic_detail(topicId, InViewAct: { (returnData) in
                 dispatch_async(dispatch_get_main_queue(), {
                     let topicId = returnData["topic_id"] as! String
-                    self.secTopic[topicId] = returnData
+                    let returnDataList = self.transferToStandardType_detail(returnData)
+                    self.secTopic[topicId] = returnDataList
+                    
+                    
                     print("第\(self.secTopic.count)筆詳細資料下載完畢")
                 })
             })
@@ -95,8 +140,14 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     func transferToStandardType_detail(inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType> {
         // return_dic --topic_id:String
         //            --topic_contents  --topic_with_who_id* -- topic_with_who_name:String
-        //                                     last_speaker:String
-        //                                     ...
+        //                                                   -- last_speaker:String
+        //                                                   -- img
+        //                                                   -- is_real_pic
+        //                                                   -- sex
+        //                                                   -- online
+        //                                                   -- topic_content
+        //                                                   -- last_speaker_name
+        //                                                   -- read
         var tempMytopicList = [MyTopicStandardType]()
         for topicWithWhoId in inputData["topic_contents"] as! Dictionary<String,Dictionary<String,AnyObject>>{
             let topicTitleData = MyTopicStandardType(dataType:"detail")
@@ -161,15 +212,15 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         else{
             //資料進來了
-            insertSecCell(secTopic[topicId] as! Dictionary<String,AnyObject>, selectIndex: selectIndex)
+            insertSecCell(secTopic[topicId]! as Array<MyTopicStandardType>, selectIndex: selectIndex)
         }
     }
     
-    func insertSecCell(inputDic:Dictionary<String,AnyObject>, selectIndex:Int) {
-        let insertDataList = transferToStandardType_detail(inputDic)
+    func insertSecCell(inputList:[MyTopicStandardType], selectIndex:Int) {
+        
         var updataIndexList = [NSIndexPath]()
         var updataIndexInt = selectIndex
-        for insertData in insertDataList{
+        for insertData in inputList{
             updataIndexInt += 1
             let updataIndex = NSIndexPath(forRow: updataIndexInt, inSection: 0)
             updataIndexList.append(updataIndex)
@@ -248,7 +299,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                             self.updateSelectIndex(topicId, anyFunction: {
                                 self.removeLoadingCell()
                             })
-                            self.insertSecCell(self.secTopic[topicId] as! Dictionary<String,AnyObject>, selectIndex: selectIndex)
+                            self.insertSecCell(self.secTopic[topicId]! as Array<MyTopicStandardType>, selectIndex: selectIndex)
                         })
                     }
                     else{
