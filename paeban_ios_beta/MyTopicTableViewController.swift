@@ -9,7 +9,7 @@
 import UIKit
 
 // 我的話題清單
-class MyTopicTableViewController: UITableViewController {
+class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDelegate {
 
 
     // MARK: Properties
@@ -24,10 +24,20 @@ class MyTopicTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         get_my_topic_title()
+        wsActive.wasd_ForMyTopicTableViewController = self
     }
     
     
     
+    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+        // msg -- topic_msg:String
+        //     -- img:Dtring
+        //     -- result_dic --
+        if msg["msg_type"] as! String == "topic_msg"{
+            //code
+            
+        }
+    }
     
     func get_my_topic_title() {
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
@@ -91,6 +101,7 @@ class MyTopicTableViewController: UITableViewController {
         for topicWithWhoId in inputData["topic_contents"] as! Dictionary<String,Dictionary<String,AnyObject>>{
             let topicTitleData = MyTopicStandardType(dataType:"detail")
             topicTitleData.clientId_detial = topicWithWhoId.0
+            topicTitleData.topicId_title = inputData["topic_id"] as? String
             topicTitleData.clientName_detial = topicWithWhoId.1["topic_with_who_name"] as? String
             let img = base64ToImage(topicWithWhoId.1["img"] as! String)
             topicTitleData.clientPhoto_detial = img
@@ -183,10 +194,11 @@ class MyTopicTableViewController: UITableViewController {
         }
         nowAcceptTopicId = topicId
         if AcceptThisClick{
-            
+            var willInsertLoad = true
             let qos = DISPATCH_QUEUE_PRIORITY_LOW
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
                 var waitTime:Int = 5000
+                //print(NSDate().timeIntervalSince1970)
                 var sexDataIndex = self.secTopic.indexOf { (topicIdInIndex, _) -> Bool in
                     if topicIdInIndex == topicId{
                         return true
@@ -196,13 +208,15 @@ class MyTopicTableViewController: UITableViewController {
                 
                 while waitTime >= 0 && sexDataIndex == nil {
                     // ===插入讀取cell畫面===
-                    if self.mytopic.count-1 == selectIndex{
+                    if self.mytopic.count-1 == selectIndex && willInsertLoad == true{
+                        willInsertLoad = false
                         dispatch_async(dispatch_get_main_queue(), {
                             self.insertLoadingCell(selectIndex)
                         })
                     }
-                    else if self.mytopic.count-1 > selectIndex{
+                    else if self.mytopic.count-1 > selectIndex && willInsertLoad == true{
                         if self.mytopic[selectIndex+1].dataType != "reloading"{
+                            willInsertLoad = false
                             dispatch_async(dispatch_get_main_queue(), {
                                 self.insertLoadingCell(selectIndex)
                             })
@@ -210,9 +224,9 @@ class MyTopicTableViewController: UITableViewController {
                     }
                     // ===插入讀取cell畫面===
                     
+                    usleep(10000)
                     
-                    usleep(20000)
-                    //200ms = 20000us
+                    //1ms = 1000us
                     if self.nowAcceptTopicId != nil{
                         if self.nowAcceptTopicId! != topicId{
                             toExecution = false
@@ -225,7 +239,7 @@ class MyTopicTableViewController: UITableViewController {
                         }
                         else{return false}
                     }
-                    waitTime -= 200
+                    waitTime -= 10
                 }
                 if toExecution{
                     if sexDataIndex != nil{
@@ -239,6 +253,7 @@ class MyTopicTableViewController: UITableViewController {
                     }
                     else{
                         print("timeOut")
+                        //print(NSDate().timeIntervalSince1970)
                         // 顯示手動更新按鈕
                     }
                 }
