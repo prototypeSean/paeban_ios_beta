@@ -737,6 +737,7 @@
                                     <outlet property="photo" destination="7eN-S9-UjC" id="8pE-Fh-p4x"/>
                                     <outlet property="sexLogo" destination="De9-Ng-agf" id="m5k-jA-pbU"/>
                                     <outlet property="speaker" destination="qe8-9p-RhF" id="l98-VZ-Wsp"/>
+                                    <segue destination="e1T-xY-fjR" kind="show" identifier="masterModeSegue" id="U9H-Jc-e62"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="loadingCell" rowHeight="90" id="rK6-2L-EpZ" customClass="TableViewLoadingCell" customModule="paeban_ios_beta" customModuleProvider="target">
@@ -1040,6 +1041,117 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Awf-Hn-fZx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3490" y="-646"/>
+        </scene>
+        <!--加入的話題-->
+        <scene sceneID="D7w-vy-OTP">
+            <objects>
+                <viewController storyboardIdentifier="chatView2_1" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e1T-xY-fjR" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GPf-iK-ve8"/>
+                        <viewControllerLayoutGuide type="bottom" id="SWQ-2P-P7x"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TCa-fY-ouF">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DhN-4m-hPP">
+                                <rect key="frame" x="0.0" y="164" width="600" height="387"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="md3-Ur-ZYh"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="md3-Ur-ZYh"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <segue destination="kT7-Cr-d6j" kind="embed" identifier="sec" id="TNe-XA-eU3"/>
+                                </connections>
+                            </containerView>
+                            <view contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="g4A-jM-ZPT">
+                                <rect key="frame" x="0.0" y="64" width="600" height="100"/>
+                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MGz-ct-YLZ">
+                                <rect key="frame" x="20" y="74" width="78" height="78"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="MGz-ct-YLZ" secondAttribute="height" multiplier="1:1" id="3ib-6f-cTG"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" placeholderIntrinsicWidth="42" placeholderIntrinsicHeight="90" text="話題標題" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AFM-PV-tWI">
+                                <rect key="frame" x="106" y="72" width="388" height="84"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xb7-t0-6CF">
+                                <rect key="frame" x="502" y="74" width="78" height="78"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Xb7-t0-6CF" secondAttribute="height" multiplier="1:1" id="tor-zF-6Fh"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="AFM-PV-tWI" firstAttribute="leading" secondItem="MGz-ct-YLZ" secondAttribute="trailing" constant="8" symbolic="YES" id="2Cg-NX-kt1"/>
+                            <constraint firstItem="Xb7-t0-6CF" firstAttribute="leading" secondItem="AFM-PV-tWI" secondAttribute="trailing" constant="8" symbolic="YES" id="8Jh-JH-Paf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="MGz-ct-YLZ" secondAttribute="trailing" id="ARD-kU-hha"/>
+                            <constraint firstItem="g4A-jM-ZPT" firstAttribute="leading" secondItem="TCa-fY-ouF" secondAttribute="leadingMargin" constant="-20" id="Bjx-hO-I5a"/>
+                            <constraint firstItem="DhN-4m-hPP" firstAttribute="top" secondItem="GPf-iK-ve8" secondAttribute="bottom" id="LRc-X8-OCE"/>
+                            <constraint firstItem="DhN-4m-hPP" firstAttribute="top" secondItem="g4A-jM-ZPT" secondAttribute="bottom" id="MCh-Va-kCx"/>
+                            <constraint firstItem="DhN-4m-hPP" firstAttribute="leading" secondItem="TCa-fY-ouF" secondAttribute="leadingMargin" constant="-20" id="Mqs-FW-iZl"/>
+                            <constraint firstItem="DhN-4m-hPP" firstAttribute="top" secondItem="GPf-iK-ve8" secondAttribute="bottom" constant="100" id="NDD-vC-y2A"/>
+                            <constraint firstItem="SWQ-2P-P7x" firstAttribute="top" secondItem="DhN-4m-hPP" secondAttribute="bottom" id="Nzh-W1-k7y"/>
+                            <constraint firstItem="DhN-4m-hPP" firstAttribute="top" secondItem="Xb7-t0-6CF" secondAttribute="bottom" constant="12" id="RIi-xc-4Gb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Xb7-t0-6CF" secondAttribute="trailing" id="RZC-nh-onu"/>
+                            <constraint firstItem="MGz-ct-YLZ" firstAttribute="leading" secondItem="TCa-fY-ouF" secondAttribute="leadingMargin" id="TpL-v1-tpc"/>
+                            <constraint firstItem="DhN-4m-hPP" firstAttribute="top" secondItem="MGz-ct-YLZ" secondAttribute="bottom" constant="12" id="Vhi-OW-6OC"/>
+                            <constraint firstItem="AFM-PV-tWI" firstAttribute="top" secondItem="GPf-iK-ve8" secondAttribute="bottom" constant="8" symbolic="YES" id="bxp-Ae-nQc"/>
+                            <constraint firstItem="DhN-4m-hPP" firstAttribute="top" secondItem="AFM-PV-tWI" secondAttribute="bottom" constant="8" symbolic="YES" id="hds-R3-QMk"/>
+                            <constraint firstItem="g4A-jM-ZPT" firstAttribute="top" secondItem="GPf-iK-ve8" secondAttribute="bottom" id="mgs-83-OCu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="g4A-jM-ZPT" secondAttribute="trailing" constant="-20" id="p76-MU-hDz"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="DhN-4m-hPP" secondAttribute="trailing" constant="-20" id="zOe-mX-H8f"/>
+                            <constraint firstItem="MGz-ct-YLZ" firstAttribute="top" secondItem="GPf-iK-ve8" secondAttribute="bottom" constant="10" id="zqH-oC-XsH"/>
+                            <constraint firstItem="Xb7-t0-6CF" firstAttribute="top" secondItem="GPf-iK-ve8" secondAttribute="bottom" constant="10" id="ztD-tE-nNp"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="ARD-kU-hha"/>
+                                <exclude reference="LRc-X8-OCE"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="加入的話題" id="Mdc-ig-F3R"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="hidesBottomBarWhenPushed" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="guestPhoto" destination="MGz-ct-YLZ" id="S1O-15-cXL"/>
+                        <outlet property="myPhoto" destination="Xb7-t0-6CF" id="28x-vF-eL4"/>
+                        <outlet property="topicInfoBG" destination="g4A-jM-ZPT" id="Mp5-jG-Gvp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bie-q2-caM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2777" y="866"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ODT-yF-TlF">
+            <objects>
+                <viewController storyboardIdentifier="chatView2_2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kT7-Cr-d6j" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="EYq-XW-wTp"/>
+                        <viewControllerLayoutGuide type="bottom" id="SJa-n7-xti"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="1yC-zi-aJI">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="387"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UJc-sI-jvU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2777" y="1475.5"/>
         </scene>
     </scenes>
     <resources>
