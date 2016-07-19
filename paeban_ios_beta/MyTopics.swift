@@ -9,10 +9,14 @@
 import UIKit
 
 class MyTopicStandardType {
+    // === 公用類型資料變數 ===
     var dataType:String
+    var topicId_title:String?
+    // === 公用類型資料變數 ===
+    
+    
     // === title類型資料變數 ===
     var topicTitle_title:String?
-    var topicId_title:String?
     var topicWithWhoDic_title:Dictionary<String,Bool>?
     var unReadMsg_title:Int{
         get{

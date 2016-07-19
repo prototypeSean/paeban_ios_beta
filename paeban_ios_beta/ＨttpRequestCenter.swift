@@ -77,6 +77,20 @@ class ＨttpRequsetCenter{
             InViewAct(returnData: returnDic)
         }
     }
+    func request_topic_msg_config(topic_id:String, client_id:String,topic_content_id:String , InViewAct: (returnData:Dictionary<String,AnyObject>)->Void) {
+        //return_dic -- topic_content_id
+        //           -- img
+        //           -- client_name
+        //           -- client_is_real_photo
+        //           -- client_sex
+        //           -- client_online
+        let url = "http://www.paeban.com/topic_update/"
+        let sendData = "mode=request_topic_msg_config;topic_id=\(topic_id);client_id=\(client_id);topic_content_id=\(topic_content_id)"
+        ajax(url, sendDate: sendData) { (returnDic) in
+            InViewAct(returnData: returnDic)
+        }
+        
+    }
     // MARK:================私有函數===============
     
     // MARK:轉換為Topic的標準格式

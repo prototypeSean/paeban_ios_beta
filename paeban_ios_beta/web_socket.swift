@@ -91,13 +91,31 @@ public class webSocketActiveCenter{
             if test_List.indexOf(msgtypeString) != nil {
                 print("======\(msgtypeString)=========")
                 print(msg)
-//                if msgtypeString == "remove_old_topics"{
-//                    let list = msg["old_topic_list"] as! Array<String>
-//                    print(list)
-//                }
             }
             
         }
     }
 }
+
+// MARK:接收封包資料結構
+
+//=====topic_msg=====
+// msg -- msg_type:"topic_msg"
+//     -- img:Dtring
+//     -- result_dic -- sender:String
+//                   -- temp_topic_msg_id
+//                   -- topic_content
+//                   -- receiver
+//                   -- topic_id
+
+//===== =====
+
+
+
+
+
+
+
+
+
 
