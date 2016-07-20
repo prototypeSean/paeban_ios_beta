@@ -29,8 +29,6 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
         super.viewDidLoad()
         let loginButton = FBSDKLoginButton()
         loginButton.frame = CGRectMake(5, self.view.frame.height - 40, self.view.frame.width - 10, 30)
-        
-//        loginButton.center = view.center
         view.addSubview(loginButton)
         loginButton.delegate = self
         
@@ -38,11 +36,6 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
         
     }
 
-        //===============ET===================
-    
-    
-    
-    //===============ET===================
     func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
         print("User Logged In")
         

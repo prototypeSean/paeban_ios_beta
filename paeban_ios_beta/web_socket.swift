@@ -69,6 +69,7 @@ public class webSocketActiveCenter{
             
             if mainWorkList.indexOf(msgtypeString) != nil {
                 if msgtypeString == "online"{
+                    print(msg)
                     userData.id = msg["user_id"] as? String
                     userData.name = msg["user_name"] as? String
                     userData.imgString  = msg["user_pic"] as? String
