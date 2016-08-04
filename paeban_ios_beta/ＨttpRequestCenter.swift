@@ -91,6 +91,24 @@ class ＨttpRequsetCenter{
         }
         
     }
+    
+    func reconnect_check_my_table_view(send_dic:NSDictionary,InViewAct: (returnData:Dictionary<String,AnyObject>)->Void) {
+        let url = "http://www.paeban.com/ws_reconnect/"
+        let jsonData = json_dumps2(send_dic)
+        let sendData = "mode=check_my_table_view;msg=\(jsonData!)"
+        ajax(url, sendDate: sendData) { (returnDic) in
+            InViewAct(returnData: returnDic)
+        }
+    }
+    
+    func reconnect_update_new_user_data(send_dic:NSDictionary,InViewAct: (returnData:Dictionary<String,AnyObject>)->Void) {
+        let url = "http://www.paeban.com/ws_reconnect/"
+        let jsonData = json_dumps2(send_dic)
+        let sendData = "mode=update_new_user_data;msg=\(jsonData!)"
+        ajax(url, sendDate: sendData) { (returnDic) in
+            InViewAct(returnData: returnDic)
+        }
+    }
     // MARK:================私有函數===============
     
     // MARK:轉換為Topic的標準格式
@@ -164,7 +182,14 @@ class ＨttpRequsetCenter{
             }
             else{
                 ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
-                //print(ouput)
+                if let res = response as? NSHTTPURLResponse{
+                    let status = res.statusCode
+                    if status != 200{
+                        print(response)
+                        print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                    }
+                    
+                }
                 ouput_json = json_load(ouput!) as! Dictionary
                 //print(ouput_json)
                 outPutDic(ouput_json)

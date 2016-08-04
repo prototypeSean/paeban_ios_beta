@@ -13,6 +13,8 @@ import FBSDKLoginKit
 
 public var socket:WebSocket!
 public var wsActive = webSocketActiveCenter()
+
+
 public var cookie:String?
 public struct setUserData{
     var id:String?
@@ -22,7 +24,7 @@ public struct setUserData{
 public var userData = setUserData()
 
 class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelegate{
-    
+    var firstConnect = true
     
     
     override func viewDidLoad() {
@@ -91,6 +93,7 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
     }
     
     func reConnect(){
+        print("reContenting...")
         ws_connect_fun(socket)
         if reConnectCount < 100{
             wsTimer?.invalidate()
@@ -99,24 +102,35 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
     
     
     func websocketDidConnect(socket: WebSocket){
-        print("connected")
         reConnectCount = 0
         //print(NSDate())
         wsTimer = NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
-        ws_connected(socket)
+        if firstConnect{
+            ws_connected(socket)
+            print("connected")
+        }
+        else{
+            print("wsReConnected")
+            wsActive.wsReConnect()
+        }
+        
     }
     func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         print("disConnect")
         wsTimer?.invalidate()
-        wsTimer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
+        wsTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
         
         //print(NSDate())
     }
     func websocketDidReceiveMessage(socket: WebSocket, text: String){
         //print("msgincome=======")
-        let msgPack = ws_onmsg(text)
+        let msgPack = wsMsgTextToDic(text)
         wsActive.wsOnMsg(msgPack)
-        
+        if let msgtype = msgPack["msg_type"] as? String{
+            if msgtype == "online"{
+                firstConnect = false
+            }
+        }
     }
     func websocketDidReceiveData(socket: WebSocket, data: NSData){
         print("data")

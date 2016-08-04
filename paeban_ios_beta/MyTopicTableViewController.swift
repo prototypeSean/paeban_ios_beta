@@ -9,7 +9,7 @@
 import UIKit
 
 // 我的話題清單
-class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDelegate {
+class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDelegate,webSocketActiveCenterDelegate_re {
 
 
     // MARK: Properties
@@ -25,6 +25,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         super.viewDidLoad()
         get_my_topic_title()
         wsActive.wasd_ForMyTopicTableViewController = self
+        wsActive.ware_ForMyTopicTableViewController = self
     }
     
     
@@ -37,7 +38,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     
     func updataSecTopic(msg:Dictionary<String,AnyObject>){
         // msg -- msg_type:"topic_msg"
-        //     -- img:Dtring
+        //     -- img:String
         //     -- result_dic --topic_content_id* -- sender:String
         //                                       -- temp_topic_msg_id
         //                                       -- topic_content
@@ -69,7 +70,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     else{return false}
                 })
                 if localTopicDataIndex == nil{
-                    print("001")
                     let qos = DISPATCH_QUEUE_PRIORITY_DEFAULT
                     dispatch_async((dispatch_get_global_queue(qos, 0)), {
                         
@@ -93,9 +93,23 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                                 newTopicDetailObj.lastSpeaker_detial = topic_content_data["sender"]!
                                 newTopicDetailObj.read_detial = false
                                 newTopicDetailObj.topicId_title = topic_id
+                                newTopicDetailObj.topicContentId_detial = topic_content_id.0
                                 self.updataTitleCellList_isRead(topic_id, topicWithWho: topicWithWho, read: false)
                                 dispatch_async(dispatch_get_main_queue(), {
                                     self.secTopic[topic_id]! += [newTopicDetailObj]
+                                    var checkTopicsIndex = 0
+                                    for checkTopics in self.mytopic{
+                                        if checkTopics.dataType != "title"{
+                                            self.mytopic.insert(newTopicDetailObj, atIndex: checkTopicsIndex)
+                                            let tempIndexPath = NSIndexPath(forRow: checkTopicsIndex, inSection: 0)
+                                            self.tableView.beginUpdates()
+                                            self.tableView.insertRowsAtIndexPaths([tempIndexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                                            self.tableView.endUpdates()
+                                        }
+                                        checkTopicsIndex += 1
+                                    }
+                                    
+                                    self.updataTitleUnread(topic_id)
                                     self.tableView.reloadData()
                                 })
                             }
@@ -124,6 +138,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     if uiDataIndex != nil{
                         mytopic.removeAtIndex(Int(uiDataIndex!))
                         mytopic.insert(localData, atIndex: uiDataIndex!)
+                        self.updataTitleUnread(localData.topicId_title!)
                         self.tableView.reloadData()
                     }
                 }
@@ -134,6 +149,24 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         
         
+    }
+    
+    func updataTitleUnread(topicId:String){
+        let tagretIndex = self.mytopic.indexOf { (obj_s) -> Bool in
+            if obj_s.dataType == "title" && obj_s.topicId_title! == topicId{
+                return true
+            }
+            else{return false}
+        }
+        if tagretIndex != nil{
+            var newUnreadDic: Dictionary<String,Bool> = [:]
+            if let secCellList = secTopic[topicId]{
+                for c in secCellList{
+                    newUnreadDic[c.clientId_detial!] = c.read_detial!
+                }
+                mytopic[tagretIndex!].topicWithWhoDic_title = newUnreadDic
+            }
+        }
     }
     
     func get_my_topic_title() {
@@ -163,6 +196,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     
                     
                     print("第\(self.secTopic.count)筆詳細資料下載完畢")
+                    
                 })
             })
         }
@@ -194,15 +228,16 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     
     func transferToStandardType_detail(inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType> {
         // return_dic --topic_id:String
-        //            --topic_contents  --topic_with_who_id* -- topic_with_who_name:String
-        //                                                   -- last_speaker:String
-        //                                                   -- img
-        //                                                   -- is_real_pic
-        //                                                   -- sex
-        //                                                   -- online
-        //                                                   -- topic_content
-        //                                                   -- last_speaker_name
-        //                                                   -- read
+        //            --topic_contents-topic_with_who_id*- topic_with_who_name:String
+        //                                               - last_speaker:String
+        //                                               - img
+        //                                               - is_real_pic
+        //                                               - sex
+        //                                               - online
+        //                                               - topic_content
+        //                                               - last_speaker_name
+        //                                               - read
+        //                                               - topic_content_id
         var tempMytopicList = [MyTopicStandardType]()
         for topicWithWhoId in inputData["topic_contents"] as! Dictionary<String,Dictionary<String,AnyObject>>{
             let topicTitleData = MyTopicStandardType(dataType:"detail")
@@ -217,6 +252,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             topicTitleData.lastLine_detial = topicWithWhoId.1["topic_content"] as? String
             topicTitleData.lastSpeaker_detial = topicWithWhoId.1["last_speaker_name"] as? String
             topicTitleData.read_detial = topicWithWhoId.1["read"] as? Bool
+            topicTitleData.topicContentId_detial = String(topicWithWhoId.1["topic_content_id"] as! Int)
+            
             tempMytopicList += [topicTitleData]
         }
         return tempMytopicList
@@ -513,7 +550,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
             }
         }
-        
+        self.checkData()
         
     }
     
@@ -551,5 +588,92 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cellOnlineLogo.tintColor = UIColor.grayColor()
         }
     }
+    
+    func wsReconnected(){
+        //dic -- title* -- detail* --
+        checkData()
+    }
+    
+    func checkData(){
+        // dic - topicId* - topicWithWho* - topicContentId
+        var ckeckDic:Dictionary<String,Dictionary<String,String>>
+        ckeckDic = [:]
+        
+        for topicDatas in secTopic{
+            ckeckDic[topicDatas.0] = [:]
+            for secTopicDatas in topicDatas.1{
+                ckeckDic[topicDatas.0]![secTopicDatas.clientId_detial!] = secTopicDatas.topicContentId_detial!
+            }
+        }
+        
+        let sendDic = ckeckDic as Dictionary<String,Dictionary<String,String>> as NSDictionary
+        let httpObj = ＨttpRequsetCenter()
+        httpObj.reconnect_check_my_table_view(sendDic) { (returnData) in
+            //code
+            self.updateReconnect(returnData)
+        }
+    }
+    func updateReconnect(returnDic:Dictionary<String,AnyObject>) {
+        // return_dic -- topic_with_who* -- topic_content, last_speaker, is_online
+        for topic_id_s in returnDic{
+            let topic_id = topic_id_s.0
+            let topic_who = topic_id_s.1 as? Dictionary<String,AnyObject>
+            if topic_who != nil {
+                if topic_who?.count != 0{
+                    for topic_who_s in topic_who!{
+                        //修改資料庫
+                        let detailData_s = topic_id_s.1 as! Dictionary<String,AnyObject>
+                        let dataBase = secTopic[topic_id]
+                        let dataIndex = dataBase?.indexOf({ (target) -> Bool in
+                            if target.clientId_detial! == topic_who_s.0{
+                                return true
+                            }
+                            else{return false}
+                        })
+                        if dataIndex != nil{
+                            // 更新DB
+                            secTopic[topic_id]![dataIndex!].lastLine_detial = detailData_s["topic_content"] as? String
+                            secTopic[topic_id]![dataIndex!].clientOnline_detial = detailData_s["is_online"] as? Bool
+                            secTopic[topic_id]![dataIndex!].lastSpeaker_detial = detailData_s["last_speaker"] as? String
+                            self.updataTitleUnread(topic_id)
+                            
+                            let mainDataBase = mytopic
+                            let mainDataBaseIndex = mainDataBase.indexOf({ (target) -> Bool in
+                                if target.dataType == "detail"
+                                && target.topicId_title! == topic_id
+                                    && target.clientId_detial == topic_who_s.0{
+                                    return true
+                                }
+                                else{return false}
+                            })
+                            if mainDataBaseIndex != nil{
+                                // 更新畫面顯示
+                                mytopic[mainDataBaseIndex!].lastLine_detial = detailData_s["topic_content"] as? String
+                                mytopic[mainDataBaseIndex!].clientOnline_detial = detailData_s["is_online"] as? Bool
+                                mytopic[mainDataBaseIndex!].lastSpeaker_detial = detailData_s["last_speaker"] as? String
+                                self.tableView.reloadData()
+                            }
+                            
+                        }
+                        else{
+                            // topic_with_who* -- topic_content, last_speaker, is_online
+                            
+                        }
+                        
+                        
+                        
+                    }
+                }
+            }
+        }
+        print("=====")
+    }
+    
+    
+    
+    
+    
+    
+    
 }
 

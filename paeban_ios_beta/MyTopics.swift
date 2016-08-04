@@ -45,6 +45,7 @@ class MyTopicStandardType {
     var clientOnline_detial:Bool?
     var lastLine_detial: String?
     var lastSpeaker_detial:String?
+    var topicContentId_detial:String?
     var read_detial:Bool?
     // === detail類型資料變數 ===
 
