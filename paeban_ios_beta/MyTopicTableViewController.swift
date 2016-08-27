@@ -615,6 +615,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     func updateReconnect(returnDic:Dictionary<String,AnyObject>) {
         // return_dic -- topic_with_who* -- topic_content, last_speaker, is_online
+        print(returnDic)
         for topic_id_s in returnDic{
             let topic_id = topic_id_s.0
             let topic_who = topic_id_s.1 as? Dictionary<String,AnyObject>
@@ -625,7 +626,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                         let detailData_s = topic_id_s.1 as! Dictionary<String,AnyObject>
                         let dataBase = secTopic[topic_id]
                         let dataIndex = dataBase?.indexOf({ (target) -> Bool in
-                            if target.clientId_detial! == topic_who_s.0{
+                            if target.clientId_detial! == topic_id{
                                 return true
                             }
                             else{return false}
@@ -657,7 +658,18 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                         }
                         else{
                             // topic_with_who* -- topic_content, last_speaker, is_online
+                            let http_obj = ＨttpRequsetCenter()
+                            var sendDic:Dictionary<String,String> = [:]
+                            sendDic["client_id"] = topic_id_s.0
+                            sendDic["topic_content_id"] = detailData_s["topic_content_id"] as? String
+                            sendDic["topic_id"] = topic_id
                             
+                            let qos = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                            dispatch_async(dispatch_get_global_queue(qos,0), {
+                                http_obj.reconnect_update_new_user_data(sendDic, InViewAct: { (returnData) in
+                                    print(returnData)
+                                })
+                            })
                         }
                         
                         
@@ -669,7 +681,9 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         print("=====")
     }
     
-    
+    // 伺服器端，除了現有對話人外，其他對話人也要找  py 2138
+    // 如果正在下載資料庫斷線？fix it --- 跟其他斷線行為合併
+    //
     
     
     
