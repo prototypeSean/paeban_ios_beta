@@ -21,6 +21,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     
     @IBOutlet weak var topicInfoBG: UIView!
     
+    @IBOutlet weak var topicTitleContent: UILabel!
     var delegate:TopicViewControllerDelegate?
     var setID:String?
     var setName:String?
@@ -34,8 +35,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("ssss")
+        
         wsActive.wasd_ForTopicViewController = self
+        topicTitleContent.text = topicTitle
         setImage()
         getHttpData()
         
