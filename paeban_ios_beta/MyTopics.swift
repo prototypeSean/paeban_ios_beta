@@ -56,35 +56,35 @@ class MyTopicStandardType {
 }
 
 
-class MyTopicDetail {
-    var clientId:String
-    var clientName:String
-    var clientPhoto: UIImage?
-    var clientIsRealPhoto:Bool
-    var clientSex:String
-    var clientOnline:Bool
-    var lastLine: String
-    var lastSpeaker:String
-    var read:Bool = false
-    
-    
-    // MARK: Initialization
-    
-    init(clientId:String, clientName:String, clientPhoto: UIImage?, clientIsRealPhoto:Bool, clientSex:String, clientOnline:Bool, lastLine: String, lastSpeaker:String, read:Bool){
-        
-        self.clientId = clientId
-        self.clientName = clientName
-        self.clientPhoto = clientPhoto
-        self.clientIsRealPhoto = clientIsRealPhoto
-        self.clientSex  = clientSex
-        self.clientOnline = clientOnline
-        self.lastLine = lastLine
-        self.lastSpeaker = lastSpeaker
-        self.read = read
-        
-    }
-    
-}
+//class MyTopicDetail {
+//    var clientId:String
+//    var clientName:String
+//    var clientPhoto: UIImage?
+//    var clientIsRealPhoto:Bool
+//    var clientSex:String
+//    var clientOnline:Bool
+//    var lastLine: String
+//    var lastSpeaker:String
+//    var read:Bool = false
+//    
+//    
+//    // MARK: Initialization
+//    
+//    init(clientId:String, clientName:String, clientPhoto: UIImage?, clientIsRealPhoto:Bool, clientSex:String, clientOnline:Bool, lastLine: String, lastSpeaker:String, read:Bool){
+//        
+//        self.clientId = clientId
+//        self.clientName = clientName
+//        self.clientPhoto = clientPhoto
+//        self.clientIsRealPhoto = clientIsRealPhoto
+//        self.clientSex  = clientSex
+//        self.clientOnline = clientOnline
+//        self.lastLine = lastLine
+//        self.lastSpeaker = lastSpeaker
+//        self.read = read
+//        
+//    }
+//    
+//}
 
 
 class MyRecentjoined {
