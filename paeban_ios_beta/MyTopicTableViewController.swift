@@ -340,7 +340,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             var willInsertLoad = true
             let qos = DISPATCH_QUEUE_PRIORITY_LOW
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-                var waitTime:Int = 5000
+                var waitTime:Int = 3000
                 //print(NSDate().timeIntervalSince1970)
                 var sexDataIndex = self.secTopic.indexOf { (topicIdInIndex, _) -> Bool in
                     if topicIdInIndex == topicId{
@@ -486,7 +486,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             return cell
         }
     }
-    
+    // 畫面轉跳
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         print(segue.identifier)
     }
