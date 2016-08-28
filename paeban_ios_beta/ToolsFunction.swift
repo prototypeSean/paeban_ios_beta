@@ -22,17 +22,33 @@ func json_dumps(input_data:NSDictionary) ->NSData{
     return ouput_data!
 }
 
+func json_dumps2(input_data:NSDictionary) -> String?{
+    do {
+        let jsonData = try NSJSONSerialization.dataWithJSONObject(input_data, options: NSJSONWritingOptions.PrettyPrinted)
+        let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
+        return jsonString
+        
+        //here "jsonData" is the dictionary encoded in JSON data
+    } catch let error as NSError {
+        print(error)
+        return nil
+    }
+    
+}
 
 //MARK: 解封json
 func json_load(input_data:String) ->NSDictionary{
     var ouput : NSDictionary?
+    
     let input_data_2 = input_data.dataUsingEncoding(NSUTF8StringEncoding)
+    
     do {
         let decoded = try NSJSONSerialization.JSONObjectWithData(input_data_2!, options: []) as? NSDictionary
         // here "decoded" is the dictionary decoded from JSON data
         ouput = decoded
     } catch let error as NSError {
         print(error)
+        //print(input_data_2)
     }
     return ouput!
 }

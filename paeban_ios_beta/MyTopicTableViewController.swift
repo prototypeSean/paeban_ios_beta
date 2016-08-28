@@ -9,12 +9,12 @@
 import UIKit
 
 // 我的話題清單
-class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDelegate {
+class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDelegate,webSocketActiveCenterDelegate_re {
 
 
     // MARK: Properties
     var mytopic:Array<MyTopicStandardType> = []
-    var secTopic:Dictionary<String,AnyObject> = [:]
+    var secTopic:Dictionary = [String: [MyTopicStandardType]]()
     let heightOfCell:CGFloat = 85
     var heightOfSecCell:CGFloat = 130
     var selectItemId:String?
@@ -25,17 +25,147 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         super.viewDidLoad()
         get_my_topic_title()
         wsActive.wasd_ForMyTopicTableViewController = self
+        wsActive.ware_ForMyTopicTableViewController = self
     }
     
     
     
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
-        // msg -- topic_msg:String
-        //     -- img:Dtring
-        //     -- result_dic --
         if msg["msg_type"] as! String == "topic_msg"{
-            //code
-            
+            updataSecTopic(msg)
+        }
+    }
+    
+    func updataSecTopic(msg:Dictionary<String,AnyObject>){
+        // msg -- msg_type:"topic_msg"
+        //     -- img:String
+        //     -- result_dic --topic_content_id* -- sender:String
+        //                                       -- temp_topic_msg_id
+        //                                       -- topic_content
+        //                                       -- receiver
+        //                                       -- topic_id
+        let result_dic = msg["result_dic"] as! Dictionary<String,Dictionary<String,String>>
+        for topic_content_id in result_dic{
+            let topic_content_data = topic_content_id.1
+            let topic_id = topic_content_data["topic_id"]!
+            let secTopicIndex = secTopic.indexOf({ (key, _) -> Bool in
+                if key == topic_id{
+                    return true
+                }
+                else{return false}
+            })
+            if secTopicIndex != nil{
+                var topicWithWho:String
+                if userData.id == topic_content_data["sender"]{
+                    topicWithWho = topic_content_data["receiver"]!
+                }
+                else{
+                    topicWithWho = topic_content_data["sender"]!
+                }
+                let localTopicData = secTopic[topic_id]!
+                let localTopicDataIndex = localTopicData.indexOf({ (MyTopicStandardType) -> Bool in
+                    if MyTopicStandardType.clientId_detial == topicWithWho{
+                        return true
+                    }
+                    else{return false}
+                })
+                if localTopicDataIndex == nil{
+                    let qos = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                    dispatch_async((dispatch_get_global_queue(qos, 0)), {
+                        
+                        let httpObj = ＨttpRequsetCenter()
+                        // MARK:補設計timeout功能
+                        httpObj.request_topic_msg_config(topic_id, client_id: topicWithWho, topic_content_id: topic_content_id.0){ (returnData) in
+                            if returnData["topic_content_id"] as! String == topic_content_id.0{
+                                let returnDic = returnData
+                                
+                                let newTopicDetailObj = MyTopicStandardType(dataType: "detail")
+                                let imgStr = returnDic["img"] as! String
+                                let img = base64ToImage(imgStr)
+                                
+                                newTopicDetailObj.clientId_detial = topicWithWho
+                                newTopicDetailObj.clientName_detial = returnDic["client_name"] as? String
+                                newTopicDetailObj.clientPhoto_detial = img
+                                newTopicDetailObj.clientIsRealPhoto_detial = returnDic["client_is_real_photo"] as? Bool
+                                newTopicDetailObj.clientSex_detial = returnDic["client_sex"] as? String
+                                newTopicDetailObj.clientOnline_detial = returnDic["client_online"] as? Bool
+                                newTopicDetailObj.lastLine_detial = topic_content_data["topic_content"]
+                                newTopicDetailObj.lastSpeaker_detial = topic_content_data["sender"]!
+                                newTopicDetailObj.read_detial = false
+                                newTopicDetailObj.topicId_title = topic_id
+                                newTopicDetailObj.topicContentId_detial = topic_content_id.0
+                                self.updataTitleCellList_isRead(topic_id, topicWithWho: topicWithWho, read: false)
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    self.secTopic[topic_id]! += [newTopicDetailObj]
+                                    var checkTopicsIndex = 0
+                                    for checkTopics in self.mytopic{
+                                        if checkTopics.dataType != "title"{
+                                            self.mytopic.insert(newTopicDetailObj, atIndex: checkTopicsIndex)
+                                            let tempIndexPath = NSIndexPath(forRow: checkTopicsIndex, inSection: 0)
+                                            self.tableView.beginUpdates()
+                                            self.tableView.insertRowsAtIndexPaths([tempIndexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                                            self.tableView.endUpdates()
+                                        }
+                                        checkTopicsIndex += 1
+                                    }
+                                    
+                                    self.updataTitleUnread(topic_id)
+                                    self.tableView.reloadData()
+                                })
+                            }
+                            
+                        }
+                   
+                    })
+                }
+                else{
+                    //更新現有資料
+                    let localData = localTopicData[Int(localTopicDataIndex!)]
+                    if topic_content_data["sender"] == userData.id{
+                        localData.lastSpeaker_detial = userData.name
+                    }
+                    else{
+                        localData.lastSpeaker_detial = localData.clientName_detial
+                    }
+                    localData.lastLine_detial = topic_content_data["topic_content"]
+                    let uiDataIndex = mytopic.indexOf({ (MyTopicStandardType) -> Bool in
+                        if MyTopicStandardType.topicId_title == topic_id
+                            && MyTopicStandardType.clientId_detial == topicWithWho{
+                            return true
+                        }
+                        else{return false}
+                    })
+                    if uiDataIndex != nil{
+                        mytopic.removeAtIndex(Int(uiDataIndex!))
+                        mytopic.insert(localData, atIndex: uiDataIndex!)
+                        self.updataTitleUnread(localData.topicId_title!)
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+            else{
+                //沒有這條topice,所以是另一邊的tableView要更新
+            }
+        }
+        
+        
+    }
+    
+    func updataTitleUnread(topicId:String){
+        let tagretIndex = self.mytopic.indexOf { (obj_s) -> Bool in
+            if obj_s.dataType == "title" && obj_s.topicId_title! == topicId{
+                return true
+            }
+            else{return false}
+        }
+        if tagretIndex != nil{
+            var newUnreadDic: Dictionary<String,Bool> = [:]
+            if let secCellList = secTopic[topicId]{
+                for c in secCellList{
+                    newUnreadDic[c.clientId_detial!] = c.read_detial!
+                }
+                mytopic[tagretIndex!].topicWithWhoDic_title = newUnreadDic
+            }
         }
     }
     
@@ -61,8 +191,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             httpObj.get_my_topic_detail(topicId, InViewAct: { (returnData) in
                 dispatch_async(dispatch_get_main_queue(), {
                     let topicId = returnData["topic_id"] as! String
-                    self.secTopic[topicId] = returnData
+                    let returnDataList = self.transferToStandardType_detail(returnData)
+                    self.secTopic[topicId] = returnDataList
+                    
+                    
                     print("第\(self.secTopic.count)筆詳細資料下載完畢")
+                    
                 })
             })
         }
@@ -94,9 +228,16 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     
     func transferToStandardType_detail(inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType> {
         // return_dic --topic_id:String
-        //            --topic_contents  --topic_with_who_id* -- topic_with_who_name:String
-        //                                     last_speaker:String
-        //                                     ...
+        //            --topic_contents-topic_with_who_id*- topic_with_who_name:String
+        //                                               - last_speaker:String
+        //                                               - img
+        //                                               - is_real_pic
+        //                                               - sex
+        //                                               - online
+        //                                               - topic_content
+        //                                               - last_speaker_name
+        //                                               - read
+        //                                               - topic_content_id
         var tempMytopicList = [MyTopicStandardType]()
         for topicWithWhoId in inputData["topic_contents"] as! Dictionary<String,Dictionary<String,AnyObject>>{
             let topicTitleData = MyTopicStandardType(dataType:"detail")
@@ -111,6 +252,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             topicTitleData.lastLine_detial = topicWithWhoId.1["topic_content"] as? String
             topicTitleData.lastSpeaker_detial = topicWithWhoId.1["last_speaker_name"] as? String
             topicTitleData.read_detial = topicWithWhoId.1["read"] as? Bool
+            topicTitleData.topicContentId_detial = String(topicWithWhoId.1["topic_content_id"] as! Int)
+            
             tempMytopicList += [topicTitleData]
         }
         return tempMytopicList
@@ -161,15 +304,15 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         else{
             //資料進來了
-            insertSecCell(secTopic[topicId] as! Dictionary<String,AnyObject>, selectIndex: selectIndex)
+            insertSecCell(secTopic[topicId]! as Array<MyTopicStandardType>, selectIndex: selectIndex)
         }
     }
     
-    func insertSecCell(inputDic:Dictionary<String,AnyObject>, selectIndex:Int) {
-        let insertDataList = transferToStandardType_detail(inputDic)
+    func insertSecCell(inputList:[MyTopicStandardType], selectIndex:Int) {
+        
         var updataIndexList = [NSIndexPath]()
         var updataIndexInt = selectIndex
-        for insertData in insertDataList{
+        for insertData in inputList{
             updataIndexInt += 1
             let updataIndex = NSIndexPath(forRow: updataIndexInt, inSection: 0)
             updataIndexList.append(updataIndex)
@@ -197,7 +340,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             var willInsertLoad = true
             let qos = DISPATCH_QUEUE_PRIORITY_LOW
             dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-                var waitTime:Int = 5000
+                var waitTime:Int = 3000
                 //print(NSDate().timeIntervalSince1970)
                 var sexDataIndex = self.secTopic.indexOf { (topicIdInIndex, _) -> Bool in
                     if topicIdInIndex == topicId{
@@ -248,7 +391,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                             self.updateSelectIndex(topicId, anyFunction: {
                                 self.removeLoadingCell()
                             })
-                            self.insertSecCell(self.secTopic[topicId] as! Dictionary<String,AnyObject>, selectIndex: selectIndex)
+                            self.insertSecCell(self.secTopic[topicId]! as Array<MyTopicStandardType>, selectIndex: selectIndex)
                         })
                     }
                     else{
@@ -261,6 +404,19 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         
     }
+    
+    func updataTitleCellList_isRead(topicId:String,topicWithWho:String,read:Bool){
+        let titleIndex = mytopic.indexOf { (MyTopicStandardType) -> Bool in
+            if MyTopicStandardType.topicId_title == topicId{
+                return true
+            }
+            else{return false}
+        }
+        if titleIndex != nil{
+            mytopic[titleIndex!].topicWithWhoDic_title!["topicWithWho"] = read
+        }
+    }
+    
     
     func insertLoadingCell(selectIndex:Int) {
         let insertObj = MyTopicStandardType(dataType: "reloading")
@@ -330,7 +486,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             return cell
         }
     }
-    
+    // 畫面轉跳
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         print(segue.identifier)
     }
@@ -394,7 +550,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
             }
         }
-        
+        self.checkData()
         
     }
     
@@ -432,5 +588,106 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cellOnlineLogo.tintColor = UIColor.grayColor()
         }
     }
+    
+    func wsReconnected(){
+        //dic -- title* -- detail* --
+        checkData()
+    }
+    
+    func checkData(){
+        // dic - topicId* - topicWithWho* - topicContentId
+        var ckeckDic:Dictionary<String,Dictionary<String,String>>
+        ckeckDic = [:]
+        
+        for topicDatas in secTopic{
+            ckeckDic[topicDatas.0] = [:]
+            for secTopicDatas in topicDatas.1{
+                ckeckDic[topicDatas.0]![secTopicDatas.clientId_detial!] = secTopicDatas.topicContentId_detial!
+            }
+        }
+        
+        let sendDic = ckeckDic as Dictionary<String,Dictionary<String,String>> as NSDictionary
+        let httpObj = ＨttpRequsetCenter()
+        httpObj.reconnect_check_my_table_view(sendDic) { (returnData) in
+            //code
+            self.updateReconnect(returnData)
+        }
+    }
+    func updateReconnect(returnDic:Dictionary<String,AnyObject>) {
+        // return_dic -- topic_with_who* -- topic_content, last_speaker, is_online
+        print(returnDic)
+        for topic_id_s in returnDic{
+            let topic_id = topic_id_s.0
+            let topic_who = topic_id_s.1 as? Dictionary<String,AnyObject>
+            if topic_who != nil {
+                if topic_who?.count != 0{
+                    for topic_who_s in topic_who!{
+                        //修改資料庫
+                        let detailData_s = topic_id_s.1 as! Dictionary<String,AnyObject>
+                        let dataBase = secTopic[topic_id]
+                        let dataIndex = dataBase?.indexOf({ (target) -> Bool in
+                            if target.clientId_detial! == topic_id{
+                                return true
+                            }
+                            else{return false}
+                        })
+                        if dataIndex != nil{
+                            // 更新DB
+                            secTopic[topic_id]![dataIndex!].lastLine_detial = detailData_s["topic_content"] as? String
+                            secTopic[topic_id]![dataIndex!].clientOnline_detial = detailData_s["is_online"] as? Bool
+                            secTopic[topic_id]![dataIndex!].lastSpeaker_detial = detailData_s["last_speaker"] as? String
+                            self.updataTitleUnread(topic_id)
+                            
+                            let mainDataBase = mytopic
+                            let mainDataBaseIndex = mainDataBase.indexOf({ (target) -> Bool in
+                                if target.dataType == "detail"
+                                && target.topicId_title! == topic_id
+                                    && target.clientId_detial == topic_who_s.0{
+                                    return true
+                                }
+                                else{return false}
+                            })
+                            if mainDataBaseIndex != nil{
+                                // 更新畫面顯示
+                                mytopic[mainDataBaseIndex!].lastLine_detial = detailData_s["topic_content"] as? String
+                                mytopic[mainDataBaseIndex!].clientOnline_detial = detailData_s["is_online"] as? Bool
+                                mytopic[mainDataBaseIndex!].lastSpeaker_detial = detailData_s["last_speaker"] as? String
+                                self.tableView.reloadData()
+                            }
+                            
+                        }
+                        else{
+                            // topic_with_who* -- topic_content, last_speaker, is_online
+                            let http_obj = ＨttpRequsetCenter()
+                            var sendDic:Dictionary<String,String> = [:]
+                            sendDic["client_id"] = topic_id_s.0
+                            sendDic["topic_content_id"] = detailData_s["topic_content_id"] as? String
+                            sendDic["topic_id"] = topic_id
+                            
+                            let qos = DISPATCH_QUEUE_PRIORITY_DEFAULT
+                            dispatch_async(dispatch_get_global_queue(qos,0), {
+                                http_obj.reconnect_update_new_user_data(sendDic, InViewAct: { (returnData) in
+                                    print(returnData)
+                                })
+                            })
+                        }
+                        
+                        
+                        
+                    }
+                }
+            }
+        }
+        print("=====")
+    }
+    
+    // 伺服器端，除了現有對話人外，其他對話人也要找  py 2138
+    // 如果正在下載資料庫斷線？fix it --- 跟其他斷線行為合併
+    //
+    
+    
+    
+    
+    
 }
 

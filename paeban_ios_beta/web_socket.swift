@@ -15,13 +15,15 @@ func ws_connected(ws:WebSocket){
     ws.writeData(online_msg)
 }
 
+
+
 func ws_stay_connect(ws:WebSocket) {
     let online_msg = json_dumps(["msg_type":"test"])
     ws.writeData(online_msg)
 }
 
 
-func ws_onmsg(text:String)-> Dictionary<String,AnyObject>{
+func wsMsgTextToDic(text:String)-> Dictionary<String,AnyObject>{
     //print(text)
     let unzip_data :NSDictionary = json_load(text)
     //print(unzip_data)
@@ -32,25 +34,23 @@ func ws_onmsg(text:String)-> Dictionary<String,AnyObject>{
 
 
 func ws_connect_fun(ws:WebSocket){
-    ws.onConnect = {
-        //print("ccccccc")
-    }
     ws.connect()
 }
-
-
-
 
 
 public protocol webSocketActiveCenterDelegate{
     func wsOnMsg(msg:Dictionary<String,AnyObject>)
 }
 
+public protocol webSocketActiveCenterDelegate_re{
+    func wsReconnected()
+}
+
 //MARK:webSocket 資料接收中心
 public class webSocketActiveCenter{
     
     let mainWorkList = ["online"]
-    
+
     var test_List = ["remove_old_topics","topic_closed","new_topic"]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
     let wsad_ForTopicTableViewControllerList = ["off_line","new_member","topic_closed"]
@@ -65,7 +65,7 @@ public class webSocketActiveCenter{
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
             let msgtypeString = msgtype as! String
-            //print("======\(msgtypeString)=========")
+            print("======\(msgtypeString)=========")
             
             if mainWorkList.indexOf(msgtypeString) != nil {
                 if msgtypeString == "online"{
@@ -91,13 +91,40 @@ public class webSocketActiveCenter{
             if test_List.indexOf(msgtypeString) != nil {
                 print("======\(msgtypeString)=========")
                 print(msg)
-//                if msgtypeString == "remove_old_topics"{
-//                    let list = msg["old_topic_list"] as! Array<String>
-//                    print(list)
-//                }
             }
             
         }
     }
+    
+    
+    var ware_ForMyTopicTableViewController:webSocketActiveCenterDelegate_re?
+    let ware_ForMyTopicTableViewControllerList = ["topic_msg"]
+    
+    
+    func wsReConnect(){
+        ware_ForMyTopicTableViewController?.wsReconnected()
+    }
 }
+
+// MARK:接收封包資料結構
+
+//=====topic_msg=====
+// msg -- msg_type:"topic_msg"
+//     -- img:Dtring
+//     -- result_dic -- sender:String
+//                   -- temp_topic_msg_id
+//                   -- topic_content
+//                   -- receiver
+//                   -- topic_id
+
+//===== =====
+
+
+
+
+
+
+
+
+
 
