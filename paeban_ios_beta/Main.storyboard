@@ -1043,10 +1043,10 @@
             </objects>
             <point key="canvasLocation" x="-3490" y="-646"/>
         </scene>
-        <!--加入的話題-->
+        <!--跟誰的話題-->
         <scene sceneID="D7w-vy-OTP">
             <objects>
-                <viewController storyboardIdentifier="chatView2_1" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e1T-xY-fjR" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatView2_1" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e1T-xY-fjR" customClass="MyTopicViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GPf-iK-ve8"/>
                         <viewControllerLayoutGuide type="bottom" id="SWQ-2P-P7x"/>
@@ -1122,14 +1122,15 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="加入的話題" id="Mdc-ig-F3R"/>
+                    <navigationItem key="navigationItem" title="跟誰的話題" id="Mdc-ig-F3R"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="hidesBottomBarWhenPushed" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <outlet property="guestPhoto" destination="MGz-ct-YLZ" id="S1O-15-cXL"/>
-                        <outlet property="myPhoto" destination="Xb7-t0-6CF" id="28x-vF-eL4"/>
-                        <outlet property="topicInfoBG" destination="g4A-jM-ZPT" id="Mp5-jG-Gvp"/>
+                        <outlet property="guestPhoto" destination="MGz-ct-YLZ" id="Uku-BH-PYb"/>
+                        <outlet property="myPhoto" destination="Xb7-t0-6CF" id="Gg8-mO-TR6"/>
+                        <outlet property="topicInfoBG" destination="g4A-jM-ZPT" id="Owg-jB-HfG"/>
+                        <outlet property="topicTitleContent" destination="AFM-PV-tWI" id="Rej-zM-t3l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bie-q2-caM" userLabel="First Responder" sceneMemberID="firstResponder"/>
