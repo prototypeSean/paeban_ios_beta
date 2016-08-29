@@ -178,7 +178,7 @@ class ＨttpRequsetCenter{
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
             if error != nil{
-                print("連線錯誤\(error)")
+                print("連線錯誤")
             }
             else{
                 ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
