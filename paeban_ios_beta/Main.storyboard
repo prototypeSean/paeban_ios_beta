@@ -1137,10 +1137,10 @@
             </objects>
             <point key="canvasLocation" x="-2777" y="866"/>
         </scene>
-        <!--View Controller-->
+        <!--Chat View Controller-->
         <scene sceneID="ODT-yF-TlF">
             <objects>
-                <viewController storyboardIdentifier="chatView2_2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kT7-Cr-d6j" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chatView2_2" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kT7-Cr-d6j" customClass="ChatViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EYq-XW-wTp"/>
                         <viewControllerLayoutGuide type="bottom" id="SJa-n7-xti"/>
