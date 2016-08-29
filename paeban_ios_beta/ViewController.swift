@@ -104,6 +104,7 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
     func websocketDidConnect(socket: WebSocket){
         reConnectCount = 0
         //print(NSDate())
+        wsTimer?.invalidate()
         wsTimer = NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
         if firstConnect{
             ws_connected(socket)
@@ -111,6 +112,7 @@ class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelega
         }
         else{
             print("wsReConnected")
+            ws_connected(socket)
             wsActive.wsReConnect()
         }
         

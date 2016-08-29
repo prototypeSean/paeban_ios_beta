@@ -325,7 +325,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             topicViewCon.ownerId = selectTopicData.owner
             topicViewCon.ownerImg = selectTopicData.photo
             topicViewCon.topicTitle = selectTopicData.title
-            topicViewCon.title = selectTopicData.owner
+            topicViewCon.title = selectTopicData.ownerName
             topicViewCon.delegate = self
 //            topicViewCon.topicTitleContent.text = selectTopicData.title
         }
