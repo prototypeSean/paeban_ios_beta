@@ -397,7 +397,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     waitTime -= 10
                 }
                 if toExecution{
-                    print(totalDataNember)
                     if dataNumber == totalDataNember{
                         //資料進來了
                         dispatch_async(dispatch_get_main_queue(), {

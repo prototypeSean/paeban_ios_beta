@@ -49,7 +49,7 @@ public protocol webSocketActiveCenterDelegate_re{
 //MARK:webSocket 資料接收中心
 public class webSocketActiveCenter{
     
-    let mainWorkList = ["online"]
+    let mainWorkList = ["online","off_line"]
 
     var test_List = ["remove_old_topics","topic_closed","new_topic"]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
@@ -72,6 +72,9 @@ public class webSocketActiveCenter{
                     userData.id = msg["user_id"] as? String
                     userData.name = msg["user_name"] as? String
                     userData.imgString  = msg["user_pic"] as? String
+                }
+                if msgtypeString == "off_line"{
+                    print(msg)
                 }
             }
             
