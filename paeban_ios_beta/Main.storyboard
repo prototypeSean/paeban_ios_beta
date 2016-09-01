@@ -75,7 +75,7 @@
                                         <rect key="frame" x="0.0" y="92" width="600" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="79.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="房主的暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPN-A9-vyF">
@@ -799,7 +799,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Dl-Ir-3qU" id="ye2-tl-eKv">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -815,20 +815,20 @@
             </objects>
             <point key="canvasLocation" x="-1407" y="78"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Recent Table View Controller-->
         <scene sceneID="xtc-d9-0Kc">
             <objects>
-                <tableViewController id="WZw-uQ-GWM" sceneMemberID="viewController">
+                <tableViewController id="WZw-uQ-GWM" customClass="RecentTableViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="zs3-wg-E77">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="recentTopicsCell" rowHeight="90" id="bxI-lp-hL8">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="recentTopicsCell" rowHeight="90" id="bxI-lp-hL8" customClass="RecentTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bxI-lp-hL8" id="c9i-8k-6tJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="89.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="g0Y-SQ-fYN">
@@ -888,10 +888,10 @@
                                                                     </constraints>
                                                                     <variation key="default">
                                                                         <mask key="constraints">
-                                                                            <exclude reference="hRs-oi-XWA"/>
+                                                                            <exclude reference="I9b-nD-9de"/>
                                                                             <exclude reference="JlQ-Rh-pqZ"/>
                                                                             <exclude reference="UG2-7L-m7Y"/>
-                                                                            <exclude reference="I9b-nD-9de"/>
+                                                                            <exclude reference="hRs-oi-XWA"/>
                                                                         </mask>
                                                                     </variation>
                                                                 </imageView>
@@ -914,18 +914,18 @@
                                                             </constraints>
                                                             <variation key="default">
                                                                 <mask key="constraints">
-                                                                    <exclude reference="ApR-VQ-0XD"/>
                                                                     <exclude reference="8hS-DF-d90"/>
+                                                                    <exclude reference="ApR-VQ-0XD"/>
                                                                     <exclude reference="Pes-9k-vxi"/>
-                                                                    <exclude reference="HCV-5A-dLy"/>
-                                                                    <exclude reference="VQ6-MV-ZxU"/>
-                                                                    <exclude reference="Mfg-88-WYO"/>
-                                                                    <exclude reference="kF3-ea-gov"/>
                                                                     <exclude reference="670-qC-emI"/>
+                                                                    <exclude reference="HCV-5A-dLy"/>
+                                                                    <exclude reference="Mfg-88-WYO"/>
+                                                                    <exclude reference="VQ6-MV-ZxU"/>
+                                                                    <exclude reference="kF3-ea-gov"/>
                                                                     <exclude reference="3nO-Rh-UXN"/>
                                                                     <exclude reference="EEQ-K2-QBy"/>
-                                                                    <exclude reference="uNv-V9-yg3"/>
                                                                     <exclude reference="l7h-5i-hE5"/>
+                                                                    <exclude reference="uNv-V9-yg3"/>
                                                                 </mask>
                                                             </variation>
                                                         </stackView>
@@ -1009,6 +1009,14 @@
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="clientImg" destination="7f0-zt-yfm" id="ZT6-Sn-yPI"/>
+                                    <outlet property="clientSex" destination="8HG-t4-nZv" id="UN2-tK-59X"/>
+                                    <outlet property="isMyPic" destination="Dv2-0T-Dhl" id="K8e-c7-f6l"/>
+                                    <outlet property="lastLine" destination="64L-ve-hJf" id="30a-U7-OT3"/>
+                                    <outlet property="lastSpeaker" destination="DEJ-Hn-wq5" id="kFC-W5-kPE"/>
+                                    <outlet property="online" destination="aPT-sH-7zu" id="ODJ-Za-fgk"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

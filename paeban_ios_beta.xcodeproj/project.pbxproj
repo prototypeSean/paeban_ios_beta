@@ -35,6 +35,9 @@
 		936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */; };
 		93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
+		CFCC8A851D78327800D5EDF6 /* RecentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */; };
+		CFCC8A891D78329C00D5EDF6 /* RecentTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */; };
+		CFCC8A8B1D78336500D5EDF6 /* RecentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */; };
 		CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */; };
 		E94BDD381436514219660B42 /* Pods_paeban_ios_beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32578316BF0D1896CBB03988 /* Pods_paeban_ios_beta.framework */; };
 /* End PBXBuildFile section */
@@ -72,6 +75,9 @@
 		936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopicViewController.swift; sourceTree = "<group>"; };
 		93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
+		CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewCell.swift; sourceTree = "<group>"; };
+		CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewModel.swift; sourceTree = "<group>"; };
+		CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewController.swift; sourceTree = "<group>"; };
 		CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewLoadingCell.swift; sourceTree = "<group>"; };
 		EB67E2D41D7B1D1796AAE10D /* Pods-paeban_ios_beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.release.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -191,6 +197,9 @@
 		93AEF2911D01427D007FDE51 /* recent */ = {
 			isa = PBXGroup;
 			children = (
+				CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */,
+				CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */,
+				CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */,
 			);
 			name = recent;
 			sourceTree = "<group>";
@@ -332,6 +341,7 @@
 				CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */,
 				932A00F21CFEBA460036E1EA /* Login_paeban.swift in Sources */,
 				930983E81D056971005B8E3B /* HashTagsContorller.swift in Sources */,
+				CFCC8A8B1D78336500D5EDF6 /* RecentTableViewController.swift in Sources */,
 				9301F6041D1D16F900D1F8C0 /* TopicSearchBar.swift in Sources */,
 				932A00E81CFEBA460036E1EA /* TopicCellTableViewCell.swift in Sources */,
 				9301F6061D1D1A2800D1F8C0 /* TopicSearchController.swift in Sources */,
@@ -342,6 +352,8 @@
 				932A00E41CFEBA460036E1EA /* ViewController.swift in Sources */,
 				932A00F11CFEBA460036E1EA /* LaunchScreenViewController.swift in Sources */,
 				932A00ED1CFEBA460036E1EA /* Labels.swift in Sources */,
+				CFCC8A851D78327800D5EDF6 /* RecentTableViewCell.swift in Sources */,
+				CFCC8A891D78329C00D5EDF6 /* RecentTableViewModel.swift in Sources */,
 				932A00E21CFEBA460036E1EA /* AppDelegate.swift in Sources */,
 				CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */,
 				932A00E31CFEBA460036E1EA /* ToolsFunction.swift in Sources */,
