@@ -189,16 +189,14 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         
         cell.sex.image = sexImg
         
-        let onlineimage = cell.online
-        
-        onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        cell.online.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
 
         if topic.online{
-            onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
+            cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
         //MARK:下面那張圖請改 “不在線上的人圖示”
         else{
-            onlineimage.tintColor = UIColor.grayColor()
+            cell.online.tintColor = UIColor.grayColor()
         }
 //        cell.online.image = onlineimage.image
         // Configure the cell...
@@ -446,6 +444,8 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         returnData.clientPhoto_detial = inputData.photo
         returnData.clientIsRealPhoto_detial = inputData.isMe
         returnData.clientSex_detial = inputData.sex
+        //print("topic table VC")
+        //print(inputData.online)
         returnData.clientOnline_detial = inputData.online
         returnData.tag_detial = inputData.hashtags
         

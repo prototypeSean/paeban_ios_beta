@@ -249,7 +249,21 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     
     func updataNowTopicCellList(resultDic:Dictionary<String,AnyObject>){
-        // MARK 待施工
+        
+        for resultDicData in resultDic{
+            let resultDicDataVal = resultDicData.1 as! Dictionary<String,AnyObject>
+            let topicId = resultDicDataVal["topic_id"] as! String
+            if let nowTopicCellListIndex = nowTopicCellList.indexOf({ (target) -> Bool in
+                if target.topicId_title == topicId{
+                    return true
+                }
+                else{return false}
+            }){
+                nowTopicCellList[nowTopicCellListIndex].lastLine_detial = resultDicDataVal["topic_content"] as? String
+                nowTopicCellList[nowTopicCellListIndex].lastSpeaker_detial = resultDicDataVal["sender"] as? String
+            }
+        }
+        
     }
     
     var aspectRatioConstraint: NSLayoutConstraint? {

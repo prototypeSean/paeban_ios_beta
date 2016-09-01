@@ -19,10 +19,14 @@ class RecentTableViewController: UITableViewController {
         return rTVModel!.lenCount()
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 70
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCellWithIdentifier("nowTopicListCell", forIndexPath: indexPath) as! RecentTableViewCell
-        
-        return rTVModel!.getCell(indexPath.row,cell: cell)
+        let cell2 = rTVModel!.getCell(indexPath.row,cell: cell)
+        return cell2
     }
     
 }

@@ -16,7 +16,7 @@ class RecentTableViewModel{
         self.recentDataBase = addEffectiveData(data)
     }
     
-    func getCell(index:Int,cell:RecentTableViewCell) -> UITableViewCell{
+    func getCell(index:Int,cell:RecentTableViewCell) -> RecentTableViewCell{
         func letoutSexLogo(sex:String) -> UIImage {
             var sexImg:UIImage
             switch sex {
@@ -40,9 +40,10 @@ class RecentTableViewModel{
             else{isMeImg = UIImage(named:"Fake_photo")!}
             return isMeImg
         }
-        func letoutOnlineImg(online:Bool) -> UIImage{
+        func letoutOnlineImg(online:Bool) -> UIImageView{
             let onlineimage = UIImageView()
-            onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            
+            //let ccc = onlineimage
             
             if online{
                 onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
@@ -51,7 +52,9 @@ class RecentTableViewModel{
                 onlineimage.tintColor = UIColor.grayColor()
             }
             
-            return onlineimage.image!
+            onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            
+            return onlineimage
         }
         
         let topicWriteToRow = recentDataBase[index]
@@ -60,9 +63,10 @@ class RecentTableViewModel{
         cell.clientImg.image = topicWriteToRow.clientPhoto_detial
         cell.clientSex.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
         cell.isMyPic.image = letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!)
-        cell.lastSpeaker.text = "\(topicWriteToRow.lastSpeaker_detial):"
+        cell.lastSpeaker.text = "\(topicWriteToRow.lastSpeaker_detial!):"
         cell.lastLine.text = topicWriteToRow.lastLine_detial
-        cell.online.image = letoutOnlineImg(topicWriteToRow.clientOnline_detial!)
+        cell.online = letoutOnlineImg(topicWriteToRow.clientOnline_detial!)
+        
         
         return cell
     }

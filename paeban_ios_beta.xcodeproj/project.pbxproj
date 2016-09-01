@@ -197,8 +197,8 @@
 		93AEF2911D01427D007FDE51 /* recent */ = {
 			isa = PBXGroup;
 			children = (
-				CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */,
 				CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */,
+				CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */,
 				CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */,
 			);
 			name = recent;

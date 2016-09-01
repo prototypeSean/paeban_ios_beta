@@ -705,14 +705,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         
     }
-    
-    // 伺服器端，除了現有對話人外，其他對話人也要找  py 2138
-    // 如果正在下載資料庫斷線？fix it --- 跟其他斷線行為合併
-    //
-    
-    
-    
-    
+ 
     
 }
 
