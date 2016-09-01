@@ -25,10 +25,6 @@ class RecentTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCellWithIdentifier("nowTopicListCell", forIndexPath: indexPath) as! RecentTableViewCell
-//        var fff:Array<String>?
-//        fff = ["a","b"]
-        //cell.hashtag.tagListInContorller = fff
-        //cell.hashtag.drawButton()
         let cell2 = rTVModel!.getCell(indexPath.row,cell: cell)
         
         return cell2
