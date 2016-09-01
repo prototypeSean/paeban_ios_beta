@@ -16,7 +16,8 @@ class RecentTableViewCell: UITableViewCell {
     @IBOutlet weak var online: UIImageView!
     @IBOutlet weak var lastLine: UILabel!
     @IBOutlet weak var lastSpeaker: UILabel!
-    
+    @IBOutlet weak var hashtag: HashTagsContorller!
+    @IBOutlet weak var ownerName: UILabel!
     
     
     

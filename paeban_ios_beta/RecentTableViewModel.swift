@@ -43,30 +43,46 @@ class RecentTableViewModel{
         func letoutOnlineImg(online:Bool) -> UIImageView{
             let onlineimage = UIImageView()
             
-            //let ccc = onlineimage
-            
+            onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
             if online{
                 onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
             }
             else{
                 onlineimage.tintColor = UIColor.grayColor()
             }
-            
-            onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-            
             return onlineimage
         }
         
         let topicWriteToRow = recentDataBase[index]
-
+        
+        
+        cell.hashtag.tagListInContorller = topicWriteToRow.tag_detial
+        cell.hashtag.drawButton()
         
         cell.clientImg.image = topicWriteToRow.clientPhoto_detial
         cell.clientSex.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
         cell.isMyPic.image = letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!)
-        cell.lastSpeaker.text = "\(topicWriteToRow.lastSpeaker_detial!):"
-        cell.lastLine.text = topicWriteToRow.lastLine_detial
-        cell.online = letoutOnlineImg(topicWriteToRow.clientOnline_detial!)
         
+        var lastSpeakerName:String?
+        if topicWriteToRow.lastSpeaker_detial! == userData.id{
+            lastSpeakerName = userData.name
+        }
+        else{
+            lastSpeakerName = topicWriteToRow.clientName_detial
+        }
+        cell.lastSpeaker.text = "\(lastSpeakerName!):"
+        
+        cell.ownerName.text = topicWriteToRow.clientName_detial
+        
+        cell.lastLine.text = topicWriteToRow.lastLine_detial
+        
+        cell.online.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        if topicWriteToRow.clientOnline_detial!{
+            cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
+        }
+        else{
+            cell.online.tintColor = UIColor.grayColor()
+        }        
         
         return cell
     }
