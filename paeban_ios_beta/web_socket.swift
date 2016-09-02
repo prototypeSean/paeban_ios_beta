@@ -61,7 +61,7 @@ public class webSocketActiveCenter{
     var wasd_ForMyTopicTableViewController:webSocketActiveCenterDelegate?
     let wasd_ForMyTopicTableViewControllerList = ["topic_msg"]
     var wasd_ForRecentTableViewController:webSocketActiveCenterDelegate?
-    let wasd_ForRecentTableViewControllerList = ["topic_msg"]
+    let wasd_ForRecentTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed"]
     
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{

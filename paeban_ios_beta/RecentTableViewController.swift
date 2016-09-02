@@ -5,7 +5,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        rTVModel = RecentTableViewModel(data: nowTopicCellList)
+        rTVModel = RecentTableViewModel()
         wsActive.wasd_ForRecentTableViewController = self
     }
     
@@ -33,9 +33,22 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         if let msg_type:String = msg["msg_type"] as? String{
 
             if msg_type == "topic_msg"{
-                let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
-                rTVModel!.updataDB(resultDic)
                 self.tableView.reloadData()
+            }
+            else if msg_type == "new_member"{
+                if rTVModel!.clientOnline(msg){
+                    self.tableView.reloadData()
+                }
+            }
+            else if msg_type == "off_line"{
+                if rTVModel!.clientOffline(msg){
+                    self.tableView.reloadData()
+                }
+            }
+            else if msg_type == "topic_closed"{
+                if rTVModel!.topicClosed(msg){
+                    self.tableView.reloadData()
+                }
             }
             
         }

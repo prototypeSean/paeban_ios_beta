@@ -256,28 +256,52 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             if msg_type == "off_line"{
                 let offLineUser = msg["user_id"] as! String
                 
+                // 更新本頁資料
                 if let topic_sIndex = topics.indexOf({$0.owner==offLineUser}){
                     topics[topic_sIndex].online = false
                     let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
                     self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
                 }
                 
+                //更新recenttopic資料
+                for recentDataBaseIndex in 0..<nowTopicCellList.count{
+                    if offLineUser == nowTopicCellList[recentDataBaseIndex].clientId_detial{
+                        nowTopicCellList[recentDataBaseIndex].clientOnline_detial = false
+                    }
+                }
             }
                 
             //有人上線
             else if msg_type == "new_member"{
                 let onLineUser = msg["user_id"] as! String
+                // 更新本頁資料
                 if let topic_sIndex = topics.indexOf({$0.owner==onLineUser}){
                     topics[topic_sIndex].online = true
                     let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
                     self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+                
+                //更新recenttopic資料
+                if let _ = nowTopicCellList.indexOf({ (target) -> Bool in
+                    if target.clientId_detial == onLineUser{
+                        return true
+                    }
+                    else{return false}
+                }){
+                    for recentDataBaseIndex in 0..<nowTopicCellList.count{
+                        if onLineUser == nowTopicCellList[recentDataBaseIndex].clientId_detial{
+                            nowTopicCellList[recentDataBaseIndex].clientOnline_detial = true
+                        }
+                    }
                 }
             }
                 
             //關閉話題
             else if msg_type == "topic_closed"{
                 let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
+                
                 if closeTopicIdList != nil{
+                    // 更新本頁資料
                     var removeTopicIndexList:Array<Int> = []
                     for closeTopicId in closeTopicIdList!{
                         let closeTopicIndex = topics.indexOf({ (Topic) -> Bool in
@@ -295,7 +319,28 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                         topics.removeAtIndex(removeTopicIndex)
                     }
                     topicList.reloadData()
+                    
+                    //更新recenttopic資料
+                    var removeTopicIndexList2:Array<Int> = []
+                    for closeTopicId in closeTopicIdList!{
+                        let closeTopicIndex = nowTopicCellList.indexOf({ (target) -> Bool in
+                            if target.topicId_title == closeTopicId{
+                                return true
+                            }
+                            else{return false}
+                        })
+                        if closeTopicIndex != nil{
+                            removeTopicIndexList2.append(closeTopicIndex! as Int)
+                        }
+                    }
+                    removeTopicIndexList2 = removeTopicIndexList2.sort(>)
+                    for removeTopicIndex in removeTopicIndexList2{
+                        nowTopicCellList.removeAtIndex(removeTopicIndex)
+                    }
                 }
+                
+                
+                
             }
             
             //接收到訊息

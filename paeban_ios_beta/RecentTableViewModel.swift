@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 class RecentTableViewModel{
-    var recentDataBase:Array<MyTopicStandardType> = []
-    
-    init(data:Array<MyTopicStandardType>){
-        self.recentDataBase = addEffectiveData(data)
+    var recentDataBase:Array<MyTopicStandardType>{
+        get{
+            return addEffectiveData(nowTopicCellList)
+        }
     }
     
     func getCell(index:Int,cell:RecentTableViewCell) -> RecentTableViewCell{
@@ -101,14 +101,14 @@ class RecentTableViewModel{
         return returnList
     }
     
-    func updataDB(newDic:Dictionary<String,AnyObject>){
-        for newDic_s in newDic{
-            let unpackData = newDic_s.1 as! Dictionary<String,AnyObject>
-            if let newlist = self.updataLastList(recentDataBase,newDic:unpackData){
-                recentDataBase = newlist
-            }
-        }
-    }
+//    func updataDB(newDic:Dictionary<String,AnyObject>){
+//        for newDic_s in newDic{
+//            let unpackData = newDic_s.1 as! Dictionary<String,AnyObject>
+//            if let newlist = self.updataLastList(recentDataBase,newDic:unpackData){
+//                recentDataBase = newlist
+//            }
+//        }
+//    }
     
     private func updataLastList(dataBase:Array<MyTopicStandardType>,newDic:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>?{
         var topicWho = newDic["sender"] as! String
@@ -141,16 +141,16 @@ class RecentTableViewModel{
             }
             else{return false}
         }){
-            for recentDataBaseIndex in 0..<recentDataBase.count{
-                if onLineUser == recentDataBase[recentDataBaseIndex].clientId_detial{
-                    recentDataBase[recentDataBaseIndex].clientOnline_detial = true
-                }
-            }
+//            for recentDataBaseIndex in 0..<recentDataBase.count{
+//                if onLineUser == recentDataBase[recentDataBaseIndex].clientId_detial{
+//                    recentDataBase[recentDataBaseIndex].clientOnline_detial = true
+//                }
+//            }
             dataChange = true
         }
         return dataChange
     }
-    
+
     func clientOffline(msg:Dictionary<String,AnyObject>) -> Bool{
         let offLineUser = msg["user_id"] as! String
         var dataChange = false
@@ -160,11 +160,11 @@ class RecentTableViewModel{
             }
             else{return false}
         }){
-            for recentDataBaseIndex in 0..<recentDataBase.count{
-                if offLineUser == recentDataBase[recentDataBaseIndex].clientId_detial{
-                    recentDataBase[recentDataBaseIndex].clientOnline_detial = true
-                }
-            }
+//            for recentDataBaseIndex in 0..<recentDataBase.count{
+//                if offLineUser == recentDataBase[recentDataBaseIndex].clientId_detial{
+//                    recentDataBase[recentDataBaseIndex].clientOnline_detial = false
+//                }
+//            }
             dataChange = true
         }
         return dataChange
@@ -172,35 +172,34 @@ class RecentTableViewModel{
     
     func topicClosed(msg:Dictionary<String,AnyObject>) -> Bool{
         var dataChanged = false
-        if let topicIdList = msg["topic_id"] as? Array<String>{
-            
+        if let _ = msg["topic_id"] as? Array<String>{
+//            var removeTopicIndexList:Array<Int> = []
+//            for closeTopicId in topicIdList{
+//                let closeTopicIndex = recentDataBase.indexOf({ (target) -> Bool in
+//                    if target.topicId_title == closeTopicId{
+//                        return true
+//                    }
+//                    else{return false}
+//                })
+//                if closeTopicIndex != nil{
+//                    removeTopicIndexList.append(closeTopicIndex! as Int)
+//                }
+//            }
+//            removeTopicIndexList = removeTopicIndexList.sort(>)
+//            for removeTopicIndex in removeTopicIndexList{
+//                recentDataBase.removeAtIndex(removeTopicIndex)
+//            }
+            dataChanged = true
         }
         return dataChanged
     }
+    
+    
+    
 }
-    //關閉話題
-//else if msg_type == "topic_closed"{
-//    let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
-//    if closeTopicIdList != nil{
-//        var removeTopicIndexList:Array<Int> = []
-//        for closeTopicId in closeTopicIdList!{
-//            let closeTopicIndex = topics.indexOf({ (Topic) -> Bool in
-//                if Topic.topicID == closeTopicId{
-//                    return true
-//                }
-//                else{return false}
-//            })
-//            if closeTopicIndex != nil{
-//                removeTopicIndexList.append(closeTopicIndex! as Int)
-//            }
-//        }
-//        removeTopicIndexList = removeTopicIndexList.sort(>)
-//        for removeTopicIndex in removeTopicIndexList{
-//            topics.removeAtIndex(removeTopicIndex)
-//        }
-//        topicList.reloadData()
-//    }
-//}
+
+
+
 
 
 
