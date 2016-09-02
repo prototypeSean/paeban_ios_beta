@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 class RecentTableViewModel{
-    var recentDataBase:Array<MyTopicStandardType> = []
-    
-    init(data:Array<MyTopicStandardType>){
-        self.recentDataBase = addEffectiveData(data)
+    var recentDataBase:Array<MyTopicStandardType>{
+        get{
+            return addEffectiveData(nowTopicCellList)
+        }
     }
     
     func getCell(index:Int,cell:RecentTableViewCell) -> RecentTableViewCell{
@@ -101,14 +101,14 @@ class RecentTableViewModel{
         return returnList
     }
     
-    func updataDB(newDic:Dictionary<String,AnyObject>){
-        for newDic_s in newDic{
-            let unpackData = newDic_s.1 as! Dictionary<String,AnyObject>
-            if let newlist = self.updataLastList(recentDataBase,newDic:unpackData){
-                recentDataBase = newlist
-            }
-        }
-    }
+//    func updataDB(newDic:Dictionary<String,AnyObject>){
+//        for newDic_s in newDic{
+//            let unpackData = newDic_s.1 as! Dictionary<String,AnyObject>
+//            if let newlist = self.updataLastList(recentDataBase,newDic:unpackData){
+//                recentDataBase = newlist
+//            }
+//        }
+//    }
     
     private func updataLastList(dataBase:Array<MyTopicStandardType>,newDic:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>?{
         var topicWho = newDic["sender"] as! String
@@ -131,62 +131,82 @@ class RecentTableViewModel{
         }
         else{return nil}
     }
-    func clientOnline(msg:Dictionary<String,AnyObject>){
+    
+    func clientOnline(msg:Dictionary<String,AnyObject>) -> Bool{
+        var dataChange = false
         let onLineUser = msg["user_id"] as! String
         if let _ = recentDataBase.indexOf({ (target) -> Bool in
             if target.clientId_detial == onLineUser{
                 return true
             }
             else{return false}
-        }){}
+        }){
+//            for recentDataBaseIndex in 0..<recentDataBase.count{
+//                if onLineUser == recentDataBase[recentDataBaseIndex].clientId_detial{
+//                    recentDataBase[recentDataBaseIndex].clientOnline_detial = true
+//                }
+//            }
+            dataChange = true
+        }
+        return dataChange
+    }
+
+    func clientOffline(msg:Dictionary<String,AnyObject>) -> Bool{
+        let offLineUser = msg["user_id"] as! String
+        var dataChange = false
+        if let _ = recentDataBase.indexOf({ (target) -> Bool in
+            if target.clientId_detial == offLineUser{
+                return true
+            }
+            else{return false}
+        }){
+//            for recentDataBaseIndex in 0..<recentDataBase.count{
+//                if offLineUser == recentDataBase[recentDataBaseIndex].clientId_detial{
+//                    recentDataBase[recentDataBaseIndex].clientOnline_detial = false
+//                }
+//            }
+            dataChange = true
+        }
+        return dataChange
     }
     
+    func topicClosed(msg:Dictionary<String,AnyObject>) -> Bool{
+        var dataChanged = false
+        if let _ = msg["topic_id"] as? Array<String>{
+//            var removeTopicIndexList:Array<Int> = []
+//            for closeTopicId in topicIdList{
+//                let closeTopicIndex = recentDataBase.indexOf({ (target) -> Bool in
+//                    if target.topicId_title == closeTopicId{
+//                        return true
+//                    }
+//                    else{return false}
+//                })
+//                if closeTopicIndex != nil{
+//                    removeTopicIndexList.append(closeTopicIndex! as Int)
+//                }
+//            }
+//            removeTopicIndexList = removeTopicIndexList.sort(>)
+//            for removeTopicIndex in removeTopicIndexList{
+//                recentDataBase.removeAtIndex(removeTopicIndex)
+//            }
+            dataChanged = true
+        }
+        return dataChanged
+    }
+    
+    func getSegueData(indexInt:Int) -> Dictionary<String,AnyObject>{
+        var topicViewCon:Dictionary<String,AnyObject> = [:]
+        topicViewCon["topicId"] = recentDataBase[indexInt].topicId_title
+        topicViewCon["ownerId"] = recentDataBase[indexInt].clientId_detial
+        topicViewCon["ownerImg"] = recentDataBase[indexInt].clientPhoto_detial
+        topicViewCon["topicTitle"] = recentDataBase[indexInt].topicTitle_title
+        topicViewCon["title"] = recentDataBase[indexInt].clientName_detial
+        return topicViewCon
+    }
 }
 
-//if msg_type == "off_line"{
-//    let offLineUser = msg["user_id"] as! String
-//    
-//    if let topic_sIndex = topics.indexOf({$0.owner==offLineUser}){
-//        topics[topic_sIndex].online = false
-//        let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
-//        self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
-//    }
-//    
-//}
-//    
-//    //有人上線
-//else if msg_type == "new_member"{
-//    let onLineUser = msg["user_id"] as! String
-//    if let topic_sIndex = topics.indexOf({$0.owner==onLineUser}){
-//        topics[topic_sIndex].online = true
-//        let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
-//        self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
-//    }
-//}
 
-    //關閉話題
-//else if msg_type == "topic_closed"{
-//    let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
-//    if closeTopicIdList != nil{
-//        var removeTopicIndexList:Array<Int> = []
-//        for closeTopicId in closeTopicIdList!{
-//            let closeTopicIndex = topics.indexOf({ (Topic) -> Bool in
-//                if Topic.topicID == closeTopicId{
-//                    return true
-//                }
-//                else{return false}
-//            })
-//            if closeTopicIndex != nil{
-//                removeTopicIndexList.append(closeTopicIndex! as Int)
-//            }
-//        }
-//        removeTopicIndexList = removeTopicIndexList.sort(>)
-//        for removeTopicIndex in removeTopicIndexList{
-//            topics.removeAtIndex(removeTopicIndex)
-//        }
-//        topicList.reloadData()
-//    }
-//}
+
 
 
 

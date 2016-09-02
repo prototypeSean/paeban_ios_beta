@@ -31,7 +31,7 @@ public func addTopicCellToPublicList(input_data:MyTopicStandardType){
         }
         else{return false}
     }){}
-    else{nowTopicCellList.append(input_data)}
+    else{nowTopicCellList.insert(input_data, atIndex: 0)}
 }
 
 class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelegate{
