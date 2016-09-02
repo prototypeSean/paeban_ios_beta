@@ -131,39 +131,53 @@ class RecentTableViewModel{
         }
         else{return nil}
     }
-    func clientOnline(msg:Dictionary<String,AnyObject>){
+    
+    func clientOnline(msg:Dictionary<String,AnyObject>) -> Bool{
+        var dataChange = false
         let onLineUser = msg["user_id"] as! String
         if let _ = recentDataBase.indexOf({ (target) -> Bool in
             if target.clientId_detial == onLineUser{
                 return true
             }
             else{return false}
-        }){}
+        }){
+            for recentDataBaseIndex in 0..<recentDataBase.count{
+                if onLineUser == recentDataBase[recentDataBaseIndex].clientId_detial{
+                    recentDataBase[recentDataBaseIndex].clientOnline_detial = true
+                }
+            }
+            dataChange = true
+        }
+        return dataChange
     }
     
+    func clientOffline(msg:Dictionary<String,AnyObject>) -> Bool{
+        let offLineUser = msg["user_id"] as! String
+        var dataChange = false
+        if let _ = recentDataBase.indexOf({ (target) -> Bool in
+            if target.clientId_detial == offLineUser{
+                return true
+            }
+            else{return false}
+        }){
+            for recentDataBaseIndex in 0..<recentDataBase.count{
+                if offLineUser == recentDataBase[recentDataBaseIndex].clientId_detial{
+                    recentDataBase[recentDataBaseIndex].clientOnline_detial = true
+                }
+            }
+            dataChange = true
+        }
+        return dataChange
+    }
+    
+    func topicClosed(msg:Dictionary<String,AnyObject>) -> Bool{
+        var dataChanged = false
+        if let topicIdList = msg["topic_id"] as? Array<String>{
+            
+        }
+        return dataChanged
+    }
 }
-
-//if msg_type == "off_line"{
-//    let offLineUser = msg["user_id"] as! String
-//    
-//    if let topic_sIndex = topics.indexOf({$0.owner==offLineUser}){
-//        topics[topic_sIndex].online = false
-//        let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
-//        self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
-//    }
-//    
-//}
-//    
-//    //有人上線
-//else if msg_type == "new_member"{
-//    let onLineUser = msg["user_id"] as! String
-//    if let topic_sIndex = topics.indexOf({$0.owner==onLineUser}){
-//        topics[topic_sIndex].online = true
-//        let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
-//        self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
-//    }
-//}
-
     //關閉話題
 //else if msg_type == "topic_closed"{
 //    let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
