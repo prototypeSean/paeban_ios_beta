@@ -23,6 +23,17 @@ public struct setUserData{
 }
 public var userData = setUserData()
 
+public var nowTopicCellList:Array<MyTopicStandardType> = []
+public func addTopicCellToPublicList(input_data:MyTopicStandardType){
+    if let _ = nowTopicCellList.indexOf({ (target) -> Bool in
+        if target.topicId_title == input_data.topicId_title{
+            return true
+        }
+        else{return false}
+    }){}
+    else{nowTopicCellList.append(input_data)}
+}
+
 class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelegate{
     var firstConnect = true
     

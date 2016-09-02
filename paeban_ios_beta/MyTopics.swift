@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyTopicStandardType {
+public class MyTopicStandardType {
     // === 公用類型資料變數 ===
     var dataType:String
     var topicId_title:String?
@@ -47,6 +47,7 @@ class MyTopicStandardType {
     var lastSpeaker_detial:String?
     var topicContentId_detial:String?
     var read_detial:Bool?
+    var tag_detial:Array<String>?
     // === detail類型資料變數 ===
 
     init(dataType:String){

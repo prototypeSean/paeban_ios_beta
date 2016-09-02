@@ -136,12 +136,15 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         let indexPath = topicList.indexPathForSelectedRow!
         let dataposition:Int = indexPath.row
         let ownerID = topics[dataposition].owner
+        let turnedTopicData = turnTopicDataType(topics[dataposition])
+        addTopicCellToPublicList(turnedTopicData)
         if userData.id == ownerID{
             performSegueWithIdentifier("masterModeSegue", sender: self)
         }
         else{
             performSegueWithIdentifier("clientModeSegue", sender: self)
         }
+        
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -186,16 +189,14 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         
         cell.sex.image = sexImg
         
-        let onlineimage = cell.online
-        
-        onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        cell.online.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
 
         if topic.online{
-            onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
+            cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
         //MARK:下面那張圖請改 “不在線上的人圖示”
         else{
-            onlineimage.tintColor = UIColor.grayColor()
+            cell.online.tintColor = UIColor.grayColor()
         }
 //        cell.online.image = onlineimage.image
         // Configure the cell...
@@ -251,7 +252,6 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     // MARK: websocketDelegate
     func wsOnMsg(msg:Dictionary<String,AnyObject>) {
         if let msg_type:String =  msg["msg_type"] as? String{
-            
             //有人離線
             if msg_type == "off_line"{
                 let offLineUser = msg["user_id"] as! String
@@ -298,12 +298,48 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                 }
             }
             
-            
-            
-            
-            
-            
-            
+            //接收到訊息
+            else if msg_type == "topic_msg"{
+                let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
+                
+                //=====topic_msg=====
+                // msg -- msg_type:"topic_msg"
+                //     -- img:Dtring
+                //     -- result_dic -- sender:String
+                //                   -- temp_topic_msg_id
+                //                   -- topic_content
+                //                   -- receiver
+                //                   -- topic_id
+                
+                //更新最後說話
+                
+                func updataLastList(dataBase:Array<MyTopicStandardType>,newDic:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>?{
+                    var topicWho = newDic["sender"] as! String
+                    var returnData = dataBase
+                    if topicWho == userData.id{
+                        topicWho = newDic["receiver"] as! String
+                    }
+                    
+                    if let dataIndex = returnData.indexOf({ (target) -> Bool in
+                        
+                        if target.clientId_detial! == topicWho
+                            && target.topicId_title! == newDic["topic_id"] as! String{
+                            return true
+                        }
+                        else{return false}
+                    }){
+                        returnData[dataIndex].lastLine_detial = newDic["topic_content"] as? String
+                        returnData[dataIndex].lastSpeaker_detial = newDic["sender"] as? String
+                        return returnData
+                    }
+                    else{return nil}
+                }
+                
+                if let newDB = updataLastList(nowTopicCellList,newDic: resultDic){
+                    nowTopicCellList = newDB
+                }
+                
+            }
         }
         
     }
@@ -397,6 +433,24 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             topics.removeAtIndex(removeTopicPosition! as Int)
             topicList.reloadData()
         }
+    }
+    
+    func turnTopicDataType(inputData:Topic) -> MyTopicStandardType{
+        let returnData = MyTopicStandardType(dataType: "detail")
+        returnData.topicTitle_title = inputData.title
+        returnData.topicId_title = inputData.topicID
+        returnData.clientId_detial = inputData.owner
+        returnData.clientName_detial = inputData.ownerName
+        returnData.clientPhoto_detial = inputData.photo
+        returnData.clientIsRealPhoto_detial = inputData.isMe
+        returnData.clientSex_detial = inputData.sex
+        //print("topic table VC")
+        //print(inputData.online)
+        returnData.clientOnline_detial = inputData.online
+        returnData.tag_detial = inputData.hashtags
+        
+
+        return returnData
     }
 }
 

@@ -60,7 +60,8 @@ public class webSocketActiveCenter{
     let wasd_ForChatViewControllerList = ["topic_msg","topic_content_been_read"]
     var wasd_ForMyTopicTableViewController:webSocketActiveCenterDelegate?
     let wasd_ForMyTopicTableViewControllerList = ["topic_msg"]
-    
+    var wasd_ForRecentTableViewController:webSocketActiveCenterDelegate?
+    let wasd_ForRecentTableViewControllerList = ["topic_msg"]
     
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
@@ -89,6 +90,10 @@ public class webSocketActiveCenter{
             }
             if wasd_ForMyTopicTableViewControllerList.indexOf(msgtypeString) != nil {
                 wasd_ForMyTopicTableViewController?.wsOnMsg(msg)
+            }
+            
+            if wasd_ForRecentTableViewControllerList.indexOf(msgtypeString) != nil {
+                wasd_ForRecentTableViewController?.wsOnMsg(msg)
             }
             
             if test_List.indexOf(msgtypeString) != nil {

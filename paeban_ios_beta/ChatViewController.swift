@@ -187,6 +187,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         let msgType =  msg["msg_type"] as! String
         if msgType == "topic_msg"{
             let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
+            updataNowTopicCellList(resultDic)
             for dicKey in resultDic{
                 let msgData = dicKey.1 as! Dictionary<String,AnyObject>
                 if msgData["sender"] as? String == setID{
@@ -245,6 +246,24 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             
         }
     
+    }
+    
+    func updataNowTopicCellList(resultDic:Dictionary<String,AnyObject>){
+        
+        for resultDicData in resultDic{
+            let resultDicDataVal = resultDicData.1 as! Dictionary<String,AnyObject>
+            let topicId = resultDicDataVal["topic_id"] as! String
+            if let nowTopicCellListIndex = nowTopicCellList.indexOf({ (target) -> Bool in
+                if target.topicId_title == topicId{
+                    return true
+                }
+                else{return false}
+            }){
+                nowTopicCellList[nowTopicCellListIndex].lastLine_detial = resultDicDataVal["topic_content"] as? String
+                nowTopicCellList[nowTopicCellListIndex].lastSpeaker_detial = resultDicDataVal["sender"] as? String
+            }
+        }
+        
     }
     
     var aspectRatioConstraint: NSLayoutConstraint? {

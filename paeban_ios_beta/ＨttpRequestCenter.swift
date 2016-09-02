@@ -23,6 +23,8 @@ class ＨttpRequsetCenter{
         let sendData = "mode=new"
         ajax(url, sendDate: sendData) { (returnData) -> Void in
             let turnToType = self.topic_type(returnData)
+            //print("httpCenter_27")
+            //print(returnData)
             topicData(turnToType)
         }
     }
