@@ -888,10 +888,10 @@
                                                                     </constraints>
                                                                     <variation key="default">
                                                                         <mask key="constraints">
-                                                                            <exclude reference="hRs-oi-XWA"/>
+                                                                            <exclude reference="I9b-nD-9de"/>
                                                                             <exclude reference="JlQ-Rh-pqZ"/>
                                                                             <exclude reference="UG2-7L-m7Y"/>
-                                                                            <exclude reference="I9b-nD-9de"/>
+                                                                            <exclude reference="hRs-oi-XWA"/>
                                                                         </mask>
                                                                     </variation>
                                                                 </imageView>
@@ -914,18 +914,18 @@
                                                             </constraints>
                                                             <variation key="default">
                                                                 <mask key="constraints">
-                                                                    <exclude reference="ApR-VQ-0XD"/>
                                                                     <exclude reference="8hS-DF-d90"/>
+                                                                    <exclude reference="ApR-VQ-0XD"/>
                                                                     <exclude reference="Pes-9k-vxi"/>
-                                                                    <exclude reference="HCV-5A-dLy"/>
-                                                                    <exclude reference="VQ6-MV-ZxU"/>
-                                                                    <exclude reference="Mfg-88-WYO"/>
-                                                                    <exclude reference="kF3-ea-gov"/>
                                                                     <exclude reference="670-qC-emI"/>
+                                                                    <exclude reference="HCV-5A-dLy"/>
+                                                                    <exclude reference="Mfg-88-WYO"/>
+                                                                    <exclude reference="VQ6-MV-ZxU"/>
+                                                                    <exclude reference="kF3-ea-gov"/>
                                                                     <exclude reference="3nO-Rh-UXN"/>
                                                                     <exclude reference="EEQ-K2-QBy"/>
-                                                                    <exclude reference="uNv-V9-yg3"/>
                                                                     <exclude reference="l7h-5i-hE5"/>
+                                                                    <exclude reference="uNv-V9-yg3"/>
                                                                 </mask>
                                                             </variation>
                                                         </stackView>
