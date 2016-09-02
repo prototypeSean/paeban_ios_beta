@@ -1,12 +1,12 @@
 import UIKit
 
-class RecentTableViewController: UITableViewController {
+class RecentTableViewController: UITableViewController, webSocketActiveCenterDelegate{
     var rTVModel = RecentTableViewModel?()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         rTVModel = RecentTableViewModel(data: nowTopicCellList)
-        
+        wsActive.wasd_ForRecentTableViewController = self
     }
     
     // MARK: - Table view data source
@@ -29,5 +29,21 @@ class RecentTableViewController: UITableViewController {
         
         return cell2
     }
-    
+    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+        if let msg_type:String = msg["msg_type"] as? String{
+
+            if msg_type == "topic_msg"{
+                let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
+                rTVModel!.updataDB(resultDic)
+                self.tableView.reloadData()
+            }
+            
+        }
+    }
 }
+
+
+
+
+
+
