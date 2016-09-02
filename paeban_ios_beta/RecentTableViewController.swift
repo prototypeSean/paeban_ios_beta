@@ -29,6 +29,19 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         
         return cell2
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let index = self.tableView.indexPathForSelectedRow?.row
+        let topicViewCon = segue.destinationViewController as! TopicViewController
+        let getSegueData = rTVModel!.getSegueData(index!)
+        topicViewCon.topicId = getSegueData["topicId"] as? String
+        topicViewCon.ownerId = getSegueData["ownerId"] as? String
+        topicViewCon.ownerImg = getSegueData["ownerImg"] as? UIImage
+        topicViewCon.topicTitle = getSegueData["topicTitle"] as? String
+        topicViewCon.title = getSegueData["title"] as? String
+        //topicViewCon.delegate = self
+    }
+    
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
         if let msg_type:String = msg["msg_type"] as? String{
 
@@ -54,7 +67,6 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         }
     }
 }
-
 
 
 

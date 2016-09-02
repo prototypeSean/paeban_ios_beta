@@ -53,7 +53,7 @@ public class webSocketActiveCenter{
 
     var test_List = ["remove_old_topics","topic_closed","new_topic"]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
-    let wsad_ForTopicTableViewControllerList = ["off_line","new_member","topic_closed"]
+    let wsad_ForTopicTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed"]
     var wasd_ForTopicViewController:webSocketActiveCenterDelegate?
     let wasd_ForTopicViewControllerList = ["topic_msg","topic_closed"]
     var wasd_ForChatViewController:webSocketActiveCenterDelegate?
@@ -75,7 +75,7 @@ public class webSocketActiveCenter{
                     userData.imgString  = msg["user_pic"] as? String
                 }
                 if msgtypeString == "off_line"{
-                    print(msg)
+                    //print(msg)
                 }
             }
             

@@ -194,8 +194,15 @@ class RecentTableViewModel{
         return dataChanged
     }
     
-    
-    
+    func getSegueData(indexInt:Int) -> Dictionary<String,AnyObject>{
+        var topicViewCon:Dictionary<String,AnyObject> = [:]
+        topicViewCon["topicId"] = recentDataBase[indexInt].topicId_title
+        topicViewCon["ownerId"] = recentDataBase[indexInt].clientId_detial
+        topicViewCon["ownerImg"] = recentDataBase[indexInt].clientPhoto_detial
+        topicViewCon["topicTitle"] = recentDataBase[indexInt].topicTitle_title
+        topicViewCon["title"] = recentDataBase[indexInt].clientName_detial
+        return topicViewCon
+    }
 }
 
 

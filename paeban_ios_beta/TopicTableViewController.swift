@@ -375,14 +375,20 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                     }){
                         returnData[dataIndex].lastLine_detial = newDic["topic_content"] as? String
                         returnData[dataIndex].lastSpeaker_detial = newDic["sender"] as? String
+                        let tempData = returnData[dataIndex]
+                        returnData.removeAtIndex(dataIndex)
+                        returnData.insert(tempData, atIndex: 0)
+                        
                         return returnData
                     }
                     else{return nil}
                 }
-                
-                if let newDB = updataLastList(nowTopicCellList,newDic: resultDic){
-                    nowTopicCellList = newDB
+                for resultDic_s in resultDic{
+                    if let newDB = updataLastList(nowTopicCellList,newDic: resultDic_s.1 as! Dictionary<String,AnyObject>){
+                        nowTopicCellList = newDB
+                    }
                 }
+                
                 
             }
         }

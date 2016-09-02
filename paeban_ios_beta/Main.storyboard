@@ -456,7 +456,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O6Z-c3-l05" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3490" y="866"/>
+            <point key="canvasLocation" x="-3490" y="842"/>
         </scene>
         <!--我的-->
         <scene sceneID="Rjg-9b-c6S">
@@ -1032,6 +1032,7 @@
                                     <outlet property="lastSpeaker" destination="DEJ-Hn-wq5" id="kFC-W5-kPE"/>
                                     <outlet property="online" destination="aPT-sH-7zu" id="ODJ-Za-fgk"/>
                                     <outlet property="ownerName" destination="Lo9-Ed-uDk" id="uOi-OC-oyl"/>
+                                    <segue destination="FBi-3N-jAs" kind="show" identifier="clientModeSegue3" id="lxg-Ec-9Hp"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1337,7 +1338,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bie-q2-caM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2777" y="866"/>
+            <point key="canvasLocation" x="-2777" y="1026"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="ODT-yF-TlF">
@@ -1368,4 +1369,7 @@
         <image name="texting" width="25" height="25"/>
         <image name="topic" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="lxg-Ec-9Hp"/>
+    </inferredMetricsTieBreakers>
 </document>
