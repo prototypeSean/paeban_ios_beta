@@ -205,13 +205,13 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                     if let targetPosition = findElement{
                         messages[targetPosition].topicContentId = dicKey.0
                     }
-                    print("CVC_208")
+                    
                 }
                 else{
                     //別人說的話
                     //topic_content_read
                     //topic_content_id
-                    print("CVC_213")
+                    
                     let msgToJSQ = JSQMessage2(senderId: msgData["sender"] as? String, displayName: "non", text: msgData["topic_content"] as? String)
                     msgToJSQ.topicContentId = dicKey.0
                     messages += [msgToJSQ]
