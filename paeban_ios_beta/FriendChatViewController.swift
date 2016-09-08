@@ -49,12 +49,10 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     func executeWork(dataDic:Dictionary<String,AnyObject>){
         let missionType = dataDic["missionType"] as! String
         let wsSendList = ["request_history_priv_msg","priv_msg","priv_msg_been_read"]
-        
         if let _ = wsSendList.indexOf(missionType){
             let sendData = dataDic["data"] as! NSDictionary
             socket.writeData(json_dumps(sendData))
         }
-        
     }
     
     func removeWorkList(missionType:String,data:AnyObject?) {
@@ -343,6 +341,11 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                         break
                     }
                 }
+            }
+        }
+        else if msgType == "online"{
+            for workList_s in workList{
+                executeWork(workList_s)
             }
         }
     }
