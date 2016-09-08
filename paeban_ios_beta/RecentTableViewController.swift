@@ -67,8 +67,3 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         }
     }
 }
-
-
-
-
-

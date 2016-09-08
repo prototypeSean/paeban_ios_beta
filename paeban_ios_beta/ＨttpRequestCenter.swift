@@ -10,12 +10,12 @@ import Foundation
 import UIKit
 
 
-protocol ＨttpResquestDelegate {
-    func new_topic_did_load(http_obj:ＨttpRequsetCenter)
+protocol HttpRequestCenterDelegate {
+    func new_topic_did_load(http_obj:HttpRequestCenter)
 }
 
-class ＨttpRequsetCenter{
-    var delegate:ＨttpResquestDelegate?
+class HttpRequestCenter{
+    var delegate:HttpRequestCenterDelegate?
     var topic_list = [Topic]()
     
     func getTopic(topicData:[Topic] -> Void){
@@ -168,6 +168,7 @@ class ＨttpRequsetCenter{
         }
         return topic_list_temp
     }
+    
     private func ajax(url:String,sendDate:String,outPutDic:Dictionary<String,AnyObject> -> Void){
         var ouput:String?
         var ouput_json = [String:AnyObject]()
@@ -190,11 +191,41 @@ class ＨttpRequsetCenter{
                         print(response)
                         print(NSString(data: data!, encoding: NSUTF8StringEncoding))
                     }
-                    
                 }
                 ouput_json = json_load(ouput!) as! Dictionary
                 //print(ouput_json)
                 outPutDic(ouput_json)
+            }
+        })
+        
+        task.resume()
+    }
+    
+    
+    
+    func getHttpImg(url:String,getImg:(img:UIImage)->Void){
+        var ouput:UIImage?
+        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
+        request.HTTPMethod = "GET"
+        let csrf = getCSRFToken(cookie!)
+        request.allHTTPHeaderFields = ["Cookie":cookie!]
+        request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            if error != nil{
+                print("連線錯誤")
+            }
+            else{
+                ouput = UIImage(data: data!)
+                if let res = response as? NSHTTPURLResponse{
+                    let status = res.statusCode
+                    if status != 200{
+                        print(response)
+                        print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                    }
+                    
+                }
+                getImg(img: ouput!)
             }
         })
         

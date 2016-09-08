@@ -19,7 +19,7 @@ public var cookie:String?
 public struct setUserData{
     var id:String?
     var name:String?
-    var imgString:String?
+    var img:UIImage?
 }
 public var userData = setUserData()
 
@@ -33,6 +33,11 @@ public func addTopicCellToPublicList(input_data:MyTopicStandardType){
     }){}
     else{nowTopicCellList.insert(input_data, atIndex: 0)}
 }
+
+public var myFriendsList:Array<FriendStanderType> = []
+
+
+
 
 class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelegate{
     var firstConnect = true

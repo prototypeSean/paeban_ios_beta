@@ -73,7 +73,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     let qos = DISPATCH_QUEUE_PRIORITY_DEFAULT
                     dispatch_async((dispatch_get_global_queue(qos, 0)), {
                         
-                        let httpObj = ＨttpRequsetCenter()
+                        let httpObj = HttpRequestCenter()
                         // MARK:補設計timeout功能
                         httpObj.request_topic_msg_config(topic_id, client_id: topicWithWho, topic_content_id: topic_content_id.0){ (returnData) in
                             if returnData["topic_content_id"] as! String == topic_content_id.0{
@@ -172,7 +172,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     func get_my_topic_title() {
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-            let httpObj = ＨttpRequsetCenter()
+            let httpObj = HttpRequestCenter()
             httpObj.get_my_topic_title { (returnData) in
                 dispatch_async(dispatch_get_main_queue(), {
                     self.mytopic = self.transferToStandardType_title(returnData)
@@ -187,7 +187,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         
         let qos = DISPATCH_QUEUE_PRIORITY_DEFAULT
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-            let httpObj = ＨttpRequsetCenter()
+            let httpObj = HttpRequestCenter()
             httpObj.get_my_topic_detail(topicId, InViewAct: { (returnData) in
                 dispatch_async(dispatch_get_main_queue(), {
                     let topicId = returnData["topic_id"] as! String
@@ -625,7 +625,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         
         let sendDic = ckeckDic as Dictionary<String,Dictionary<String,String>> as NSDictionary
-        let httpObj = ＨttpRequsetCenter()
+        let httpObj = HttpRequestCenter()
         httpObj.reconnect_check_my_table_view(sendDic) { (returnData) in
             self.updateReconnect(returnData)
         }
@@ -676,7 +676,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                         }
                         else{
                             // topic_with_who* -- topic_content, last_speaker, is_online
-                            let http_obj = ＨttpRequsetCenter()
+                            let http_obj = HttpRequestCenter()
                             var sendDic:Dictionary<String,String> = [:]
                             sendDic["client_id"] = topic_who_s.0
                             sendDic["topic_content_id"] = detailData_s!["topic_content_id"] as? String
