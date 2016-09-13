@@ -19,9 +19,25 @@ public var cookie:String?
 public struct setUserData{
     var id:String?
     var name:String?
-    var imgString:String?
+    var img:UIImage?
 }
 public var userData = setUserData()
+
+public var nowTopicCellList:Array<MyTopicStandardType> = []
+public func addTopicCellToPublicList(input_data:MyTopicStandardType){
+    if let _ = nowTopicCellList.indexOf({ (target) -> Bool in
+        if target.topicId_title == input_data.topicId_title{
+            return true
+        }
+        else{return false}
+    }){}
+    else{nowTopicCellList.insert(input_data, atIndex: 0)}
+}
+
+public var myFriendsList:Array<FriendStanderType> = []
+
+
+
 
 class ViewController: UIViewController,FBSDKLoginButtonDelegate, WebSocketDelegate{
     var firstConnect = true

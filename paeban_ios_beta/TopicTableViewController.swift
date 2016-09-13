@@ -11,7 +11,7 @@ import Starscream
 public var tagList:[String] = []
 
 // 所有話題清單 其實不是tabelveiw 是 UIview
-class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate,TopicViewControllerDelegate{
+class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate,TopicViewControllerDelegate{
     // MARK: Properties
     
     var topicSearchController: TopicSearchController!
@@ -32,7 +32,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     
     
     var topics:[Topic] = []
-    var httpOBJ = ＨttpRequsetCenter()
+    var httpOBJ = HttpRequestCenter()
     var requestUpDataSwitch = true
     
     
@@ -122,7 +122,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         
     }
     
-    func new_topic_did_load(http_obj:ＨttpRequsetCenter){
+    func new_topic_did_load(http_obj:HttpRequestCenter){
         //print("websocket data did load")
     }
     
@@ -136,12 +136,15 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         let indexPath = topicList.indexPathForSelectedRow!
         let dataposition:Int = indexPath.row
         let ownerID = topics[dataposition].owner
+        let turnedTopicData = turnTopicDataType(topics[dataposition])
+        addTopicCellToPublicList(turnedTopicData)
         if userData.id == ownerID{
             performSegueWithIdentifier("masterModeSegue", sender: self)
         }
         else{
             performSegueWithIdentifier("clientModeSegue", sender: self)
         }
+        
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -186,16 +189,14 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         
         cell.sex.image = sexImg
         
-        let onlineimage = cell.online
-        
-        onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        cell.online.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
 
         if topic.online{
-            onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
+            cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
         //MARK:下面那張圖請改 “不在線上的人圖示”
         else{
-            onlineimage.tintColor = UIColor.grayColor()
+            cell.online.tintColor = UIColor.grayColor()
         }
 //        cell.online.image = onlineimage.image
         // Configure the cell...
@@ -251,33 +252,56 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     // MARK: websocketDelegate
     func wsOnMsg(msg:Dictionary<String,AnyObject>) {
         if let msg_type:String =  msg["msg_type"] as? String{
-            
             //有人離線
             if msg_type == "off_line"{
                 let offLineUser = msg["user_id"] as! String
                 
+                // 更新本頁資料
                 if let topic_sIndex = topics.indexOf({$0.owner==offLineUser}){
                     topics[topic_sIndex].online = false
                     let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
                     self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
                 }
                 
+                //更新recenttopic資料
+                for recentDataBaseIndex in 0..<nowTopicCellList.count{
+                    if offLineUser == nowTopicCellList[recentDataBaseIndex].clientId_detial{
+                        nowTopicCellList[recentDataBaseIndex].clientOnline_detial = false
+                    }
+                }
             }
                 
             //有人上線
             else if msg_type == "new_member"{
                 let onLineUser = msg["user_id"] as! String
+                // 更新本頁資料
                 if let topic_sIndex = topics.indexOf({$0.owner==onLineUser}){
                     topics[topic_sIndex].online = true
                     let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
                     self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+                
+                //更新recenttopic資料
+                if let _ = nowTopicCellList.indexOf({ (target) -> Bool in
+                    if target.clientId_detial == onLineUser{
+                        return true
+                    }
+                    else{return false}
+                }){
+                    for recentDataBaseIndex in 0..<nowTopicCellList.count{
+                        if onLineUser == nowTopicCellList[recentDataBaseIndex].clientId_detial{
+                            nowTopicCellList[recentDataBaseIndex].clientOnline_detial = true
+                        }
+                    }
                 }
             }
                 
             //關閉話題
             else if msg_type == "topic_closed"{
                 let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
+                
                 if closeTopicIdList != nil{
+                    // 更新本頁資料
                     var removeTopicIndexList:Array<Int> = []
                     for closeTopicId in closeTopicIdList!{
                         let closeTopicIndex = topics.indexOf({ (Topic) -> Bool in
@@ -295,15 +319,78 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
                         topics.removeAtIndex(removeTopicIndex)
                     }
                     topicList.reloadData()
+                    
+                    //更新recenttopic資料
+                    var removeTopicIndexList2:Array<Int> = []
+                    for closeTopicId in closeTopicIdList!{
+                        let closeTopicIndex = nowTopicCellList.indexOf({ (target) -> Bool in
+                            if target.topicId_title == closeTopicId{
+                                return true
+                            }
+                            else{return false}
+                        })
+                        if closeTopicIndex != nil{
+                            removeTopicIndexList2.append(closeTopicIndex! as Int)
+                        }
+                    }
+                    removeTopicIndexList2 = removeTopicIndexList2.sort(>)
+                    for removeTopicIndex in removeTopicIndexList2{
+                        nowTopicCellList.removeAtIndex(removeTopicIndex)
+                    }
                 }
+                
+                
+                
             }
             
-            
-            
-            
-            
-            
-            
+            //接收到訊息
+            else if msg_type == "topic_msg"{
+                let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
+                
+                //=====topic_msg=====
+                // msg -- msg_type:"topic_msg"
+                //     -- img:Dtring
+                //     -- result_dic -- sender:String
+                //                   -- temp_topic_msg_id
+                //                   -- topic_content
+                //                   -- receiver
+                //                   -- topic_id
+                
+                //更新最後說話
+                
+                func updataLastList(dataBase:Array<MyTopicStandardType>,newDic:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>?{
+                    var topicWho = newDic["sender"] as! String
+                    var returnData = dataBase
+                    if topicWho == userData.id{
+                        topicWho = newDic["receiver"] as! String
+                    }
+                    
+                    if let dataIndex = returnData.indexOf({ (target) -> Bool in
+                        
+                        if target.clientId_detial! == topicWho
+                            && target.topicId_title! == newDic["topic_id"] as! String{
+                            return true
+                        }
+                        else{return false}
+                    }){
+                        returnData[dataIndex].lastLine_detial = newDic["topic_content"] as? String
+                        returnData[dataIndex].lastSpeaker_detial = newDic["sender"] as? String
+                        let tempData = returnData[dataIndex]
+                        returnData.removeAtIndex(dataIndex)
+                        returnData.insert(tempData, atIndex: 0)
+                        
+                        return returnData
+                    }
+                    else{return nil}
+                }
+                for resultDic_s in resultDic{
+                    if let newDB = updataLastList(nowTopicCellList,newDic: resultDic_s.1 as! Dictionary<String,AnyObject>){
+                        nowTopicCellList = newDB
+                    }
+                }
+                
+                
+            }
         }
         
     }
@@ -397,6 +484,24 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
             topics.removeAtIndex(removeTopicPosition! as Int)
             topicList.reloadData()
         }
+    }
+    
+    func turnTopicDataType(inputData:Topic) -> MyTopicStandardType{
+        let returnData = MyTopicStandardType(dataType: "detail")
+        returnData.topicTitle_title = inputData.title
+        returnData.topicId_title = inputData.topicID
+        returnData.clientId_detial = inputData.owner
+        returnData.clientName_detial = inputData.ownerName
+        returnData.clientPhoto_detial = inputData.photo
+        returnData.clientIsRealPhoto_detial = inputData.isMe
+        returnData.clientSex_detial = inputData.sex
+        //print("topic table VC")
+        //print(inputData.online)
+        returnData.clientOnline_detial = inputData.online
+        returnData.tag_detial = inputData.hashtags
+        
+
+        return returnData
     }
 }
 
