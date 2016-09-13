@@ -49,7 +49,7 @@ public protocol webSocketActiveCenterDelegate_re{
 //MARK:webSocket 資料接收中心
 public class webSocketActiveCenter{
     
-    let mainWorkList = ["online","off_line"]
+    let mainWorkList = ["online","off_line","new_member"]
 
     var test_List = ["remove_old_topics","topic_closed","new_topic"]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
@@ -62,21 +62,70 @@ public class webSocketActiveCenter{
     let wasd_ForMyTopicTableViewControllerList = ["topic_msg"]
     var wasd_ForRecentTableViewController:webSocketActiveCenterDelegate?
     let wasd_ForRecentTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed"]
+    var wasd_ForFriendTableViewController:webSocketActiveCenterDelegate?
+    let wasd_ForFriendTableViewControllerList = ["online","off_line","new_member"]
+    var wasd_ForFriendChatViewController:webSocketActiveCenterDelegate?
+    let wasd_ForFriendChatViewControllerList = ["history_priv_msg","priv_msg_been_read","priv_msg","has_been_read_many","online"]
     
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
             let msgtypeString = msgtype as! String
             print("======\(msgtypeString)=========")
+//            if msgtypeString == "has_been_read_mane"{
+//                print(msg)
+//            }
             
             if mainWorkList.indexOf(msgtypeString) != nil {
                 if msgtypeString == "online"{
+                    //建立個人資料
                     userData.id = msg["user_id"] as? String
                     userData.name = msg["user_name"] as? String
-                    userData.imgString  = msg["user_pic"] as? String
+                    let url = "http://www.paeban.com/media/\(msg["user_pic"] as! String)"
+                    HttpRequestCenter().getHttpImg(url){(img:UIImage) -> Void in
+                        userData.img = img
+                    }
+                    
+                    //寫入好友清單
+                    let friends_id_list = msg["friends_id_list"] as! Array<String>
+                    let friends_name_list = msg["friends_name_list"] as! Array<String>
+                    let friends_pic_list = msg["friends_pic_list"] as! Array<String>
+                    let friends_sex_list = msg["friends_sex_list"] as! Array<String>
+                    let friends_isme_list = msg["friends_isme_list"] as! Array<Bool>
+                    let friends_online_list = msg["friends_online_list"] as! Array<Bool>
+                    
+                    for listIndex in 0 ..< friends_id_list.count{
+                        let insertObj = turnToFriendStanderType(
+                            friends_id_list[listIndex],
+                            name: friends_name_list[listIndex],
+                            sex: friends_sex_list[listIndex],
+                            isRealPhoto: friends_isme_list[listIndex],
+                            online: friends_online_list[listIndex],
+                            photoString: friends_pic_list[listIndex])
+                        myFriendsList.append(insertObj)
+                    }
+                    
                 }
-                if msgtypeString == "off_line"{
-                    //print(msg)
+                else if msgtypeString == "off_line"{
+                    if let friendIndex = myFriendsList.indexOf({ (friend) -> Bool in
+                        if friend.id! == msg["user_id"] as! String{
+                            return true
+                        }
+                        else{return false}
+                    }){
+                        myFriendsList[friendIndex].online = false
+                    }
                 }
+                else if msgtypeString == "new_member"{
+                    if let friendIndex = myFriendsList.indexOf({ (friend) -> Bool in
+                        if friend.id! == msg["user_id"] as! String{
+                            return true
+                        }
+                        else{return false}
+                    }){
+                        myFriendsList[friendIndex].online = true
+                    }
+                }
+                
             }
             
             if wsad_ForTopicTableViewControllerList.indexOf(msgtypeString) != nil {
@@ -96,10 +145,18 @@ public class webSocketActiveCenter{
                 wasd_ForRecentTableViewController?.wsOnMsg(msg)
             }
             
+            if wasd_ForFriendTableViewControllerList.indexOf(msgtypeString) != nil {
+                wasd_ForFriendTableViewController?.wsOnMsg(msg)
+            }
+            if wasd_ForFriendChatViewControllerList.indexOf(msgtypeString) != nil{
+                wasd_ForFriendChatViewController?.wsOnMsg(msg)
+            }
+            
             if test_List.indexOf(msgtypeString) != nil {
                 print("======\(msgtypeString)=========")
                 print(msg)
             }
+            
             
         }
     }

@@ -11,7 +11,7 @@ import Starscream
 public var tagList:[String] = []
 
 // 所有話題清單 其實不是tabelveiw 是 UIview
-class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate,TopicViewControllerDelegate{
+class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate,TopicViewControllerDelegate{
     // MARK: Properties
     
     var topicSearchController: TopicSearchController!
@@ -32,7 +32,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
     
     
     var topics:[Topic] = []
-    var httpOBJ = ＨttpRequsetCenter()
+    var httpOBJ = HttpRequestCenter()
     var requestUpDataSwitch = true
     
     
@@ -122,7 +122,7 @@ class TopicTableViewController:UIViewController, ＨttpResquestDelegate,UITableV
         
     }
     
-    func new_topic_did_load(http_obj:ＨttpRequsetCenter){
+    func new_topic_did_load(http_obj:HttpRequestCenter){
         //print("websocket data did load")
     }
     

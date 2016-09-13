@@ -47,7 +47,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     func getHttpData() {
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
-            let httpObj = ＨttpRequsetCenter()
+            let httpObj = HttpRequestCenter()
             httpObj.getTopicContentHistory(self.ownerId!,topicId: self.topicId!, InViewAct: { (returnData2) in
 //                returnData2:
 //                unblock_level
