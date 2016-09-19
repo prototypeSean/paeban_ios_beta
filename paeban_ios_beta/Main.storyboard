@@ -799,8 +799,8 @@
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" restorationIdentifier="MyTopicTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="FriendTableViewCell" rowHeight="73" id="3xm-j6-O82" customClass="FriendTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="73"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Dl-Ir-3qU" id="ye2-tl-eKv">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ye2-tl-eKv">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="72.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="房主的暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5eW-Sf-Emq">
@@ -812,10 +812,10 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="jWA-qP-Ty4">
                                             <rect key="frame" x="16" y="8" width="940" height="524"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="rt0-pV-Ka6">
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="rt0-pV-Ka6">
                                                     <rect key="frame" x="0.0" y="0.0" width="392" height="524"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z9e-cc-bbo">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z9e-cc-bbo">
                                                             <rect key="frame" x="0.0" y="0.0" width="392" height="392"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="YOs-3X-wLy"/>
@@ -827,20 +827,20 @@
                                                                 </mask>
                                                             </variation>
                                                         </imageView>
-                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9sy-or-2bF">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9sy-or-2bF">
                                                             <rect key="frame" x="0.0" y="394" width="392" height="130"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="2hC-cs-niQ">
+                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="2hC-cs-niQ">
                                                                     <rect key="frame" x="2" y="2" width="388" height="128"/>
                                                                     <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="True_photo" translatesAutoresizingMaskIntoConstraints="NO" id="MdI-Zm-vrA">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="True_photo" translatesAutoresizingMaskIntoConstraints="NO" id="MdI-Zm-vrA">
                                                                             <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" secondItem="MdI-Zm-vrA" secondAttribute="height" multiplier="1:1" id="UIc-ye-tbX"/>
                                                                                 <constraint firstAttribute="width" secondItem="MdI-Zm-vrA" secondAttribute="height" multiplier="1:1" id="waY-ub-2b1"/>
                                                                             </constraints>
                                                                         </imageView>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="male" translatesAutoresizingMaskIntoConstraints="NO" id="xL5-Pr-Mpp">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="male" translatesAutoresizingMaskIntoConstraints="NO" id="xL5-Pr-Mpp">
                                                                             <rect key="frame" x="130" y="0.0" width="128" height="128"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" secondItem="xL5-Pr-Mpp" secondAttribute="height" multiplier="1:1" id="fV2-mw-E3d"/>
@@ -854,7 +854,7 @@
                                                                                 </mask>
                                                                             </variation>
                                                                         </imageView>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="texting" translatesAutoresizingMaskIntoConstraints="NO" id="wcd-Is-q6d">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="texting" translatesAutoresizingMaskIntoConstraints="NO" id="wcd-Is-q6d">
                                                                             <rect key="frame" x="260" y="0.0" width="128" height="128"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" secondItem="wcd-Is-q6d" secondAttribute="height" multiplier="1:1" constant="1" id="3df-VD-b2f"/>
@@ -943,10 +943,10 @@
                                                         </mask>
                                                     </variation>
                                                 </stackView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="453" placeholderIntrinsicHeight="103" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Gyb-UT-UyU">
+                                                <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="453" placeholderIntrinsicHeight="103" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Gyb-UT-UyU">
                                                     <rect key="frame" x="394" y="0.0" width="546" height="524"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" misplaced="YES" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="中文 En" lineBreakMode="tailTruncation" numberOfLines="2" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jgZ-aB-KAn" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="中文 En" lineBreakMode="tailTruncation" numberOfLines="2" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jgZ-aB-KAn" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="0.0" width="546" height="50"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="50" id="Pwb-fs-Ykl"/>
@@ -966,17 +966,17 @@
                                                                 </mask>
                                                             </variation>
                                                         </label>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rwh-Ge-9Rn">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rwh-Ge-9Rn">
                                                             <rect key="frame" x="0.0" y="52" width="546" height="472"/>
                                                             <subviews>
-                                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AxH-eM-tRY">
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AxH-eM-tRY">
                                                                     <rect key="frame" x="0.0" y="0.0" width="10" height="472"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="10" id="BdF-KG-yxo"/>
                                                                     </constraints>
                                                                 </view>
-                                                                <view contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="536" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="LAo-96-L50" customClass="HashTagsContorller" customModule="paeban_ios_beta" customModuleProvider="target">
+                                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="536" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="LAo-96-L50" customClass="HashTagsContorller" customModule="paeban_ios_beta" customModuleProvider="target">
                                                                     <rect key="frame" x="10" y="0.0" width="536" height="472"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <constraints>
@@ -1079,8 +1079,8 @@
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nowTopicListCell" rowHeight="90" id="bxI-lp-hL8" customClass="RecentTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wyy-m4-pc7" id="jFT-Dx-Yka">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bxI-lp-hL8" id="c9i-8k-6tJ">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="g0Y-SQ-fYN">
