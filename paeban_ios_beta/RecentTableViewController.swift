@@ -6,6 +6,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     override func viewDidLoad() {
         super.viewDidLoad()
         rTVModel = RecentTableViewModel()
+        rTVModel?.reCheckDataBase()
         wsActive.wasd_ForRecentTableViewController = self
     }
     
@@ -62,6 +63,19 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
                 if rTVModel!.topicClosed(msg){
                     self.tableView.reloadData()
                 }
+            }
+            else if msg_type == "recentDataCheck"{
+                
+                let data = msg["data"] as! Dictionary<String,AnyObject>
+                for datas in data{
+                    self.rTVModel?.transformStaticType(datas.0, inputData: datas.1 as! Dictionary<String,AnyObject>){
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.tableView.reloadData()
+                        })
+                        
+                    }
+                }
+                
             }
             
         }

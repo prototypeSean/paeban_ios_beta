@@ -111,6 +111,16 @@ class HttpRequestCenter{
             InViewAct(returnData: returnDic)
         }
     }
+    
+    func getBlurImg(send_dic:Dictionary<String,String>,InViewAct: (returnData:Dictionary<String,AnyObject>)->Void){
+        let url = "http://www.paeban.com/request_user_data/"
+        let jsonData = json_dumps2(send_dic)
+        let sendData = "mode=get_blur_image;msg=\(jsonData!)"
+        ajax(url, sendDate: sendData) { (returnDic) in
+            InViewAct(returnData: returnDic)
+        }
+        
+    }
     // MARK:================私有函數===============
     
     // MARK:轉換為Topic的標準格式

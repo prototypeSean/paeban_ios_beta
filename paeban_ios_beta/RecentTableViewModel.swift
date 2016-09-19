@@ -16,14 +16,77 @@ class RecentTableViewModel{
         }
     }
     
+    func reCheckDataBase() {
+        let sentData:NSDictionary = [
+        "msg_type":"recentDataCheck"
+        ]
+        socket.writeData(json_dumps(sentData))
+    }
+    
+//    func updataNowTopicCellList(returmDic:NSDictionary){
+//        for datas in returmDic{
+//            transformStaticType(datas.key as! String,inputData: datas.value as! Dictionary<String,AnyObject>)
+//        }
+//    }
+    
+    func transformStaticType(inputKey:String,inputData:Dictionary<String,AnyObject>,reloar:()->Void){
+        if let nowTopicCellListIndex = nowTopicCellList.indexOf({ (target) -> Bool in
+            if target.topicId_title == inputKey{
+                return true
+            }
+            else{
+                return false
+            }
+        }){
+            let operatingObj = nowTopicCellList[nowTopicCellListIndex]
+            operatingObj.lastLine_detial = inputData["last_line"] as? String
+            operatingObj.lastSpeaker_detial = inputData["last_speaker"] as? String
+            operatingObj.topicContentId_detial = inputData["topic_content_id"] as? String
+            operatingObj.read_detial = inputData["is_read"] as? Bool
+            nowTopicCellList[nowTopicCellListIndex] = operatingObj
+            reloar()
+            
+        }
+        else{
+            let ouputObj = MyTopicStandardType(dataType: "detail")
+            ouputObj.topicId_title = inputKey
+            ouputObj.clientId_detial = inputData["owner"] as? String
+            ouputObj.clientName_detial = inputData["owner_name"] as? String
+            ouputObj.clientSex_detial = inputData["owner_sex"] as? String
+            ouputObj.lastLine_detial = inputData["last_line"] as? String
+            ouputObj.lastSpeaker_detial = inputData["last_speaker"] as? String
+            ouputObj.topicContentId_detial = inputData["topic_content_id"] as? String
+            ouputObj.read_detial = inputData["is_read"] as? Bool
+            ouputObj.clientIsRealPhoto_detial = inputData["owner_is_real_img"] as?Bool
+            ouputObj.clientOnline_detial = inputData["owner_is_real_img"] as? Bool
+            ouputObj.tag_detial = inputData["tag_list"] as? Array<String>
+            let httpSendDic = ["client_id":inputData["owner"] as! String,
+                               "topic_id":inputKey]
+            reloar()
+            HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
+                ouputObj.clientPhoto_detial = base64ToImage(returnData["data"] as! String)
+                reloar()
+            })
+            
+            
+            
+            //ouputObj.clientPhoto_detial = UIImage.init(data: data)
+            
+            nowTopicCellList.append(ouputObj)
+            
+        }
+        
+    }
+    
+    
     func getCell(index:Int,cell:RecentTableViewCell) -> RecentTableViewCell{
-        func letoutSexLogo(sex:String) -> UIImage {
+        func letoutSexLogo(sex:String!) -> UIImage {
             var sexImg:UIImage
             switch sex {
             case "男":
                 sexImg = UIImage(named: "male")!
             case "女":
-                sexImg = UIImage(named:"gay")!
+                sexImg = UIImage(named:"female")!
             case "男同":
                 sexImg = UIImage(named:"gay")!
             case "女同":

@@ -53,19 +53,24 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             let sendData = dataDic["data"] as! NSDictionary
             socket.writeData(json_dumps(sendData))
         }
+        
+        if missionType == "request_history_priv_msg"{
+            let sendData = dataDic["data"] as! Dictionary<String,String>
+            print("last_id_of_msg:\(sendData["last_id_of_msg"])")
+        }
     }
     
     func removeWorkList(missionType:String,data:AnyObject?) {
         if missionType == "request_history_priv_msg"{
             if let _ = workList.indexOf({ (target) -> Bool in
-                if target.first!.0 == "request_history_priv_msg"{
+                if target["missionType"] as! String == "request_history_priv_msg"{
                     return true
                 }
                 else{return false}
             }){
                 var newList:Array<Dictionary<String,AnyObject>> = []
                 for workList_s in workList{
-                    if workList_s.first!.0 != "request_history_priv_msg"{
+                    if workList_s["missionType"] as! String != "request_history_priv_msg"{
                         newList.append(workList_s)
                     }
                 }
@@ -194,12 +199,14 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     // MARK:滾動中
     override func scrollViewDidScroll(scrollView: UIScrollView) {
+        //print(self.collectionView.contentOffset.y)
         if scrollView.contentOffset.y <= -5 && loadHistorySwitch == true{
             loadHistorySwitch = false
             if let minMsgId = messages.first?.topicId{
                 let sendDic:Dictionary = ["msg_type":"request_history_priv_msg",
                                           "receiver_id":clientId!,
                                           "last_id_of_msg":minMsgId]
+                //print("add")
                 addRequestMission("request_history_priv_msg", data: sendDic)
             }
         }
@@ -303,14 +310,15 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             // 滾輪位置校正
             if msgCountBefore <= 0{
                 scrollToBottom()
-                self.loadHistorySwitch = true
+                //self.loadHistorySwitch = true
             }
             else{
+                let lastItemIndex = NSIndexPath(forRow: msgCountAfte - msgCountBefore, inSection: 0)
+                self.collectionView.scrollToItemAtIndexPath(lastItemIndex, atScrollPosition: UICollectionViewScrollPosition.Top, animated: false)
+                
                 if msgCountAfte - msgCountBefore != 0{
                     self.loadHistorySwitch = true
                 }
-                let lastItemIndex = NSIndexPath(forRow: msgCountAfte - msgCountBefore, inSection: 0)
-                self.collectionView.scrollToItemAtIndexPath(lastItemIndex, atScrollPosition: UICollectionViewScrollPosition.Top, animated: false)
             }
             
             self.removeWorkList("request_history_priv_msg", data: nil)
@@ -344,6 +352,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
         else if msgType == "online"{
+            print("======\(workList.count)=====")
             for workList_s in workList{
                 executeWork(workList_s)
             }
@@ -371,6 +380,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     func scrollToBottom(){
         let lastItemIndex = NSIndexPath(forRow: self.messages.count-1, inSection: 0)
         self.collectionView.scrollToItemAtIndexPath(lastItemIndex, atScrollPosition: UICollectionViewScrollPosition.Bottom, animated: false)
+        self.loadHistorySwitch = true
     }
     
     var aspectRatioConstraint: NSLayoutConstraint? {

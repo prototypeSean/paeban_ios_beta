@@ -51,7 +51,7 @@ public class webSocketActiveCenter{
     
     let mainWorkList = ["online","off_line","new_member"]
 
-    var test_List = ["remove_old_topics","topic_closed","new_topic"]
+    var test_List = [""]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
     let wsad_ForTopicTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed"]
     var wasd_ForTopicViewController:webSocketActiveCenterDelegate?
@@ -61,11 +61,12 @@ public class webSocketActiveCenter{
     var wasd_ForMyTopicTableViewController:webSocketActiveCenterDelegate?
     let wasd_ForMyTopicTableViewControllerList = ["topic_msg"]
     var wasd_ForRecentTableViewController:webSocketActiveCenterDelegate?
-    let wasd_ForRecentTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed"]
+    let wasd_ForRecentTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed","recentDataCheck"]
     var wasd_ForFriendTableViewController:webSocketActiveCenterDelegate?
     let wasd_ForFriendTableViewControllerList = ["online","off_line","new_member"]
     var wasd_ForFriendChatViewController:webSocketActiveCenterDelegate?
     let wasd_ForFriendChatViewControllerList = ["history_priv_msg","priv_msg_been_read","priv_msg","has_been_read_many","online"]
+    
     
     func wsOnMsg(msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
