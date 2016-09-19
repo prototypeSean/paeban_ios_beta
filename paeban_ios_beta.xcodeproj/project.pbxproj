@@ -86,6 +86,7 @@
 		CF2E9D651D7BDFE300F485BB /* FriendTableViewMedol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewMedol.swift; sourceTree = "<group>"; };
 		CF2E9D671D7BE33C00F485BB /* FriendStanderType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendStanderType.swift; sourceTree = "<group>"; };
 		CF2E9D691D7C76D600F485BB /* FriendChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendChatViewController.swift; sourceTree = "<group>"; };
+		CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = paeban_ios_beta.entitlements; sourceTree = "<group>"; };
 		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
 		CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewCell.swift; sourceTree = "<group>"; };
 		CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewModel.swift; sourceTree = "<group>"; };
@@ -139,6 +140,7 @@
 		931FF1931CFEA848000E7F8A /* paeban_ios_beta */ = {
 			isa = PBXGroup;
 			children = (
+				CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */,
 				932A00D01CFEBA460036E1EA /* AppDelegate.swift */,
 				932A00D11CFEBA460036E1EA /* ToolsFunction.swift */,
 				932A00D31CFEBA460036E1EA /* ＨttpRequestCenter.swift */,
@@ -266,6 +268,20 @@
 					931FF1901CFEA848000E7F8A = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 473T6T639P;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+							com.apple.InterAppAudio = {
+								enabled = 0;
+							};
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
