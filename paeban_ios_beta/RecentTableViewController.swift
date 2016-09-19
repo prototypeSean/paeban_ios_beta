@@ -8,6 +8,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         rTVModel = RecentTableViewModel()
         rTVModel?.reCheckDataBase()
         wsActive.wasd_ForRecentTableViewController = self
+//        print(nowTopicCellList)
     }
     
     // MARK: - Table view data source
