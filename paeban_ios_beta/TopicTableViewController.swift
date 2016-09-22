@@ -24,6 +24,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     
     // 搜尋時的清單 ＆ 資料來源
     var filteredArray = [String]()
+    
+    var searchKeyAndState:Dictionary<String,String?> = ["key": nil, "smallest_id": "init", "state": "new"]
 
     
     @IBOutlet weak var topicList: UITableView!
@@ -391,6 +393,91 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                 
                 
             }
+            
+            //接收新搜尋
+            else if msg_type == "search_topic"{
+                
+                func transformToTopicType(inputDic:Dictionary<String,AnyObject>) -> Array<Topic>{
+                    var tempTopicIdList:Array<Int> = []
+                    for returnDic_s in inputDic{
+                        if let tempTopicId = Int(returnDic_s.0){
+                            tempTopicIdList.append(tempTopicId)
+                        }
+                    }
+                    tempTopicIdList.sortInPlace(>)
+                    var topic_list_temp:Array<Topic> = []
+                    for tempTopicId in tempTopicIdList{
+                        let encodedImageData = inputDic[String(tempTopicId)]!["img"] as! String
+                        
+                        let decodedimage = base64ToImage(encodedImageData)
+                        
+                        var finalimg:UIImage
+                        if decodedimage != nil{
+                            finalimg = decodedimage!
+                        }
+                        else{
+                            finalimg = UIImage(named: "logo")!
+                        }
+                        //--base64--end
+                        var isMe:Bool = false
+                        var online:Bool = false
+                        
+                        if inputDic[String(tempTopicId)]!["is_me"] as! Bool == true{
+                            isMe = true
+                        }
+                        if inputDic[String(tempTopicId)]!["online"] as! Bool == true{
+                            online = true
+                        }
+                        
+                        
+                        let topic_temp = Topic(
+                            owner: inputDic[String(tempTopicId)]!["topic_publisher"] as! String,
+                            photo: finalimg,
+                            title: inputDic[String(tempTopicId)]!["title"] as! String,
+                            hashtags: inputDic[String(tempTopicId)]!["tag"] as! Array,
+                            lastline:"最後一句對話" ,
+                            topicID: String(tempTopicId),
+                            sex:inputDic[String(tempTopicId)]!["sex"] as! String,
+                            isMe:isMe,
+                            online:online,
+                            ownerName:inputDic[String(tempTopicId)]!["name"] as! String
+                            )!
+                        topic_list_temp.append(topic_temp)
+                    }
+                    return topic_list_temp
+                    
+                }
+                func getSmallestId(inputDic:Dictionary<String,AnyObject>) -> Int?{
+                    var tempTopicIdList:Array<Int> = []
+                    for returnDic_s in inputDic{
+                        if let tempTopicId = Int(returnDic_s.0){
+                            tempTopicIdList.append(tempTopicId)
+                        }
+                    }
+                    tempTopicIdList.sortInPlace(>)
+                    if tempTopicIdList.count > 0{
+                        return tempTopicIdList[tempTopicIdList.count-1]
+                    }
+                    else{return nil}
+                }
+                
+                
+                if searchKeyAndState["state"]! == "new"{
+                    //如果是新的搜尋
+                    
+                    // 找最小id
+                    if let tempTopicId = getSmallestId(msg["return_dic"] as! Dictionary<String,AnyObject>){
+                        searchKeyAndState["smallest_id"]! = String(tempTopicId)
+                    }
+                    
+                    //UI
+                    print(transformToTopicType(msg["return_dic"] as! Dictionary<String,AnyObject>))
+                    
+                }
+                else if searchKeyAndState["state"]! == "keep"{
+                    
+                }
+            }
         }
         
     }
@@ -441,36 +528,30 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     
     // 客製化的代理功能在這
     
-    func didStartSearching() {
-        shouldShowSearchResults = true
-        self.topicSearchController.customSearchBar.showsCancelButton = true
-        topicList.reloadData()
+    func didStartSearching(searchBar: UISearchBar) {
+        //點了搜尋按鈕
     }
     
-    func didTapOnSearchButton() {
-        if !shouldShowSearchResults {
-            shouldShowSearchResults = true
-            topicList.reloadData()
+    func didTapOnSearchButton(searchBar: UISearchBar) {
+        //開始查詢
+        if searchBar.text != nil{
+            if searchKeyAndState["key"]! == nil || searchKeyAndState["key"]! != searchBar.text!{
+                searchKeyAndState["smallest_id"] = "init"
+            }
+            let sendData:NSDictionary = ["msg_type":"search_topic",
+                                         "string":searchBar.text!,
+                                         "smallest_id":searchKeyAndState["smallest_id"]!!
+            ]
+            socket.writeData(json_dumps(sendData))
         }
     }
     
-    func didTapOnCancelButton() {
-        shouldShowSearchResults = false
-        self.topicSearchController.customSearchBar.text = ""
-        self.topicSearchController.customSearchBar.setShowsCancelButton(false, animated: true)
-        topicList.reloadData()
+    func didTapOnCancelButton(searchBar: UISearchBar) {
+        //刪除查詢
     }
     
-    func didChangeSearchText(searchText: String) {
-        // Filter the data array and get only those countries that match the search text.
-        filteredArray = dataArray.filter({ (country) -> Bool in
-            let countryText: NSString = country
-            
-            return (countryText.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch).location) != NSNotFound
-        })
-        
-        // Reload the tableview.
-        topicList.reloadData()
+    func didChangeSearchText(searchBar: UISearchBar) {
+        // 打字一次搜尋一次
     }
     
     func reLoadTopic(topicId:String){

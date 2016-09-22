@@ -126,7 +126,6 @@ class ViewController: UIViewController, WebSocketDelegate{
                 socket.headers["Cookie"] = cookie
                 socket.delegate = self
                 ws_connect_fun(socket)
-                print("socket")
             }
             else{
                 print("登入失敗!!!")

@@ -31,6 +31,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="STz-pB-Tr4"/>
                     <connections>
                         <segue destination="Ukn-gV-ex4" kind="show" identifier="segueToMainUI" id="nCN-DR-xXv"/>
                     </connections>

@@ -34,7 +34,6 @@ func wsMsgTextToDic(text:String)-> Dictionary<String,AnyObject>{
 
 
 func ws_connect_fun(ws:WebSocket){
-    print("w_s_37")
     ws.connect()
 }
 
@@ -54,7 +53,7 @@ public class webSocketActiveCenter{
 
     var test_List = [""]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
-    let wsad_ForTopicTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed"]
+    let wsad_ForTopicTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed","search_topic"]
     var wasd_ForTopicViewController:webSocketActiveCenterDelegate?
     let wasd_ForTopicViewControllerList = ["topic_msg","topic_closed"]
     var wasd_ForChatViewController:webSocketActiveCenterDelegate?

@@ -124,7 +124,7 @@ class HttpRequestCenter{
     // MARK:================私有函數===============
     
     // MARK:轉換為Topic的標準格式
-    private func topic_type(ouput_json:Dictionary<NSObject, AnyObject>)->Array<Topic>{
+    func topic_type(ouput_json:Dictionary<NSObject, AnyObject>)->Array<Topic>{
         let type_key:NSObject = "msg_type"
         var topic_list_temp = [Topic]()
         if ouput_json[type_key] as! String == "new_topic"{

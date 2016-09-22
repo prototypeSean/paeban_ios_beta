@@ -6,13 +6,13 @@
 //  Copyright © 2016年 尚義 高. All rights reserved.
 //
 protocol TopicSearchControllerDelegate {
-    func didStartSearching()
+    func didStartSearching(searchBar: UISearchBar)
     
-    func didTapOnSearchButton()
+    func didTapOnSearchButton(searchBar: UISearchBar)
     
-    func didTapOnCancelButton()
+    func didTapOnCancelButton(searchBar: UISearchBar)
     
-    func didChangeSearchText(searchText: String)
+    func didChangeSearchText(searchBar: UISearchBar)
 }
 
 import UIKit
@@ -58,20 +58,20 @@ class TopicSearchController: UISearchController, UISearchBarDelegate {
     }
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        customDelegate.didStartSearching()
+        customDelegate.didStartSearching(searchBar)
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         customSearchBar.resignFirstResponder()
-        customDelegate.didTapOnSearchButton()
+        customDelegate.didTapOnSearchButton(searchBar)
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         customSearchBar.resignFirstResponder()
-        customDelegate.didTapOnCancelButton()
+        customDelegate.didTapOnCancelButton(searchBar)
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        customDelegate.didChangeSearchText(searchText)
+        customDelegate.didChangeSearchText(searchBar)
     }
 }
