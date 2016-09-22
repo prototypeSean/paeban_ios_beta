@@ -267,7 +267,7 @@
 				TargetAttributes = {
 					931FF1901CFEA848000E7F8A = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 473T6T639P;
+						DevelopmentTeam = 4HS2232BLN;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -503,9 +503,9 @@
 					"$(PROJECT_DIR)/paeban_ios_beta",
 				);
 				INFOPLIST_FILE = paeban_ios_beta/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = denniskao1986;
+				PRODUCT_BUNDLE_IDENTIFIER = prototype.sean;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -525,9 +525,9 @@
 					"$(PROJECT_DIR)/paeban_ios_beta",
 				);
 				INFOPLIST_FILE = paeban_ios_beta/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = denniskao1986;
+				PRODUCT_BUNDLE_IDENTIFIER = prototype.sean;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

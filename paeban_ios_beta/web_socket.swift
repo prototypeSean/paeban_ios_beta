@@ -34,6 +34,7 @@ func wsMsgTextToDic(text:String)-> Dictionary<String,AnyObject>{
 
 
 func ws_connect_fun(ws:WebSocket){
+    print("w_s_37")
     ws.connect()
 }
 
