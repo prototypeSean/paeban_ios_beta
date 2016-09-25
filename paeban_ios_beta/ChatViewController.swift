@@ -299,6 +299,8 @@ class JSQMessage2:JSQMessage{
     //16 118  127
 }
 
+
+
 //未送訊息解法，在每一訊息上綁定click功能，在Ｊmsg屬性裡自訂未讀狀態：Ｂool
 //並利用uincode寫入驚嘆號及“未送出”字樣
 
