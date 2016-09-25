@@ -75,7 +75,10 @@ class ViewController: UIViewController, WebSocketDelegate{
                     //self.fbLoginManager.logOut()
                 }
             }
-            else{print(error)}
+            else{
+                print("VC_79_error!!!")
+                print(error)
+            }
         })
     }
     func getFBUserData(){

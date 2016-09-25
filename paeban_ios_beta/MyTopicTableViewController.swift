@@ -70,53 +70,50 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     else{return false}
                 })
                 if localTopicDataIndex == nil{
-                    let qos = DispatchQueue.GlobalQueuePriority.default
-                    (DispatchQueue.global(priority: qos)).async(execute: {
-                        
-                        let httpObj = HttpRequestCenter()
-                        // MARK:補設計timeout功能
-                        httpObj.request_topic_msg_config(topic_id, client_id: topicWithWho, topic_content_id: topic_content_id.0){ (returnData) in
-                            if returnData["topic_content_id"] as! String == topic_content_id.0{
-                                let returnDic = returnData
-                                
-                                let newTopicDetailObj = MyTopicStandardType(dataType: "detail")
-                                let imgStr = returnDic["img"] as! String
-                                let img = base64ToImage(imgStr)
-                                
-                                newTopicDetailObj.clientId_detial = topicWithWho
-                                newTopicDetailObj.clientName_detial = returnDic["client_name"] as? String
-                                newTopicDetailObj.clientPhoto_detial = img
-                                newTopicDetailObj.clientIsRealPhoto_detial = returnDic["client_is_real_photo"] as? Bool
-                                newTopicDetailObj.clientSex_detial = returnDic["client_sex"] as? String
-                                newTopicDetailObj.clientOnline_detial = returnDic["client_online"] as? Bool
-                                newTopicDetailObj.lastLine_detial = topic_content_data["topic_content"]
-                                newTopicDetailObj.lastSpeaker_detial = topic_content_data["sender"]!
-                                newTopicDetailObj.read_detial = false
-                                newTopicDetailObj.topicId_title = topic_id
-                                newTopicDetailObj.topicContentId_detial = topic_content_id.0
-                                self.updataTitleCellList_isRead(topic_id, topicWithWho: topicWithWho, read: false)
-                                DispatchQueue.main.async(execute: {
-                                    self.secTopic[topic_id]! += [newTopicDetailObj]
-                                    var checkTopicsIndex = 0
-                                    for checkTopics in self.mytopic{
-                                        if checkTopics.dataType != "title"{
-                                            self.mytopic.insert(newTopicDetailObj, at: checkTopicsIndex)
-                                            let tempIndexPath = IndexPath(row: checkTopicsIndex, section: 0)
-                                            self.tableView.beginUpdates()
-                                            self.tableView.insertRows(at: [tempIndexPath], with: UITableViewRowAnimation.automatic)
-                                            self.tableView.endUpdates()
-                                        }
-                                        checkTopicsIndex += 1
-                                    }
+                    DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                            let httpObj = HttpRequestCenter()
+                            // MARK:補設計timeout功能
+                            httpObj.request_topic_msg_config(topic_id, client_id: topicWithWho, topic_content_id: topic_content_id.0){ (returnData) in
+                                if returnData["topic_content_id"] as! String == topic_content_id.0{
+                                    let returnDic = returnData
                                     
-                                    self.updataTitleUnread(topic_id)
-                                    self.tableView.reloadData()
-                                })
+                                    let newTopicDetailObj = MyTopicStandardType(dataType: "detail")
+                                    let imgStr = returnDic["img"] as! String
+                                    let img = base64ToImage(imgStr)
+                                    
+                                    newTopicDetailObj.clientId_detial = topicWithWho
+                                    newTopicDetailObj.clientName_detial = returnDic["client_name"] as? String
+                                    newTopicDetailObj.clientPhoto_detial = img
+                                    newTopicDetailObj.clientIsRealPhoto_detial = returnDic["client_is_real_photo"] as? Bool
+                                    newTopicDetailObj.clientSex_detial = returnDic["client_sex"] as? String
+                                    newTopicDetailObj.clientOnline_detial = returnDic["client_online"] as? Bool
+                                    newTopicDetailObj.lastLine_detial = topic_content_data["topic_content"]
+                                    newTopicDetailObj.lastSpeaker_detial = topic_content_data["sender"]!
+                                    newTopicDetailObj.read_detial = false
+                                    newTopicDetailObj.topicId_title = topic_id
+                                    newTopicDetailObj.topicContentId_detial = topic_content_id.0
+                                    self.updataTitleCellList_isRead(topic_id, topicWithWho: topicWithWho, read: false)
+                                    DispatchQueue.main.async(execute: {
+                                        self.secTopic[topic_id]! += [newTopicDetailObj]
+                                        var checkTopicsIndex = 0
+                                        for checkTopics in self.mytopic{
+                                            if checkTopics.dataType != "title"{
+                                                self.mytopic.insert(newTopicDetailObj, at: checkTopicsIndex)
+                                                let tempIndexPath = IndexPath(row: checkTopicsIndex, section: 0)
+                                                self.tableView.beginUpdates()
+                                                self.tableView.insertRows(at: [tempIndexPath], with: UITableViewRowAnimation.automatic)
+                                                self.tableView.endUpdates()
+                                            }
+                                            checkTopicsIndex += 1
+                                        }
+                                        
+                                        self.updataTitleUnread(topic_id)
+                                        self.tableView.reloadData()
+                                    })
+                                }
+                                
                             }
-                            
-                        }
-                   
-                    })
+                    }
                 }
                 else{
                     //更新現有資料
@@ -336,8 +333,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         nowAcceptTopicId = topicId
         if AcceptThisClick{
             var willInsertLoad = true
-            let qos = DispatchQueue.GlobalQueuePriority.low
-            DispatchQueue.global(priority: qos).async{ () -> Void in
+            DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
                 var waitTime:Int = 15000
                 var dataNumber = -1
                 var totalDataNember = 0

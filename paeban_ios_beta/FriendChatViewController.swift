@@ -30,7 +30,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     var topicNotExist:String?{
         get{return ""}
         set{
-            navigationController?.popViewController(animated: true)
+            //navigationController?.popViewController(animated: true)
         }
     }
     

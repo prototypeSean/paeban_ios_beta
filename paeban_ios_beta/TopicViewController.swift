@@ -89,7 +89,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.alert)
         
         refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
-            self.navigationController?.popViewController(animated: true)
+            //self.navigationController?.popViewController(animated: true)
         }))
         
         self.delegate?.reLoadTopic(self.topicId!)
