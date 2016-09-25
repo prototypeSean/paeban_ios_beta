@@ -21,17 +21,17 @@ class login_paeban{
     func get_cookie() ->String{
         var login_return_val:String?
         let url = "http://www.paeban.com/register-by-token/facebook/\(fb_ssesion)"
-        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
-        request.HTTPMethod = "GET"
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "GET"
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             if error != nil{
                 print("連線錯誤\(error)")
             }
             else{
-                let ouput = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
                 if ouput != "log in fail"{
-                    if let httpResponse = response as? NSHTTPURLResponse {
+                    if let httpResponse = response as? HTTPURLResponse {
                         if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
                             self.cookie = response_cookie
                             if self.cookie != nil{

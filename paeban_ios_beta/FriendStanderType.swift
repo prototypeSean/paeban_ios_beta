@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class FriendStanderType{
+open class FriendStanderType{
     var id:String?
     var name:String?
     var sex:String?
@@ -19,7 +19,7 @@ public class FriendStanderType{
     var photo:UIImage?
 }
 
-public func turnToFriendStanderType(id:String,name:String,sex:String,isRealPhoto:Bool,online:Bool,photoString:String) ->FriendStanderType{
+public func turnToFriendStanderType(_ id:String,name:String,sex:String,isRealPhoto:Bool,online:Bool,photoString:String) ->FriendStanderType{
     let returnObj = FriendStanderType()
     returnObj.id = id
     returnObj.name = name

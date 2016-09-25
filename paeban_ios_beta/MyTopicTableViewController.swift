@@ -30,13 +30,13 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     
     
     
-    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if msg["msg_type"] as! String == "topic_msg"{
             updataSecTopic(msg)
         }
     }
     
-    func updataSecTopic(msg:Dictionary<String,AnyObject>){
+    func updataSecTopic(_ msg:Dictionary<String,AnyObject>){
         // msg -- msg_type:"topic_msg"
         //     -- img:String
         //     -- result_dic --topic_content_id* -- sender:String
@@ -48,7 +48,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         for topic_content_id in result_dic{
             let topic_content_data = topic_content_id.1
             let topic_id = topic_content_data["topic_id"]!
-            let secTopicIndex = secTopic.indexOf({ (key, _) -> Bool in
+            let secTopicIndex = secTopic.index(where: { (key, _) -> Bool in
                 if key == topic_id{
                     return true
                 }
@@ -63,15 +63,15 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     topicWithWho = topic_content_data["sender"]!
                 }
                 let localTopicData = secTopic[topic_id]!
-                let localTopicDataIndex = localTopicData.indexOf({ (MyTopicStandardType) -> Bool in
+                let localTopicDataIndex = localTopicData.index(where: { (MyTopicStandardType) -> Bool in
                     if MyTopicStandardType.clientId_detial == topicWithWho{
                         return true
                     }
                     else{return false}
                 })
                 if localTopicDataIndex == nil{
-                    let qos = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                    dispatch_async((dispatch_get_global_queue(qos, 0)), {
+                    let qos = DispatchQueue.GlobalQueuePriority.default
+                    (DispatchQueue.global(priority: qos)).async(execute: {
                         
                         let httpObj = HttpRequestCenter()
                         // MARK:補設計timeout功能
@@ -95,15 +95,15 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                                 newTopicDetailObj.topicId_title = topic_id
                                 newTopicDetailObj.topicContentId_detial = topic_content_id.0
                                 self.updataTitleCellList_isRead(topic_id, topicWithWho: topicWithWho, read: false)
-                                dispatch_async(dispatch_get_main_queue(), {
+                                DispatchQueue.main.async(execute: {
                                     self.secTopic[topic_id]! += [newTopicDetailObj]
                                     var checkTopicsIndex = 0
                                     for checkTopics in self.mytopic{
                                         if checkTopics.dataType != "title"{
-                                            self.mytopic.insert(newTopicDetailObj, atIndex: checkTopicsIndex)
-                                            let tempIndexPath = NSIndexPath(forRow: checkTopicsIndex, inSection: 0)
+                                            self.mytopic.insert(newTopicDetailObj, at: checkTopicsIndex)
+                                            let tempIndexPath = IndexPath(row: checkTopicsIndex, section: 0)
                                             self.tableView.beginUpdates()
-                                            self.tableView.insertRowsAtIndexPaths([tempIndexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                                            self.tableView.insertRows(at: [tempIndexPath], with: UITableViewRowAnimation.automatic)
                                             self.tableView.endUpdates()
                                         }
                                         checkTopicsIndex += 1
@@ -128,7 +128,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                         localData.lastSpeaker_detial = localData.clientName_detial
                     }
                     localData.lastLine_detial = topic_content_data["topic_content"]
-                    let uiDataIndex = mytopic.indexOf({ (MyTopicStandardType) -> Bool in
+                    let uiDataIndex = mytopic.index(where: { (MyTopicStandardType) -> Bool in
                         if MyTopicStandardType.topicId_title == topic_id
                             && MyTopicStandardType.clientId_detial == topicWithWho{
                             return true
@@ -136,8 +136,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                         else{return false}
                     })
                     if uiDataIndex != nil{
-                        mytopic.removeAtIndex(Int(uiDataIndex!))
-                        mytopic.insert(localData, atIndex: uiDataIndex!)
+                        mytopic.remove(at: Int(uiDataIndex!))
+                        mytopic.insert(localData, at: uiDataIndex!)
                         self.updataTitleUnread(localData.topicId_title!)
                         self.tableView.reloadData()
                     }
@@ -151,8 +151,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         
     }
     
-    func updataTitleUnread(topicId:String){
-        let tagretIndex = self.mytopic.indexOf { (obj_s) -> Bool in
+    func updataTitleUnread(_ topicId:String){
+        let tagretIndex = self.mytopic.index { (obj_s) -> Bool in
             if obj_s.dataType == "title" && obj_s.topicId_title! == topicId{
                 return true
             }
@@ -170,11 +170,10 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     
     func get_my_topic_title() {
-        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
-        dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+        DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
             let httpObj = HttpRequestCenter()
             httpObj.get_my_topic_title { (returnData) in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.mytopic = self.transferToStandardType_title(returnData)
 
                     self.tableView.reloadData()
@@ -183,13 +182,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
     }
     
-    func get_my_topic_detail(topicId:String){
+    func get_my_topic_detail(_ topicId:String){
         
-        let qos = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+        DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
             let httpObj = HttpRequestCenter()
             httpObj.get_my_topic_detail(topicId, InViewAct: { (returnData) in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     let topicId = returnData["topic_id"] as! String
                     let returnDataList = self.transferToStandardType_detail(returnData)
                     self.secTopic[topicId] = returnDataList
@@ -202,7 +200,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
     }
     
-    func transferToStandardType_title(inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
+    func transferToStandardType_title(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
         // return_dic = topic_id* -- topic_title : String
         //                        -- topics               -- topic_with_who_id* -- read:Bool
         var tempMytopicList = [MyTopicStandardType]()
@@ -226,7 +224,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         return tempMytopicList
     }
     
-    func transferToStandardType_detail(inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType> {
+    func transferToStandardType_detail(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType> {
         // return_dic --topic_id:String
         //            --topic_contents-topic_with_who_id*- topic_with_who_name:String
         //                                               - last_speaker:String
@@ -258,9 +256,9 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         return tempMytopicList
     }
-    func updateSelectIndex(topicId:String, anyFunction: () -> Void){
+    func updateSelectIndex(_ topicId:String, anyFunction: () -> Void){
         anyFunction()
-        let newCellIndex = mytopic.indexOf({ (MyTopicStandardTypeObj) -> Bool in
+        let newCellIndex = mytopic.index(where: { (MyTopicStandardTypeObj) -> Bool in
             if MyTopicStandardTypeObj.dataType == "title"{
                 if MyTopicStandardTypeObj.topicId_title! == topicId{
                     return true
@@ -275,24 +273,24 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     
     func collectCell(){
         var removeList = [Int]()
-        var removeNSIndexPathList = [NSIndexPath]()
+        var removeNSIndexPathList = [IndexPath]()
         for cell_s_Index in 0..<mytopic.count{
             if mytopic[cell_s_Index].dataType == "detail"{
-                removeList.insert(cell_s_Index, atIndex: 0)
-                let removeNSIndexPath = NSIndexPath(forRow: cell_s_Index, inSection: 0)
-                removeNSIndexPathList.insert(removeNSIndexPath, atIndex: 0)
+                removeList.insert(cell_s_Index, at: 0)
+                let removeNSIndexPath = IndexPath(row: cell_s_Index, section: 0)
+                removeNSIndexPathList.insert(removeNSIndexPath, at: 0)
             }
         }
         for removeIndex in removeList{
-            mytopic.removeAtIndex(removeIndex)
+            mytopic.remove(at: removeIndex)
         }
         self.tableView.beginUpdates()
-        self.tableView.deleteRowsAtIndexPaths(removeNSIndexPathList, withRowAnimation: UITableViewRowAnimation.Automatic)
+        self.tableView.deleteRows(at: removeNSIndexPathList, with: UITableViewRowAnimation.automatic)
         self.tableView.endUpdates()
     }
     
-    func getSecCellData(topicId:String,selectIndex:Int){
-        let secCellDataIndex = secTopic.indexOf { (topicIdInIndex, _) -> Bool in
+    func getSecCellData(_ topicId:String,selectIndex:Int){
+        let secCellDataIndex = secTopic.index { (topicIdInIndex, _) -> Bool in
             if topicIdInIndex == topicId{
                 return true
             }
@@ -308,25 +306,25 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
     }
     
-    func insertSecCell(inputList:[MyTopicStandardType], selectIndex:Int) {
+    func insertSecCell(_ inputList:[MyTopicStandardType], selectIndex:Int) {
         
-        var updataIndexList = [NSIndexPath]()
+        var updataIndexList = [IndexPath]()
         var updataIndexInt = selectIndex
         for insertData in inputList{
             updataIndexInt += 1
-            let updataIndex = NSIndexPath(forRow: updataIndexInt, inSection: 0)
+            let updataIndex = IndexPath(row: updataIndexInt, section: 0)
             updataIndexList.append(updataIndex)
-            mytopic.insert(insertData, atIndex: selectIndex + 1)
+            mytopic.insert(insertData, at: selectIndex + 1)
         }
         
         self.tableView.beginUpdates()
-        self.tableView.insertRowsAtIndexPaths(updataIndexList, withRowAnimation: UITableViewRowAnimation.Automatic)
+        self.tableView.insertRows(at: updataIndexList, with: UITableViewRowAnimation.automatic)
         self.tableView.endUpdates()
 
     }
     
     // MARK:等待中
-    func waitSecTopicData(topicId:String,selectIndex:Int) {
+    func waitSecTopicData(_ topicId:String,selectIndex:Int) {
         
         var toExecution = true
         var AcceptThisClick = true
@@ -338,13 +336,13 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         nowAcceptTopicId = topicId
         if AcceptThisClick{
             var willInsertLoad = true
-            let qos = DISPATCH_QUEUE_PRIORITY_LOW
-            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+            let qos = DispatchQueue.GlobalQueuePriority.low
+            DispatchQueue.global(priority: qos).async{ () -> Void in
                 var waitTime:Int = 15000
                 var dataNumber = -1
                 var totalDataNember = 0
                 // 查詢資料庫有無資料
-                let titleIndex = self.mytopic.indexOf({ (target) -> Bool in
+                let titleIndex = self.mytopic.index(where: { (target) -> Bool in
                     if target.topicId_title == topicId{
                         return true
                     }
@@ -368,14 +366,14 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     // ===插入讀取cell畫面===
                     if self.mytopic.count-1 == selectIndex && willInsertLoad == true{
                         willInsertLoad = false
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             self.insertLoadingCell(selectIndex)
                         })
                     }
                     else if self.mytopic.count-1 > selectIndex && willInsertLoad == true{
                         if self.mytopic[selectIndex+1].dataType != "reloading"{
                             willInsertLoad = false
-                            dispatch_async(dispatch_get_main_queue(), {
+                            DispatchQueue.main.async(execute: {
                                 self.insertLoadingCell(selectIndex)
                             })
                         }
@@ -399,7 +397,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 if toExecution{
                     if dataNumber == totalDataNember{
                         //資料進來了
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             self.updateSelectIndex(topicId, anyFunction: {
                                 self.removeLoadingCell()
                             })
@@ -417,8 +415,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         
     }
     
-    func updataTitleCellList_isRead(topicId:String,topicWithWho:String,read:Bool){
-        let titleIndex = mytopic.indexOf { (MyTopicStandardType) -> Bool in
+    func updataTitleCellList_isRead(_ topicId:String,topicWithWho:String,read:Bool){
+        let titleIndex = mytopic.index { (MyTopicStandardType) -> Bool in
             if MyTopicStandardType.topicId_title == topicId{
                 return true
             }
@@ -430,42 +428,42 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     
     
-    func insertLoadingCell(selectIndex:Int) {
+    func insertLoadingCell(_ selectIndex:Int) {
         let insertObj = MyTopicStandardType(dataType: "reloading")
-        mytopic.insert(insertObj, atIndex: selectIndex+1)
+        mytopic.insert(insertObj, at: selectIndex+1)
         self.tableView.beginUpdates()
-        self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: selectIndex+1, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+        self.tableView.insertRows(at: [IndexPath(row: selectIndex+1, section: 0)], with: UITableViewRowAnimation.automatic)
         self.tableView.endUpdates()
     }
     
     func removeLoadingCell() {
         var removeTopicObjIndexList = [Int]()
-        var removeNSIndexPachList = [NSIndexPath]()
+        var removeNSIndexPachList = [IndexPath]()
         for topicObj_s in 0..<mytopic.count{
             if mytopic[topicObj_s].dataType == "reloading"{
-                removeTopicObjIndexList.insert(topicObj_s, atIndex: 0)
-                let removeNSIndexPach = NSIndexPath(forRow: topicObj_s, inSection: 0)
-                removeNSIndexPachList.insert(removeNSIndexPach, atIndex: 0)
+                removeTopicObjIndexList.insert(topicObj_s, at: 0)
+                let removeNSIndexPach = IndexPath(row: topicObj_s, section: 0)
+                removeNSIndexPachList.insert(removeNSIndexPach, at: 0)
             }
         }
         for removeTopicObjIndex in removeTopicObjIndexList{
-            mytopic.removeAtIndex(removeTopicObjIndex)
+            mytopic.remove(at: removeTopicObjIndex)
         }
         self.tableView.beginUpdates()
-        self.tableView.deleteRowsAtIndexPaths(removeNSIndexPachList, withRowAnimation: UITableViewRowAnimation.Automatic)
+        self.tableView.deleteRows(at: removeNSIndexPachList, with: UITableViewRowAnimation.automatic)
         self.tableView.endUpdates()
         
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let topicWriteToRow = mytopic[indexPath.row]
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let topicWriteToRow = mytopic[(indexPath as NSIndexPath).row]
         if topicWriteToRow.dataType == "title"{
             // 標題型cell
-            let cell = tableView.dequeueReusableCellWithIdentifier("myTopicCell_1", forIndexPath: indexPath) as! MyTopicTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_1", for: indexPath) as! MyTopicTableViewCell
             cell.topicTitle.text = topicWriteToRow.topicTitle_title
             cell.unReadM.text = String(topicWriteToRow.allMsg_title)
             cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
@@ -474,7 +472,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         else if topicWriteToRow.dataType == "detail"{
             // 子對話型cell
-            let cell = tableView.dequeueReusableCellWithIdentifier("myTopicCell_2", forIndexPath: indexPath) as! TopicSecTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_2", for: indexPath) as! TopicSecTableViewCell
             cell.clientName.text = topicWriteToRow.clientName_detial
             cell.speaker.text = topicWriteToRow.lastSpeaker_detial
             cell.lastLine.text = topicWriteToRow.lastLine_detial
@@ -486,12 +484,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             return cell
         }
         else{
-            let cell = tableView.dequeueReusableCellWithIdentifier("loadingCell", forIndexPath: indexPath) as! TableViewLoadingCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "loadingCell", for: indexPath) as! TableViewLoadingCell
             // MARK:調整刷新圖示的地方
-            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
             activityIndicator.frame = CGRect(x: 0, y: 0, width: cell.frame.maxX, height: 70)
             //activityIndicator.center = cell.center
-            activityIndicator.transform = CGAffineTransformMakeScale(1.3, 1.3)
+            activityIndicator.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             activityIndicator.startAnimating()
             cell.addSubview(activityIndicator)
             
@@ -499,17 +497,17 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
     }
     // 畫面轉跳
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         print(segue.identifier)
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {return 1}
+    override func numberOfSections(in tableView: UITableView) -> Int {return 1}
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return mytopic.count}
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return mytopic.count}
     
     // MARK: 選擇cell後
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cellIndex = indexPath.row
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cellIndex = (indexPath as NSIndexPath).row
         var actMode = false
         if mytopic[cellIndex].dataType == "title"{
             if cellIndex == mytopic.count-1{
@@ -538,12 +536,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 
                 
                 let dataLen = mytopic.count
-                var removeRowList = [NSIndexPath]()
+                var removeRowList = [IndexPath]()
                 var removeIndexList = [Int]()
                 for removeIndex in (selectIndex!+1)..<dataLen{
                     if mytopic[removeIndex].dataType == "detail"{
-                        removeIndexList.insert(removeIndex, atIndex: 0)
-                        let removeRow = NSIndexPath(forRow: removeIndex, inSection: 0)
+                        removeIndexList.insert(removeIndex, at: 0)
+                        let removeRow = IndexPath(row: removeIndex, section: 0)
                         removeRowList += [removeRow]
                     }
                     else{
@@ -551,17 +549,17 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     }
                 }
                 for removeIndex in removeIndexList{
-                    mytopic.removeAtIndex(removeIndex)
+                    mytopic.remove(at: removeIndex)
                 }
                 self.tableView.beginUpdates()
-                self.tableView.deleteRowsAtIndexPaths(removeRowList, withRowAnimation: UITableViewRowAnimation.Automatic)
+                self.tableView.deleteRows(at: removeRowList, with: UITableViewRowAnimation.automatic)
                 self.tableView.endUpdates()
-                self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                self.tableView.deselectRow(at: indexPath, animated: true)
             }
         }
     }
     
-    func letoutSexLogo(sex:String) -> UIImage {
+    func letoutSexLogo(_ sex:String) -> UIImage {
         var sexImg:UIImage
         switch sex {
         case "男":
@@ -578,21 +576,21 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         return sexImg
     }
-    func letoutIsTruePhoto(isTruePhoto:Bool) -> UIImage {
+    func letoutIsTruePhoto(_ isTruePhoto:Bool) -> UIImage {
         var isMeImg:UIImage
         if isTruePhoto{isMeImg = UIImage(named:"True_photo")!}
         else{isMeImg = UIImage(named:"Fake_photo")!}
         return isMeImg
     }
-    func letoutOnlineLogo(isOnline:Bool,cellOnlineLogo:UIImageView){
+    func letoutOnlineLogo(_ isOnline:Bool,cellOnlineLogo:UIImageView){
         
-        cellOnlineLogo.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        cellOnlineLogo.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         
         if isOnline{
             cellOnlineLogo.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
         else{
-            cellOnlineLogo.tintColor = UIColor.grayColor()
+            cellOnlineLogo.tintColor = UIColor.gray
         }
     }
     
@@ -631,7 +629,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         
     }
-    func updateReconnect(returnDic:Dictionary<String,AnyObject>) {
+    func updateReconnect(_ returnDic:Dictionary<String,AnyObject>) {
         // return_dic -- topic_id* -- topic_with_who* -- topic_content, last_speaker, is_online, topic_content_id
         
         for topic_id_s in returnDic{
@@ -643,7 +641,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                         //修改資料庫
                         let detailData_s = topic_who![topic_who_s.0] as? Dictionary<String,AnyObject>
                         let dataBase = secTopic[topic_id]
-                        let dataIndex = dataBase?.indexOf({ (target) -> Bool in
+                        let dataIndex = dataBase?.index(where: { (target) -> Bool in
                             if target.clientId_detial! == topic_id{
                                 return true
                             }
@@ -657,7 +655,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                             self.updataTitleUnread(topic_id)
                             
                             let mainDataBase = mytopic
-                            let mainDataBaseIndex = mainDataBase.indexOf({ (target) -> Bool in
+                            let mainDataBaseIndex = mainDataBase.index(where: { (target) -> Bool in
                                 if target.dataType == "detail"
                                 && target.topicId_title! == topic_id
                                     && target.clientId_detial == topic_who_s.0{
@@ -681,9 +679,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                             sendDic["client_id"] = topic_who_s.0
                             sendDic["topic_content_id"] = detailData_s!["topic_content_id"] as? String
                             sendDic["topic_id"] = topic_id
-                            let qos = DISPATCH_QUEUE_PRIORITY_DEFAULT
-                            dispatch_async(dispatch_get_global_queue(qos,0), {
-                                http_obj.reconnect_update_new_user_data(sendDic, InViewAct: { (returnData) in
+                            DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async(execute: {
+                                http_obj.reconnect_update_new_user_data(sendDic as NSDictionary, InViewAct: { (returnData) in
                                     let new_sec_cell_DB = self.transferToStandardType_detail(returnData)
                                     if !new_sec_cell_DB.isEmpty{
                                         let topic_id = new_sec_cell_DB[0].topicId_title!

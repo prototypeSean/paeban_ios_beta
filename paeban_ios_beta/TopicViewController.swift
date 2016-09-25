@@ -9,7 +9,7 @@
 import UIKit
 import JSQMessagesViewController
 protocol TopicViewControllerDelegate {
-    func reLoadTopic(topicID:String)
+    func reLoadTopic(_ topicID:String)
 }
 
 class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
@@ -45,8 +45,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     
     
     func getHttpData() {
-        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
-        dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+        DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
             let httpObj = HttpRequestCenter()
             httpObj.getTopicContentHistory(self.ownerId!,topicId: self.topicId!, InViewAct: { (returnData2) in
 //                returnData2:
@@ -55,7 +54,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
 //                my_img
 //                msg
                 
-                let checkMsgType = returnData2.indexOf({ (msg_type, _) -> Bool in
+                let checkMsgType = returnData2.index(where: { (msg_type, _) -> Bool in
                     if msg_type == "msg_type"{
                         //話題已關閉
                         return true
@@ -69,7 +68,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                     let myImg = base64ToImage(returnData2["my_img"] as! String)
                     
                     let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.myPhoto.image = myImg
                         
                         let chatViewCon = self.contanterView
@@ -78,7 +77,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                     })
                 }
                 else{
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.alertTopicClosed()
                     })
                 }
@@ -87,17 +86,17 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     
     func alertTopicClosed(){
-        let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.Alert)
+        let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.alert)
         
-        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
-            self.navigationController?.popViewControllerAnimated(true)
+        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+            self.navigationController?.popViewController(animated: true)
         }))
         
         self.delegate?.reLoadTopic(self.topicId!)
-        self.presentViewController(refreshAlert, animated: true, completion: nil)
+        self.present(refreshAlert, animated: true, completion: nil)
     }
     
-    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
         if msgType == "topic_msg"{
             let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
@@ -124,7 +123,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         else if msgType == "topic_closed"{
             let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
             if closeTopicIdList != nil{
-                if closeTopicIdList?.indexOf(self.topicId!) != nil{
+                if closeTopicIdList?.index(of: self.topicId!) != nil{
                     self.alertTopicClosed()
                 }
             }
@@ -133,8 +132,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let chatViewCon = segue.destinationViewController as! ChatViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let chatViewCon = segue.destination as! ChatViewController
         chatViewCon.setID = userData.id
         chatViewCon.setName = userData.name
         chatViewCon.topicId = self.topicId
@@ -161,9 +160,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         
         // MARK: 照片陰影
         let myPhotoShadow = UIView(frame: myPhoto.frame)
-        myPhoto.frame = CGRectMake(0, 0, myPhoto.frame.size.width, myPhoto.frame.size.height)
-        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).CGColor
-        myPhotoShadow.layer.shadowOffset = CGSizeMake(1.5, 1.5)
+        myPhoto.frame = CGRect(x: 0, y: 0, width: myPhoto.frame.size.width, height: myPhoto.frame.size.height)
+        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
+        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
         myPhotoShadow.layer.shadowOpacity = 1
         myPhotoShadow.layer.shadowRadius = 1
         myPhotoShadow.layer.cornerRadius = myPhoto.frame.size.width/2
@@ -171,9 +170,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         myPhotoShadow.addSubview(myPhoto)
         
         let guestPhotoShadow = UIView(frame: guestPhoto.frame)
-        guestPhoto.frame = CGRectMake(0, 0, guestPhoto.frame.size.width, guestPhoto.frame.size.height)
-        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).CGColor
-        myPhotoShadow.layer.shadowOffset = CGSizeMake(1.5, 1.5)
+        guestPhoto.frame = CGRect(x: 0, y: 0, width: guestPhoto.frame.size.width, height: guestPhoto.frame.size.height)
+        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
+        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
         myPhotoShadow.layer.shadowOpacity = 1
         myPhotoShadow.layer.shadowRadius = 1
         myPhotoShadow.layer.cornerRadius = guestPhoto.frame.size.width/2
@@ -185,19 +184,19 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         
         // MARK: 作邊框
         topicInfoBG.layer.borderWidth = 1
-        topicInfoBG.layer.borderColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:0.3).CGColor
+        topicInfoBG.layer.borderColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:0.3).cgColor
         
         // MARK: 漸層
-        topicInfoBG.backgroundColor = UIColor.whiteColor()
+        topicInfoBG.backgroundColor = UIColor.white
         gradientLayer.frame = topicInfoBG.bounds
-        let color1 = UIColor(red:0.97, green:0.97, blue:0.97, alpha:0.2).CGColor as CGColorRef
-        let color2 = UIColor(red:0.95, green:0.95, blue:0.95, alpha:0.2).CGColor as CGColorRef
+        let color1 = UIColor(red:0.97, green:0.97, blue:0.97, alpha:0.2).cgColor as CGColor
+        let color2 = UIColor(red:0.95, green:0.95, blue:0.95, alpha:0.2).cgColor as CGColor
         gradientLayer.colors = [color1, color2]
         gradientLayer.locations = [0.0, 1.0]
         
         topicInfoBG.layer.addSublayer(gradientLayer)
     }
-    private func updateImg(imgString:String?) -> UIImage?{
+    fileprivate func updateImg(_ imgString:String?) -> UIImage?{
         if imgString != nil{
             let img = base64ToImage(imgString!)
             return img

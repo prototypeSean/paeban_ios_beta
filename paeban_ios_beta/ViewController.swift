@@ -26,14 +26,14 @@ public struct setUserData{
 public var userData = setUserData()
 
 public var nowTopicCellList:Array<MyTopicStandardType> = []
-public func addTopicCellToPublicList(input_data:MyTopicStandardType){
-    if let _ = nowTopicCellList.indexOf({ (target) -> Bool in
+public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
+    if let _ = nowTopicCellList.index(where: { (target) -> Bool in
         if target.topicId_title == input_data.topicId_title{
             return true
         }
         else{return false}
     }){}
-    else{nowTopicCellList.insert(input_data, atIndex: 0)}
+    else{nowTopicCellList.insert(input_data, at: 0)}
 }
 
 public var myFriendsList:Array<FriendStanderType> = []
@@ -46,7 +46,7 @@ class ViewController: UIViewController, WebSocketDelegate{
     let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
     
     
-    @IBAction func loninBottom(sender: AnyObject) {
+    @IBAction func loninBottom(_ sender: AnyObject) {
         fbLogIn()
     }
     override func viewDidLoad() {
@@ -58,16 +58,16 @@ class ViewController: UIViewController, WebSocketDelegate{
 //        loginButton.delegate = self
         //=========
         print("viewDidLoad")
-        if let _ = FBSDKAccessToken.currentAccessToken(){
+        if let _ = FBSDKAccessToken.current(){
             paeban_login()
         }  
         
     }
     
     func fbLogIn() {
-        fbLoginManager.logInWithReadPermissions(["email"],fromViewController: self.parentViewController, handler: { (result, error) -> Void in
+        fbLoginManager.logIn(withReadPermissions: ["email"],from: self.parent, handler: { (result, error) -> Void in
             if (error == nil){
-                let fbloginresult : FBSDKLoginManagerLoginResult = result
+                let fbloginresult : FBSDKLoginManagerLoginResult = result!
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
                     self.getFBUserData()
@@ -77,8 +77,8 @@ class ViewController: UIViewController, WebSocketDelegate{
         })
     }
     func getFBUserData(){
-        if((FBSDKAccessToken.currentAccessToken()) != nil){
-            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).startWithCompletionHandler({ (connection, result, error) -> Void in
+        if((FBSDKAccessToken.current()) != nil){
+            FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                 if (error == nil){
                     //print(result)
                     self.paeban_login()
@@ -115,14 +115,14 @@ class ViewController: UIViewController, WebSocketDelegate{
 //        print("User Logged Out")
 //    }
     func paeban_login(){
-        if let fb_session = FBSDKAccessToken.currentAccessToken(){
+        if let fb_session = FBSDKAccessToken.current(){
             let login_obj = login_paeban(fb_ssesion: fb_session.tokenString)
             cookie = login_obj.get_cookie()
             if cookie != "login_no"{
                 print("登入成功!!!")
                 //var tttt:WebSocket
 
-                socket = WebSocket(url: NSURL(string: "ws://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+                socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
                 socket.headers["Cookie"] = cookie
                 socket.delegate = self
                 ws_connect_fun(socket)
@@ -139,7 +139,7 @@ class ViewController: UIViewController, WebSocketDelegate{
     
     
     // MARK:webSocket
-    var wsTimer:NSTimer?
+    var wsTimer:Timer?
     var reConnectCount:Int = 0
     func stayConnect() {
         //print(NSDate())
@@ -156,11 +156,11 @@ class ViewController: UIViewController, WebSocketDelegate{
         reConnectCount = 0
         //print(NSDate())
         wsTimer?.invalidate()
-        wsTimer = NSTimer.scheduledTimerWithTimeInterval(45, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
+        wsTimer = Timer.scheduledTimer(timeInterval: 45, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
         if firstConnect{
             ws_connected(socket)
             print("connected")
-            self.performSegueWithIdentifier("segueToMainUI", sender: self)
+            self.performSegue(withIdentifier: "segueToMainUI", sender: self)
         }
         else{
             print("wsReConnected")
@@ -172,7 +172,7 @@ class ViewController: UIViewController, WebSocketDelegate{
     func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         print("disConnect")
         wsTimer?.invalidate()
-        wsTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
+        wsTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
         
         //print(NSDate())
     }
@@ -186,7 +186,7 @@ class ViewController: UIViewController, WebSocketDelegate{
             }
         }
     }
-    func websocketDidReceiveData(socket: WebSocket, data: NSData){
+    func websocketDidReceiveData(socket: WebSocket, data: Data){
         print("data")
     }
 

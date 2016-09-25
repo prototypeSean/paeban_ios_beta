@@ -19,7 +19,7 @@ class TopicSearchBar: UISearchBar {
         self.frame = frame
         preferredFont = font
         preferredTextColor = textColor
-        searchBarStyle = UISearchBarStyle.Prominent
+        searchBarStyle = UISearchBarStyle.prominent
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,7 +32,7 @@ class TopicSearchBar: UISearchBar {
         let searchBarView = subviews[0]
         
         for i in 0 ..< searchBarView.subviews.count {
-            if searchBarView.subviews[i].isKindOfClass(UITextField) {
+            if searchBarView.subviews[i].isKind(of: UITextField.self) {
                 index = i
                 break
             }
@@ -40,7 +40,7 @@ class TopicSearchBar: UISearchBar {
         return index
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         // 找到那個要被修改的文字框
         if let index = indexOfSearchFieldInSubviews() {
@@ -52,28 +52,28 @@ class TopicSearchBar: UISearchBar {
             
             // Set the font and text color of the search field.
             searchField.font = preferredFont
-            searchField.textColor = UIColor.orangeColor()
+            searchField.textColor = UIColor.orange
 //            searchField.attributedPlaceholder = NSAttributedString(string:"點擊搜尋 #關鍵字標籤", attributes:[NSForegroundColorAttributeName: UIColor.whiteColor()])
             
             // Set the background color of the search field.
-            searchField.backgroundColor = UIColor.whiteColor()
+            searchField.backgroundColor = UIColor.white
             
         }
         
-        let startPoint = CGPointMake(0.0, frame.size.height)
-        let endPoint = CGPointMake(frame.size.width, frame.size.height)
+        let startPoint = CGPoint(x: 0.0, y: frame.size.height)
+        let endPoint = CGPoint(x: frame.size.width, y: frame.size.height)
         let path = UIBezierPath()
-        path.moveToPoint(startPoint)
-        path.addLineToPoint(endPoint)
+        path.move(to: startPoint)
+        path.addLine(to: endPoint)
         
         let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path.CGPath
-        shapeLayer.strokeColor = UIColor(red:0.78, green:0.78, blue:0.80, alpha:1.0).CGColor
+        shapeLayer.path = path.cgPath
+        shapeLayer.strokeColor = UIColor(red:0.78, green:0.78, blue:0.80, alpha:1.0).cgColor
         shapeLayer.lineWidth = 1.5
         
         layer.addSublayer(shapeLayer)
         
-        super.drawRect(rect)
+        super.draw(rect)
     }
     
 }

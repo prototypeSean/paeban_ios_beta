@@ -30,28 +30,28 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     var topicNotExist:String?{
         get{return ""}
         set{
-            navigationController?.popViewControllerAnimated(true)
+            navigationController?.popViewController(animated: true)
         }
     }
     
-    func addRequestMission(missionType:String,data:AnyObject){
+    func addRequestMission(_ missionType:String,data:AnyObject){
         let wsSendList = ["request_history_priv_msg","priv_msg","priv_msg_been_read"]
         
-        if let _ = wsSendList.indexOf(missionType){
+        if let _ = wsSendList.index(of: missionType){
             var addDic:Dictionary<String,AnyObject> = [:]
-            addDic["missionType"] = missionType
+            addDic["missionType"] = missionType as AnyObject?
             addDic["data"] = data
             workList.append(addDic)
             executeWork(addDic)
         }
     }
     
-    func executeWork(dataDic:Dictionary<String,AnyObject>){
+    func executeWork(_ dataDic:Dictionary<String,AnyObject>){
         let missionType = dataDic["missionType"] as! String
         let wsSendList = ["request_history_priv_msg","priv_msg","priv_msg_been_read"]
-        if let _ = wsSendList.indexOf(missionType){
+        if let _ = wsSendList.index(of: missionType){
             let sendData = dataDic["data"] as! NSDictionary
-            socket.writeData(json_dumps(sendData))
+            socket.write(data:json_dumps(sendData))
         }
         
         if missionType == "request_history_priv_msg"{
@@ -60,9 +60,9 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
     }
     
-    func removeWorkList(missionType:String,data:AnyObject?) {
+    func removeWorkList(_ missionType:String,data:AnyObject?) {
         if missionType == "request_history_priv_msg"{
-            if let _ = workList.indexOf({ (target) -> Bool in
+            if let _ = workList.index(where: { (target) -> Bool in
                 if target["missionType"] as! String == "request_history_priv_msg"{
                     return true
                 }
@@ -78,7 +78,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
         else if missionType == "priv_msg"{
-            if let removeDataIndex = workList.indexOf({ (target) -> Bool in
+            if let removeDataIndex = workList.index(where: { (target) -> Bool in
                 if target["missionType"] as! String == "priv_msg"{
                     let dataLocal = target["data"] as! Dictionary<String,AnyObject>
                     let dataIncom = data as! Dictionary<String,AnyObject>
@@ -89,18 +89,18 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 }
                 else{return false}
             }){
-                workList.removeAtIndex(removeDataIndex)
+                workList.remove(at: removeDataIndex)
             }
         }
         
         
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAt indexPath: IndexPath!) -> CGFloat {
         return CGFloat(20)
     }
     //MARK:顯示"已讀"
-    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         if messages[indexPath.item].isRead == true{
             return NSAttributedString(string:"已讀")
         }
@@ -111,12 +111,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     
     
     // 設定訊息顏色，用JSQ的套件
-    private func setupBubbles() {
+    fileprivate func setupBubbles() {
         let factory = JSQMessagesBubbleImageFactory()
-        outgoingBubbleImageView = factory.outgoingMessagesBubbleImageWithColor(
-            UIColor.init(red:0.98, green:0.49, blue:0.29, alpha:1.0))
-        incomingBubbleImageView = factory.incomingMessagesBubbleImageWithColor(
-            UIColor.jsq_messageBubbleLightGrayColor())
+        outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(
+            with: UIColor.init(red:0.98, green:0.49, blue:0.29, alpha:1.0))
+        incomingBubbleImageView = factory?.incomingMessagesBubbleImage(
+            with: UIColor.jsq_messageBubbleLightGray())
     }
     
     override func viewDidLoad() {
@@ -130,8 +130,8 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         senderDisplayName = setName
         
         // No avatars
-        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
-        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
+        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
+        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
         //      上面要留白多高
         //      self.topContentAdditionalInset = 90
         
@@ -146,19 +146,19 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     
     // 下面兩個負責讀取訊息
     // JSQ的列表顯示view, 在物件索引位至的訊息
-    override func collectionView(collectionView: JSQMessagesCollectionView!,
-                                 messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
+                                 messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
         return messages[indexPath.item]
     }
     // 此部份顯示物件的數量
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
     
     
     // 藉由 indexPath 來判定要畫成收到還是送出的信息
-    override func collectionView(collectionView: JSQMessagesCollectionView!,
-                                 messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
+                                 messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
         
         if message.senderId == senderId { // 2
@@ -169,23 +169,23 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     
     // 原本套件在每個信息前面有照片，這邊把他取消
-    override func collectionView(collectionView: JSQMessagesCollectionView!,
-                                 avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
+                                 avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
         return nil
     }
     
     
-    override func collectionView(collectionView: UICollectionView,
-                                 cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath)
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
             as! JSQMessagesCollectionViewCell
         
-        let message = messages[indexPath.item]
+        let message = messages[(indexPath as NSIndexPath).item]
         
         if message.senderId == senderId {
-            cell.textView!.textColor = UIColor.whiteColor()
+            cell.textView!.textColor = UIColor.white
         } else {
-            cell.textView!.textColor = UIColor.blackColor()
+            cell.textView!.textColor = UIColor.black
         }
         
         return cell
@@ -193,12 +193,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     
     
     
-    func addMessage(id: String, text: String) {
+    func addMessage(_ id: String, text: String) {
         let message = JSQMessage3(senderId: id, displayName: "", text: text)
-        messages.append(message)
+        messages.append(message!)
     }
     // MARK:滾動中
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //print(self.collectionView.contentOffset.y)
         if scrollView.contentOffset.y <= -5 && loadHistorySwitch == true{
             loadHistorySwitch = false
@@ -207,16 +207,16 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                                           "receiver_id":clientId!,
                                           "last_id_of_msg":minMsgId]
                 //print("add")
-                addRequestMission("request_history_priv_msg", data: sendDic)
+                addRequestMission("request_history_priv_msg", data: sendDic as AnyObject)
             }
         }
     }
     
     
     //MARK:送出按鈕按下後
-    override func didPressSendButton(button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: NSDate?) {
+    override func didPressSend(_ button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: Date?) {
         //送出WS訊息
-        let timeNow = Int(NSDate().timeIntervalSince1970)
+        let timeNow = Int(Date().timeIntervalSince1970)
         let tempTopicMsgId = String(timeNow)
         let dataDic:NSDictionary = [
             "msg_type":"priv_msg",
@@ -226,26 +226,26 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             "temp_priv_msg_id":tempTopicMsgId,
         ]
         let appendMsg = JSQMessage3(senderId: senderId, displayName: senderDisplayName, text: text)
-        appendMsg.topicTempid = tempTopicMsgId
-        self.messages.append(appendMsg)
+        appendMsg?.topicTempid = tempTopicMsgId
+        self.messages.append(appendMsg!)
         
-        self.finishSendingMessageAnimated(true)
+        self.finishSendingMessage(animated: true)
         self.collectionView?.reloadData()
         addRequestMission("priv_msg", data: dataDic)
     }
     // MARK:ws回傳信號
-    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
         if msgType == "priv_msg"{
             if (msg["sender_id"] as? String)! == userData.id!
                 && (msg["receiver_id"] as? String)! == clientId{
-                if let _ = messages.indexOf({ (msgTarget) -> Bool in
+                if let _ = messages.index(where: { (msgTarget) -> Bool in
                     if msgTarget.topicTempid! == msg["temp_priv_msg_id"] as? String{
                         return true
                     }
                     else{return false}
                 }){
-                    if let msgIndex = messages.indexOf({ (target) -> Bool in
+                    if let msgIndex = messages.index(where: { (target) -> Bool in
                         if target.topicTempid == msg["temp_priv_msg_id"] as? String{
                             return true
                         }
@@ -254,7 +254,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                         messages[msgIndex].topicId = msg["msg_id"] as? String
                     }
                     
-                    removeWorkList("priv_msg", data: msg)
+                    removeWorkList("priv_msg", data: msg as AnyObject?)
                 }
             }
             else if (msg["sender_id"] as? String)! == clientId
@@ -263,18 +263,18 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 let msgObj = JSQMessage3(senderId: msg["sender_id"] as! String,
                                          displayName: msg["sender_name"] as! String,
                                          text: msg["msg"] as! String)
-                msgObj.isRead = false
-                msgObj.topicId = msg["msg_id"] as? String
-                msgObj.topicTempid = ""
-                messages += [msgObj]
+                msgObj?.isRead = false
+                msgObj?.topicId = msg["msg_id"] as? String
+                msgObj?.topicTempid = ""
+                self.messages += [msgObj!]
                 self.collectionView.reloadData()
                 scrollToBottom()
                 //跟server說 已讀
                 let sendData = ["msg_type":"priv_msg_been_read",
                                 "msg_id":msg["msg_id"] as! String]
                 var addDic:Dictionary<String,AnyObject> = [:]
-                addDic["missionType"] = "priv_msg_been_read"
-                addDic["data"] = sendData
+                addDic["missionType"] = "priv_msg_been_read" as AnyObject?
+                addDic["data"] = sendData as AnyObject?
                 executeWork(addDic)
             }
         }
@@ -287,18 +287,18 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             let been_read_list = msg["been_read_list"] as! Array<String>
             for datasIndex in 0..<history_msg_names_list.count{
                 var tempDic:Dictionary<String,AnyObject> = [:]
-                tempDic["senderId"] = history_msg_userid_list[datasIndex]
-                tempDic["displayName"] = history_msg_names_list[datasIndex]
-                tempDic["text"] = history_msg_list[datasIndex]
-                tempDic["topicId"] = String(history_msg_id_list[datasIndex])
-                tempDic["topicTempid"] = ""
+                tempDic["senderId"] = history_msg_userid_list[datasIndex] as AnyObject?
+                tempDic["displayName"] = history_msg_names_list[datasIndex] as AnyObject?
+                tempDic["text"] = history_msg_list[datasIndex] as AnyObject?
+                tempDic["topicId"] = String(history_msg_id_list[datasIndex]) as AnyObject?
+                tempDic["topicTempid"] = "" as AnyObject?
                 if been_read_list[datasIndex] == "0" || history_msg_userid_list[datasIndex] != userData.id{
-                    tempDic["isRead"] = false
+                    tempDic["isRead"] = false as AnyObject?
                 }
                 else{
-                    tempDic["isRead"] = true
+                    tempDic["isRead"] = true as AnyObject?
                 }
-                tempMsgList.insert(FriendTableViewMedol().turnToMessage3(tempDic), atIndex: 0)
+                tempMsgList.insert(FriendTableViewMedol().turnToMessage3(tempDic), at: 0)
             }
             let msgCountBefore = messages.count
             self.messages = tempMsgList + self.messages
@@ -313,8 +313,8 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 //self.loadHistorySwitch = true
             }
             else{
-                let lastItemIndex = NSIndexPath(forRow: msgCountAfte - msgCountBefore, inSection: 0)
-                self.collectionView.scrollToItemAtIndexPath(lastItemIndex, atScrollPosition: UICollectionViewScrollPosition.Top, animated: false)
+                let lastItemIndex = IndexPath(row: msgCountAfte - msgCountBefore, section: 0)
+                self.collectionView.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.top, animated: false)
                 
                 if msgCountAfte - msgCountBefore != 0{
                     self.loadHistorySwitch = true
@@ -326,7 +326,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
         else if msgType == "priv_msg_been_read"{
             let msgId = String(msg["msg_id"] as! Int)
-            if let msgIndex = messages.indexOf({ (target) -> Bool in
+            if let msgIndex = messages.index(where: { (target) -> Bool in
                 if target.topicId == msgId{
                     return true
                 }
@@ -360,12 +360,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     
     
-    func updataNowTopicCellList(resultDic:Dictionary<String,AnyObject>){
+    func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
         
         for resultDicData in resultDic{
             let resultDicDataVal = resultDicData.1 as! Dictionary<String,AnyObject>
             let topicId = resultDicDataVal["topic_id"] as! String
-            if let nowTopicCellListIndex = nowTopicCellList.indexOf({ (target) -> Bool in
+            if let nowTopicCellListIndex = nowTopicCellList.index(where: { (target) -> Bool in
                 if target.topicId_title == topicId{
                     return true
                 }
@@ -378,8 +378,8 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         
     }
     func scrollToBottom(){
-        let lastItemIndex = NSIndexPath(forRow: self.messages.count-1, inSection: 0)
-        self.collectionView.scrollToItemAtIndexPath(lastItemIndex, atScrollPosition: UICollectionViewScrollPosition.Bottom, animated: false)
+        let lastItemIndex = IndexPath(row: self.messages.count-1, section: 0)
+        self.collectionView.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: false)
         self.loadHistorySwitch = true
     }
     

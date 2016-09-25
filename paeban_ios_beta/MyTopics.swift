@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class MyTopicStandardType {
+open class MyTopicStandardType {
     // === 公用類型資料變數 ===
     var dataType:String
     var topicId_title:String?

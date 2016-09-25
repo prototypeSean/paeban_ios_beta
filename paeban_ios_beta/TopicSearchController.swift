@@ -6,13 +6,13 @@
 //  Copyright © 2016年 尚義 高. All rights reserved.
 //
 protocol TopicSearchControllerDelegate {
-    func didStartSearching(searchBar: UISearchBar)
+    func didStartSearching(_ searchBar: UISearchBar)
     
-    func didTapOnSearchButton(searchBar: UISearchBar)
+    func didTapOnSearchButton(_ searchBar: UISearchBar)
     
-    func didTapOnCancelButton(searchBar: UISearchBar)
+    func didTapOnCancelButton(_ searchBar: UISearchBar)
     
-    func didChangeSearchText(searchBar: UISearchBar)
+    func didChangeSearchText(_ searchBar: UISearchBar)
 }
 
 import UIKit
@@ -28,7 +28,7 @@ class TopicSearchController: UISearchController, UISearchBarDelegate {
         configureSearchBar(searchBarFrame, font: searchBarFont, textColor: searchBarTextColor, bgColor: searchBarTintColor)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -47,7 +47,7 @@ class TopicSearchController: UISearchController, UISearchBarDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func configureSearchBar(frame: CGRect, font: UIFont, textColor: UIColor, bgColor: UIColor) {
+    func configureSearchBar(_ frame: CGRect, font: UIFont, textColor: UIColor, bgColor: UIColor) {
         customSearchBar = TopicSearchBar(frame: frame, font: font , textColor: textColor)
         customSearchBar.barTintColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
         customSearchBar.tintColor = textColor
@@ -57,21 +57,21 @@ class TopicSearchController: UISearchController, UISearchBarDelegate {
         customSearchBar.delegate = self
     }
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         customDelegate.didStartSearching(searchBar)
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         customSearchBar.resignFirstResponder()
         customDelegate.didTapOnSearchButton(searchBar)
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         customSearchBar.resignFirstResponder()
         customDelegate.didTapOnCancelButton(searchBar)
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         customDelegate.didChangeSearchText(searchBar)
     }
 }

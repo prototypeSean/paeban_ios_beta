@@ -1,41 +1,42 @@
 import UIKit
 
 class RecentTableViewController: UITableViewController, webSocketActiveCenterDelegate{
-    var rTVModel = RecentTableViewModel?()
+    var rTVModel = RecentTableViewModel()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         rTVModel = RecentTableViewModel()
-        rTVModel?.reCheckDataBase()
+        rTVModel.reCheckDataBase()
         wsActive.wasd_ForRecentTableViewController = self
 //        print(nowTopicCellList)
     }
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rTVModel!.lenCount()
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return rTVModel.lenCount()
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
-        let cell = tableView.dequeueReusableCellWithIdentifier("nowTopicListCell", forIndexPath: indexPath) as! RecentTableViewCell
-        let cell2 = rTVModel!.getCell(indexPath.row,cell: cell)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
+        let cell = tableView.dequeueReusableCell(withIdentifier: "nowTopicListCell", for: indexPath) as! RecentTableViewCell
+        let cell2 = rTVModel.getCell((indexPath as NSIndexPath).row,cell: cell)
         
         return cell2
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let index = self.tableView.indexPathForSelectedRow?.row
-        let topicViewCon = segue.destinationViewController as! TopicViewController
-        let getSegueData = rTVModel!.getSegueData(index!)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let index = (self.tableView.indexPathForSelectedRow as NSIndexPath?)?.row
+        let topicViewCon = segue.destination as! TopicViewController
+        let getSegueData = rTVModel.getSegueData(index!)
         topicViewCon.topicId = getSegueData["topicId"] as? String
         topicViewCon.ownerId = getSegueData["ownerId"] as? String
         topicViewCon.ownerImg = getSegueData["ownerImg"] as? UIImage
@@ -44,24 +45,24 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         //topicViewCon.delegate = self
     }
     
-    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if let msg_type:String = msg["msg_type"] as? String{
 
             if msg_type == "topic_msg"{
                 self.tableView.reloadData()
             }
             else if msg_type == "new_member"{
-                if rTVModel!.clientOnline(msg){
+                if rTVModel.clientOnline(msg){
                     self.tableView.reloadData()
                 }
             }
             else if msg_type == "off_line"{
-                if rTVModel!.clientOffline(msg){
+                if rTVModel.clientOffline(msg){
                     self.tableView.reloadData()
                 }
             }
             else if msg_type == "topic_closed"{
-                if rTVModel!.topicClosed(msg){
+                if rTVModel.topicClosed(msg){
                     self.tableView.reloadData()
                 }
             }
@@ -69,8 +70,8 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
                 
                 let data = msg["data"] as! Dictionary<String,AnyObject>
                 for datas in data{
-                    self.rTVModel?.transformStaticType(datas.0, inputData: datas.1 as! Dictionary<String,AnyObject>){
-                        dispatch_async(dispatch_get_main_queue(), {
+                    self.rTVModel.transformStaticType(datas.0, inputData: datas.1 as! Dictionary<String,AnyObject>){
+                        DispatchQueue.main.async(execute: {
                             self.tableView.reloadData()
                         })
                         

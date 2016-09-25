@@ -31,11 +31,11 @@ class HashTagsContorller: UIView {
                     let button = UIButton()
                     button.titleLabel!.font = UIFont(name: "Arial Hebrew", size: 12)
                     
-                    button.setTitle(tagListInContorller![x], forState: UIControlState.Normal)
+                    button.setTitle(tagListInContorller![x], for: UIControlState())
                     
-                    button.backgroundColor = UIColor.orangeColor()
+                    button.backgroundColor = UIColor.orange
                     
-                    button.addTarget(self, action: #selector(HashTagsContorller.ratingButtonTapped(_:)), forControlEvents: .TouchDown)
+                    button.addTarget(self, action: #selector(HashTagsContorller.ratingButtonTapped(_:)), for: .touchDown)
                     
                     // 先用一次魔法 讓按鈕的長寬都長出來
                     button.sizeToFit()
@@ -43,7 +43,7 @@ class HashTagsContorller: UIView {
                     var buttonFrame = CGRect(x: 0, y: -14, width:button.frame.width + 4, height:button.frame.height - 4)
                     
                     // 我也不知道位啥上下顛倒
-                    button.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
+                    button.contentVerticalAlignment = UIControlContentVerticalAlignment.top
                     
                     // 抓取按鈕起始位置 第一個從 0 開始
                     buttonFrame.origin.x = CGFloat(btn_x_start)
@@ -76,7 +76,7 @@ class HashTagsContorller: UIView {
 
     //  還沒作標籤太多太長的應對方式 （最多兩行，超過隱藏）
 
-    func ratingButtonTapped(button: UIButton) {
+    func ratingButtonTapped(_ button: UIButton) {
         
         print("Button pressed 👍")
     }

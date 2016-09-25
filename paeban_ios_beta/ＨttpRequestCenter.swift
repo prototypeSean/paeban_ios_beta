@@ -11,75 +11,75 @@ import UIKit
 
 
 protocol HttpRequestCenterDelegate {
-    func new_topic_did_load(http_obj:HttpRequestCenter)
+    func new_topic_did_load(_ http_obj:HttpRequestCenter)
 }
 
 class HttpRequestCenter{
     var delegate:HttpRequestCenterDelegate?
     var topic_list = [Topic]()
     
-    func getTopic(topicData:[Topic] -> Void){
+    func getTopic(_ topicData:@escaping ([Topic]) -> Void){
         let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=new"
         ajax(url, sendDate: sendData) { (returnData) -> Void in
-            let turnToType = self.topic_type(returnData)
+            let turnToType = self.topic_type(returnData as Dictionary<NSObject, AnyObject>)
             //print("httpCenter_27")
             //print(returnData)
             topicData(turnToType)
         }
     }
     
-    func getOldTopic(topicID:Int,topicData:[Topic]->Void){
+    func getOldTopic(_ topicID:Int,topicData:@escaping ([Topic])->Void){
         let topicIdToString = String(topicID)
         let sendData = "mode=old;min_topic_id=\(topicIdToString)"
         let url = "http://www.paeban.com/topic_update/"
         ajax(url, sendDate: sendData) { (returnData) -> Void in
-            let turnToType = self.topic_type(returnData)
+            let turnToType = self.topic_type(returnData as Dictionary<NSObject, AnyObject>)
             topicData(turnToType)
         }
         
     }
 
-    func topicUserMode(topicId:String,InViewAct: (returnData2:Dictionary<String,AnyObject>)->Void){
+    func topicUserMode(_ topicId:String,InViewAct: @escaping (_ returnData2:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/topic_user_mode/"
         let sendData = "mode=check_user_mode;topic_id=\(topicId)"
         ajax(url, sendDate: sendData) { (returnData) in
-            InViewAct(returnData2: returnData as Dictionary)
+            InViewAct(returnData as Dictionary)
             
         }
     }
     
-    func getTopicContentHistory(topicReceiverId:String,topicId:String,InViewAct: (returnData2:Dictionary<String,AnyObject>)->Void){
+    func getTopicContentHistory(_ topicReceiverId:String,topicId:String,InViewAct: @escaping (_ returnData2:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/topic_user_mode/"
         let sendData = "mode=get_topic_content_history;topic_receiver_id=\(topicReceiverId);topic_id=\(topicId)"
         ajax(url, sendDate: sendData) { (returnData) in
-            InViewAct(returnData2: returnData as Dictionary)
+            InViewAct(returnData as Dictionary)
         }
     }
     
-    func requestMyTopic(InViewAct: (returnData:Dictionary<String,AnyObject>)->Void){
+    func requestMyTopic(_ InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=request_my_topic"
         ajax(url, sendDate: sendData) { (returnDic) in
-            InViewAct(returnData: returnDic)
+            InViewAct(returnDic)
         }
     }
     
-    func get_my_topic_title(InViewAct: (returnData:Dictionary<String,AnyObject>)->Void){
+    func get_my_topic_title(_ InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=get_my_topic_title"
         ajax(url, sendDate: sendData) { (returnDic) in
-            InViewAct(returnData: returnDic)
+            InViewAct(returnDic)
         }
     }
-    func get_my_topic_detail(topicId:String,InViewAct: (returnData:Dictionary<String,AnyObject>)->Void) {
+    func get_my_topic_detail(_ topicId:String,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void) {
         let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=get_my_topic_detail;topic_id=\(topicId)"
         ajax(url, sendDate: sendData) { (returnDic) in
-            InViewAct(returnData: returnDic)
+            InViewAct(returnDic)
         }
     }
-    func request_topic_msg_config(topic_id:String, client_id:String,topic_content_id:String , InViewAct: (returnData:Dictionary<String,AnyObject>)->Void) {
+    func request_topic_msg_config(_ topic_id:String, client_id:String,topic_content_id:String , InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void) {
         //return_dic -- topic_content_id
         //           -- img
         //           -- client_name
@@ -89,43 +89,43 @@ class HttpRequestCenter{
         let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=request_topic_msg_config;topic_id=\(topic_id);client_id=\(client_id);topic_content_id=\(topic_content_id)"
         ajax(url, sendDate: sendData) { (returnDic) in
-            InViewAct(returnData: returnDic)
+            InViewAct(returnDic)
         }
         
     }
     
-    func reconnect_check_my_table_view(send_dic:NSDictionary,InViewAct: (returnData:Dictionary<String,AnyObject>)->Void) {
+    func reconnect_check_my_table_view(_ send_dic:NSDictionary,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void) {
         let url = "http://www.paeban.com/ws_reconnect/"
         let jsonData = json_dumps2(send_dic)
         let sendData = "mode=check_my_table_view;msg=\(jsonData!)"
         ajax(url, sendDate: sendData) { (returnDic) in
-            InViewAct(returnData: returnDic)
+            InViewAct(returnDic)
         }
     }
     
-    func reconnect_update_new_user_data(send_dic:NSDictionary,InViewAct: (returnData:Dictionary<String,AnyObject>)->Void) {
+    func reconnect_update_new_user_data(_ send_dic:NSDictionary,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void) {
         let url = "http://www.paeban.com/ws_reconnect/"
         let jsonData = json_dumps2(send_dic)
         let sendData = "mode=update_new_user_data;msg=\(jsonData!)"
         ajax(url, sendDate: sendData) { (returnDic) in
-            InViewAct(returnData: returnDic)
+            InViewAct(returnDic)
         }
     }
     
-    func getBlurImg(send_dic:Dictionary<String,String>,InViewAct: (returnData:Dictionary<String,AnyObject>)->Void){
+    func getBlurImg(_ send_dic:Dictionary<String,String>,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/request_user_data/"
-        let jsonData = json_dumps2(send_dic)
+        let jsonData = json_dumps2(send_dic as NSDictionary)
         let sendData = "mode=get_blur_image;msg=\(jsonData!)"
         ajax(url, sendDate: sendData) { (returnDic) in
-            InViewAct(returnData: returnDic)
+            InViewAct(returnDic)
         }
         
     }
     // MARK:================私有函數===============
     
     // MARK:轉換為Topic的標準格式
-    func topic_type(ouput_json:Dictionary<NSObject, AnyObject>)->Array<Topic>{
-        let type_key:NSObject = "msg_type"
+    func topic_type(_ ouput_json:Dictionary<NSObject, AnyObject>)->Array<Topic>{
+        let type_key:NSObject = "msg_type" as NSObject
         var topic_list_temp = [Topic]()
         if ouput_json[type_key] as! String == "new_topic"{
             var dataKeyList:[String] = []   //排序topicId清單
@@ -134,11 +134,12 @@ class HttpRequestCenter{
                     dataKeyList.append(data_key as! String)
                 }
             }
-            dataKeyList = dataKeyList.sort(>)
+            dataKeyList = dataKeyList.sorted(by: >)
             //print("------")
             for dataKey in dataKeyList{
                 //--base64--
-                let encodedImageData = ouput_json[dataKey]!["img"] as! String
+                let dataKey_val = ouput_json[dataKey as NSObject]
+                let encodedImageData = dataKey_val!["img"] as! String
                 
                 let decodedimage = base64ToImage(encodedImageData)
                 
@@ -153,25 +154,25 @@ class HttpRequestCenter{
                 var isMe:Bool = false
                 var online:Bool = false
                 
-                if ouput_json[dataKey]!["is_me"] as! Bool == true{
+                if dataKey_val!["is_me"] as! Bool == true{
                     isMe = true
                 }
-                if ouput_json[dataKey]!["online"] as! Bool == true{
+                if dataKey_val!["online"] as! Bool == true{
                     online = true
                 }
                 
                 
                 let topic_temp = Topic(
-                    owner: ouput_json[dataKey]!["topic_publisher"] as! String,
+                    owner: dataKey_val!["topic_publisher"] as! String,
                     photo: finalimg,
-                    title: ouput_json[dataKey]!["title"] as! String,
-                    hashtags: ouput_json[dataKey]!["tag"] as! Array,
+                    title: dataKey_val!["title"] as! String,
+                    hashtags: dataKey_val!["tag"] as! Array,
                     lastline:"最後一句對話" ,
                     topicID: String(dataKey),
-                    sex:ouput_json[dataKey]!["sex"] as! String,
+                    sex:dataKey_val!["sex"] as! String,
                     isMe:isMe,
                     online:online,
-                    ownerName:ouput_json[dataKey]!["name"] as! String
+                    ownerName:dataKey_val!["name"] as! String
                     )!
                 topic_list_temp.append(topic_temp)
             }
@@ -179,27 +180,27 @@ class HttpRequestCenter{
         return topic_list_temp
     }
     
-    private func ajax(url:String,sendDate:String,outPutDic:Dictionary<String,AnyObject> -> Void){
+    fileprivate func ajax(_ url:String,sendDate:String,outPutDic:@escaping (Dictionary<String,AnyObject>) -> Void){
         var ouput:String?
         var ouput_json = [String:AnyObject]()
-        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
-        request.HTTPMethod = "POST"
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "POST"
         let csrf = getCSRFToken(cookie!)
         request.allHTTPHeaderFields = ["Cookie":cookie!]
         request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
-        request.HTTPBody = sendDate.dataUsingEncoding(NSUTF8StringEncoding)
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+        request.httpBody = sendDate.data(using: String.Encoding.utf8)
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             if error != nil{
                 print("連線錯誤")
             }
             else{
-                ouput = NSString(data: data!, encoding: NSUTF8StringEncoding) as? String
-                if let res = response as? NSHTTPURLResponse{
+                ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as? String
+                if let res = response as? HTTPURLResponse{
                     let status = res.statusCode
                     if status != 200{
                         print(response)
-                        print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                        print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
                     }
                 }
                 ouput_json = json_load(ouput!) as! Dictionary
@@ -209,33 +210,34 @@ class HttpRequestCenter{
         })
         
         task.resume()
+        
     }
     
     
     
-    func getHttpImg(url:String,getImg:(img:UIImage)->Void){
+    func getHttpImg(_ url:String,getImg:@escaping (_ img:UIImage)->Void){
         var ouput:UIImage?
-        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
-        request.HTTPMethod = "GET"
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "GET"
         let csrf = getCSRFToken(cookie!)
         request.allHTTPHeaderFields = ["Cookie":cookie!]
         request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+        let session = URLSession.shared
+        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             if error != nil{
                 print("連線錯誤")
             }
             else{
                 ouput = UIImage(data: data!)
-                if let res = response as? NSHTTPURLResponse{
+                if let res = response as? HTTPURLResponse{
                     let status = res.statusCode
                     if status != 200{
                         print(response)
-                        print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                        print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
                     }
                     
                 }
-                getImg(img: ouput!)
+                getImg(ouput!)
             }
         })
         
@@ -244,7 +246,7 @@ class HttpRequestCenter{
     
     
     
-    private func topiceUserMode(){
+    fileprivate func topiceUserMode(){
         
     }
 }

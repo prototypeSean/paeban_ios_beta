@@ -20,7 +20,7 @@ class RecentTableViewModel{
         let sentData:NSDictionary = [
         "msg_type":"recentDataCheck"
         ]
-        socket.writeData(json_dumps(sentData))
+        socket.write(data:json_dumps(sentData))
     }
     
 //    func updataNowTopicCellList(returmDic:NSDictionary){
@@ -29,8 +29,8 @@ class RecentTableViewModel{
 //        }
 //    }
     
-    func transformStaticType(inputKey:String,inputData:Dictionary<String,AnyObject>,reloar:()->Void){
-        if let nowTopicCellListIndex = nowTopicCellList.indexOf({ (target) -> Bool in
+    func transformStaticType(_ inputKey:String,inputData:Dictionary<String,AnyObject>,reloar:@escaping ()->Void){
+        if let nowTopicCellListIndex = nowTopicCellList.index(where: { (target) -> Bool in
             if target.topicId_title == inputKey{
                 return true
             }
@@ -79,8 +79,8 @@ class RecentTableViewModel{
     }
     
     
-    func getCell(index:Int,cell:RecentTableViewCell) -> RecentTableViewCell{
-        func letoutSexLogo(sex:String!) -> UIImage {
+    func getCell(_ index:Int,cell:RecentTableViewCell) -> RecentTableViewCell{
+        func letoutSexLogo(_ sex:String!) -> UIImage {
             var sexImg:UIImage
             switch sex {
             case "男":
@@ -97,21 +97,21 @@ class RecentTableViewModel{
             }
             return sexImg
         }
-        func letoutIsTruePhoto(isTruePhoto:Bool) -> UIImage {
+        func letoutIsTruePhoto(_ isTruePhoto:Bool) -> UIImage {
             var isMeImg:UIImage
             if isTruePhoto{isMeImg = UIImage(named:"True_photo")!}
             else{isMeImg = UIImage(named:"Fake_photo")!}
             return isMeImg
         }
-        func letoutOnlineImg(online:Bool) -> UIImageView{
+        func letoutOnlineImg(_ online:Bool) -> UIImageView{
             let onlineimage = UIImageView()
             
-            onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            onlineimage.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             if online{
                 onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
             }
             else{
-                onlineimage.tintColor = UIColor.grayColor()
+                onlineimage.tintColor = UIColor.gray
             }
             return onlineimage
         }
@@ -139,12 +139,12 @@ class RecentTableViewModel{
         
         cell.lastLine.text = topicWriteToRow.lastLine_detial
         
-        cell.online.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        cell.online.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         if topicWriteToRow.clientOnline_detial!{
             cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
         else{
-            cell.online.tintColor = UIColor.grayColor()
+            cell.online.tintColor = UIColor.gray
         }        
         
         return cell
@@ -154,7 +154,7 @@ class RecentTableViewModel{
         return recentDataBase.count
     }
     
-    func addEffectiveData(inputData:Array<MyTopicStandardType>) -> Array<MyTopicStandardType>{
+    func addEffectiveData(_ inputData:Array<MyTopicStandardType>) -> Array<MyTopicStandardType>{
         var returnList:Array<MyTopicStandardType> = []
         for datas in inputData {
             if datas.lastLine_detial != nil{
@@ -173,14 +173,14 @@ class RecentTableViewModel{
 //        }
 //    }
     
-    private func updataLastList(dataBase:Array<MyTopicStandardType>,newDic:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>?{
+    fileprivate func updataLastList(_ dataBase:Array<MyTopicStandardType>,newDic:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>?{
         var topicWho = newDic["sender"] as! String
         var returnData = dataBase
         if topicWho == userData.id{
             topicWho = newDic["receiver"] as! String
         }
         
-        if let dataIndex = returnData.indexOf({ (target) -> Bool in
+        if let dataIndex = returnData.index(where: { (target) -> Bool in
             
             if target.clientId_detial! == topicWho
                 && target.topicId_title! == newDic["topic_id"] as! String{
@@ -195,10 +195,10 @@ class RecentTableViewModel{
         else{return nil}
     }
     
-    func clientOnline(msg:Dictionary<String,AnyObject>) -> Bool{
+    func clientOnline(_ msg:Dictionary<String,AnyObject>) -> Bool{
         var dataChange = false
         let onLineUser = msg["user_id"] as! String
-        if let _ = recentDataBase.indexOf({ (target) -> Bool in
+        if let _ = recentDataBase.index(where: { (target) -> Bool in
             if target.clientId_detial == onLineUser{
                 return true
             }
@@ -214,10 +214,10 @@ class RecentTableViewModel{
         return dataChange
     }
 
-    func clientOffline(msg:Dictionary<String,AnyObject>) -> Bool{
+    func clientOffline(_ msg:Dictionary<String,AnyObject>) -> Bool{
         let offLineUser = msg["user_id"] as! String
         var dataChange = false
-        if let _ = recentDataBase.indexOf({ (target) -> Bool in
+        if let _ = recentDataBase.index(where: { (target) -> Bool in
             if target.clientId_detial == offLineUser{
                 return true
             }
@@ -233,7 +233,7 @@ class RecentTableViewModel{
         return dataChange
     }
     
-    func topicClosed(msg:Dictionary<String,AnyObject>) -> Bool{
+    func topicClosed(_ msg:Dictionary<String,AnyObject>) -> Bool{
         var dataChanged = false
         if let _ = msg["topic_id"] as? Array<String>{
 //            var removeTopicIndexList:Array<Int> = []
@@ -257,13 +257,13 @@ class RecentTableViewModel{
         return dataChanged
     }
     
-    func getSegueData(indexInt:Int) -> Dictionary<String,AnyObject>{
+    func getSegueData(_ indexInt:Int) -> Dictionary<String,AnyObject>{
         var topicViewCon:Dictionary<String,AnyObject> = [:]
-        topicViewCon["topicId"] = recentDataBase[indexInt].topicId_title
-        topicViewCon["ownerId"] = recentDataBase[indexInt].clientId_detial
+        topicViewCon["topicId"] = recentDataBase[indexInt].topicId_title as AnyObject?
+        topicViewCon["ownerId"] = recentDataBase[indexInt].clientId_detial as AnyObject?
         topicViewCon["ownerImg"] = recentDataBase[indexInt].clientPhoto_detial
-        topicViewCon["topicTitle"] = recentDataBase[indexInt].topicTitle_title
-        topicViewCon["title"] = recentDataBase[indexInt].clientName_detial
+        topicViewCon["topicTitle"] = recentDataBase[indexInt].topicTitle_title as AnyObject?
+        topicViewCon["title"] = recentDataBase[indexInt].clientName_detial as AnyObject?
         return topicViewCon
     }
 }

@@ -40,9 +40,9 @@ class Labels: UIView {
         gender_label.frame = gender_label_frame
     gender_label.contentEdgeInsets = UIEdgeInsetsMake(1.5, 1.5, 1.5, 1.5)
         // 把圖片跟 標籤（其實是按鈕）物件連結起來，因為是按鈕，所以有 .Normal .Disabled等狀態
-        t_ph_label.setImage(truePhoto,forState: .Normal)
-        t_ph_label.setImage(fakePhoto, forState: .Disabled)
-        gender_label.setImage(male,forState: .Normal)
+        t_ph_label.setImage(truePhoto,for: UIControlState())
+        t_ph_label.setImage(fakePhoto, for: .disabled)
+        gender_label.setImage(male,for: UIControlState())
         
         
         // 最後把位置圖片都做好的標籤載入

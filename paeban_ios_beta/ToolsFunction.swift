@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 //MARK: 封裝成json
-func json_dumps(input_data:NSDictionary) ->NSData{
-    var ouput_data:NSData?
+func json_dumps(_ input_data:NSDictionary) ->Data{
+    var ouput_data:Data?
     do {
-        let jsonData = try NSJSONSerialization.dataWithJSONObject(input_data, options: NSJSONWritingOptions.PrettyPrinted)
+        let jsonData = try JSONSerialization.data(withJSONObject: input_data, options: JSONSerialization.WritingOptions.prettyPrinted)
         ouput_data = jsonData
         //here "jsonData" is the dictionary encoded in JSON data
     } catch let error as NSError {
@@ -22,10 +22,10 @@ func json_dumps(input_data:NSDictionary) ->NSData{
     return ouput_data!
 }
 
-func json_dumps2(input_data:NSDictionary) -> String?{
+func json_dumps2(_ input_data:NSDictionary) -> String?{
     do {
-        let jsonData = try NSJSONSerialization.dataWithJSONObject(input_data, options: NSJSONWritingOptions.PrettyPrinted)
-        let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding)! as String
+        let jsonData = try JSONSerialization.data(withJSONObject: input_data, options: JSONSerialization.WritingOptions.prettyPrinted)
+        let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
         return jsonString
         
         //here "jsonData" is the dictionary encoded in JSON data
@@ -37,13 +37,13 @@ func json_dumps2(input_data:NSDictionary) -> String?{
 }
 
 //MARK: 解封json
-func json_load(input_data:String) ->NSDictionary{
+func json_load(_ input_data:String) ->NSDictionary{
     var ouput : NSDictionary?
     
-    let input_data_2 = input_data.dataUsingEncoding(NSUTF8StringEncoding)
+    let input_data_2 = input_data.data(using: String.Encoding.utf8)
     
     do {
-        let decoded = try NSJSONSerialization.JSONObjectWithData(input_data_2!, options: []) as? NSDictionary
+        let decoded = try JSONSerialization.jsonObject(with: input_data_2!, options: []) as? NSDictionary
         // here "decoded" is the dictionary decoded from JSON data
         ouput = decoded
     } catch let error as NSError {
@@ -55,11 +55,11 @@ func json_load(input_data:String) ->NSDictionary{
 
 
 //MARK: 擷取cookie裡的csrftoken值
-func getCSRFToken(cookie:String) -> String? {
+func getCSRFToken(_ cookie:String) -> String? {
     let keyWord = "csrftoken="
     
-    func getWord(str:String, index:Int) -> String {
-        return String(str[str.characters.startIndex.advancedBy(index)])
+    func getWord(_ str:String, index:Int) -> String {
+        return String(str[str.characters.index(str.characters.startIndex, offsetBy: index)])
     }
     
     var stopSwitch = false
@@ -102,10 +102,10 @@ func getCSRFToken(cookie:String) -> String? {
 
 
 //MARK: base64轉換成UIImage
-func base64ToImage(encodedImageData:String) -> UIImage?{
-    let index = encodedImageData.characters.startIndex.advancedBy(23)
-    let out = encodedImageData.substringFromIndex(index)
-    let dataDecoded:NSData? = NSData(base64EncodedString: out, options: NSDataBase64DecodingOptions())
+func base64ToImage(_ encodedImageData:String) -> UIImage?{
+    let index = encodedImageData.characters.index(encodedImageData.characters.startIndex, offsetBy: 23)
+    let out = encodedImageData.substring(from: index)
+    let dataDecoded:Data? = Data(base64Encoded: out, options: NSData.Base64DecodingOptions())
     var  decodedimage:UIImage?
     if dataDecoded != nil{
         decodedimage = UIImage(data: dataDecoded!)

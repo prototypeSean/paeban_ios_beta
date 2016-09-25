@@ -20,8 +20,8 @@ class FriendTableViewMedol{
         return friendsList.count
     }
     
-    func getCell(index:Int,cell:FriendTableViewCell) -> FriendTableViewCell {
-        func letoutSexLogo(sex:String) -> UIImage {
+    func getCell(_ index:Int,cell:FriendTableViewCell) -> FriendTableViewCell {
+        func letoutSexLogo(_ sex:String) -> UIImage {
             var sexImg:UIImage
             switch sex {
             case "男":
@@ -38,21 +38,21 @@ class FriendTableViewMedol{
             }
             return sexImg
         }
-        func letoutIsTruePhoto(isTruePhoto:Bool) -> UIImage {
+        func letoutIsTruePhoto(_ isTruePhoto:Bool) -> UIImage {
             var isMeImg:UIImage
             if isTruePhoto{isMeImg = UIImage(named:"True_photo")!}
             else{isMeImg = UIImage(named:"Fake_photo")!}
             return isMeImg
         }
-        func letoutOnlineImg(online:Bool) -> UIImageView{
+        func letoutOnlineImg(_ online:Bool) -> UIImageView{
             let onlineimage = UIImageView()
             
-            onlineimage.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            onlineimage.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             if online{
                 onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
             }
             else{
-                onlineimage.tintColor = UIColor.grayColor()
+                onlineimage.tintColor = UIColor.gray
             }
             return onlineimage
         }
@@ -63,35 +63,35 @@ class FriendTableViewMedol{
         cell.truePhoto.image = letoutIsTruePhoto(data.isRealPhoto!)
         cell.sexImg.image = letoutSexLogo(data.sex!)
         cell.name.text = data.name
-        cell.onlineImg.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        cell.onlineImg.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         if data.online!{
             cell.onlineImg.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
         else{
-            cell.onlineImg.tintColor = UIColor.grayColor()
+            cell.onlineImg.tintColor = UIColor.gray
         }
         
         
         return cell
     }
     
-    func getSegueData(index:Int) -> Dictionary<String,AnyObject>{
+    func getSegueData(_ index:Int) -> Dictionary<String,AnyObject>{
         var returnDic:Dictionary<String,AnyObject> = [:]
         let dataSouse = friendsList[index]
-        returnDic["clientId"] = dataSouse.id
-        returnDic["clientName"] = dataSouse.name
+        returnDic["clientId"] = dataSouse.id as AnyObject?
+        returnDic["clientName"] = dataSouse.name as AnyObject?
         returnDic["clientImg"] = dataSouse.photo
         return returnDic
     }
     
-    func turnToMessage3(inputDic:Dictionary<String,AnyObject>) -> JSQMessage3{
+    func turnToMessage3(_ inputDic:Dictionary<String,AnyObject>) -> JSQMessage3{
         let returnObj = JSQMessage3(senderId: inputDic["senderId"] as! String,
                                     displayName: inputDic["displayName"] as! String,
                                     text: inputDic["text"] as! String)
-        returnObj.topicId = inputDic["topicId"] as? String
-        returnObj.topicTempid = inputDic["topicTempid"] as? String
-        returnObj.isRead = inputDic["isRead"] as? Bool
-        return returnObj
+        returnObj?.topicId = inputDic["topicId"] as? String
+        returnObj?.topicTempid = inputDic["topicTempid"] as? String
+        returnObj?.isRead = inputDic["isRead"] as? Bool
+        return returnObj!
     }
     
 }

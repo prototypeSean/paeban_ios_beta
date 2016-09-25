@@ -41,7 +41,7 @@ class TopicCellTableViewCell: UITableViewCell {
     
     
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
@@ -51,7 +51,7 @@ class TopicCellTableViewCell: UITableViewCell {
 
 class UILabelPadding : UILabel {
     
-    private var padding = UIEdgeInsetsZero
+    fileprivate var padding = UIEdgeInsets.zero
     
     @IBInspectable
     var paddingLeft: CGFloat {
@@ -77,13 +77,13 @@ class UILabelPadding : UILabel {
         set { padding.bottom = newValue }
     }
     
-    override func drawTextInRect(rect: CGRect) {
-        super.drawTextInRect(UIEdgeInsetsInsetRect(rect, padding))
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: UIEdgeInsetsInsetRect(rect, padding))
     }
     
-    override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+    override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
         let insets = self.padding
-        var rect = super.textRectForBounds(UIEdgeInsetsInsetRect(bounds, insets), limitedToNumberOfLines: numberOfLines)
+        var rect = super.textRect(forBounds: UIEdgeInsetsInsetRect(bounds, insets), limitedToNumberOfLines: numberOfLines)
         rect.origin.x    -= insets.left
         rect.origin.y    -= insets.top
         rect.size.width  += (insets.left + insets.right)

@@ -21,21 +21,21 @@ class LaunchScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        performSelector(#selector(LaunchScreenViewController.showLoginView), withObject: nil, afterDelay: 0)
+        perform(#selector(LaunchScreenViewController.showLoginView), with: nil, afterDelay: 0)
     }
     
     func showLoginView() {
-        performSegueWithIdentifier("showLogin", sender: self)
+        performSegue(withIdentifier: "showLogin", sender: self)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         // 原本的手動漸層改為圖片
         let launchTextBGLayer = CAGradientLayer()
         launchTextBGLayer.frame = launchTextBG.bounds
-        let color1 = UIColor(red:0.5, green:0.5, blue:0.5, alpha:1).CGColor as CGColorRef
-        let color2 = UIColor(red:0.99, green:0.50, blue:0.14, alpha:1.0).CGColor as CGColorRef
+        let color1 = UIColor(red:0.5, green:0.5, blue:0.5, alpha:1).cgColor as CGColor
+        let color2 = UIColor(red:0.99, green:0.50, blue:0.14, alpha:1.0).cgColor as CGColor
         launchTextBGLayer.colors = [color1, color2]
         launchTextBG.layer.addSublayer(launchTextBGLayer)
         

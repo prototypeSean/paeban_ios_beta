@@ -18,23 +18,23 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return model!.getDataCount()
     }
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("FriendTableViewCell", forIndexPath: indexPath) as! FriendTableViewCell
-        let cell2 = model!.getCell(indexPath.row, cell: cell)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FriendTableViewCell", for: indexPath) as! FriendTableViewCell
+        let cell2 = model!.getCell((indexPath as NSIndexPath).row, cell: cell)
         return cell2
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let index = self.tableView.indexPathForSelectedRow?.row
-        let topicViewCon = segue.destinationViewController as! FriendChatUpViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let index = (self.tableView.indexPathForSelectedRow as NSIndexPath?)?.row
+        let topicViewCon = segue.destination as! FriendChatUpViewController
         let getSegueData = model!.getSegueData(index!)
         topicViewCon.setID = userData.id
         topicViewCon.setName = userData.name
@@ -48,7 +48,7 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
         
     }
     
-    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgtype = msg["msg_type"] as! String
         if msgtype == "online"{
             self.tableView.reloadData()

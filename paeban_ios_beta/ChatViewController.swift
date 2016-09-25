@@ -8,6 +8,17 @@
 
 import UIKit
 import JSQMessagesViewController
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegate {
     @IBOutlet weak var topicTitle: UILabelPadding!
@@ -35,13 +46,13 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 let sender = msg_s.1["sender"] as! String
                 let text = msg_s.1["text"] as! String
                 let tempMsg_s = JSQMessage2(senderId: sender, displayName: "anonymous", text: text)
-                tempMsg_s.topicContentId = msg_s.0
+                tempMsg_s?.topicContentId = msg_s.0
                 if sender == setID && msg_s.1["read"] as! Bool == true{
-                    tempMsg_s.isRead = true
+                    tempMsg_s?.isRead = true
                 }
-                tempMsgList += [tempMsg_s]
+                tempMsgList += [tempMsg_s!]
             }
-            let retureList = tempMsgList.sort { (msg0, msg1) -> Bool in
+            let retureList = tempMsgList.sorted { (msg0, msg1) -> Bool in
                 let msg0Int = Int(msg0.topicContentId!)
                 let msg1Int = Int(msg1.topicContentId!)
                 return msg0Int < msg1Int
@@ -52,23 +63,23 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             else{
                 self.messages = retureList + self.messages
             }
-            self.finishSendingMessageAnimated(true)
+            self.finishSendingMessage(animated: true)
             self.collectionView?.reloadData()
         }
     }
     var topicNotExist:String?{
         get{return ""}
         set{
-            navigationController?.popViewControllerAnimated(true)
+            navigationController?.popViewController(animated: true)
         }
     }
     
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAt indexPath: IndexPath!) -> CGFloat {
         return CGFloat(20)
     }
     //MARK:顯示"已讀"
-    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         if messages[indexPath.item].isRead == true{
             return NSAttributedString(string:"已讀")
         }
@@ -79,12 +90,12 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
 
     
     // 設定訊息顏色，用JSQ的套件
-    private func setupBubbles() {
+    fileprivate func setupBubbles() {
         let factory = JSQMessagesBubbleImageFactory()
-        outgoingBubbleImageView = factory.outgoingMessagesBubbleImageWithColor(
-            UIColor.init(red:0.98, green:0.49, blue:0.29, alpha:1.0))
-        incomingBubbleImageView = factory.incomingMessagesBubbleImageWithColor(
-            UIColor.jsq_messageBubbleLightGrayColor())
+        outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(
+            with: UIColor.init(red:0.98, green:0.49, blue:0.29, alpha:1.0))
+        incomingBubbleImageView = factory?.incomingMessagesBubbleImage(
+            with: UIColor.jsq_messageBubbleLightGray())
     }
     
     override func viewDidLoad() {
@@ -98,8 +109,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         senderDisplayName = setName
         
         // No avatars
-        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
-        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
+        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
+        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
 //      上面要留白多高
 //      self.topContentAdditionalInset = 90
         wsActive.wasd_ForChatViewController = self
@@ -107,20 +118,20 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     
     // 下面兩個負責讀取訊息
     // JSQ的列表顯示view, 在物件索引位至的訊息
-    override func collectionView(collectionView: JSQMessagesCollectionView!,
-                                 messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
+                                 messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
         return messages[indexPath.item]
     }
     // 此部份顯示物件的數量
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
     
     
     // asks the data source for the message bubble image data that corresponds to the message data item at indexPath in the collectionView. This is exactly where you set the bubble’s image.
     // 藉由 indexPath 來判定要畫成收到還是送出的信息
-    override func collectionView(collectionView: JSQMessagesCollectionView!,
-                                 messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
+                                 messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
      
         if message.senderId == senderId { // 2
@@ -131,23 +142,23 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     
     // 原本套件在每個信息前面有照片，這邊把他取消
-    override func collectionView(collectionView: JSQMessagesCollectionView!,
-                                 avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
+                                 avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
         return nil
     }
     
     
-    override func collectionView(collectionView: UICollectionView,
-                                 cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath)
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
             as! JSQMessagesCollectionViewCell
         
-        let message = messages[indexPath.item]
+        let message = messages[(indexPath as NSIndexPath).item]
         
         if message.senderId == senderId {
-            cell.textView!.textColor = UIColor.whiteColor()
+            cell.textView!.textColor = UIColor.white
         } else {
-            cell.textView!.textColor = UIColor.blackColor()
+            cell.textView!.textColor = UIColor.black
         }
         
         return cell
@@ -155,16 +166,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     
     
     
-    func addMessage(id: String, text: String) {
+    func addMessage(_ id: String, text: String) {
         let message = JSQMessage2(senderId: id, displayName: "", text: text)
-        messages.append(message)
+        messages.append(message!)
     }
     
     
     //MARK:送出按鈕按下後
-    override func didPressSendButton(button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: NSDate?) {
+    override func didPressSend(_ button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: Date?) {
         //送出WS訊息
-        let timeNow = Int(NSDate().timeIntervalSince1970)
+        let timeNow = Int(Date().timeIntervalSince1970)
         let tempTopicMsgId = String(timeNow)
         let dataDic:NSDictionary = [
             "msg_type":"topic_msg",
@@ -174,16 +185,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             "topic_id":topicId!
         ]
         let appendMsg = JSQMessage2(senderId: senderId, displayName: senderDisplayName, text: text)
-        appendMsg.topicTempid = tempTopicMsgId
-        self.messages.append(appendMsg)
+        appendMsg?.topicTempid = tempTopicMsgId
+        self.messages.append(appendMsg!)
         
-        self.finishSendingMessageAnimated(true)
+        self.finishSendingMessage(animated: true)
         self.collectionView?.reloadData()
         let sendData = json_dumps(dataDic)
-        socket.writeData(sendData)
+        socket.write(data:sendData)
     }
     //MARK:ws回傳信號
-    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
         if msgType == "topic_msg"{
             let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
@@ -196,7 +207,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                     //print(msg)
                     
                     let temp_topic_msg_id = msgData["temp_topic_msg_id"] as! String
-                    let findElement = messages.indexOf({ (target) -> Bool in
+                    let findElement = messages.index(where: { (target) -> Bool in
                         if target.topicTempid == temp_topic_msg_id{
                             return true
                         }
@@ -213,15 +224,15 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                     //topic_content_id
                     
                     let msgToJSQ = JSQMessage2(senderId: msgData["sender"] as? String, displayName: "non", text: msgData["topic_content"] as? String)
-                    msgToJSQ.topicContentId = dicKey.0
-                    messages += [msgToJSQ]
+                    msgToJSQ?.topicContentId = dicKey.0
+                    messages += [msgToJSQ!]
                     
                     let sendData = [
                         "msg_type":"topic_content_read",
                         "topic_content_id":dicKey.0
                     ]
-                    socket.writeData(json_dumps(sendData))
-                    self.finishSendingMessageAnimated(true)
+                    socket.write(data:json_dumps(sendData as NSDictionary))
+                    self.finishSendingMessage(animated: true)
                     self.collectionView?.reloadData()
                 }
             }
@@ -230,7 +241,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         else if msgType == "topic_content_been_read"{
             let topicContentId = msg["topic_content_id"] as! String
             //print(msg)
-            let topicContentPosition = messages.indexOf({ (target) -> Bool in
+            let topicContentPosition = messages.index(where: { (target) -> Bool in
                 let targetId = target.topicContentId
                 if targetId == topicContentId{
                     return true
@@ -249,12 +260,12 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     
     }
     
-    func updataNowTopicCellList(resultDic:Dictionary<String,AnyObject>){
+    func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
         
         for resultDicData in resultDic{
             let resultDicDataVal = resultDicData.1 as! Dictionary<String,AnyObject>
             let topicId = resultDicDataVal["topic_id"] as! String
-            if let nowTopicCellListIndex = nowTopicCellList.indexOf({ (target) -> Bool in
+            if let nowTopicCellListIndex = nowTopicCellList.index(where: { (target) -> Bool in
                 if target.topicId_title == topicId{
                     return true
                 }

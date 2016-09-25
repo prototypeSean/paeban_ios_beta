@@ -7,23 +7,23 @@
 //
 
 import Foundation
-import Starscream
+import  Starscream
 
 
-func ws_connected(ws:WebSocket){
+func ws_connected(_ ws:WebSocket){
     let online_msg = json_dumps(["msg_type":"online"])
-    ws.writeData(online_msg)
+    ws.write(data: online_msg)
 }
 
 
 
-func ws_stay_connect(ws:WebSocket) {
+func ws_stay_connect(_ ws:WebSocket) {
     let online_msg = json_dumps(["msg_type":"test"])
-    ws.writeData(online_msg)
+    ws.write(data: online_msg)
 }
 
 
-func wsMsgTextToDic(text:String)-> Dictionary<String,AnyObject>{
+func wsMsgTextToDic(_ text:String)-> Dictionary<String,AnyObject>{
     //print(text)
     let unzip_data :NSDictionary = json_load(text)
     //print(unzip_data)
@@ -33,13 +33,13 @@ func wsMsgTextToDic(text:String)-> Dictionary<String,AnyObject>{
 }
 
 
-func ws_connect_fun(ws:WebSocket){
+func ws_connect_fun(_ ws:WebSocket){
     ws.connect()
 }
 
 
 public protocol webSocketActiveCenterDelegate{
-    func wsOnMsg(msg:Dictionary<String,AnyObject>)
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>)
 }
 
 public protocol webSocketActiveCenterDelegate_re{
@@ -47,7 +47,7 @@ public protocol webSocketActiveCenterDelegate_re{
 }
 
 //MARK:webSocket 資料接收中心
-public class webSocketActiveCenter{
+open class webSocketActiveCenter{
     
     let mainWorkList = ["online","off_line","new_member"]
 
@@ -68,7 +68,7 @@ public class webSocketActiveCenter{
     let wasd_ForFriendChatViewControllerList = ["history_priv_msg","priv_msg_been_read","priv_msg","has_been_read_many","online"]
     
     
-    func wsOnMsg(msg:Dictionary<String,AnyObject>){
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
             let msgtypeString = msgtype as! String
             print("======\(msgtypeString)=========")
@@ -76,7 +76,7 @@ public class webSocketActiveCenter{
 //                print(msg)
 //            }
             
-            if mainWorkList.indexOf(msgtypeString) != nil {
+            if mainWorkList.index(of: msgtypeString) != nil {
                 if msgtypeString == "online"{
                     //建立個人資料
                     userData.id = msg["user_id"] as? String
@@ -107,7 +107,7 @@ public class webSocketActiveCenter{
                     
                 }
                 else if msgtypeString == "off_line"{
-                    if let friendIndex = myFriendsList.indexOf({ (friend) -> Bool in
+                    if let friendIndex = myFriendsList.index(where: { (friend) -> Bool in
                         if friend.id! == msg["user_id"] as! String{
                             return true
                         }
@@ -117,7 +117,7 @@ public class webSocketActiveCenter{
                     }
                 }
                 else if msgtypeString == "new_member"{
-                    if let friendIndex = myFriendsList.indexOf({ (friend) -> Bool in
+                    if let friendIndex = myFriendsList.index(where: { (friend) -> Bool in
                         if friend.id! == msg["user_id"] as! String{
                             return true
                         }
@@ -129,31 +129,31 @@ public class webSocketActiveCenter{
                 
             }
             
-            if wsad_ForTopicTableViewControllerList.indexOf(msgtypeString) != nil {
+            if wsad_ForTopicTableViewControllerList.index(of: msgtypeString) != nil {
                 wsad_ForTopicTableViewController?.wsOnMsg(msg)
             }
-            if wasd_ForChatViewControllerList.indexOf(msgtypeString) != nil {
+            if wasd_ForChatViewControllerList.index(of: msgtypeString) != nil {
                 wasd_ForChatViewController?.wsOnMsg(msg)
             }
-            if wasd_ForTopicViewControllerList.indexOf(msgtypeString) != nil {
+            if wasd_ForTopicViewControllerList.index(of: msgtypeString) != nil {
                 wasd_ForTopicViewController?.wsOnMsg(msg)
             }
-            if wasd_ForMyTopicTableViewControllerList.indexOf(msgtypeString) != nil {
+            if wasd_ForMyTopicTableViewControllerList.index(of: msgtypeString) != nil {
                 wasd_ForMyTopicTableViewController?.wsOnMsg(msg)
             }
             
-            if wasd_ForRecentTableViewControllerList.indexOf(msgtypeString) != nil {
+            if wasd_ForRecentTableViewControllerList.index(of: msgtypeString) != nil {
                 wasd_ForRecentTableViewController?.wsOnMsg(msg)
             }
             
-            if wasd_ForFriendTableViewControllerList.indexOf(msgtypeString) != nil {
+            if wasd_ForFriendTableViewControllerList.index(of: msgtypeString) != nil {
                 wasd_ForFriendTableViewController?.wsOnMsg(msg)
             }
-            if wasd_ForFriendChatViewControllerList.indexOf(msgtypeString) != nil{
+            if wasd_ForFriendChatViewControllerList.index(of: msgtypeString) != nil{
                 wasd_ForFriendChatViewController?.wsOnMsg(msg)
             }
             
-            if test_List.indexOf(msgtypeString) != nil {
+            if test_List.index(of: msgtypeString) != nil {
                 print("======\(msgtypeString)=========")
                 print(msg)
             }

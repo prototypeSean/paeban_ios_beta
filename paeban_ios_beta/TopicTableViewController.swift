@@ -53,7 +53,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
         
         let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), for: UIControlEvents.valueChanged)
         topicList.addSubview(refreshControl)
         configureTopicSearchController()
         
@@ -63,15 +63,15 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     
     // MARk:更新程式
-    private func gettopic(){
-        let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
-        dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+    fileprivate func gettopic(){
+        //let qos = Int(DispatchQoS.QoSClass.userInitiated.rawValue)
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async{ () -> Void in
             var temp_topic:Array<Topic>{
                 get{
                     return []
                 }
                 set{
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         for newValue_s in newValue{
                             if newValue_s.owner != userData.id{
                                 self.topics += [newValue_s]
@@ -88,18 +88,17 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
     }
     
-    func update(refreshControl:UIRefreshControl?){
+    func update(_ refreshControl:UIRefreshControl?){
         if requestUpDataSwitch == true{
             print("updataing")
             self.requestUpDataSwitch = false
-            let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
-            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async{ () -> Void in
                 var temp_topic:Array<Topic>{
                     get{
                         return []
                     }
                     set{
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             self.topics = []
                             for newValue_s in newValue{
                                 if newValue_s.owner != userData.id{
@@ -124,45 +123,45 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
     }
     
-    func new_topic_did_load(http_obj:HttpRequestCenter){
+    func new_topic_did_load(_ http_obj:HttpRequestCenter){
         //print("websocket data did load")
     }
     
     // MARK: TableView 的內建功能
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPath = topicList.indexPathForSelectedRow!
-        let dataposition:Int = indexPath.row
+        let dataposition:Int = (indexPath as NSIndexPath).row
         let ownerID = topics[dataposition].owner
         let turnedTopicData = turnTopicDataType(topics[dataposition])
         addTopicCellToPublicList(turnedTopicData)
         if userData.id == ownerID{
-            performSegueWithIdentifier("masterModeSegue", sender: self)
+            performSegue(withIdentifier: "masterModeSegue", sender: self)
         }
         else{
-            performSegueWithIdentifier("clientModeSegue", sender: self)
+            performSegue(withIdentifier: "clientModeSegue", sender: self)
         }
         
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return topics.count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Table view cells are reused and should be dequeued using a cell identifier.
-        let topic = topics[indexPath.row]
+        let topic = topics[(indexPath as NSIndexPath).row]
 //        tagList = topic.hashtags!
 //        print(tagList)
         let cellIdentifier = "TopicCellTableViewCell"
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! TopicCellTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! TopicCellTableViewCell
         cell.hashtags.tagListInContorller = topic.hashtags
         cell.hashtags.drawButton()
         cell.topicTitle.text = topic.title
@@ -191,14 +190,14 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
         cell.sex.image = sexImg
         
-        cell.online.image = UIImage(named:"texting")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        cell.online.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
 
         if topic.online{
             cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
         //MARK:下面那張圖請改 “不在線上的人圖示”
         else{
-            cell.online.tintColor = UIColor.grayColor()
+            cell.online.tintColor = UIColor.gray
         }
 //        cell.online.image = onlineimage.image
         // Configure the cell...
@@ -209,7 +208,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     
     // MARK: 向下滾動更新
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let scroolHeight = self.topicList.contentOffset.y + self.topicList.frame.height
         let contentHeight = self.topicList.contentSize.height
         if scroolHeight >= contentHeight && contentHeight > 0
@@ -217,8 +216,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             requestUpDataSwitch = false
             //print("撞...撞到最底了 >///<")
             
-            let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
-            dispatch_async(dispatch_get_global_queue(qos,0)){ () -> Void in
+            
+            DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
                 if !self.topics.isEmpty{
                     
                     var minTopicId:Int = Int(self.topics[0].topicID)!
@@ -230,7 +229,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                     var temp_topic:[Topic]{
                         get{return []}
                         set{
-                            dispatch_async(dispatch_get_main_queue(), {
+                            DispatchQueue.main.async(execute: {
                                 self.topics += newValue
                                 self.topicList.reloadData()
                                 self.requestUpDataSwitch = true
@@ -252,17 +251,17 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
 
     // MARK: websocketDelegate
-    func wsOnMsg(msg:Dictionary<String,AnyObject>) {
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>) {
         if let msg_type:String =  msg["msg_type"] as? String{
             //有人離線
             if msg_type == "off_line"{
                 let offLineUser = msg["user_id"] as! String
                 
                 // 更新本頁資料
-                if let topic_sIndex = topics.indexOf({$0.owner==offLineUser}){
+                if let topic_sIndex = topics.index(where: {$0.owner==offLineUser}){
                     topics[topic_sIndex].online = false
-                    let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
-                    self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
+                    let topicNsIndex = IndexPath(row: topic_sIndex, section:0)
+                    self.topicList.reloadRows(at: [topicNsIndex], with: UITableViewRowAnimation.fade)
                 }
                 
                 //更新recenttopic資料
@@ -277,14 +276,14 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             else if msg_type == "new_member"{
                 let onLineUser = msg["user_id"] as! String
                 // 更新本頁資料
-                if let topic_sIndex = topics.indexOf({$0.owner==onLineUser}){
+                if let topic_sIndex = topics.index(where: {$0.owner==onLineUser}){
                     topics[topic_sIndex].online = true
-                    let topicNsIndex = NSIndexPath(forRow: topic_sIndex, inSection:0)
-                    self.topicList.reloadRowsAtIndexPaths([topicNsIndex], withRowAnimation: UITableViewRowAnimation.Fade)
+                    let topicNsIndex = IndexPath(row: topic_sIndex, section:0)
+                    self.topicList.reloadRows(at: [topicNsIndex], with: UITableViewRowAnimation.fade)
                 }
                 
                 //更新recenttopic資料
-                if let _ = nowTopicCellList.indexOf({ (target) -> Bool in
+                if let _ = nowTopicCellList.index(where: { (target) -> Bool in
                     if target.clientId_detial == onLineUser{
                         return true
                     }
@@ -306,7 +305,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                     // 更新本頁資料
                     var removeTopicIndexList:Array<Int> = []
                     for closeTopicId in closeTopicIdList!{
-                        let closeTopicIndex = topics.indexOf({ (Topic) -> Bool in
+                        let closeTopicIndex = topics.index(where: { (Topic) -> Bool in
                             if Topic.topicID == closeTopicId{
                                 return true
                             }
@@ -316,16 +315,16 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                             removeTopicIndexList.append(closeTopicIndex! as Int)
                         }
                     }
-                    removeTopicIndexList = removeTopicIndexList.sort(>)
+                    removeTopicIndexList = removeTopicIndexList.sorted(by: >)
                     for removeTopicIndex in removeTopicIndexList{
-                        topics.removeAtIndex(removeTopicIndex)
+                        topics.remove(at: removeTopicIndex)
                     }
                     topicList.reloadData()
                     
                     //更新recenttopic資料
                     var removeTopicIndexList2:Array<Int> = []
                     for closeTopicId in closeTopicIdList!{
-                        let closeTopicIndex = nowTopicCellList.indexOf({ (target) -> Bool in
+                        let closeTopicIndex = nowTopicCellList.index(where: { (target) -> Bool in
                             if target.topicId_title == closeTopicId{
                                 return true
                             }
@@ -335,9 +334,9 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                             removeTopicIndexList2.append(closeTopicIndex! as Int)
                         }
                     }
-                    removeTopicIndexList2 = removeTopicIndexList2.sort(>)
+                    removeTopicIndexList2 = removeTopicIndexList2.sorted(by: >)
                     for removeTopicIndex in removeTopicIndexList2{
-                        nowTopicCellList.removeAtIndex(removeTopicIndex)
+                        nowTopicCellList.remove(at: removeTopicIndex)
                     }
                 }
                 
@@ -360,14 +359,14 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                 
                 //更新最後說話
                 
-                func updataLastList(dataBase:Array<MyTopicStandardType>,newDic:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>?{
+                func updataLastList(_ dataBase:Array<MyTopicStandardType>,newDic:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>?{
                     var topicWho = newDic["sender"] as! String
                     var returnData = dataBase
                     if topicWho == userData.id{
                         topicWho = newDic["receiver"] as! String
                     }
                     
-                    if let dataIndex = returnData.indexOf({ (target) -> Bool in
+                    if let dataIndex = returnData.index(where: { (target) -> Bool in
                         
                         if target.clientId_detial! == topicWho
                             && target.topicId_title! == newDic["topic_id"] as! String{
@@ -378,8 +377,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                         returnData[dataIndex].lastLine_detial = newDic["topic_content"] as? String
                         returnData[dataIndex].lastSpeaker_detial = newDic["sender"] as? String
                         let tempData = returnData[dataIndex]
-                        returnData.removeAtIndex(dataIndex)
-                        returnData.insert(tempData, atIndex: 0)
+                        returnData.remove(at: dataIndex)
+                        returnData.insert(tempData, at: 0)
                         
                         return returnData
                     }
@@ -397,14 +396,14 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             //接收新搜尋
             else if msg_type == "search_topic"{
                 
-                func transformToTopicType(inputDic:Dictionary<String,AnyObject>) -> Array<Topic>{
+                func transformToTopicType(_ inputDic:Dictionary<String,AnyObject>) -> Array<Topic>{
                     var tempTopicIdList:Array<Int> = []
                     for returnDic_s in inputDic{
                         if let tempTopicId = Int(returnDic_s.0){
                             tempTopicIdList.append(tempTopicId)
                         }
                     }
-                    tempTopicIdList.sortInPlace(>)
+                    tempTopicIdList.sort(by: >)
                     var topic_list_temp:Array<Topic> = []
                     for tempTopicId in tempTopicIdList{
                         let encodedImageData = inputDic[String(tempTopicId)]!["img"] as! String
@@ -447,14 +446,14 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                     return topic_list_temp
                     
                 }
-                func getSmallestId(inputDic:Dictionary<String,AnyObject>) -> Int?{
+                func getSmallestId(_ inputDic:Dictionary<String,AnyObject>) -> Int?{
                     var tempTopicIdList:Array<Int> = []
                     for returnDic_s in inputDic{
                         if let tempTopicId = Int(returnDic_s.0){
                             tempTopicIdList.append(tempTopicId)
                         }
                     }
-                    tempTopicIdList.sortInPlace(>)
+                    tempTopicIdList.sort(by: >)
                     if tempTopicIdList.count > 0{
                         return tempTopicIdList[tempTopicIdList.count-1]
                     }
@@ -483,17 +482,17 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     
     // MARK: 準備跳頁
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //print(segue.identifier)
         let indexPath = topicList.indexPathForSelectedRow!
         //print(indexPath.row)
-        let dataposition:Int = indexPath.row
+        let dataposition:Int = (indexPath as NSIndexPath).row
         
         if segue.identifier == "masterModeSegue"{
             // MARK: master模式看要做啥
         }
         else{
-            let topicViewCon = segue.destinationViewController as! TopicViewController
+            let topicViewCon = segue.destination as! TopicViewController
             let selectTopicData = topics[dataposition]
             topicViewCon.topicId = selectTopicData.topicID
             topicViewCon.ownerId = selectTopicData.owner
@@ -514,10 +513,10 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func configureTopicSearchController() {
         topicSearchController = TopicSearchController(
             searchResultsController: self,
-            searchBarFrame: CGRectMake(0.0, 0.0, topicList.frame.size.width, 40.0),
+            searchBarFrame: CGRect(x: 0.0, y: 0.0, width: topicList.frame.size.width, height: 40.0),
             searchBarFont: UIFont(name: "Futura", size: 14.0)!,
-            searchBarTextColor: UIColor.orangeColor(),
-            searchBarTintColor: UIColor.blackColor())
+            searchBarTextColor: UIColor.orange,
+            searchBarTintColor: UIColor.black)
         
         topicSearchController.customSearchBar.placeholder = "搜尋"
         
@@ -528,11 +527,11 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     
     // 客製化的代理功能在這
     
-    func didStartSearching(searchBar: UISearchBar) {
+    func didStartSearching(_ searchBar: UISearchBar) {
         //點了搜尋按鈕
     }
     
-    func didTapOnSearchButton(searchBar: UISearchBar) {
+    func didTapOnSearchButton(_ searchBar: UISearchBar) {
         //開始查詢
         if searchBar.text != nil{
             if searchKeyAndState["key"]! == nil || searchKeyAndState["key"]! != searchBar.text!{
@@ -542,32 +541,32 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                                          "string":searchBar.text!,
                                          "smallest_id":searchKeyAndState["smallest_id"]!!
             ]
-            socket.writeData(json_dumps(sendData))
+            socket.write(data:json_dumps(sendData))
         }
     }
     
-    func didTapOnCancelButton(searchBar: UISearchBar) {
+    func didTapOnCancelButton(_ searchBar: UISearchBar) {
         //刪除查詢
     }
     
-    func didChangeSearchText(searchBar: UISearchBar) {
+    func didChangeSearchText(_ searchBar: UISearchBar) {
         // 打字一次搜尋一次
     }
     
-    func reLoadTopic(topicId:String){
-        let removeTopicPosition = topics.indexOf { (Topic) -> Bool in
+    func reLoadTopic(_ topicId:String){
+        let removeTopicPosition = topics.index { (Topic) -> Bool in
             if Topic.topicID == topicId{
                 return true
             }
             else{return false}
         }
         if removeTopicPosition != nil{
-            topics.removeAtIndex(removeTopicPosition! as Int)
+            topics.remove(at: removeTopicPosition! as Int)
             topicList.reloadData()
         }
     }
     
-    func turnTopicDataType(inputData:Topic) -> MyTopicStandardType{
+    func turnTopicDataType(_ inputData:Topic) -> MyTopicStandardType{
         let returnData = MyTopicStandardType(dataType: "detail")
         returnData.topicTitle_title = inputData.title
         returnData.topicId_title = inputData.topicID
