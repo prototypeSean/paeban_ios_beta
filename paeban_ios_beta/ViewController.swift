@@ -57,9 +57,7 @@ class ViewController: UIViewController, WebSocketDelegate{
 //        view.addSubview(loginButton)
 //        loginButton.delegate = self
         //=========
-        print("viewDidLoad")
         if let _ = FBSDKAccessToken.current(){
-            print(FBSDKAccessToken.current())
             paeban_login()
         }  
         
@@ -72,12 +70,10 @@ class ViewController: UIViewController, WebSocketDelegate{
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
                     self.getFBUserData()
-                    //self.fbLoginManager.logOut()
                 }
             }
             else{
-                print("VC_79_error!!!")
-                print(error)
+                print("FB LogIn Error!")
             }
         })
     }
@@ -128,8 +124,6 @@ class ViewController: UIViewController, WebSocketDelegate{
             cookie = login_obj.get_cookie()
             if cookie != "login_no"{
                 print("登入成功!!!")
-                //var tttt:WebSocket
-
                 socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
                 socket.headers["Cookie"] = cookie
                 socket.delegate = self

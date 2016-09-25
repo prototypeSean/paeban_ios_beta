@@ -378,9 +378,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         
     }
     func scrollToBottom(){
-        let lastItemIndex = IndexPath(row: self.messages.count-1, section: 0)
-        self.collectionView.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: false)
-        self.loadHistorySwitch = true
+        if self.messages.count > 0 {
+            let lastItemIndex = IndexPath(row: self.messages.count-1, section: 0)
+            self.collectionView.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: false)
+            self.loadHistorySwitch = true
+        }
+        
     }
     
     var aspectRatioConstraint: NSLayoutConstraint? {

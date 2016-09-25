@@ -6,7 +6,7 @@
 target 'paeban_ios_beta' do
 
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '9.0'
+platform :ios, '9.3'
 use_frameworks!
 
 pod 'Starscream', '~> 2.0.0'
