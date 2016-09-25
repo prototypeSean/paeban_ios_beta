@@ -59,6 +59,7 @@ class ViewController: UIViewController, WebSocketDelegate{
         //=========
         print("viewDidLoad")
         if let _ = FBSDKAccessToken.current(){
+            print(FBSDKAccessToken.current())
             paeban_login()
         }  
         
@@ -74,14 +75,18 @@ class ViewController: UIViewController, WebSocketDelegate{
                     //self.fbLoginManager.logOut()
                 }
             }
+            else{print(error)}
         })
     }
     func getFBUserData(){
         if((FBSDKAccessToken.current()) != nil){
             FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                 if (error == nil){
-                    //print(result)
+                    print(result)
                     self.paeban_login()
+                }
+                else{
+                    print(error)
                 }
             })
         }

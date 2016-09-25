@@ -11,7 +11,13 @@ use_frameworks!
 
 pod 'Starscream', '~> 2.0.0'
 
-pod 'JSQMessagesViewController'  
+pod 'JSQMessagesViewController'
+
+pod 'FBSDKCoreKit'
+
+pod 'FBSDKLoginKit'
+
+pod 'FBSDKShareKit'
 
 end
 

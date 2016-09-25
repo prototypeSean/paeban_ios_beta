@@ -11,9 +11,6 @@
 		9301F6061D1D1A2800D1F8C0 /* TopicSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9301F6051D1D1A2800D1F8C0 /* TopicSearchController.swift */; };
 		930983E21D0166F5005B8E3B /* MyTopics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930983E11D0166F5005B8E3B /* MyTopics.swift */; };
 		930983E81D056971005B8E3B /* HashTagsContorller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930983E71D056971005B8E3B /* HashTagsContorller.swift */; };
-		931FF1A91CFEAFB2000E7F8A /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931FF1A61CFEAFB2000E7F8A /* FBSDKCoreKit.framework */; };
-		931FF1AA1CFEAFB2000E7F8A /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931FF1A71CFEAFB2000E7F8A /* FBSDKLoginKit.framework */; };
-		931FF1AB1CFEAFB2000E7F8A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931FF1A81CFEAFB2000E7F8A /* FBSDKShareKit.framework */; };
 		932A00E21CFEBA460036E1EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00D01CFEBA460036E1EA /* AppDelegate.swift */; };
 		932A00E31CFEBA460036E1EA /* ToolsFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00D11CFEBA460036E1EA /* ToolsFunction.swift */; };
 		932A00E41CFEBA460036E1EA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00D21CFEBA460036E1EA /* ViewController.swift */; };
@@ -58,9 +55,6 @@
 		930983E71D056971005B8E3B /* HashTagsContorller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTagsContorller.swift; sourceTree = "<group>"; };
 		931FF1911CFEA848000E7F8A /* paeban_ios_beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = paeban_ios_beta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		931FF1A01CFEA848000E7F8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		931FF1A61CFEAFB2000E7F8A /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		931FF1A71CFEAFB2000E7F8A /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		931FF1A81CFEAFB2000E7F8A /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		932A00D01CFEBA460036E1EA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		932A00D11CFEBA460036E1EA /* ToolsFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolsFunction.swift; sourceTree = "<group>"; };
 		932A00D21CFEBA460036E1EA /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -100,9 +94,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				931FF1AB1CFEAFB2000E7F8A /* FBSDKShareKit.framework in Frameworks */,
-				931FF1A91CFEAFB2000E7F8A /* FBSDKCoreKit.framework in Frameworks */,
-				931FF1AA1CFEAFB2000E7F8A /* FBSDKLoginKit.framework in Frameworks */,
 				B476C3708840453BEC5DD446 /* Pods_paeban_ios_beta.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,9 +145,6 @@
 				932A00DE1CFEBA460036E1EA /* ChatViewController.swift */,
 				932A00D71CFEBA460036E1EA /* Main.storyboard */,
 				932A00DB1CFEBA460036E1EA /* Labels.swift */,
-				931FF1A61CFEAFB2000E7F8A /* FBSDKCoreKit.framework */,
-				931FF1A71CFEAFB2000E7F8A /* FBSDKLoginKit.framework */,
-				931FF1A81CFEAFB2000E7F8A /* FBSDKShareKit.framework */,
 				932A00F41D0025AC0036E1EA /* Assets.xcassets */,
 				931FF1A01CFEA848000E7F8A /* Info.plist */,
 			);
