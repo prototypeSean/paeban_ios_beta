@@ -178,9 +178,12 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
     func textFieldDidBeginEditing(_ textField: UITextField) {
 
         loginSvrollView.center = CGPoint(x:loginSvrollView.bounds.maxX/2,y:loginSvrollView.bounds.maxY/2 - textField.center.y + 200)
-        print(textField.restorationIdentifier)
+        //print(textField.restorationIdentifier)
     }
-    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool{
+        print(textField.restorationIdentifier)
+        return true
+    }
 }
 
 
