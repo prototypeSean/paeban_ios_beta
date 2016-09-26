@@ -486,24 +486,26 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     // MARK: 準備跳頁
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //print(segue.identifier)
-        let indexPath = topicList.indexPathForSelectedRow!
-        //print(indexPath.row)
-        let dataposition:Int = (indexPath as NSIndexPath).row
+        if segue.identifier == "clientModeSegue"{
+            let indexPath = topicList.indexPathForSelectedRow!
+            let dataposition:Int = (indexPath as NSIndexPath).row
+            
+            if segue.identifier == "masterModeSegue"{
+                // MARK: master模式看要做啥
+            }
+            else{
+                let topicViewCon = segue.destination as! TopicViewController
+                let selectTopicData = topics[dataposition]
+                topicViewCon.topicId = selectTopicData.topicID
+                topicViewCon.ownerId = selectTopicData.owner
+                topicViewCon.ownerImg = selectTopicData.photo
+                topicViewCon.topicTitle = selectTopicData.title
+                topicViewCon.title = selectTopicData.ownerName
+                topicViewCon.delegate = self
+                //            topicViewCon.topicTitleContent.text = selectTopicData.title
+            }
+        }
         
-        if segue.identifier == "masterModeSegue"{
-            // MARK: master模式看要做啥
-        }
-        else{
-            let topicViewCon = segue.destination as! TopicViewController
-            let selectTopicData = topics[dataposition]
-            topicViewCon.topicId = selectTopicData.topicID
-            topicViewCon.ownerId = selectTopicData.owner
-            topicViewCon.ownerImg = selectTopicData.photo
-            topicViewCon.topicTitle = selectTopicData.title
-            topicViewCon.title = selectTopicData.ownerName
-            topicViewCon.delegate = self
-//            topicViewCon.topicTitleContent.text = selectTopicData.title
-        }
         
         
         

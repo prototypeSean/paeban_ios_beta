@@ -41,7 +41,7 @@ public var myFriendsList:Array<FriendStanderType> = []
 
 
 
-class ViewController: UIViewController, WebSocketDelegate{
+class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
     var firstConnect = true
     let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
     
@@ -49,6 +49,21 @@ class ViewController: UIViewController, WebSocketDelegate{
     @IBAction func loninBottom(_ sender: AnyObject) {
         fbLogIn()
     }
+    
+    @IBAction func singIn(_ sender: AnyObject) {
+    }
+    
+    @IBAction func logIn(_ sender: AnyObject) {
+//        loginSvrollView.center = CGPoint(x: loginSvrollView.frame.width/2, y: loginSvrollView.center.y - sender.frame.minY + 50)
+    }
+    
+    @IBOutlet weak var loginId: UITextField!
+
+    @IBOutlet weak var logInPw: UITextField!
+    
+    @IBOutlet weak var loginSvrollView: UIScrollView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //=========
@@ -60,6 +75,11 @@ class ViewController: UIViewController, WebSocketDelegate{
         if let _ = FBSDKAccessToken.current(){
             paeban_login()
         }  
+        
+        loginId.delegate = self
+        logInPw.delegate = self
+        
+        
         
     }
     
@@ -191,7 +211,16 @@ class ViewController: UIViewController, WebSocketDelegate{
     func websocketDidReceiveData(socket: WebSocket, data: Data){
         print("data")
     }
+    
+//    override func textFieldShouldBeginEditing(_ text: UITextField){
+//        print("xxx")
+//        loginSvrollView.scrollRectToVisible(text.frame, animated: true)
+//    }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
 
+        loginSvrollView.center = CGPoint(x:loginSvrollView.bounds.maxX/2,y:loginSvrollView.bounds.maxY/2 - textField.center.y + 200)
+        print(textField.restorationIdentifier)
+    }
     
 }
 

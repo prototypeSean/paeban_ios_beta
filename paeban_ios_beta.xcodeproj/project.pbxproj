@@ -32,6 +32,8 @@
 		936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */; };
 		93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */; };
 		B476C3708840453BEC5DD446 /* Pods_paeban_ios_beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81EACB9BB003ED2F71D8DC6A /* Pods_paeban_ios_beta.framework */; };
+		CF13867C1D98C53C00E70990 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF13867B1D98C53C00E70990 /* StoreKit.framework */; };
+		CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF13867D1D98CE0600E70990 /* LoginScrollView.swift */; };
 		CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */; };
 		CF2E9D621D7BDF9E00F485BB /* FriendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E9D611D7BDF9E00F485BB /* FriendTableViewController.swift */; };
 		CF2E9D641D7BDFC000F485BB /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E9D631D7BDFC000F485BB /* FriendTableViewCell.swift */; };
@@ -75,6 +77,8 @@
 		932A00F41D0025AC0036E1EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopicViewController.swift; sourceTree = "<group>"; };
 		93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		CF13867B1D98C53C00E70990 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		CF13867D1D98CE0600E70990 /* LoginScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScrollView.swift; sourceTree = "<group>"; };
 		CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendChatUpViewController.swift; sourceTree = "<group>"; };
 		CF2E9D611D7BDF9E00F485BB /* FriendTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewController.swift; sourceTree = "<group>"; };
 		CF2E9D631D7BDFC000F485BB /* FriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
@@ -95,6 +99,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B476C3708840453BEC5DD446 /* Pods_paeban_ios_beta.framework in Frameworks */,
+				CF13867C1D98C53C00E70990 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +109,7 @@
 		1741F3FC9375CBC3750A7722 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF13867B1D98C53C00E70990 /* StoreKit.framework */,
 				81EACB9BB003ED2F71D8DC6A /* Pods_paeban_ios_beta.framework */,
 			);
 			name = Frameworks;
@@ -133,6 +139,7 @@
 				CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */,
 				932A00D01CFEBA460036E1EA /* AppDelegate.swift */,
 				932A00D11CFEBA460036E1EA /* ToolsFunction.swift */,
+				CF13867D1D98CE0600E70990 /* LoginScrollView.swift */,
 				932A00D31CFEBA460036E1EA /* ＨttpRequestCenter.swift */,
 				932A00E01CFEBA460036E1EA /* Login_paeban.swift */,
 				932A00D21CFEBA460036E1EA /* ViewController.swift */,
@@ -142,6 +149,7 @@
 				93AEF2911D01427D007FDE51 /* recent */,
 				93AEF28E1D01410A007FDE51 /* friends */,
 				93AEF28F1D01419D007FDE51 /* launchScreen */,
+				CF13867A1D98C43D00E70990 /* setting */,
 				932A00DE1CFEBA460036E1EA /* ChatViewController.swift */,
 				932A00D71CFEBA460036E1EA /* Main.storyboard */,
 				932A00DB1CFEBA460036E1EA /* Labels.swift */,
@@ -220,6 +228,13 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CF13867A1D98C43D00E70990 /* setting */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = setting;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -260,6 +275,9 @@
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
 							};
 							com.apple.InterAppAudio = {
 								enabled = 0;
@@ -374,6 +392,7 @@
 				932A00E61CFEBA460036E1EA /* Topic.swift in Sources */,
 				CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */,
 				936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */,
+				CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */,
 				932A00E41CFEBA460036E1EA /* ViewController.swift in Sources */,
 				932A00F11CFEBA460036E1EA /* LaunchScreenViewController.swift in Sources */,
 				932A00ED1CFEBA460036E1EA /* Labels.swift in Sources */,
