@@ -54,6 +54,7 @@ class TopicSearchController: UISearchController, UISearchBarDelegate {
         customSearchBar.showsBookmarkButton = false
         customSearchBar.showsCancelButton = false
         
+        
         customSearchBar.delegate = self
     }
     
@@ -65,6 +66,7 @@ class TopicSearchController: UISearchController, UISearchBarDelegate {
         customSearchBar.resignFirstResponder()
         customDelegate.didTapOnSearchButton(searchBar)
     }
+    
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         customSearchBar.resignFirstResponder()

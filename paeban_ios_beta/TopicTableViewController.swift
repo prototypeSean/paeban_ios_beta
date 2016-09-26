@@ -14,7 +14,7 @@ public var tagList:[String] = []
 class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate,TopicViewControllerDelegate{
     // MARK: Properties
     
-    var topicSearchController: TopicSearchController!
+    var topicSearchController: TopicSearchController?
     
     // 用來控制要顯示上面哪個清單
     var shouldShowSearchResults = false
@@ -25,7 +25,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     // 搜尋時的清單 ＆ 資料來源
     var filteredArray = [String]()
     
-    var searchKeyAndState:Dictionary<String,String?> = ["key": nil, "smallest_id": "init", "state": "new"]
+    var searchKeyAndState:Dictionary<String,String?> = ["key": nil, "smallest_id": "init", "state": "none"]
 
     
     @IBOutlet weak var topicList: UITableView!
@@ -34,6 +34,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     
     
     var topics:[Topic] = []
+    var topicsBackup:Array<Topic> = []
     var httpOBJ = HttpRequestCenter()
     var requestUpDataSwitch = true
     
@@ -209,6 +210,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     
     // MARK: 向下滾動更新
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        hideKeybroad()
         let scroolHeight = self.topicList.contentOffset.y + self.topicList.frame.height
         let contentHeight = self.topicList.contentSize.height
         if scroolHeight >= contentHeight && contentHeight > 0
@@ -459,22 +461,22 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                     }
                     else{return nil}
                 }
+                // 找最小id
+                if let tempTopicId = getSmallestId(msg["return_dic"] as! Dictionary<String,AnyObject>){
+                    searchKeyAndState["smallest_id"]! = String(tempTopicId)
+                }
                 
                 
                 if searchKeyAndState["state"]! == "new"{
                     //如果是新的搜尋
                     
-                    // 找最小id
-                    if let tempTopicId = getSmallestId(msg["return_dic"] as! Dictionary<String,AnyObject>){
-                        searchKeyAndState["smallest_id"]! = String(tempTopicId)
-                    }
-                    
                     //UI
-                    print(transformToTopicType(msg["return_dic"] as! Dictionary<String,AnyObject>))
+                    topics = transformToTopicType(msg["return_dic"] as! Dictionary<String,AnyObject>)
+                    topicList.reloadData()
                     
                 }
                 else if searchKeyAndState["state"]! == "keep"{
-                    
+                    topics += transformToTopicType(msg["return_dic"] as! Dictionary<String,AnyObject>)
                 }
             }
         }
@@ -517,12 +519,13 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             searchBarFont: UIFont(name: "Futura", size: 14.0)!,
             searchBarTextColor: UIColor.orange,
             searchBarTintColor: UIColor.black)
+        //configureSearchBar
         
-        topicSearchController.customSearchBar.placeholder = "搜尋"
+        topicSearchController?.customSearchBar.placeholder = "搜尋"
         
-        topicList.tableHeaderView = topicSearchController.customSearchBar
+        topicList.tableHeaderView = topicSearchController?.customSearchBar
         
-        topicSearchController.customDelegate = self
+        topicSearchController?.customDelegate = self
     }
     
     // 客製化的代理功能在這
@@ -534,13 +537,17 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func didTapOnSearchButton(_ searchBar: UISearchBar) {
         //開始查詢
         if searchBar.text != nil{
-            if searchKeyAndState["key"]! == nil || searchKeyAndState["key"]! != searchBar.text!{
-                searchKeyAndState["smallest_id"] = "init"
+            if searchKeyAndState["state"]! == "none"{
+                topicsBackup = topics
             }
+            searchKeyAndState["smallest_id"] = "init"
+            searchKeyAndState["key"] = searchBar.text!
+            searchKeyAndState["state"] = "new"
             let sendData:NSDictionary = ["msg_type":"search_topic",
                                          "string":searchBar.text!,
                                          "smallest_id":searchKeyAndState["smallest_id"]!!
             ]
+            
             socket.write(data:json_dumps(sendData))
         }
     }
@@ -551,6 +558,25 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     
     func didChangeSearchText(_ searchBar: UISearchBar) {
         // 打字一次搜尋一次
+        if searchBar.text != nil{
+            if searchBar.text == ""{
+                searchKeyAndState["smallest_id"]! = "init"
+                searchKeyAndState["key"]! = nil
+                searchKeyAndState["state"]! = "none"
+                if topicsBackup.count > 0{
+                    topics = topicsBackup
+                    topicList.reloadData()
+                }
+                // MARK:硬幹收鍵盤 延遲10ms收鍵盤
+                let timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.hideKeybroad), userInfo: nil, repeats: false)
+                RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+
+            }
+        }
+    }
+    
+    func hideKeybroad() {
+        topicSearchController?.customSearchBar.resignFirstResponder()
     }
     
     func reLoadTopic(_ topicId:String){
