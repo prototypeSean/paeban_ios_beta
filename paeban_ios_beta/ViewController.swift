@@ -66,21 +66,12 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //=========
-//        let loginButton = FBSDKLoginButton()
-//        loginButton.frame = CGRectMake(5, self.view.frame.height - 40, self.view.frame.width - 10, 30)
-//        view.addSubview(loginButton)
-//        loginButton.delegate = self
-        //=========
+
         if let _ = FBSDKAccessToken.current(){
             paeban_login()
-        }  
-        
+        }
         loginId.delegate = self
         logInPw.delegate = self
-        
-        
-        
     }
     
     func fbLogIn() {
@@ -110,34 +101,6 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
             })
         }
     }
-    
-    
-//    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
-//        print("User Logged In")
-//        
-//        if ((error) != nil)
-//        {
-//            // Process error
-//        }
-//        else if result.isCancelled {
-//            // Handle cancellations
-//        }
-//        else {
-//            // If you ask for multiple permissions at once, you
-//            // should check if specific permissions missing
-//            if result.grantedPermissions.contains("email")
-//            {
-//                // Do work
-//                print("開始登入...")
-//                paeban_login()
-//                
-//            }
-//        }
-//    }
-//    
-//    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
-//        print("User Logged Out")
-//    }
     func paeban_login(){
         if let fb_session = FBSDKAccessToken.current(){
             let login_obj = login_paeban(fb_ssesion: fb_session.tokenString)
@@ -212,10 +175,6 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
         print("data")
     }
     
-//    override func textFieldShouldBeginEditing(_ text: UITextField){
-//        print("xxx")
-//        loginSvrollView.scrollRectToVisible(text.frame, animated: true)
-//    }
     func textFieldDidBeginEditing(_ textField: UITextField) {
 
         loginSvrollView.center = CGPoint(x:loginSvrollView.bounds.maxX/2,y:loginSvrollView.bounds.maxY/2 - textField.center.y + 200)
