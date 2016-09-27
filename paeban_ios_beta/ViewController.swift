@@ -70,6 +70,9 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
         if let _ = FBSDKAccessToken.current(){
             paeban_login()
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
         loginId.delegate = self
         logInPw.delegate = self
     }
@@ -175,15 +178,64 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
         print("data")
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-
-        loginSvrollView.center = CGPoint(x:loginSvrollView.bounds.maxX/2,y:loginSvrollView.bounds.maxY/2 - textField.center.y + 200)
-        //print(textField.restorationIdentifier)
+    // 監聽鍵盤出現上滑
+    func keyboardWillShow(notification: NSNotification) {
+        
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= (keyboardSize.height+50)
+            }
+        }
+        
     }
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool{
-        print(textField.restorationIdentifier)
-        return true
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += (keyboardSize.height+50)
+            }
+        }
     }
+    
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//
+//        loginSvrollView.center = CGPoint(x:loginSvrollView.frame.maxX/2,y:loginSvrollView.frame.maxY/2 - textField.center.y + 200)
+//        //print(textField.restorationIdentifier)
+//    }
+//    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
+//        if textField.restorationIdentifier == "loginId"{
+//            //code
+//            textField.resignFirstResponder()
+//            logInPw.becomeFirstResponder()
+//        }
+//        else if textField.restorationIdentifier == "loginPw"{
+//            textField.resignFirstResponder()
+//            loginSvrollView.center = CGPoint(x:loginSvrollView.frame.maxX/2,y:loginSvrollView.frame.maxY/2)
+//            if logInPw.text == "" || loginId.text == ""{
+//                //帳號或密碼為空
+//                let alert = UIAlertController(title: "智障!!", message: "你他媽帳號打了嗎", preferredStyle: UIAlertControllerStyle.alert)
+//                alert.addAction(UIAlertAction(title: "我承認我是智障", style: UIAlertActionStyle.default, handler: { (target) in
+//                    self.loginId.text = ""
+//                    self.logInPw.text = ""
+//                    self.loginId.becomeFirstResponder()
+//                }))
+//                self.present(alert, animated: true, completion: {
+//                    //code
+//                })
+//            }
+//            else{
+//                //開始登入
+//            }
+//        }
+//        
+//        return true
+//    }
+//    
+//    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool{
+//        print(textField.restorationIdentifier)
+//        return true
+//    }
 }
 
 

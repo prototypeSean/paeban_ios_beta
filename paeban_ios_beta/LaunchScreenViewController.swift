@@ -16,6 +16,10 @@ class LaunchScreenViewController: UIViewController {
    
     @IBOutlet weak var label2: UILabel!
     
+    
+
+    let image = UIImage(named: "launchscreen_1242 x 2208")
+    
 //    @IBOutlet weak var launchTexts: UIStackView!
 
     override func viewDidLoad() {
