@@ -122,6 +122,10 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
         }
     }
     
+    func paeban_login_with_ssl(){
+        
+    }
+    
     
     // MARK:webSocket
     var wsTimer:Timer?
@@ -180,10 +184,37 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
         loginSvrollView.center = CGPoint(x:loginSvrollView.bounds.maxX/2,y:loginSvrollView.bounds.maxY/2 - textField.center.y + 200)
         //print(textField.restorationIdentifier)
     }
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool{
-        print(textField.restorationIdentifier)
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
+        if textField.restorationIdentifier == "loginId"{
+            //code
+            textField.resignFirstResponder()
+            logInPw.becomeFirstResponder()
+        }
+        else if textField.restorationIdentifier == "loginPw"{
+            textField.resignFirstResponder()
+            loginSvrollView.center = CGPoint(x:loginSvrollView.bounds.maxX/2,y:loginSvrollView.bounds.maxY/2)
+            if logInPw.text == "" || loginId.text == ""{
+                //帳號或密碼為空
+                let alert = UIAlertController(title: "智障!!", message: "你他媽帳號打了嗎", preferredStyle: UIAlertControllerStyle.alert)
+                 alert.addAction(UIAlertAction(title: "我承認我是智障", style: UIAlertActionStyle.default, handler: { (target) in
+                    self.loginId.text = ""
+                    self.logInPw.text = ""
+                    self.loginId.becomeFirstResponder()
+                 }))
+                self.present(alert, animated: true, completion: {
+                    //code
+                })
+            }
+            else{
+                //開始登入
+            }
+        }
+        
         return true
     }
+    
+    
 }
 
 
