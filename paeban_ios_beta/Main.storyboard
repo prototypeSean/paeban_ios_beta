@@ -28,15 +28,10 @@
                                     <action selector="singIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="03l-5u-5zo"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="loginPw" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8BY-go-BQQ">
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="loginId" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="帳號" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZcH-yC-Ffy">
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KaK-oj-Drk">
                                 <state key="normal" title="登入"/>
@@ -51,45 +46,58 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Qt-oe-Dwj">
-                                <state key="normal" title="登入ＦＢ"/>
+                                <state key="normal" title="Facebook 登入"/>
                                 <connections>
                                     <action selector="loninBottom:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ndA-oz-0T2"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="loginPw" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8BY-go-BQQ">
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="send" enablesReturnKeyAutomatically="YES"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="4Qt-oe-Dwj" firstAttribute="width" secondItem="8BY-go-BQQ" secondAttribute="width" id="22C-b3-BMK"/>
                             <constraint firstItem="KK0-8t-bvN" firstAttribute="width" secondItem="tAR-u1-Ad2" secondAttribute="width" id="3gr-6i-a3O"/>
                             <constraint firstItem="jeK-d8-Y0o" firstAttribute="leading" secondItem="KaK-oj-Drk" secondAttribute="trailing" constant="8" symbolic="YES" id="5fb-rw-XWK"/>
-                            <constraint firstItem="tAR-u1-Ad2" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="8GX-kK-FcC"/>
+                            <constraint firstItem="tAR-u1-Ad2" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.75" id="8GX-kK-FcC"/>
                             <constraint firstItem="tAR-u1-Ad2" firstAttribute="leading" secondItem="KK0-8t-bvN" secondAttribute="trailing" constant="8" symbolic="YES" id="ACt-R3-ukJ"/>
                             <constraint firstItem="8BY-go-BQQ" firstAttribute="leading" secondItem="tAR-u1-Ad2" secondAttribute="leading" id="CpO-iR-G8D"/>
-                            <constraint firstItem="KaK-oj-Drk" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ETu-O5-RJB"/>
-                            <constraint firstItem="jeK-d8-Y0o" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="JhF-Gw-bgR"/>
                             <constraint firstAttribute="trailingMargin" secondItem="jeK-d8-Y0o" secondAttribute="trailing" id="Jnw-mw-7cp"/>
                             <constraint firstItem="8BY-go-BQQ" firstAttribute="width" secondItem="ZcH-yC-Ffy" secondAttribute="width" id="Lgq-3d-e6A"/>
-                            <constraint firstItem="8BY-go-BQQ" firstAttribute="top" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" constant="30" id="UvN-kU-J0B"/>
+                            <constraint firstItem="KaK-oj-Drk" firstAttribute="centerY" secondItem="tAR-u1-Ad2" secondAttribute="centerY" id="Os6-zE-sgD"/>
+                            <constraint firstItem="KK0-8t-bvN" firstAttribute="centerY" secondItem="tAR-u1-Ad2" secondAttribute="centerY" id="QdL-Er-UII"/>
+                            <constraint firstItem="tAR-u1-Ad2" firstAttribute="top" secondItem="8BY-go-BQQ" secondAttribute="bottom" constant="8" symbolic="YES" id="XXV-El-hxd"/>
                             <constraint firstItem="KK0-8t-bvN" firstAttribute="height" secondItem="tAR-u1-Ad2" secondAttribute="height" id="Yhs-OO-ra1"/>
                             <constraint firstItem="jeK-d8-Y0o" firstAttribute="height" secondItem="KaK-oj-Drk" secondAttribute="height" id="c1E-xx-zc0"/>
                             <constraint firstItem="4Qt-oe-Dwj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fzr-4z-ihA"/>
-                            <constraint firstItem="KK0-8t-bvN" firstAttribute="centerY" secondItem="tAR-u1-Ad2" secondAttribute="centerY" id="hkl-bM-JJB"/>
-                            <constraint firstItem="ZcH-yC-Ffy" firstAttribute="top" secondItem="8BY-go-BQQ" secondAttribute="bottom" constant="8" symbolic="YES" id="pCo-Ye-lTS"/>
+                            <constraint firstItem="ZcH-yC-Ffy" firstAttribute="top" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" constant="50" id="lO9-bX-i2D"/>
+                            <constraint firstItem="jeK-d8-Y0o" firstAttribute="centerY" secondItem="tAR-u1-Ad2" secondAttribute="centerY" id="lnJ-d8-E9J"/>
                             <constraint firstItem="jeK-d8-Y0o" firstAttribute="width" secondItem="KaK-oj-Drk" secondAttribute="width" id="rmD-Tr-dYA"/>
                             <constraint firstItem="tAR-u1-Ad2" firstAttribute="width" secondItem="KaK-oj-Drk" secondAttribute="width" id="tZ9-EZ-EJf"/>
                             <constraint firstItem="ZcH-yC-Ffy" firstAttribute="leading" secondItem="tAR-u1-Ad2" secondAttribute="leading" id="u0J-dQ-QVS"/>
                             <constraint firstItem="KaK-oj-Drk" firstAttribute="leading" secondItem="tAR-u1-Ad2" secondAttribute="trailing" constant="8" symbolic="YES" id="udM-CX-ZMm"/>
+                            <constraint firstItem="8BY-go-BQQ" firstAttribute="top" secondItem="ZcH-yC-Ffy" secondAttribute="bottom" constant="8" symbolic="YES" id="vS3-Sm-4eJ"/>
                             <constraint firstItem="ZcH-yC-Ffy" firstAttribute="trailing" secondItem="KaK-oj-Drk" secondAttribute="trailing" id="wjJ-TZ-VTm"/>
                             <constraint firstItem="KK0-8t-bvN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="wwP-YR-uxh"/>
-                            <constraint firstItem="tAR-u1-Ad2" firstAttribute="top" secondItem="ZcH-yC-Ffy" secondAttribute="bottom" constant="8" symbolic="YES" id="zWp-lO-P4j"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="tjL-ra-Rot" appends="YES" id="Fcm-Je-6pD"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="STz-pB-Tr4"/>
                     <connections>
+                        <outlet property="logInPw" destination="8BY-go-BQQ" id="I77-CW-tI9"/>
+                        <outlet property="loginId" destination="ZcH-yC-Ffy" id="jnq-WX-MUa"/>
+                        <outlet property="shiftView" destination="8bC-Xf-vdC" id="gRf-I8-j7O"/>
                         <segue destination="Ukn-gV-ex4" kind="show" identifier="segueToMainUI" id="nCN-DR-xXv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="tjL-ra-Rot"/>
             </objects>
             <point key="canvasLocation" x="-4268.115942028986" y="-2395.108695652174"/>
         </scene>

@@ -61,8 +61,8 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
 
     @IBOutlet weak var logInPw: UITextField!
     
-    @IBOutlet weak var loginSvrollView: UIScrollView!
     
+    @IBOutlet weak var shiftView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +72,9 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
         }
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
 
         loginId.delegate = self
         logInPw.delegate = self
@@ -180,21 +183,32 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
     
     // 監聽鍵盤出現上滑
     func keyboardWillShow(notification: NSNotification) {
-        
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= (keyboardSize.height+50)
+                kb_h = keyboardSize.height
+                self.view.frame.origin.y -= (keyboardSize.height)
+//                print("上高度＝",keyboardSize.height)
+//                print("上kb_h=",kb_h)
             }
         }
-        
     }
     
+    // 這個變數用來儲存上去時候的鍵盤高度，收起鍵盤時用他，不然會亂跳
+    var kb_h:CGFloat = 0.0
+    
     func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
             if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += (keyboardSize.height+50)
+                self.view.frame.origin.y += kb_h
+//                print("下高度＝",keyboardSize.height)
+//                print("下kb_h=",kb_h)
             }
         }
+    }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
 //    func textFieldDidBeginEditing(_ textField: UITextField) {
