@@ -37,13 +37,12 @@ public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
 }
 
 public var myFriendsList:Array<FriendStanderType> = []
-
+public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 
 
 
 class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
     var firstConnect = true
-    let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
     
     
     @IBAction func loninBottom(_ sender: AnyObject) {
@@ -73,6 +72,17 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
 
         if let _ = FBSDKAccessToken.current(){
             paeban_login()
+        }
+        else{
+            let login_obj = login_paeban()
+            let login_result = login_obj.get_cookie_csrf()
+            
+            if login_result != "login_no"{
+                socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+                socket.headers["Cookie"] = cookie
+                socket.delegate = self
+                ws_connect_fun(socket)
+            }
         }
         loginId.delegate = self
         logInPw.delegate = self
@@ -129,29 +139,19 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
     
     func paeban_login_with_IDPW(id:String,pw:String){
         let login_obj = login_paeban()
-        let login_result = login_obj.get_cookie_csrf()
-        print("xx1")
-        print(login_result)
-        if login_result != "login_no"{
+        let login_sult = login_obj.get_cookie_by_IDPW(id: id, pw: pw)
+        
+        if login_sult != "login_no"{
             print("登入成功!!!")
+            print(cookie)
             socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
             socket.headers["Cookie"] = cookie
             socket.delegate = self
             ws_connect_fun(socket)
         }
         else{
-            
-            let login_sult = login_obj.get_cookie_by_IDPW(id: id, pw: pw)
-            print(login_sult)
-            if login_sult != "login_no"{
-                print("登入成功!!!")
-                socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
-                socket.headers["Cookie"] = cookie
-                socket.delegate = self
-                ws_connect_fun(socket)
-            }
+            print("登入失敗")
         }
-        
     }
     
     

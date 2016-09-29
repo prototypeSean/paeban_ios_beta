@@ -19,6 +19,7 @@ class HttpRequestCenter{
     var topic_list = [Topic]()
     
     func getTopic(_ topicData:@escaping ([Topic]) -> Void){
+        print("func getTopic")
         let url = "https://www.paeban.com/topic_update/"
         let sendData = "mode=new"
         ajax(url, sendDate: sendData) { (returnData) -> Void in

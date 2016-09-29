@@ -11,7 +11,7 @@ import Starscream
 
 class login_paeban{
     var fb_ssesion:String?
-    var cookie:String?
+    
     
     
     func get_cookie() ->String{
@@ -29,9 +29,9 @@ class login_paeban{
                 if ouput != "log in fail"{
                     if let httpResponse = response as? HTTPURLResponse {
                         if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
-                            self.cookie = response_cookie
-                            if self.cookie != nil{
-                                login_return_val = self.cookie
+                            cookie = response_cookie
+                            if cookie != nil{
+                                login_return_val = cookie
                             }
                             else{
                                 login_return_val = "login_no"
@@ -62,7 +62,9 @@ class login_paeban{
         var login_return_val:String?
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
-        
+        //let sendData = "csrfmiddlewaretoken=VPgY4sgd2nlEFZYxv9i5xl9cSwbXA4fo;"
+        //request.allHTTPHeaderFields = ["Cookie":"csrftoken=VPgY4sgd2nlEFZYxv9i5xl9cSwbXA4fo"]
+        //request.httpBody = sendData.data(using: String.Encoding.utf8)
         request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
         let session = URLSession.shared
         
@@ -73,13 +75,13 @@ class login_paeban{
             else{
                 let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
                 if ouput != "log in fail"{
-                    //print(response)
                     if let httpResponse = response as? HTTPURLResponse {
+                        print("========print(response)========")
+                        print(response)
                         if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
-                            self.cookie = response_cookie
-                            print(self.cookie)
-                            if self.cookie != nil{
-                                login_return_val = self.cookie
+                            cookie = response_cookie
+                            if cookie != nil{
+                                login_return_val = cookie
                             }
                             else{
                                 login_return_val = "login_no"
@@ -87,6 +89,7 @@ class login_paeban{
                         }
                         else if httpResponse.statusCode == 200{
                             login_return_val = ouput! as String
+                            //cookie = "csrftoken=\(ouput!)"
                         }
                         else{login_return_val = "login_no"}
                         
@@ -96,7 +99,8 @@ class login_paeban{
                 else{
                     login_return_val = "login_no"
                 }
-                //print(ouput)
+                print("=======output=======")
+                print(ouput)
             }
             
         })
@@ -112,19 +116,18 @@ class login_paeban{
     
     
     func get_cookie_by_IDPW(id:String,pw:String) -> String?{
-        let csrf_state = get_cookie_csrf()
-        print(csrf_state)
-        if csrf_state != "login_no"{
+        //let csrf_state = get_cookie_csrf()
+        let csrf_state = "login_no"
+        if csrf_state == "login_no"{
             let url = "https://www.paeban.com/login_paeban/"
             let sendDic:NSDictionary = ["username":id,"password":pw]
-            let sendData = "data=\(json_dumps2(sendDic)!)"
+            let sendData = "csrfmiddlewaretoken=VPgY4sgd2nlEFZYxv9i5xl9cSwbXA4fo;data=\(json_dumps2(sendDic)!)"
             var login_return_val:String?
             var request = URLRequest(url: URL(string: url)!)
             request.httpMethod = "POST"
             request.httpBody = sendData.data(using: String.Encoding.utf8)
-            let csrf = getCSRFToken(cookie!)
-            request.allHTTPHeaderFields = ["Cookie":cookie!]
-            request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
+            
+            request.allHTTPHeaderFields = ["Cookie":"csrftoken=VPgY4sgd2nlEFZYxv9i5xl9cSwbXA4fo"]
             request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
             let session = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
@@ -133,12 +136,14 @@ class login_paeban{
                 }
                 else{
                     let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-                    if ouput != "log in fail"{
+                    if ouput != "login fail"{
                         if let httpResponse = response as? HTTPURLResponse {
+                            print(httpResponse.allHeaderFields["Set-Cookie"])
                             if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
-                                self.cookie = response_cookie
-                                if self.cookie != nil{
-                                    login_return_val = self.cookie
+                                
+                                cookie = response_cookie
+                                if cookie != nil{
+                                    login_return_val = cookie
                                 }
                                 else{
                                     login_return_val = "login_no"
@@ -149,7 +154,8 @@ class login_paeban{
                     else{
                         login_return_val = "login_no"
                     }
-                    //print(ouput)
+                    print("ouput")
+                    print(ouput)
                 }
                 
             })
@@ -159,7 +165,8 @@ class login_paeban{
                 sleep(1/10)
                 while_protect += 1
             }
-            //print(login_return_val)
+//            print("162_cookie")
+//            print(cookie)
             return login_return_val
             
         }
