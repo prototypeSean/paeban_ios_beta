@@ -10,17 +10,13 @@ import Foundation
 import Starscream
 
 class login_paeban{
-    var fb_ssesion:String
-    var cookie:String!
+    var fb_ssesion:String?
+    var cookie:String?
     
-    
-    init(fb_ssesion:String){
-        self.fb_ssesion = fb_ssesion
-    }
     
     func get_cookie() ->String{
         var login_return_val:String?
-        let url = "http://www.paeban.com/register-by-token/facebook/\(fb_ssesion)"
+        let url = "http://www.paeban.com/register-by-token/facebook/\(fb_ssesion!)"
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
         let session = URLSession.shared
@@ -58,6 +54,116 @@ class login_paeban{
         }
         //print(login_return_val)
         return login_return_val!
+    }
+    
+    func get_cookie_csrf() -> String? {
+        let url = "https://www.paeban.com/login_paeban/"
+        
+        var login_return_val:String?
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "GET"
+        
+        request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
+            if error != nil{
+                print("連線錯誤\(error)")
+            }
+            else{
+                let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                if ouput != "log in fail"{
+                    //print(response)
+                    if let httpResponse = response as? HTTPURLResponse {
+                        if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
+                            self.cookie = response_cookie
+                            print(self.cookie)
+                            if self.cookie != nil{
+                                login_return_val = self.cookie
+                            }
+                            else{
+                                login_return_val = "login_no"
+                            }
+                        }
+                        else if httpResponse.statusCode == 200{
+                            login_return_val = ouput! as String
+                        }
+                        else{login_return_val = "login_no"}
+                        
+                    }
+                    else{login_return_val = "login_no"}
+                }
+                else{
+                    login_return_val = "login_no"
+                }
+                //print(ouput)
+            }
+            
+        })
+        task.resume()
+        var while_protect:Int = 0
+        while login_return_val == nil || while_protect < 10{
+            sleep(1/10)
+            while_protect += 1
+        }
+        return login_return_val
+    }
+    
+    
+    
+    func get_cookie_by_IDPW(id:String,pw:String) -> String?{
+        let csrf_state = get_cookie_csrf()
+        print(csrf_state)
+        if csrf_state != "login_no"{
+            let url = "https://www.paeban.com/login_paeban/"
+            let sendDic:NSDictionary = ["username":id,"password":pw]
+            let sendData = "data=\(json_dumps2(sendDic)!)"
+            var login_return_val:String?
+            var request = URLRequest(url: URL(string: url)!)
+            request.httpMethod = "POST"
+            request.httpBody = sendData.data(using: String.Encoding.utf8)
+            let csrf = getCSRFToken(cookie!)
+            request.allHTTPHeaderFields = ["Cookie":cookie!]
+            request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
+            request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
+            let session = URLSession.shared
+            let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
+                if error != nil{
+                    print("連線錯誤\(error)")
+                }
+                else{
+                    let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                    if ouput != "log in fail"{
+                        if let httpResponse = response as? HTTPURLResponse {
+                            if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
+                                self.cookie = response_cookie
+                                if self.cookie != nil{
+                                    login_return_val = self.cookie
+                                }
+                                else{
+                                    login_return_val = "login_no"
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        login_return_val = "login_no"
+                    }
+                    //print(ouput)
+                }
+                
+            })
+            task.resume()
+            var while_protect:Int = 0
+            while login_return_val == nil || while_protect < 100{
+                sleep(1/10)
+                while_protect += 1
+            }
+            //print(login_return_val)
+            return login_return_val
+            
+        }
+        return "login_no"
     }
 }
 
