@@ -48,7 +48,8 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     @IBAction func loninBottom(_ sender: AnyObject) {
         fbLogIn()
     }
-    
+    @IBOutlet weak var fbButtonOutlet: UIButton!
+        
     @IBAction func singIn(_ sender: AnyObject) {
     }
     
@@ -76,6 +77,18 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         }
         loginId.delegate = self
         logInPw.delegate = self
+        
+        BtnOutlet()
+    }
+    
+    func BtnOutlet()  {
+        fbButtonOutlet.layer.borderWidth = 1
+        fbButtonOutlet.layer.cornerRadius = 2
+        fbButtonOutlet.layer.borderColor = UIColor.orange.cgColor
+        loginId.layer.borderWidth = 1
+        loginId.layer.borderColor = UIColor.orange.cgColor
+        logInPw.layer.borderWidth = 1
+        logInPw.layer.borderColor = UIColor.orange.cgColor
     }
     func get_cookie_csrf_report(state:String,setcookie:String){
         if state == "login_yes"{
@@ -106,6 +119,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
                 print("FB LogIn Error!")
             }
         })
+        
     }
     func getFBUserData(){
         if((FBSDKAccessToken.current()) != nil){
@@ -252,10 +266,29 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         print("data")
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-
-        loginSvrollView.center = CGPoint(x:loginSvrollView.bounds.maxX/2,y:loginSvrollView.bounds.maxY/2 - textField.center.y + 200)
-        //print(textField.restorationIdentifier)
+    // 監聽鍵盤出現上滑
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                kb_h = keyboardSize.height
+                self.view.frame.origin.y -= (keyboardSize.height)
+//                print("上高度＝",keyboardSize.height)
+//                print("上kb_h=",kb_h)
+            }
+        }
+    }
+    
+    // 這個變數用來儲存上去時候的鍵盤高度，收起鍵盤時用他，不然會亂跳
+    var kb_h:CGFloat = 0.0
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += kb_h
+//                print("下高度＝",keyboardSize.height)
+//                print("下kb_h=",kb_h)
+            }
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool{

@@ -248,6 +248,7 @@
 				931FF18F1CFEA848000E7F8A /* Resources */,
 				0B5289B87074BD2A83187920 /* [CP] Embed Pods Frameworks */,
 				B538110DA63B5F7B3096A61A /* [CP] Copy Pods Resources */,
+				21A30CA7B3EDC133B48418FC /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -270,7 +271,7 @@
 				TargetAttributes = {
 					931FF1901CFEA848000E7F8A = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 4HS2232BLN;
+						DevelopmentTeam = 473T6T639P;
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -332,6 +333,21 @@
 			inputPaths = (
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		21A30CA7B3EDC133B48418FC /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,6 +476,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -501,6 +518,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -515,6 +533,7 @@
 				CODE_SIGN_ENTITLEMENTS = paeban_ios_beta/paeban_ios_beta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 473T6T639P;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/paeban_ios_beta",
@@ -522,7 +541,7 @@
 				INFOPLIST_FILE = paeban_ios_beta/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = prototype.sean;
+				PRODUCT_BUNDLE_IDENTIFIER = a110482;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -540,6 +559,7 @@
 				CODE_SIGN_ENTITLEMENTS = paeban_ios_beta/paeban_ios_beta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 473T6T639P;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/paeban_ios_beta",
@@ -547,7 +567,7 @@
 				INFOPLIST_FILE = paeban_ios_beta/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = prototype.sean;
+				PRODUCT_BUNDLE_IDENTIFIER = a110482;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 3.0;
