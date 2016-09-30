@@ -53,11 +53,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     }
     
     @IBAction func logIn(_ sender: AnyObject) {
-        
-        if loginId.text! != "" && logInPw.text! != ""{
-            print("press_logIn")
-            paeban_login_with_IDPW(id:loginId.text!,pw:logInPw.text!)
-        }
+        paeban_login_with_IDPW(id:loginId.text!,pw:logInPw.text!)
     }
     
     @IBOutlet weak var loginId: UITextField!
@@ -150,7 +146,21 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     
     
     func paeban_login_with_IDPW(id:String,pw:String){
-        login_paeban_obj.get_cookie_by_IDPW(id: id, pw: pw)
+        print("開始登入...")
+        if id != "" && pw != ""{
+            login_paeban_obj.get_cookie_by_IDPW(id: id, pw: pw)
+        }
+        else{
+            let alert = UIAlertController(title: "警告", message: "帳號或密碼未輸入", preferredStyle: UIAlertControllerStyle.alert)
+            
+            alert.addAction(UIAlertAction(title:"確認",style: UIAlertActionStyle.default, handler: { (target) in
+                //code
+            }))
+            self.present(alert, animated: true, completion: {
+                //code
+            })
+        }
+        
     }
     func get_cookie_by_IDPW_report(state:String,setcookie:String){
         if state == "timeout"{
@@ -259,10 +269,8 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             loginSvrollView.center = CGPoint(x:loginSvrollView.bounds.maxX/2,y:loginSvrollView.bounds.maxY/2)
             if logInPw.text == "" || loginId.text == ""{
                 //帳號或密碼為空
-                let alert = UIAlertController(title: "智障!!", message: "你他媽帳號打了嗎", preferredStyle: UIAlertControllerStyle.alert)
-                 alert.addAction(UIAlertAction(title: "我承認我是智障", style: UIAlertActionStyle.default, handler: { (target) in
-                    self.loginId.text = ""
-                    self.logInPw.text = ""
+                let alert = UIAlertController(title: "警告", message: "帳號或密碼未輸入", preferredStyle: UIAlertControllerStyle.alert)
+                 alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (target) in
                     self.loginId.becomeFirstResponder()
                  }))
                 self.present(alert, animated: true, completion: {
@@ -270,7 +278,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
                 })
             }
             else{
-                //開始登入
+                paeban_login_with_IDPW(id:loginId.text!,pw:logInPw.text!)
             }
         }
         
