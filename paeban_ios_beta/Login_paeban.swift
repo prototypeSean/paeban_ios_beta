@@ -9,13 +9,19 @@
 import Foundation
 import Starscream
 
+@objc protocol login_paeban_delegate {
+    @objc optional func get_cookie_login_report(state:String)
+    @objc optional func get_cookie_csrf_report(state:String,setcookie:String)
+    @objc optional func get_cookie_by_IDPW_report(state:String,setcookie:String)
+}
+
+
 class login_paeban{
     var fb_ssesion:String?
+    var delegate:login_paeban_delegate?
+    var csrf_string = ""
     
-    
-    
-    func get_cookie() ->String{
-        var login_return_val:String?
+    func get_cookie(){
         let url = "http://www.paeban.com/register-by-token/facebook/\(fb_ssesion!)"
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
@@ -29,42 +35,26 @@ class login_paeban{
                 if ouput != "log in fail"{
                     if let httpResponse = response as? HTTPURLResponse {
                         if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
-                            cookie = response_cookie
-                            if cookie != nil{
-                                login_return_val = cookie
-                            }
-                            else{
-                                login_return_val = "login_no"
-                            }
+                            self.delegate?.get_cookie_login_report!(state: response_cookie)
                         }
                     }
                 }
                 else{
-                    login_return_val = "login_no"
+                    self.delegate?.get_cookie_login_report!(state: "login_no")
                 }
                 //print("回應內容物： \(ouput)")
             }
             
         })
         task.resume()
-        var while_protect:Int = 0
-        while login_return_val == nil || while_protect < 100{
-            sleep(1/10)
-            while_protect += 1
-        }
-        //print(login_return_val)
-        return login_return_val!
     }
     
-    func get_cookie_csrf() -> String? {
+    func get_cookie_csrf(){
         let url = "https://www.paeban.com/login_paeban/"
-        
-        var login_return_val:String?
+
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
-        //let sendData = "csrfmiddlewaretoken=VPgY4sgd2nlEFZYxv9i5xl9cSwbXA4fo;"
-        //request.allHTTPHeaderFields = ["Cookie":"csrftoken=VPgY4sgd2nlEFZYxv9i5xl9cSwbXA4fo"]
-        //request.httpBody = sendData.data(using: String.Encoding.utf8)
+        
         request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
         let session = URLSession.shared
         
@@ -74,61 +64,54 @@ class login_paeban{
             }
             else{
                 let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-                if ouput != "log in fail"{
-                    if let httpResponse = response as? HTTPURLResponse {
-                        print("========print(response)========")
-                        print(response)
-                        if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
-                            cookie = response_cookie
-                            if cookie != nil{
-                                login_return_val = cookie
-                            }
-                            else{
-                                login_return_val = "login_no"
-                            }
-                        }
-                        else if httpResponse.statusCode == 200{
-                            login_return_val = ouput! as String
-                            //cookie = "csrftoken=\(ouput!)"
-                        }
-                        else{login_return_val = "login_no"}
-                        
+                if let httpResponse = response as? HTTPURLResponse {
+                    //                        print("========print(response)========")
+                    //                        print(response)
+                    if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
+                        self.delegate?.get_cookie_csrf_report!(state: ouput as! String,setcookie:response_cookie)
                     }
-                    else{login_return_val = "login_no"}
+                    else{
+                        self.delegate?.get_cookie_csrf_report!(state: "login_fail",setcookie:"")
+                    }
+                    
                 }
                 else{
-                    login_return_val = "login_no"
+                    self.delegate?.get_cookie_csrf_report!(state: "login_fail",setcookie:"")
                 }
-                print("=======output=======")
-                print(ouput)
+                
+                //print(ouput)
             }
             
         })
         task.resume()
-        var while_protect:Int = 0
-        while login_return_val == nil || while_protect < 10{
-            sleep(1/10)
-            while_protect += 1
-        }
-        return login_return_val
     }
     
     
     
-    func get_cookie_by_IDPW(id:String,pw:String) -> String?{
-        //let csrf_state = get_cookie_csrf()
-        let csrf_state = "login_no"
-        if csrf_state == "login_no"{
+    func get_cookie_by_IDPW(id:String,pw:String){
+        if cookie == nil || getCSRFToken(cookie!)! == ""{
+            get_cookie_csrf()
+        }
+        var timeLimit = 10000 //10s
+        while cookie == nil || getCSRFToken(cookie!)! == ""{
+            usleep(10000) //10ms
+            timeLimit -= 10
+            if timeLimit < 0{
+                delegate?.get_cookie_by_IDPW_report!(state: "timeout", setcookie: "")
+                break
+            }
+        }
+        if cookie != nil && getCSRFToken(cookie!)! != ""{
             let url = "https://www.paeban.com/login_paeban/"
             let sendDic:NSDictionary = ["username":id,"password":pw]
-            let sendData = "csrfmiddlewaretoken=VPgY4sgd2nlEFZYxv9i5xl9cSwbXA4fo;data=\(json_dumps2(sendDic)!)"
-            var login_return_val:String?
+            let sendData = "data=\(json_dumps2(sendDic)!)"
             var request = URLRequest(url: URL(string: url)!)
             request.httpMethod = "POST"
             request.httpBody = sendData.data(using: String.Encoding.utf8)
-            
-            request.allHTTPHeaderFields = ["Cookie":"csrftoken=VPgY4sgd2nlEFZYxv9i5xl9cSwbXA4fo"]
+            request.allHTTPHeaderFields = ["Cookie":cookie!]
             request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
+            let csrf = getCSRFToken(cookie!)
+            request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
             let session = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
                 if error != nil{
@@ -136,41 +119,28 @@ class login_paeban{
                 }
                 else{
                     let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-                    if ouput != "login fail"{
+                    if ouput != "login_no"{
                         if let httpResponse = response as? HTTPURLResponse {
                             print(httpResponse.allHeaderFields["Set-Cookie"])
                             if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
-                                
-                                cookie = response_cookie
-                                if cookie != nil{
-                                    login_return_val = cookie
-                                }
-                                else{
-                                    login_return_val = "login_no"
-                                }
+                                //cookie = response_cookie
+                                self.delegate?.get_cookie_by_IDPW_report!(state: "login_yes", setcookie: response_cookie)
                             }
                         }
                     }
                     else{
-                        login_return_val = "login_no"
+                        self.delegate?.get_cookie_by_IDPW_report!(state: "login_no", setcookie: "")
                     }
-                    print("ouput")
-                    print(ouput)
+                    //print("ouput")
                 }
                 
             })
             task.resume()
-            var while_protect:Int = 0
-            while login_return_val == nil || while_protect < 100{
-                sleep(1/10)
-                while_protect += 1
-            }
-//            print("162_cookie")
-//            print(cookie)
-            return login_return_val
-            
         }
-        return "login_no"
+        
+        
+        
+        
     }
 }
 

@@ -41,7 +41,7 @@ public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 
 
 
-class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
+class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     var firstConnect = true
     
     
@@ -66,26 +66,35 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
     
     @IBOutlet weak var loginSvrollView: UIScrollView!
     
+    let login_paeban_obj = login_paeban()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        login_paeban_obj.delegate = self
         if let _ = FBSDKAccessToken.current(){
             paeban_login()
         }
         else{
-            let login_obj = login_paeban()
-            let login_result = login_obj.get_cookie_csrf()
-            
-            if login_result != "login_no"{
-                socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
-                socket.headers["Cookie"] = cookie
-                socket.delegate = self
-                ws_connect_fun(socket)
-            }
+            login_paeban_obj.get_cookie_csrf()
         }
         loginId.delegate = self
         logInPw.delegate = self
+    }
+    func get_cookie_csrf_report(state:String,setcookie:String){
+        if state == "login_yes"{
+            cookie = setcookie
+            socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            socket.headers["Cookie"] = cookie
+            socket.delegate = self
+            ws_connect_fun(socket)
+        }
+        else if state == "login_no"{
+            cookie = setcookie
+        }
+        else{
+            print(state)
+        }
     }
     
     func fbLogIn() {
@@ -117,33 +126,49 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
     }
     func paeban_login(){
         if let fb_session = FBSDKAccessToken.current(){
-            let login_obj = login_paeban()
-            login_obj.fb_ssesion = fb_session.tokenString
-            cookie = login_obj.get_cookie()
-            if cookie != "login_no"{
-                print("登入成功!!!")
-                socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
-                socket.headers["Cookie"] = cookie
-                socket.delegate = self
-                ws_connect_fun(socket)
-            }
-            else{
-                print("登入失敗!!!")
-            }
-            
+            login_paeban_obj.fb_ssesion = fb_session.tokenString
+            login_paeban_obj.get_cookie()
         }
         else{
             print("還沒登入ＦＢ!!!")
         }
     }
+    func get_cookie_login_report(state:String) {
+        if state != "login_no"{
+            print("登入成功!!!")
+            cookie = state
+            socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            socket.headers["Cookie"] = cookie
+            socket.delegate = self
+            ws_connect_fun(socket)
+        }
+        else{
+            print("登入失敗!!!")
+        }
+    }
+    
+    
     
     func paeban_login_with_IDPW(id:String,pw:String){
-        let login_obj = login_paeban()
-        let login_sult = login_obj.get_cookie_by_IDPW(id: id, pw: pw)
-        
-        if login_sult != "login_no"{
-            print("登入成功!!!")
-            print(cookie)
+        login_paeban_obj.get_cookie_by_IDPW(id: id, pw: pw)
+    }
+    func get_cookie_by_IDPW_report(state:String,setcookie:String){
+        if state == "timeout"{
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "錯誤", message: "連線逾時，是否重新連線", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "是", style: UIAlertActionStyle.default, handler: { (target) in
+                    self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
+                }))
+                alert.addAction(UIAlertAction(title:"否",style: UIAlertActionStyle.default, handler: { (target) in
+                    //code
+                }))
+                self.present(alert, animated: true, completion: {
+                    //code
+                })
+            }
+        }
+        else if state == "login_yes"{
+            cookie = setcookie
             socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
             socket.headers["Cookie"] = cookie
             socket.delegate = self
@@ -151,6 +176,16 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
         }
         else{
             print("登入失敗")
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "錯誤", message: "帳號或密碼錯誤", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (target) in
+                    self.logInPw.text = ""
+                    self.loginId.becomeFirstResponder()
+                }))
+                self.present(alert, animated: true, completion: {
+                    //code
+                })
+            }
         }
     }
     
