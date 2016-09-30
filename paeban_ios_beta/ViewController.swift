@@ -61,7 +61,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
 
     @IBOutlet weak var logInPw: UITextField!
     
-    @IBOutlet weak var loginSvrollView: UIScrollView!
+    @IBOutlet weak var shiftView: UIView!
     
     let login_paeban_obj = login_paeban()
     
@@ -75,20 +75,16 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         else{
             login_paeban_obj.get_cookie_csrf()
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+
         loginId.delegate = self
         logInPw.delegate = self
         
         BtnOutlet()
-    }
-    
-    func BtnOutlet()  {
-        fbButtonOutlet.layer.borderWidth = 1
-        fbButtonOutlet.layer.cornerRadius = 2
-        fbButtonOutlet.layer.borderColor = UIColor.orange.cgColor
-        loginId.layer.borderWidth = 1
-        loginId.layer.borderColor = UIColor.orange.cgColor
-        logInPw.layer.borderWidth = 1
-        logInPw.layer.borderColor = UIColor.orange.cgColor
     }
     func get_cookie_csrf_report(state:String,setcookie:String){
         if state == "login_yes"{
@@ -104,6 +100,16 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         else{
             print(state)
         }
+    }
+    
+    func BtnOutlet()  {
+        fbButtonOutlet.layer.borderWidth = 1
+        fbButtonOutlet.layer.cornerRadius = 2
+        fbButtonOutlet.layer.borderColor = UIColor.orange.cgColor
+        loginId.layer.borderWidth = 1
+        loginId.layer.borderColor = UIColor.orange.cgColor
+        logInPw.layer.borderWidth = 1
+        logInPw.layer.borderColor = UIColor.orange.cgColor
     }
     
     func fbLogIn() {
@@ -291,34 +297,50 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         }
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
-        if textField.restorationIdentifier == "loginId"{
-            //code
-            textField.resignFirstResponder()
-            logInPw.becomeFirstResponder()
-        }
-        else if textField.restorationIdentifier == "loginPw"{
-            textField.resignFirstResponder()
-            loginSvrollView.center = CGPoint(x:loginSvrollView.bounds.maxX/2,y:loginSvrollView.bounds.maxY/2)
-            if logInPw.text == "" || loginId.text == ""{
-                //帳號或密碼為空
-                let alert = UIAlertController(title: "警告", message: "帳號或密碼未輸入", preferredStyle: UIAlertControllerStyle.alert)
-                 alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (target) in
-                    self.loginId.becomeFirstResponder()
-                 }))
-                self.present(alert, animated: true, completion: {
-                    //code
-                })
-            }
-            else{
-                paeban_login_with_IDPW(id:loginId.text!,pw:logInPw.text!)
-            }
-        }
-        
-        return true
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
-    
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//
+//        loginSvrollView.center = CGPoint(x:loginSvrollView.frame.maxX/2,y:loginSvrollView.frame.maxY/2 - textField.center.y + 200)
+//        //print(textField.restorationIdentifier)
+//    }
+//    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
+//        if textField.restorationIdentifier == "loginId"{
+//            //code
+//            textField.resignFirstResponder()
+//            logInPw.becomeFirstResponder()
+//        }
+//        else if textField.restorationIdentifier == "loginPw"{
+//            textField.resignFirstResponder()
+//            loginSvrollView.center = CGPoint(x:loginSvrollView.frame.maxX/2,y:loginSvrollView.frame.maxY/2)
+//            if logInPw.text == "" || loginId.text == ""{
+//                //帳號或密碼為空
+//                let alert = UIAlertController(title: "智障!!", message: "你他媽帳號打了嗎", preferredStyle: UIAlertControllerStyle.alert)
+//                alert.addAction(UIAlertAction(title: "我承認我是智障", style: UIAlertActionStyle.default, handler: { (target) in
+//                    self.loginId.text = ""
+//                    self.logInPw.text = ""
+//                    self.loginId.becomeFirstResponder()
+//                }))
+//                self.present(alert, animated: true, completion: {
+//                    //code
+//                })
+//            }
+//            else{
+//                //開始登入
+//            }
+//        }
+//        
+//        return true
+//    }
+//    
+//    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool{
+//        print(textField.restorationIdentifier)
+//        return true
+//    }
 }
 
 
