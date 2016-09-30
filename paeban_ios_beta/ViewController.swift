@@ -49,7 +49,8 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
     @IBAction func loninBottom(_ sender: AnyObject) {
         fbLogIn()
     }
-    
+    @IBOutlet weak var fbButtonOutlet: UIButton!
+        
     @IBAction func singIn(_ sender: AnyObject) {
     }
     
@@ -60,7 +61,6 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
     @IBOutlet weak var loginId: UITextField!
 
     @IBOutlet weak var logInPw: UITextField!
-    
     
     @IBOutlet weak var shiftView: UIView!
     
@@ -78,6 +78,18 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
 
         loginId.delegate = self
         logInPw.delegate = self
+        
+        BtnOutlet()
+    }
+    
+    func BtnOutlet()  {
+        fbButtonOutlet.layer.borderWidth = 1
+        fbButtonOutlet.layer.cornerRadius = 2
+        fbButtonOutlet.layer.borderColor = UIColor.orange.cgColor
+        loginId.layer.borderWidth = 1
+        loginId.layer.borderColor = UIColor.orange.cgColor
+        logInPw.layer.borderWidth = 1
+        logInPw.layer.borderColor = UIColor.orange.cgColor
     }
     
     func fbLogIn() {
@@ -93,6 +105,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
                 print("FB LogIn Error!")
             }
         })
+        
     }
     func getFBUserData(){
         if((FBSDKAccessToken.current()) != nil){
@@ -113,7 +126,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate{
             cookie = login_obj.get_cookie()
             if cookie != "login_no"{
                 print("登入成功!!!")
-                socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+                socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
                 socket.headers["Cookie"] = cookie
                 socket.delegate = self
                 ws_connect_fun(socket)
