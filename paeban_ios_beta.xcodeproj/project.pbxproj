@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		73E59CAE7906529E9934E916 /* Pods_paeban_ios_beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DA9AB49DFA16020BF975A80 /* Pods_paeban_ios_beta.framework */; };
 		9301F6041D1D16F900D1F8C0 /* TopicSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9301F6031D1D16F900D1F8C0 /* TopicSearchBar.swift */; };
 		9301F6061D1D1A2800D1F8C0 /* TopicSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9301F6051D1D1A2800D1F8C0 /* TopicSearchController.swift */; };
 		930983E21D0166F5005B8E3B /* MyTopics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930983E11D0166F5005B8E3B /* MyTopics.swift */; };
@@ -31,7 +32,6 @@
 		932A00F51D0025AC0036E1EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 932A00F41D0025AC0036E1EA /* Assets.xcassets */; };
 		936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */; };
 		93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */; };
-		B476C3708840453BEC5DD446 /* Pods_paeban_ios_beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81EACB9BB003ED2F71D8DC6A /* Pods_paeban_ios_beta.framework */; };
 		CF13867C1D98C53C00E70990 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF13867B1D98C53C00E70990 /* StoreKit.framework */; };
 		CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF13867D1D98CE0600E70990 /* LoginScrollView.swift */; };
 		CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */; };
@@ -48,9 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0AD9DDAF145078799E7A5AB5 /* Pods-paeban_ios_beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.debug.xcconfig"; sourceTree = "<group>"; };
-		31B957F7F077F2F764A7EFC0 /* Pods-paeban_ios_beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.release.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.release.xcconfig"; sourceTree = "<group>"; };
-		81EACB9BB003ED2F71D8DC6A /* Pods_paeban_ios_beta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_paeban_ios_beta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DA9AB49DFA16020BF975A80 /* Pods_paeban_ios_beta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_paeban_ios_beta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9301F6031D1D16F900D1F8C0 /* TopicSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSearchBar.swift; sourceTree = "<group>"; };
 		9301F6051D1D1A2800D1F8C0 /* TopicSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSearchController.swift; sourceTree = "<group>"; };
 		930983E11D0166F5005B8E3B /* MyTopics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopics.swift; sourceTree = "<group>"; };
@@ -77,6 +75,8 @@
 		932A00F41D0025AC0036E1EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopicViewController.swift; sourceTree = "<group>"; };
 		93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		BAC8DE25847EF16A13E40E0D /* Pods-paeban_ios_beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.release.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.release.xcconfig"; sourceTree = "<group>"; };
+		CCB2ABAD6DC20E3AE8B85FBB /* Pods-paeban_ios_beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.debug.xcconfig"; sourceTree = "<group>"; };
 		CF13867B1D98C53C00E70990 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CF13867D1D98CE0600E70990 /* LoginScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScrollView.swift; sourceTree = "<group>"; };
 		CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendChatUpViewController.swift; sourceTree = "<group>"; };
@@ -98,8 +98,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B476C3708840453BEC5DD446 /* Pods_paeban_ios_beta.framework in Frameworks */,
 				CF13867C1D98C53C00E70990 /* StoreKit.framework in Frameworks */,
+				73E59CAE7906529E9934E916 /* Pods_paeban_ios_beta.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				CF13867B1D98C53C00E70990 /* StoreKit.framework */,
-				81EACB9BB003ED2F71D8DC6A /* Pods_paeban_ios_beta.framework */,
+				5DA9AB49DFA16020BF975A80 /* Pods_paeban_ios_beta.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -120,8 +120,8 @@
 			children = (
 				931FF1931CFEA848000E7F8A /* paeban_ios_beta */,
 				931FF1921CFEA848000E7F8A /* Products */,
-				CA99BC61EA123450AAA5E56F /* Pods */,
 				1741F3FC9375CBC3750A7722 /* Frameworks */,
+				F5E53891315C99A863EB47FB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -219,20 +219,20 @@
 			name = recent;
 			sourceTree = "<group>";
 		};
-		CA99BC61EA123450AAA5E56F /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				0AD9DDAF145078799E7A5AB5 /* Pods-paeban_ios_beta.debug.xcconfig */,
-				31B957F7F077F2F764A7EFC0 /* Pods-paeban_ios_beta.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		CF13867A1D98C43D00E70990 /* setting */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = setting;
+			sourceTree = "<group>";
+		};
+		F5E53891315C99A863EB47FB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CCB2ABAD6DC20E3AE8B85FBB /* Pods-paeban_ios_beta.debug.xcconfig */,
+				BAC8DE25847EF16A13E40E0D /* Pods-paeban_ios_beta.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,13 +242,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 931FF1A31CFEA848000E7F8A /* Build configuration list for PBXNativeTarget "paeban_ios_beta" */;
 			buildPhases = (
-				CDC0217E16800E4CAA3D07AB /* [CP] Check Pods Manifest.lock */,
+				FDD9D1E92C09F90E00D681B8 /* [CP] Check Pods Manifest.lock */,
 				931FF18D1CFEA848000E7F8A /* Sources */,
 				931FF18E1CFEA848000E7F8A /* Frameworks */,
 				931FF18F1CFEA848000E7F8A /* Resources */,
-				0B5289B87074BD2A83187920 /* [CP] Embed Pods Frameworks */,
-				B538110DA63B5F7B3096A61A /* [CP] Copy Pods Resources */,
-				21A30CA7B3EDC133B48418FC /* Embed Pods Frameworks */,
+				41E42CA4820904FB7245F8CB /* [CP] Embed Pods Frameworks */,
+				264BF2B6C259312DF14327C2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -325,37 +324,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0B5289B87074BD2A83187920 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		21A30CA7B3EDC133B48418FC /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B538110DA63B5F7B3096A61A /* [CP] Copy Pods Resources */ = {
+		264BF2B6C259312DF14327C2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -370,7 +339,22 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CDC0217E16800E4CAA3D07AB /* [CP] Check Pods Manifest.lock */ = {
+		41E42CA4820904FB7245F8CB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FDD9D1E92C09F90E00D681B8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -525,7 +509,7 @@
 		};
 		931FF1A41CFEA848000E7F8A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0AD9DDAF145078799E7A5AB5 /* Pods-paeban_ios_beta.debug.xcconfig */;
+			baseConfigurationReference = CCB2ABAD6DC20E3AE8B85FBB /* Pods-paeban_ios_beta.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -551,7 +535,7 @@
 		};
 		931FF1A51CFEA848000E7F8A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 31B957F7F077F2F764A7EFC0 /* Pods-paeban_ios_beta.release.xcconfig */;
+			baseConfigurationReference = BAC8DE25847EF16A13E40E0D /* Pods-paeban_ios_beta.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
