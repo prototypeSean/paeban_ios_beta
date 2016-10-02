@@ -11,12 +11,13 @@ import UIKit
 class TopicNavViewController: UINavigationController {
     let gradientLayer = CAGradientLayer()
     
+    
     fileprivate func imageLayerForGradientBackground() -> UIImage {
         
         var updatedFrame = self.navigationBar.bounds
         // 包含上層狀態列
         updatedFrame.size.height += 20
-        let layer = CAGradientLayer.gradientLayerForBounds(updatedFrame)
+        let layer = CAGradientLayer.gradientLayerForBounds(bounds: updatedFrame)
         UIGraphicsBeginImageContext(layer.bounds.size)
         layer.render(in: UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -32,6 +33,7 @@ class TopicNavViewController: UINavigationController {
         self.navigationBar.titleTextAttributes = fontDictionary
         self.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
 
+        self.tabBarController?.tabBar.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         // 做漸層
 //        self.navigationBar.barTintColor = UIColor.whiteColor()
 //        
@@ -65,7 +67,7 @@ class TopicNavViewController: UINavigationController {
 
 // 做漸層的圖層
 extension CAGradientLayer {
-    class func gradientLayerForBounds(_ bounds: CGRect) -> CAGradientLayer {
+    class func gradientLayerForBounds(bounds: CGRect) -> CAGradientLayer {
         let layer = CAGradientLayer()
         layer.frame = bounds
         let color1 = UIColor(red:1.00, green:0.32, blue:0.18, alpha:0.92).cgColor

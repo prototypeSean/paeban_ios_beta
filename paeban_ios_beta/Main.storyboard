@@ -49,7 +49,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="h7L-Xk-xM7"/>
                                 </constraints>
-                                <state key="normal" title="註冊"/>
+                                <state key="normal" title="註冊">
+                                    <color key="titleColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="singIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="03l-5u-5zo"/>
                                 </connections>
@@ -60,7 +62,9 @@
                                 <textInputTraits key="textInputTraits" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KaK-oj-Drk">
-                                <state key="normal" title="登入"/>
+                                <state key="normal" title="登入">
+                                    <color key="titleColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="logIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0is-vP-fdT"/>
                                 </connections>
@@ -76,7 +80,7 @@
                                     <constraint firstAttribute="height" constant="30" id="eeM-KR-Ihh"/>
                                 </constraints>
                                 <color key="tintColor" red="0.97647058823529409" green="0.40000000000000002" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="    Facebook 登入">
+                                <state key="normal" title="        Facebook 登入">
                                     <color key="titleColor" red="0.1803921568627451" green="0.25882352941176473" blue="0.54509803921568623" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -105,7 +109,7 @@
                             <constraint firstItem="uRB-xh-cEB" firstAttribute="width" secondItem="uRB-xh-cEB" secondAttribute="height" multiplier="1:2" id="Bgz-HO-lhe"/>
                             <constraint firstItem="fYI-m1-mw8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="20" symbolic="YES" id="CGA-KQ-SIe"/>
                             <constraint firstItem="8BY-go-BQQ" firstAttribute="leading" secondItem="tAR-u1-Ad2" secondAttribute="leading" id="CpO-iR-G8D"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="tAR-u1-Ad2" secondAttribute="bottom" constant="40" id="GoB-9q-tDE"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="tAR-u1-Ad2" secondAttribute="bottom" multiplier="1.05" constant="8" symbolic="YES" id="GoB-9q-tDE"/>
                             <constraint firstAttribute="trailingMargin" secondItem="jeK-d8-Y0o" secondAttribute="trailing" id="Jnw-mw-7cp"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="k3S-xV-Nns" secondAttribute="bottom" constant="20" id="JyI-xv-P4S"/>
                             <constraint firstAttribute="trailing" secondItem="fYI-m1-mw8" secondAttribute="trailing" constant="20" symbolic="YES" id="LDd-eX-kNN"/>
@@ -121,7 +125,7 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fYI-m1-mw8" secondAttribute="bottom" id="gG1-8e-kVn"/>
                             <constraint firstItem="fYI-m1-mw8" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="iK9-Q0-v2g"/>
                             <constraint firstItem="vTK-am-ezn" firstAttribute="bottom" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" id="jfQ-pn-EO9"/>
-                            <constraint firstItem="ZcH-yC-Ffy" firstAttribute="top" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" constant="25" id="lO9-bX-i2D"/>
+                            <constraint firstItem="ZcH-yC-Ffy" firstAttribute="top" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" constant="8" symbolic="YES" id="lO9-bX-i2D"/>
                             <constraint firstItem="jeK-d8-Y0o" firstAttribute="centerY" secondItem="tAR-u1-Ad2" secondAttribute="centerY" id="lnJ-d8-E9J"/>
                             <constraint firstItem="vTK-am-ezn" firstAttribute="height" secondItem="4Qt-oe-Dwj" secondAttribute="height" id="nBY-Bq-THL"/>
                             <constraint firstItem="jeK-d8-Y0o" firstAttribute="width" secondItem="KaK-oj-Drk" secondAttribute="width" id="rmD-Tr-dYA"/>
@@ -217,7 +221,7 @@
                                         <rect key="frame" x="0.0" y="92" width="600" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
-                                            <frame key="frameInset" width="600" height="79"/>
+                                            <frame key="frameInset" width="600" height="79.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="房主的暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPN-A9-vyF">
@@ -485,7 +489,7 @@
                     <navigationItem key="navigationItem" title="話題" id="vG6-IY-Ij6">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="ReK-Yd-Ykl">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fnu-D3-gBb">
-                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                <rect key="frame" x="311" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Setting"/>
                                 <connections>
@@ -894,7 +898,7 @@
         <!--我的-->
         <scene sceneID="OpS-3a-p5B">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vi6-O5-kqk" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vi6-O5-kqk" customClass="MytopicNavViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="我的" image="star" id="YHq-LB-c79">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
@@ -916,7 +920,7 @@
             </objects>
             <point key="canvasLocation" x="-3177" y="-1462"/>
         </scene>
-        <!--Friend Table View Controller-->
+        <!--好友-->
         <scene sceneID="XLp-Uj-GQc">
             <objects>
                 <tableViewController id="H5q-Ep-Az3" customClass="FriendTableViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
@@ -929,7 +933,7 @@
                                 <rect key="frame" x="0.0" y="92" width="414" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Rg-ol-xwy" id="UDL-7b-AkG">
-                                    <frame key="frameInset" width="414" height="89"/>
+                                    <frame key="frameInset" width="414" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="68K-5D-lvJ">
@@ -1099,13 +1103,13 @@
                             <outlet property="delegate" destination="H5q-Ep-Az3" id="OQ2-VR-zM9"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="i5i-Ra-d6o"/>
+                    <navigationItem key="navigationItem" title="好友" id="i5i-Ra-d6o"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKc-e9-cMH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2487.1999999999998" y="-742.5787106446777"/>
         </scene>
-        <!--Recent Table View Controller-->
+        <!--進行中-->
         <scene sceneID="xtc-d9-0Kc">
             <objects>
                 <tableViewController id="WZw-uQ-GWM" customClass="RecentTableViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
@@ -1118,7 +1122,7 @@
                                 <rect key="frame" x="0.0" y="92" width="414" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bxI-lp-hL8" id="c9i-8k-6tJ">
-                                    <frame key="frameInset" width="414" height="89"/>
+                                    <frame key="frameInset" width="414" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="g0Y-SQ-fYN">
@@ -1323,7 +1327,7 @@
                             <outlet property="delegate" destination="WZw-uQ-GWM" id="cEs-Ad-ePV"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="MhI-zc-ri9"/>
+                    <navigationItem key="navigationItem" title="進行中" id="MhI-zc-ri9"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oKu-0o-XaP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1443,7 +1447,7 @@
         <!--進行中-->
         <scene sceneID="0Ci-gQ-DgA">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="e3A-7T-QFd" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="e3A-7T-QFd" customClass="RecentNavViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="進行中" image="topic" id="Mxd-tt-wyN">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
@@ -1468,7 +1472,7 @@
         <!--好友-->
         <scene sceneID="yuG-qr-K20">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="v6M-cK-KOz" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="v6M-cK-KOz" customClass="FriendNavViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="好友" image="friends" id="N6e-fC-bcv">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
@@ -1768,6 +1772,6 @@
         <image name="topic" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wZO-VC-xmQ"/>
+        <segue reference="lxg-Ec-9Hp"/>
     </inferredMetricsTieBreakers>
 </document>
