@@ -75,17 +75,22 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         else{
             login_paeban_obj.get_cookie_csrf()
         }
+        
+
+        loginId.delegate = self
+        logInPw.delegate = self
+        find_user_kb_height()
+        BtnOutlet()
+    }
+    func find_user_kb_height(){
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
-
-        loginId.delegate = self
-        logInPw.delegate = self
-        
-        BtnOutlet()
     }
+    
+    
     func get_cookie_csrf_report(state:String,setcookie:String){
         if state == "login_yes"{
             cookie = setcookie
