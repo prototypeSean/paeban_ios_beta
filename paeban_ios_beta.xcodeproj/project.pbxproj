@@ -43,6 +43,7 @@
 		CF79265E1DA0E71D00821860 /* SingInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265D1DA0E71D00821860 /* SingInViewController.swift */; };
 		CF7926601DA0E74200821860 /* SingInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265F1DA0E74200821860 /* SingInModel.swift */; };
 		CF7926621DA0E78700821860 /* SingInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7926611DA0E78700821860 /* SingInView.swift */; };
+		CF7926641DA0EC0100821860 /* SingInScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7926631DA0EC0100821860 /* SingInScrollView.swift */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
 		CFCC8A851D78327800D5EDF6 /* RecentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */; };
 		CFCC8A891D78329C00D5EDF6 /* RecentTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */; };
@@ -91,6 +92,7 @@
 		CF79265D1DA0E71D00821860 /* SingInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInViewController.swift; sourceTree = "<group>"; };
 		CF79265F1DA0E74200821860 /* SingInModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInModel.swift; sourceTree = "<group>"; };
 		CF7926611DA0E78700821860 /* SingInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInView.swift; sourceTree = "<group>"; };
+		CF7926631DA0EC0100821860 /* SingInScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInScrollView.swift; sourceTree = "<group>"; };
 		CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = paeban_ios_beta.entitlements; sourceTree = "<group>"; };
 		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
 		CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewCell.swift; sourceTree = "<group>"; };
@@ -153,7 +155,6 @@
 				CF79265C1DA0E6E500821860 /* sing_in */,
 				93AEF2901D0141FB007FDE51 /* topic */,
 				93AEF28D1D0140DC007FDE51 /* myTopics */,
-				93AEF2911D01427D007FDE51 /* recent */,
 				93AEF28E1D01410A007FDE51 /* friends */,
 				93AEF28F1D01419D007FDE51 /* launchScreen */,
 				CF13867A1D98C43D00E70990 /* setting */,
@@ -175,6 +176,7 @@
 				CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */,
 				930983E11D0166F5005B8E3B /* MyTopics.swift */,
 				936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */,
+				93AEF2911D01427D007FDE51 /* recent */,
 			);
 			name = myTopics;
 			sourceTree = "<group>";
@@ -238,6 +240,7 @@
 			children = (
 				CF79265D1DA0E71D00821860 /* SingInViewController.swift */,
 				CF7926611DA0E78700821860 /* SingInView.swift */,
+				CF7926631DA0EC0100821860 /* SingInScrollView.swift */,
 				CF79265F1DA0E74200821860 /* SingInModel.swift */,
 			);
 			name = sing_in;
@@ -287,7 +290,7 @@
 				TargetAttributes = {
 					931FF1901CFEA848000E7F8A = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 473T6T639P;
+						DevelopmentTeam = 4HS2232BLN;
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -394,6 +397,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				930983E21D0166F5005B8E3B /* MyTopics.swift in Sources */,
+				CF7926641DA0EC0100821860 /* SingInScrollView.swift in Sources */,
 				932A00E51CFEBA460036E1EA /* ＨttpRequestCenter.swift in Sources */,
 				932A00F31CFEBA460036E1EA /* web_socket.swift in Sources */,
 				CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */,
@@ -537,7 +541,7 @@
 				CODE_SIGN_ENTITLEMENTS = paeban_ios_beta/paeban_ios_beta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 473T6T639P;
+				DEVELOPMENT_TEAM = 4HS2232BLN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/paeban_ios_beta",
@@ -563,7 +567,7 @@
 				CODE_SIGN_ENTITLEMENTS = paeban_ios_beta/paeban_ios_beta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 473T6T639P;
+				DEVELOPMENT_TEAM = 4HS2232BLN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/paeban_ios_beta",

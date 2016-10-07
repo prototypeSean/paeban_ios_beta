@@ -81,6 +81,8 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         logInPw.delegate = self
         find_user_kb_height()
         BtnOutlet()
+        // MARK: 飛行前移除
+        
     }
     func find_user_kb_height(){
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)

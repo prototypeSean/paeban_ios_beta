@@ -1,5 +1,5 @@
 //
-//  SingInView.swift
+//  SingInScrollView.swift
 //  paeban_ios_beta
 //
 //  Created by 工作用 on 2016/10/2.
@@ -8,7 +8,18 @@
 
 import UIKit
 
-class SingInView: UIView {
-    
+class SingInScrollView: UIScrollView {
+
+    func addImg(){
+        print("addImg")
+        
+    }
 
 }
+
+
+
+
+
+
+
