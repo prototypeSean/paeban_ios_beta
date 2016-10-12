@@ -113,6 +113,20 @@ func base64ToImage(_ encodedImageData:String) -> UIImage?{
     return decodedimage
 }
 
+func imageToBase64(image:UIImage, optional:String) -> String{
+    let imageData = UIImagePNGRepresentation(image)
+    // data:image/jpeg;base64,
+    let base64String = imageData?.base64EncodedString()
+    if optional == "withHeader"{
+        return "data:image/jpeg;base64," + base64String!
+    }
+    else{
+        return base64String!
+    }
+    
+}
+
+
 //正則匹配
 func regMatches(for regex: String, in text: String) -> [String] {
     

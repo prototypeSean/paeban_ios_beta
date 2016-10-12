@@ -14,6 +14,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var passWord_1: UITextField!
     @IBOutlet weak var passWord_2: UITextField!
+    @IBOutlet weak var firstname: UITextField!
 
     @IBAction func sentSinginData(_ sender: AnyObject) {
         sentSinginData()
@@ -75,6 +76,15 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         }
         else{return false}
     }
+    func checkFirstName(name:String) -> Bool{
+        if firstname.text! != ""{
+            if 2 <= name.characters.count && name.characters.count <= 20{
+                return true
+            }
+            else{return false}
+        }
+        else{return false}
+    }
     func checkAll() -> Bool {
         var checkAll = true
         if !checkEmail(mail:emailText.text!){
@@ -93,11 +103,46 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
             checkAll = false
             simpoAlert(reason: "性別未填")
         }
-        
+        else if !checkFirstName(name: firstname.text!){
+            checkAll = false
+            simpoAlert(reason: "暱稱未填或不符合限制")
+        }
         return checkAll
     }
     func sentSinginData(){
-        print(checkAll())
+        if checkAll(){
+            let base64String = imageToBase64(image: photoView!.imageViewTemp!.image!, optional: "withHeader")
+            let sendDic:NSDictionary = [
+                "email":emailText.text!,
+                "password":passWord_1.text!,
+                "first_name":firstname.text!,
+                "sex":selectGenderText.text!,
+                "img":"ssss"
+            ]
+            
+            HttpRequestCenter().sendSingData(send_dic: sendDic, inViewAct: { (returnDic:Dictionary<String, AnyObject>) in
+                let result = returnDic["result"] as! String
+                if result == "check_success"{
+                    let mailAlert = UIAlertController(title: "成功", message: "已發送註冊信", preferredStyle: UIAlertControllerStyle.alert)
+                    mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+                        DispatchQueue.main.async(execute: {
+                            self.dismiss(animated: true, completion: {
+                                //code
+                            })
+                        })
+                        
+                    }))
+                    self.present(mailAlert, animated: true, completion: {
+                        //code
+                    })
+                }
+                else{
+                    self.simpoAlert(reason: "email已被註冊")
+                }
+            })
+        }
+        
+        
     }
     
     // override

@@ -135,6 +135,16 @@ class HttpRequestCenter{
         }
         
     }
+    func sendSingData(send_dic:NSDictionary,inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
+        let url = "https://www.paeban.com/sing_in/"
+        let jsonData = json_dumps2(send_dic)
+        let sendData = "mode=final_check;data=\(jsonData!)"
+        ajax(url, sendDate: sendData) { (returnDic) in
+            inViewAct(returnDic)
+        }
+    }
+    
+    
     // MARK:================私有函數===============
     
     // MARK:轉換為Topic的標準格式

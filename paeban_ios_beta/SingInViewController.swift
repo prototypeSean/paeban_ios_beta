@@ -69,6 +69,7 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     // delegate -> UIScrollViewDelegate
 
+    
 }
 
 

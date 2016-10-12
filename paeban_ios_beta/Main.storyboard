@@ -1544,7 +1544,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1eb-1c-c6Q">
-                                <frame key="frameInset" minX="141" minY="388" width="92" height="80"/>
+                                <frame key="frameInset" minX="141" minY="441" width="92" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.56720009429999996" green="1" blue="0.67755557570000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="送出"/>
@@ -1552,6 +1552,14 @@
                                     <action selector="sentSinginData:" destination="w4R-P3-6jz" eventType="touchUpInside" id="dlB-Vk-hhJ"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k98-Az-0Hy">
+                                <frame key="frameInset" minX="117" minY="388" width="140" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1563,6 +1571,7 @@
                     </view>
                     <connections>
                         <outlet property="emailText" destination="mtB-Gn-MRe" id="c1i-yB-GW9"/>
+                        <outlet property="firstname" destination="k98-Az-0Hy" id="5Hz-cb-fkx"/>
                         <outlet property="passWord_1" destination="obm-Rg-mqk" id="i74-Lj-uOn"/>
                         <outlet property="passWord_2" destination="jbs-NY-LVB" id="ApQ-Z7-10D"/>
                         <outlet property="selectGenderText" destination="P7a-KO-Xh0" id="XLB-nn-Ah2"/>
