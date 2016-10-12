@@ -10,6 +10,7 @@ import UIKit
 
 class SingInViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     let scrollView = UIScrollView()
+    let singInModel = SingInModel()
     var imageViewTemp:UIImageView?
     
     
@@ -22,8 +23,10 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
+    
+    
     func addClientImg(img:UIImage){
-        let imageView = UIImageView(image: resizeImage(image: img, newWidth: 50))
+        let imageView = UIImageView(image: singInModel.resizeImage(image: img, newWidth: 50))
         imageViewTemp = imageView
         imageView.frame = view.bounds
         view.addSubview(imageView)
@@ -52,17 +55,6 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
     
-    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
-        
-        let scale = newWidth / image.size.width
-        let newHeight = image.size.height * scale
-        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
-        image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage! 
-    }
     
     // delegate -> UIImagePickerControllerDelegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){

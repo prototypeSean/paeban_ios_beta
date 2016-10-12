@@ -30,7 +30,7 @@ class FriendChatUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setImage()
+        //setImage()
         topicTitleContent.text = clientName
         myPhoto.image = setImg
     }
@@ -50,6 +50,8 @@ class FriendChatUpViewController: UIViewController {
 //        }
     }
     func getPriMsgHistoryData(){}
+    
+    
     func setImage(){
         guestPhoto.image = clientImg
         

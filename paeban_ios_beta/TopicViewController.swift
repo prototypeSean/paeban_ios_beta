@@ -35,10 +35,11 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //guestPhoto.image = ownerImg
         wsActive.wasd_ForTopicViewController = self
         topicTitleContent.text = topicTitle
-        setImage()
+        //setImage()
+        
         getHttpData()
         
     }
