@@ -116,7 +116,7 @@ func base64ToImage(_ encodedImageData:String) -> UIImage?{
 func imageToBase64(image:UIImage, optional:String) -> String{
     let imageData = UIImagePNGRepresentation(image)
     // data:image/jpeg;base64,
-    let base64String = imageData?.base64EncodedString()
+    let base64String = imageData?.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
     if optional == "withHeader"{
         return "data:image/jpeg;base64," + base64String!
     }
