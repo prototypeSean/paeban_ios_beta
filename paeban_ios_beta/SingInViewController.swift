@@ -43,6 +43,7 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
             //设置媒体类型
             print("3")
             picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: UIImagePickerControllerSourceType.photoLibrary)!
+            
             //指定图片控制器类型
             print("4")
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
