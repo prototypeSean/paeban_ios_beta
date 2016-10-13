@@ -110,35 +110,41 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         return checkAll
     }
     func sentSinginData(){
+//        emailText.resignFirstResponder()
+//        passWord_1.resignFirstResponder()
+//        passWord_2.resignFirstResponder()
+//        firstname.resignFirstResponder()
+        
         if checkAll(){
-            let base64String = imageToBase64(image: photoView!.imageViewTemp!.image!, optional: "withHeader")
+            let base64String = imageToBase64(image: photoView!.imageViewTemp!.image!, optional: "")
             let sendDic:NSDictionary = [
                 "email":emailText.text!,
                 "password":passWord_1.text!,
                 "first_name":firstname.text!,
                 "sex":selectGenderText.text!,
-                "img":"ssss"
+                "img":base64String
             ]
             
             HttpRequestCenter().sendSingData(send_dic: sendDic, inViewAct: { (returnDic:Dictionary<String, AnyObject>) in
                 let result = returnDic["result"] as! String
-                if result == "check_success"{
-                    let mailAlert = UIAlertController(title: "成功", message: "已發送註冊信", preferredStyle: UIAlertControllerStyle.alert)
-                    mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
-                        DispatchQueue.main.async(execute: {
+                DispatchQueue.main.async(execute: {
+                    if result == "check_success"{
+                        let mailAlert = UIAlertController(title: "成功", message: "已發送註冊信", preferredStyle: UIAlertControllerStyle.alert)
+                        mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
                             self.dismiss(animated: true, completion: {
                                 //code
                             })
+                            
+                        }))
+                        self.present(mailAlert, animated: true, completion: {
+                            //code
                         })
-                        
-                    }))
-                    self.present(mailAlert, animated: true, completion: {
-                        //code
-                    })
-                }
-                else{
-                    self.simpoAlert(reason: "email已被註冊")
-                }
+                    }
+                    else{
+                        self.simpoAlert(reason: "email已被註冊")
+                    }
+                })
+                
             })
         }
         
@@ -149,11 +155,17 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     override func viewDidLoad() {
         super.viewDidLoad()
         selectGenderText.delegate = self
+        emailText.delegate = self
+        passWord_1.delegate = self
+        passWord_2.delegate = self
+        firstname.delegate = self
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         photoView = segue.destination as? SingInViewController
     }
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
     // delegate -> UITextFieldDelegate
     func textFieldDidBeginEditing(_ textField: UITextField){
@@ -164,7 +176,10 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
             selectGenderText.inputView = picker
         }
     }
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool{
+        textField.resignFirstResponder()
+        return true
+    }
     
     // datasource -> UIPickerViewDataSource
     func numberOfComponents(in pickerView: UIPickerView) -> Int{

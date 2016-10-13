@@ -26,7 +26,7 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     func addClientImg(img:UIImage){
-        let imageView = UIImageView(image: singInModel.resizeImage(image: img, newWidth: 50))
+        let imageView = UIImageView(image: singInModel.resizeImage(image: img, newWidth: 200))
         imageViewTemp = imageView
         imageView.frame = view.bounds
         view.addSubview(imageView)
