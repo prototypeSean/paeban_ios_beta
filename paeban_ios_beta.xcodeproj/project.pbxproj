@@ -43,7 +43,6 @@
 		CF337E051DACEFEC003A133C /* SinInFramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF337E041DACEFEC003A133C /* SinInFramViewController.swift */; };
 		CF79265E1DA0E71D00821860 /* SingInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265D1DA0E71D00821860 /* SingInViewController.swift */; };
 		CF7926601DA0E74200821860 /* SingInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265F1DA0E74200821860 /* SingInModel.swift */; };
-		CF7926621DA0E78700821860 /* SingInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7926611DA0E78700821860 /* SingInView.swift */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
 		CFCC8A851D78327800D5EDF6 /* RecentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */; };
 		CFCC8A891D78329C00D5EDF6 /* RecentTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */; };
@@ -92,7 +91,6 @@
 		CF337E041DACEFEC003A133C /* SinInFramViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinInFramViewController.swift; sourceTree = "<group>"; };
 		CF79265D1DA0E71D00821860 /* SingInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInViewController.swift; sourceTree = "<group>"; };
 		CF79265F1DA0E74200821860 /* SingInModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInModel.swift; sourceTree = "<group>"; };
-		CF7926611DA0E78700821860 /* SingInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInView.swift; sourceTree = "<group>"; };
 		CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = paeban_ios_beta.entitlements; sourceTree = "<group>"; };
 		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
 		CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewCell.swift; sourceTree = "<group>"; };
@@ -240,7 +238,6 @@
 			children = (
 				CF79265D1DA0E71D00821860 /* SingInViewController.swift */,
 				CF337E041DACEFEC003A133C /* SinInFramViewController.swift */,
-				CF7926611DA0E78700821860 /* SingInView.swift */,
 				CF79265F1DA0E74200821860 /* SingInModel.swift */,
 			);
 			name = sing_in;
@@ -431,7 +428,6 @@
 				932A00EF1CFEBA460036E1EA /* MyTopicTableViewController.swift in Sources */,
 				CF337E051DACEFEC003A133C /* SinInFramViewController.swift in Sources */,
 				932A00EC1CFEBA460036E1EA /* TopicViewController.swift in Sources */,
-				CF7926621DA0E78700821860 /* SingInView.swift in Sources */,
 				CF2E9D641D7BDFC000F485BB /* FriendTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
