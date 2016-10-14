@@ -26,6 +26,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         get_my_topic_title()
         wsActive.wasd_ForMyTopicTableViewController = self
         wsActive.ware_ForMyTopicTableViewController = self
+        self.tableView.tableFooterView = UIView()
     }
     
     
