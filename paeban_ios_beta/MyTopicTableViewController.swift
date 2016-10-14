@@ -29,7 +29,25 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.tableFooterView = UIView()
     }
     
-    
+    // MARK: 父CELL漸層
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cellIndex = (indexPath as NSIndexPath).row
+        if mytopic[cellIndex].dataType == "title"{
+            let gradientBackgroundColors = [UIColor(red:0.97, green:0.97, blue:0.96, alpha:1.0).cgColor, UIColor.white.cgColor,UIColor(red:0.97, green:0.97, blue:0.96, alpha:1.0).cgColor]
+            let gradientLocations = [0.0,1.0,0.0]
+            
+            let gradientLayer = CAGradientLayer()
+            gradientLayer.colors = gradientBackgroundColors
+            gradientLayer.locations = gradientLocations as [NSNumber]?
+            
+            gradientLayer.frame = cell.bounds
+            let backgroundView = UIView(frame: cell.bounds)
+            backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+            
+            cell.backgroundView = backgroundView
+        }
+    }
+
     
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if msg["msg_type"] as! String == "topic_msg"{
@@ -462,7 +480,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             // 標題型cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_1", for: indexPath) as! MyTopicTableViewCell
             cell.topicTitle.text = topicWriteToRow.topicTitle_title
-            cell.unReadM.text = String(topicWriteToRow.allMsg_title)
+            cell.unReadM.text = "/"+String(topicWriteToRow.allMsg_title)
             cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
             
             return cell
@@ -477,6 +495,11 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cell.sexLogo.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
             cell.isTruePhoto.image = letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!)
             letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
+            
+            // MARK: 切子cell照片圓角
+            let myPhotoLayer:CALayer = cell.photo.layer
+            myPhotoLayer.masksToBounds = true
+            myPhotoLayer.cornerRadius = 6
             
             return cell
         }
