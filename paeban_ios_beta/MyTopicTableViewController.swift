@@ -31,21 +31,21 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     
     // MARK: 父CELL漸層
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cellIndex = (indexPath as NSIndexPath).row
-        if mytopic[cellIndex].dataType == "title"{
-            let gradientBackgroundColors = [UIColor(red:0.97, green:0.97, blue:0.96, alpha:1.0).cgColor, UIColor.white.cgColor,UIColor(red:0.97, green:0.97, blue:0.96, alpha:1.0).cgColor]
-            let gradientLocations = [0.0,1.0,0.0]
-            
-            let gradientLayer = CAGradientLayer()
-            gradientLayer.colors = gradientBackgroundColors
-            gradientLayer.locations = gradientLocations as [NSNumber]?
-            
-            gradientLayer.frame = cell.bounds
-            let backgroundView = UIView(frame: cell.bounds)
-            backgroundView.layer.insertSublayer(gradientLayer, at: 0)
-            
-            cell.backgroundView = backgroundView
-        }
+//        let cellIndex = (indexPath as NSIndexPath).row
+//        if mytopic[cellIndex].dataType == "title"{
+//            let gradientBackgroundColors = [UIColor(red:0.97, green:0.97, blue:0.96, alpha:1.0).cgColor, UIColor.white.cgColor,UIColor(red:0.97, green:0.97, blue:0.96, alpha:1.0).cgColor]
+//            let gradientLocations = [0.0,1.0,0.0]
+//            
+//            let gradientLayer = CAGradientLayer()
+//            gradientLayer.colors = gradientBackgroundColors
+//            gradientLayer.locations = gradientLocations as [NSNumber]?
+//            
+//            gradientLayer.frame = cell.bounds
+//            let backgroundView = UIView(frame: cell.bounds)
+//            backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+//            
+//            cell.backgroundView = backgroundView
+//        }
     }
 
     
