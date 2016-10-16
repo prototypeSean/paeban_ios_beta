@@ -30,6 +30,10 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendTableViewCell", for: indexPath) as! FriendTableViewCell
         let cell2 = model!.getCell((indexPath as NSIndexPath).row, cell: cell)
+        let thePhotoLayer:CALayer = cell2.photo.layer
+        thePhotoLayer.masksToBounds = true
+        thePhotoLayer.cornerRadius = 6
+        
         return cell2
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

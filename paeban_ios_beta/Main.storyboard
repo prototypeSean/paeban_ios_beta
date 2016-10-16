@@ -947,7 +947,7 @@
                                 <rect key="frame" x="0.0" y="92" width="414" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Rg-ol-xwy" id="UDL-7b-AkG">
-                                    <frame key="frameInset" width="414" height="89.5"/>
+                                    <frame key="frameInset" width="414" height="89.666666666666671"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="68K-5D-lvJ">
@@ -1082,14 +1082,14 @@
                                         </stackView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="發話人：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qg2-3t-lER">
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="textColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottomMargin" secondItem="68K-5D-lvJ" secondAttribute="bottom" id="8VO-oe-gvc"/>
                                         <constraint firstItem="68K-5D-lvJ" firstAttribute="top" secondItem="UDL-7b-AkG" secondAttribute="topMargin" id="BKT-uy-MVo"/>
-                                        <constraint firstItem="qg2-3t-lER" firstAttribute="leading" secondItem="68K-5D-lvJ" secondAttribute="trailing" id="O5v-xK-PtQ"/>
+                                        <constraint firstItem="qg2-3t-lER" firstAttribute="leading" secondItem="68K-5D-lvJ" secondAttribute="trailing" constant="8" symbolic="YES" id="O5v-xK-PtQ"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="qg2-3t-lER" secondAttribute="bottom" id="QVj-MC-K5W"/>
                                         <constraint firstItem="68K-5D-lvJ" firstAttribute="height" secondItem="UDL-7b-AkG" secondAttribute="height" id="m6U-R5-D7B"/>
                                         <constraint firstItem="qg2-3t-lER" firstAttribute="top" secondItem="UDL-7b-AkG" secondAttribute="topMargin" id="swA-6j-68P"/>
