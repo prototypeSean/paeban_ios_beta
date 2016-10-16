@@ -118,12 +118,12 @@
                             <constraint firstItem="8BY-go-BQQ" firstAttribute="leading" secondItem="tAR-u1-Ad2" secondAttribute="leading" id="CpO-iR-G8D"/>
                             <constraint firstItem="KaX-dN-TuG" firstAttribute="top" secondItem="uRB-xh-cEB" secondAttribute="bottom" constant="8" symbolic="YES" id="F91-a3-hX0"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="tAR-u1-Ad2" secondAttribute="bottom" multiplier="1.05" constant="8" symbolic="YES" id="GoB-9q-tDE"/>
-                            <constraint firstItem="vTK-am-ezn" firstAttribute="top" secondItem="KaX-dN-TuG" secondAttribute="bottom" constant="8" symbolic="YES" id="Hf7-ae-Gi7"/>
                             <constraint firstAttribute="trailingMargin" secondItem="jeK-d8-Y0o" secondAttribute="trailing" id="Jnw-mw-7cp"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="k3S-xV-Nns" secondAttribute="bottom" constant="20" id="JyI-xv-P4S"/>
                             <constraint firstAttribute="trailing" secondItem="fYI-m1-mw8" secondAttribute="trailing" constant="20" symbolic="YES" id="LDd-eX-kNN"/>
                             <constraint firstItem="8BY-go-BQQ" firstAttribute="width" secondItem="ZcH-yC-Ffy" secondAttribute="width" id="Lgq-3d-e6A"/>
                             <constraint firstItem="KaK-oj-Drk" firstAttribute="centerY" secondItem="tAR-u1-Ad2" secondAttribute="centerY" id="Os6-zE-sgD"/>
+                            <constraint firstItem="4Qt-oe-Dwj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="KaX-dN-TuG" secondAttribute="bottom" constant="10" id="QKw-LX-IGp"/>
                             <constraint firstItem="KK0-8t-bvN" firstAttribute="centerY" secondItem="tAR-u1-Ad2" secondAttribute="centerY" id="QdL-Er-UII"/>
                             <constraint firstItem="tAR-u1-Ad2" firstAttribute="top" secondItem="8BY-go-BQQ" secondAttribute="bottom" constant="8" symbolic="YES" id="XXV-El-hxd"/>
                             <constraint firstItem="KK0-8t-bvN" firstAttribute="height" secondItem="tAR-u1-Ad2" secondAttribute="height" id="Yhs-OO-ra1"/>
@@ -135,9 +135,10 @@
                             <constraint firstItem="KaX-dN-TuG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="gmf-DZ-ebZ"/>
                             <constraint firstItem="fYI-m1-mw8" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="iK9-Q0-v2g"/>
                             <constraint firstItem="vTK-am-ezn" firstAttribute="bottom" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" id="jfQ-pn-EO9"/>
+                            <constraint firstItem="8BY-go-BQQ" firstAttribute="height" secondItem="ZcH-yC-Ffy" secondAttribute="height" id="lea-Hc-SGg"/>
                             <constraint firstItem="jeK-d8-Y0o" firstAttribute="centerY" secondItem="tAR-u1-Ad2" secondAttribute="centerY" id="lnJ-d8-E9J"/>
                             <constraint firstItem="vTK-am-ezn" firstAttribute="height" secondItem="4Qt-oe-Dwj" secondAttribute="height" id="nBY-Bq-THL"/>
-                            <constraint firstItem="ZcH-yC-Ffy" firstAttribute="top" relation="greaterThanOrEqual" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" constant="8" symbolic="YES" id="rVD-6I-2Tn"/>
+                            <constraint firstItem="ZcH-yC-Ffy" firstAttribute="top" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" constant="8" symbolic="YES" id="rVD-6I-2Tn"/>
                             <constraint firstItem="jeK-d8-Y0o" firstAttribute="width" secondItem="KaK-oj-Drk" secondAttribute="width" id="rmD-Tr-dYA"/>
                             <constraint firstItem="uRB-xh-cEB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sWk-cW-0Xb"/>
                             <constraint firstItem="tAR-u1-Ad2" firstAttribute="width" secondItem="KaK-oj-Drk" secondAttribute="width" id="tZ9-EZ-EJf"/>
