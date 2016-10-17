@@ -50,6 +50,7 @@ class RecentTableViewModel{
         else{
             let ouputObj = MyTopicStandardType(dataType: "detail")
             ouputObj.topicId_title = inputKey
+            ouputObj.topicTitle_title = inputData["topic_title"] as? String
             ouputObj.clientId_detial = inputData["owner"] as? String
             ouputObj.clientName_detial = inputData["owner_name"] as? String
             ouputObj.clientSex_detial = inputData["owner_sex"] as? String
@@ -117,7 +118,7 @@ class RecentTableViewModel{
         }
         
         let topicWriteToRow = recentDataBase[index]
-        
+        //print(topicWriteToRow.topicTitle_title)
         
         cell.hashtag.tagListInContorller = topicWriteToRow.tag_detial
         cell.hashtag.drawButton()

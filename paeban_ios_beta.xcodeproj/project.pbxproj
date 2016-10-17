@@ -161,6 +161,7 @@
 				CF79265C1DA0E6E500821860 /* sing_in */,
 				93AEF2901D0141FB007FDE51 /* topic */,
 				93AEF28D1D0140DC007FDE51 /* myTopics */,
+				93AEF2911D01427D007FDE51 /* recent */,
 				93AEF28E1D01410A007FDE51 /* friends */,
 				93AEF28F1D01419D007FDE51 /* launchScreen */,
 				CF13867A1D98C43D00E70990 /* setting */,
@@ -183,7 +184,6 @@
 				CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */,
 				930983E11D0166F5005B8E3B /* MyTopics.swift */,
 				936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */,
-				93AEF2911D01427D007FDE51 /* recent */,
 			);
 			name = myTopics;
 			sourceTree = "<group>";
