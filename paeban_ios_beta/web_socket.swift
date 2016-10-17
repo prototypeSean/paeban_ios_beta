@@ -66,6 +66,8 @@ open class webSocketActiveCenter{
     let wasd_ForFriendTableViewControllerList = ["online","off_line","new_member"]
     var wasd_ForFriendChatViewController:webSocketActiveCenterDelegate?
     let wasd_ForFriendChatViewControllerList = ["history_priv_msg","priv_msg_been_read","priv_msg","has_been_read_many","online"]
+    var wasd_ForMyTopicViewController:webSocketActiveCenterDelegate?
+    let wasd_ForMyTopicViewControllerList = ["topic_msg","topic_closed"]
     
     
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
@@ -151,6 +153,9 @@ open class webSocketActiveCenter{
             }
             if wasd_ForFriendChatViewControllerList.index(of: msgtypeString) != nil{
                 wasd_ForFriendChatViewController?.wsOnMsg(msg)
+            }
+            if wasd_ForMyTopicViewControllerList.index(of: msgtypeString) != nil{
+                wasd_ForMyTopicViewController?.wsOnMsg(msg)
             }
             
             if test_List.index(of: msgtypeString) != nil {

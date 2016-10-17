@@ -63,6 +63,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         //                                       -- topic_content
         //                                       -- receiver
         //                                       -- topic_id
+        //print(msg)
         let result_dic = msg["result_dic"] as! Dictionary<String,Dictionary<String,String>>
         for topic_content_id in result_dic{
             let topic_content_data = topic_content_id.1
@@ -518,7 +519,16 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     // 畫面轉跳
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print(segue.identifier)
+        let indexPath = self.tableView.indexPathForSelectedRow!
+        let dataposition:Int = (indexPath as NSIndexPath).row
+        let nextView = segue.destination as! MyTopicViewController
+        let data = mytopic[dataposition]
+        nextView.setID = data.clientId_detial
+        nextView.setName = data.clientName_detial
+        nextView.topicId = data.topicId_title
+        nextView.clientImg = data.clientPhoto_detial
+        nextView.topicTitle = data.topicTitle_title
+        nextView.title = data.clientName_detial
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {return 1}

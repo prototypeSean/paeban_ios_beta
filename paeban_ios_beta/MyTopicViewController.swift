@@ -11,7 +11,7 @@ import UIKit
 
 import JSQMessagesViewController
 
-class MyTopicViewController: UIViewController {
+class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
 
     @IBOutlet weak var guestPhoto: UIImageView!
     @IBOutlet weak var myPhoto: UIImageView!
@@ -22,12 +22,15 @@ class MyTopicViewController: UIViewController {
     var setID:String?
     var setName:String?
     var topicId:String?
-    var ownerImg:UIImage?
+    var clientImg:UIImage?
     var topicTitle:String?
     var ownerId:String?
+    var contanterView:ChatViewController?
+    var msg:Dictionary<String,AnyObject>?
     
+    // internal func
     func setImage(){
-        guestPhoto.image = ownerImg
+        guestPhoto.image = clientImg
         
         // MARK: 試著把照片切成圓形
         let myPhotoLayer:CALayer = myPhoto.layer
@@ -75,4 +78,129 @@ class MyTopicViewController: UIViewController {
         
         topicInfoBG.layer.addSublayer(gradientLayer)
     }
+    func getHistory(){
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { 
+            let http_obj = HttpRequestCenter()
+            http_obj.getTopicContentHistory(self.setID!, topicId: self.topicId!, InViewAct: { (returnDic) in
+                print(returnDic)
+                let checkMsgType = returnDic.index(where: { (msg_type, _) -> Bool in
+                    if msg_type == "msg_type"{
+                        //話題已關閉
+                        return true
+                    }
+                    else{
+                        return false
+                    }
+                })
+                
+                if checkMsgType == nil{
+                    let myImg = base64ToImage(returnDic["my_img"] as! String)
+                    
+                    let msg = returnDic["msg"] as! Dictionary<String,AnyObject>
+                    DispatchQueue.main.async(execute: {
+                        self.myPhoto.image = myImg
+                        
+                        let chatViewCon = self.contanterView
+                        chatViewCon?.historyMsg = msg
+                        self.msg = msg
+                    })
+                }
+                else{
+                    DispatchQueue.main.async(execute: {
+                        //self.alertTopicClosed()
+                    })
+                }
+            })
+        }
+    }
+    func alertTopicClosed(){
+        let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.alert)
+        
+        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+            self.dismiss(animated: true, completion: {
+                //code
+            })
+        }))
+        self.present(refreshAlert, animated: true, completion: nil)
+    }
+    fileprivate func updateImg(_ imgString:String?) -> UIImage?{
+        if imgString != nil{
+            let img = base64ToImage(imgString!)
+            return img
+        }
+        else{return nil}
+    }
+    
+    // override
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        wsActive.wasd_ForMyTopicViewController = self
+        guestPhoto.image = clientImg //修正後移除
+        topicTitleContent.text = topicTitle
+        getHistory()
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let chatViewCon = segue.destination as! ChatViewController
+        chatViewCon.setID = userData.id
+        chatViewCon.setName = userData.name
+        chatViewCon.topicId = self.topicId
+        chatViewCon.ownerId = self.setID
+        if self.msg == nil {
+            self.contanterView = chatViewCon
+        }
+        else{
+            chatViewCon.historyMsg = self.msg!
+        }
+    }
+    
+    
+    // delegate -> websocket
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
+        let msgType =  msg["msg_type"] as! String
+        if msgType == "topic_msg"{
+            print(msg)
+            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
+            if msg["img"] as? String != nil && msg["img"] as? String != ""{
+                let imgStr = msg["img"] as? String
+                let tempImg = updateImg(imgStr)
+                if tempImg != nil{
+                    //print("updateImg")
+                    for dicKey in resultDic{
+                        let msgData = dicKey.1 as! Dictionary<String,AnyObject>
+                        let sender = msgData["sender"] as! String
+                        if sender == userData.id{
+                            myPhoto.image = tempImg
+                        }
+                        else{
+                            guestPhoto.image = tempImg
+                        }
+                        break
+                    }
+                }
+            }
+        }
+            
+        else if msgType == "topic_closed"{
+            let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
+            if closeTopicIdList != nil{
+                if closeTopicIdList?.index(of: self.topicId!) != nil{
+                    self.alertTopicClosed()
+                }
+            }
+        }
+        
+        
+    }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
