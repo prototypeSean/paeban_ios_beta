@@ -102,6 +102,9 @@ class login_paeban{
             }
         }
         if cookie != nil && getCSRFToken(cookie!)! != ""{
+            print(cookie)
+            print(getCSRFToken(cookie!)!)
+            print("=====")
             let url = "https://www.paeban.com/login_paeban/"
             let sendDic:NSDictionary = ["username":id,"password":pw]
             let sendData = "data=\(json_dumps2(sendDic)!)"
@@ -132,6 +135,7 @@ class login_paeban{
                         self.delegate?.get_cookie_by_IDPW_report!(state: "login_no", setcookie: "")
                     }
                     //print("ouput")
+                    print(ouput)
                 }
                 
             })

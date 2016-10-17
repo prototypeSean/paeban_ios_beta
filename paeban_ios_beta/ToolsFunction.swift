@@ -103,8 +103,10 @@ func getCSRFToken(_ cookie:String) -> String? {
 
 //MARK: base64轉換成UIImage
 func base64ToImage(_ encodedImageData:String) -> UIImage?{
+    
     let index = encodedImageData.characters.index(encodedImageData.characters.startIndex, offsetBy: 23)
     let out = encodedImageData.substring(from: index)
+    //print(out)
     let dataDecoded:Data? = Data(base64Encoded: out, options: NSData.Base64DecodingOptions())
     var  decodedimage:UIImage?
     if dataDecoded != nil{

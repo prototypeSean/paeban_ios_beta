@@ -14,6 +14,8 @@ import FBSDKShareKit
 
 
 public var socket:WebSocket!
+public var firstConnect = true
+public var logInState = true
 public var wsActive = webSocketActiveCenter()
 
 
@@ -42,7 +44,6 @@ public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 
 
 class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
-    var firstConnect = true
     
     
     @IBAction func loninBottom(_ sender: AnyObject) {
@@ -71,9 +72,11 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         login_paeban_obj.delegate = self
         if let _ = FBSDKAccessToken.current(){
             paeban_login()
+            logInState = true
         }
         else{
             login_paeban_obj.get_cookie_csrf()
+            
         }
         
 
@@ -94,7 +97,10 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     
     
     func get_cookie_csrf_report(state:String,setcookie:String){
+        print(state)
+        print(setcookie)
         if state == "login_yes"{
+            logInState = true
             cookie = setcookie
             socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
             socket.headers["Cookie"] = cookie
@@ -126,6 +132,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
                     self.getFBUserData()
+                    logInState = true
                 }
             }
             else{
@@ -205,6 +212,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             }
         }
         else if state == "login_yes"{
+            logInState = true
             cookie = setcookie
             socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
             socket.headers["Cookie"] = cookie
@@ -250,6 +258,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             ws_connected(socket)
             print("connected")
             self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+            firstConnect = false
         }
         else{
             print("wsReConnected")
@@ -260,9 +269,10 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     }
     func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         print("disConnect")
-        wsTimer?.invalidate()
-        wsTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
-        
+        if logInState{
+            wsTimer?.invalidate()
+            wsTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
+        }
         //print(NSDate())
     }
     func websocketDidReceiveMessage(socket: WebSocket, text: String){
@@ -271,7 +281,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         wsActive.wsOnMsg(msgPack)
         if let msgtype = msgPack["msg_type"] as? String{
             if msgtype == "online"{
-                firstConnect = false
+                //code
             }
         }
     }
