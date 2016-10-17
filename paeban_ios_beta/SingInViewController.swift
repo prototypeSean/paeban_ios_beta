@@ -23,8 +23,6 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     
-    
-    
     func addClientImg(img:UIImage){
         let imageView = UIImageView(image: singInModel.resizeImage(image: img, newWidth: 200))
         imageViewTemp = imageView
@@ -35,7 +33,7 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
     func addImgBtn(){
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
             //初始化图片控制器
-            print("1")
+            print("SingInViewController＿flag_1")
             let picker = UIImagePickerController()
             //设置代理
             print("2")
