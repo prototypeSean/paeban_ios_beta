@@ -3,6 +3,7 @@ import UIKit
 class RecentTableViewController: UITableViewController, webSocketActiveCenterDelegate{
     var rTVModel = RecentTableViewModel()
     
+//    @IBOutlet weak var ownerPhoto: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,11 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "nowTopicListCell", for: indexPath) as! RecentTableViewCell
         let cell2 = rTVModel.getCell((indexPath as NSIndexPath).row,cell: cell)
+        
+        // MARK: cell照片圓角
+        let myPhotoLayer:CALayer = cell2.clientImg.layer
+        myPhotoLayer.masksToBounds = true
+        myPhotoLayer.cornerRadius = 6
         
         return cell2
     }
