@@ -228,10 +228,10 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCellTableViewCell" id="Wjc-mK-FT3" customClass="TopicCellTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="1000" height="80"/>
+                                        <rect key="frame" x="0.0" y="92" width="414" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
-                                            <frame key="frameInset" width="414" height="79.666666666666671"/>
+                                            <frame key="frameInset" width="414" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房主的暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPN-A9-vyF">
@@ -669,7 +669,7 @@
                                 <rect key="frame" x="0.0" y="28" width="414" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ukk-Cg-AaJ" id="ZAm-Bu-LPF">
-                                    <frame key="frameInset" width="414" height="69.5"/>
+                                    <frame key="frameInset" width="414" height="69"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的話題標題" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eYJ-3A-UKG">
@@ -753,7 +753,7 @@
                                 <rect key="frame" x="0.0" y="98" width="414" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YR8-FS-JTg" id="Xdk-wf-EhQ">
-                                    <frame key="frameInset" width="414" height="89.5"/>
+                                    <frame key="frameInset" width="414" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Whx-ZO-9Ol">
@@ -941,7 +941,7 @@
                                 <rect key="frame" x="0.0" y="188" width="414" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rK6-2L-EpZ" id="JhQ-Bl-RbK">
-                                    <frame key="frameInset" width="414" height="89.5"/>
+                                    <frame key="frameInset" width="414" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -996,7 +996,7 @@
                                 <rect key="frame" x="0.0" y="92" width="414" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Rg-ol-xwy" id="UDL-7b-AkG">
-                                    <frame key="frameInset" width="414" height="89.5"/>
+                                    <frame key="frameInset" width="414" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="68K-5D-lvJ">
@@ -1184,7 +1184,7 @@
                                 <rect key="frame" x="0.0" y="92" width="414" height="147"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bxI-lp-hL8" id="c9i-8k-6tJ">
-                                    <frame key="frameInset" width="414" height="146.5"/>
+                                    <frame key="frameInset" width="414" height="146"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="g0Y-SQ-fYN">
@@ -1562,58 +1562,100 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hQu-wj-hc7">
-                                <frame key="frameInset" minX="87" height="200" maxX="88" maxY="439"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hQu-wj-hc7">
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="hQu-wj-hc7" secondAttribute="height" multiplier="1:1" id="zux-0Q-Ycm"/>
+                                </constraints>
                                 <connections>
                                     <segue destination="IbF-Va-uvJ" kind="embed" id="TgV-dV-lqR"/>
                                 </connections>
                             </containerView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="quN-lh-j3J">
-                                <frame key="frameInset" minX="139" minY="236" width="97" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入信箱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="quN-lh-j3J">
+                                <color key="tintColor" red="0.98039215686274506" green="0.48627450980392156" blue="0.29019607843137252" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="emailTextEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="5iB-x2-gHW"/>
+                                    <action selector="emailTextEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="vKG-b5-VDC"/>
+                                </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password_1" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sHx-mL-Hbr">
-                                <frame key="frameInset" minX="139" minY="274" width="97" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sHx-mL-Hbr">
+                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="password_1EditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="eww-zR-ABt"/>
+                                    <action selector="password_1EditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="X7m-uX-xcb"/>
+                                </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password_1" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vmP-a2-gea">
-                                <frame key="frameInset" minX="139" minY="312" width="97" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="再次輸入密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vmP-a2-gea">
+                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="password_2EditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="vEz-zJ-5tg"/>
+                                    <action selector="password_2EditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="ktO-Lg-EVD"/>
+                                </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="selectGender" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="gender" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="faT-OG-VF9">
-                                <frame key="frameInset" minX="139" minY="350" width="97" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="selectGender" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="選擇性別" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="faT-OG-VF9">
+                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="selectGenderEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="ZDD-Es-Yc8"/>
+                                    <action selector="selectGenderEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="vHJ-HU-fhL"/>
+                                </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMp-Yc-AJ0">
-                                <frame key="frameInset" minX="170" minY="442" width="34" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="send"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="顯示的暱稱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vMr-H9-ucp">
+                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="firstNameEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="0KL-nd-kQP"/>
+                                    <action selector="firstNameEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="SGk-J3-07Y"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMp-Yc-AJ0">
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <state key="normal" title="送出">
+                                    <color key="titleColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="sentSinginData:" destination="w4R-P3-6jz" eventType="touchUpInside" id="rUm-Xw-q1D"/>
+                                    <action selector="submitBtnCancel:" destination="w4R-P3-6jz" eventType="touchDragOutside" id="voq-GB-JzV"/>
+                                    <action selector="submitBtnDown:" destination="w4R-P3-6jz" eventType="touchDown" id="6dO-24-iW9"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vMr-H9-ucp">
-                                <frame key="frameInset" minX="139" minY="388" width="97" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="vmP-a2-gea" firstAttribute="centerX" secondItem="hQu-wj-hc7" secondAttribute="centerX" id="0WW-a2-bEs"/>
+                            <constraint firstItem="faT-OG-VF9" firstAttribute="centerX" secondItem="hQu-wj-hc7" secondAttribute="centerX" id="B5J-hT-Jge"/>
+                            <constraint firstItem="vMp-Yc-AJ0" firstAttribute="width" secondItem="quN-lh-j3J" secondAttribute="width" id="Jxm-2Y-gPa"/>
+                            <constraint firstItem="MqG-qN-EyE" firstAttribute="top" secondItem="vMp-Yc-AJ0" secondAttribute="bottom" multiplier="1.1" constant="8" symbolic="YES" id="M99-1E-1Er"/>
+                            <constraint firstItem="vMr-H9-ucp" firstAttribute="centerX" secondItem="hQu-wj-hc7" secondAttribute="centerX" id="OHN-9S-GaV"/>
+                            <constraint firstItem="sHx-mL-Hbr" firstAttribute="width" secondItem="quN-lh-j3J" secondAttribute="width" id="U1y-mz-LfT"/>
+                            <constraint firstItem="faT-OG-VF9" firstAttribute="top" secondItem="vmP-a2-gea" secondAttribute="bottom" constant="8" symbolic="YES" id="XPt-16-Kqd"/>
+                            <constraint firstItem="hQu-wj-hc7" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" multiplier="0.5" id="ces-5f-T7O"/>
+                            <constraint firstItem="vmP-a2-gea" firstAttribute="width" secondItem="quN-lh-j3J" secondAttribute="width" id="cxD-Aj-pPq"/>
+                            <constraint firstItem="vMr-H9-ucp" firstAttribute="top" secondItem="faT-OG-VF9" secondAttribute="bottom" constant="8" symbolic="YES" id="eZb-MD-OLr"/>
+                            <constraint firstItem="sHx-mL-Hbr" firstAttribute="centerX" secondItem="hQu-wj-hc7" secondAttribute="centerX" id="eg1-Ph-7Tf"/>
+                            <constraint firstItem="hQu-wj-hc7" firstAttribute="centerX" secondItem="Q1a-im-ZWl" secondAttribute="centerX" id="f3S-Gd-0z5"/>
+                            <constraint firstItem="faT-OG-VF9" firstAttribute="width" secondItem="quN-lh-j3J" secondAttribute="width" id="hCq-bi-Nv3"/>
+                            <constraint firstItem="quN-lh-j3J" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" multiplier="0.7" id="hK8-Wf-TEI"/>
+                            <constraint firstItem="quN-lh-j3J" firstAttribute="centerX" secondItem="Q1a-im-ZWl" secondAttribute="centerX" id="irq-uR-WRg"/>
+                            <constraint firstItem="vmP-a2-gea" firstAttribute="top" secondItem="sHx-mL-Hbr" secondAttribute="bottom" constant="8" symbolic="YES" id="kxY-nM-y16"/>
+                            <constraint firstItem="vMp-Yc-AJ0" firstAttribute="top" secondItem="vMr-H9-ucp" secondAttribute="bottom" constant="8" symbolic="YES" id="mmQ-52-uEJ"/>
+                            <constraint firstItem="vMr-H9-ucp" firstAttribute="width" secondItem="quN-lh-j3J" secondAttribute="width" id="wgs-7L-Q6o"/>
+                            <constraint firstItem="sHx-mL-Hbr" firstAttribute="top" secondItem="quN-lh-j3J" secondAttribute="bottom" constant="8" symbolic="YES" id="wuu-T3-iuG"/>
+                            <constraint firstItem="hQu-wj-hc7" firstAttribute="centerY" secondItem="Q1a-im-ZWl" secondAttribute="centerY" multiplier="0.6" id="x5d-h1-0me"/>
+                            <constraint firstItem="vMp-Yc-AJ0" firstAttribute="centerX" secondItem="hQu-wj-hc7" secondAttribute="centerX" id="zaQ-fw-e6k"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="emailText" destination="quN-lh-j3J" id="haj-7N-buK"/>
@@ -1621,6 +1663,7 @@
                         <outlet property="passWord_1" destination="sHx-mL-Hbr" id="hw7-1E-t0N"/>
                         <outlet property="passWord_2" destination="vmP-a2-gea" id="Fai-0G-ZVf"/>
                         <outlet property="selectGenderText" destination="faT-OG-VF9" id="scV-vp-GBW"/>
+                        <outlet property="submitBtn" destination="vMp-Yc-AJ0" id="QKW-c8-Udw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BIN-Hd-kTV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1875,20 +1918,31 @@
                         <viewControllerLayoutGuide type="bottom" id="4OT-WY-yjj"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Abu-oL-DiC">
-                        <rect key="frame" x="0.0" y="0.0" width="239" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="207" height="207"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHw-e0-giL">
-                                <frame key="frameInset" minX="74" minY="85" width="52" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="addImg"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHw-e0-giL">
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="選擇照片">
+                                    <color key="titleColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="addImgBtn:" destination="IbF-Va-uvJ" eventType="touchUpInside" id="uPx-VD-Wq4"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kHw-e0-giL" firstAttribute="top" secondItem="Hqh-69-5KG" secondAttribute="bottom" id="QSe-or-cXo"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="kHw-e0-giL" secondAttribute="trailing" id="a91-lR-X1K"/>
+                            <constraint firstItem="4OT-WY-yjj" firstAttribute="top" secondItem="kHw-e0-giL" secondAttribute="bottom" id="vD8-DW-8ED"/>
+                            <constraint firstItem="kHw-e0-giL" firstAttribute="leading" secondItem="Abu-oL-DiC" secondAttribute="leadingMargin" id="zp6-SV-ncH"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="addPhotoBG" destination="Abu-oL-DiC" id="b5P-ov-6kU"/>
+                        <outlet property="addPhotoBtn" destination="kHw-e0-giL" id="nng-yl-vP0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4iX-7f-G6g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
