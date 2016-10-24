@@ -22,6 +22,11 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     @IBOutlet weak var topicInfoBG: UIView!
     
     @IBOutlet weak var topicTitleContent: UILabel!
+    
+    @IBOutlet weak var btnAddFriend: UIButton!
+    @IBOutlet weak var btnIgnroe: UIButton!
+    @IBOutlet weak var btnBlock: UIButton!
+    
     var delegate:TopicViewControllerDelegate?
     var setID:String?
     var setName:String?
@@ -39,10 +44,37 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         wsActive.wasd_ForTopicViewController = self
         topicTitleContent.text = topicTitle
         setImage()
-        
         getHttpData()
-        
     }
+    
+    
+    
+    @IBAction func addFriendClick(_ sender: AnyObject) {
+        btnAddFriend.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
+        btnAddFriend.layer.borderWidth = 0
+    }
+    @IBAction func addFriendRelease(_ sender: AnyObject) {
+        btnAddFriend.layer.backgroundColor = UIColor.white.cgColor
+        btnAddFriend.layer.borderWidth = 1
+    }
+    @IBAction func btnIgnorClick(_ sender: AnyObject) {
+        btnIgnroe.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
+        btnIgnroe.layer.borderWidth = 0
+    }
+    @IBAction func btnIgnorRelease(_ sender: AnyObject) {
+        btnIgnroe.layer.backgroundColor = UIColor.white.cgColor
+        btnIgnroe.layer.borderWidth = 1
+    }
+    @IBAction func btnBlockClick(_ sender: AnyObject) {
+        btnBlock.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
+        btnBlock.layer.borderWidth = 0
+    }
+    @IBAction func btnBlockRelease(_ sender: AnyObject) {
+        btnBlock.layer.backgroundColor = UIColor.white.cgColor
+        btnBlock.layer.borderWidth = 1
+    }
+    
+    
     
     
     func getHttpData() {
@@ -148,7 +180,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     
     
-    // 設置照片外觀眉角
+    // 設置照片+按鈕外觀
     func setImage(){
         guestPhoto.image = ownerImg
         
@@ -195,6 +227,32 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         gradientLayer.colors = [color1, color2]
         gradientLayer.locations = [0.0, 1.0]
         topicInfoBG.layer.addSublayer(gradientLayer)
+        
+        //MARK: 設定按鈕
+        // 按下按鈕文字回白
+        btnAddFriend.setTitleColor(UIColor.white, for: .highlighted)
+        btnIgnroe.setTitleColor(UIColor.white, for: .highlighted)
+        btnBlock.setTitleColor(UIColor.white, for: .highlighted)
+        
+        // 按鈕初始外觀
+        btnAddFriend.layoutIfNeeded()
+        let btn_radius:CGFloat = CGFloat(btnAddFriend.bounds.size.height)/2
+        btnAddFriend.layer.cornerRadius = btn_radius
+        btnAddFriend.layer.borderWidth = 1
+        btnAddFriend.layer.borderColor = UIColor.gray.cgColor
+        btnAddFriend.clipsToBounds = true
+        
+        btnIgnroe.layoutIfNeeded()
+        btnIgnroe.layer.borderWidth = 1
+        btnIgnroe.layer.borderColor = UIColor.gray.cgColor
+        btnIgnroe.layer.cornerRadius = btn_radius
+        btnIgnroe.clipsToBounds = true
+        
+        btnBlock.layoutIfNeeded()
+        btnBlock.layer.borderWidth = 1
+        btnBlock.layer.borderColor = UIColor.gray.cgColor
+        btnBlock.layer.cornerRadius = btn_radius
+        btnBlock.clipsToBounds = true
         
     }
     fileprivate func updateImg(_ imgString:String?) -> UIImage?{

@@ -15,12 +15,85 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     @IBOutlet weak var passWord_1: UITextField!
     @IBOutlet weak var passWord_2: UITextField!
     @IBOutlet weak var firstname: UITextField!
+    @IBOutlet weak var submitBtn: UIButton!
+    
+    // MARK: 送出按鈕按下放開行為＆外觀
+    @IBAction func submitBtnDown(_ sender: AnyObject) {
+        submitBtn.layer.backgroundColor = UIColor(red:0.98, green:0.49, blue:0.29, alpha:1.0).cgColor
+    }
 
     @IBAction func sentSinginData(_ sender: AnyObject) {
         sentSinginData()
+        submitBtn.layer.backgroundColor = UIColor.clear.cgColor
+    }
+    @IBAction func submitBtnCancel(_ sender: AnyObject) {
+        submitBtn.layer.backgroundColor = UIColor.clear.cgColor
+    }
+    @IBAction func emailTextEditBegin(_ sender: AnyObject) {
+        emailText.layer.borderColor = UIColor(red:0.98, green:0.49, blue:0.29, alpha:1.0).cgColor
+        emailText.layer.borderWidth = 2
+        
+    }
+    @IBAction func emailTextEditEnd(_ sender: AnyObject) {
+        emailText.layer.borderColor = UIColor.lightGray.cgColor
+        emailText.layer.borderWidth = 1
+    }
+    @IBAction func password_1EditBegin(_ sender: AnyObject) {
+        passWord_1.layer.borderColor = UIColor(red:0.98, green:0.49, blue:0.29, alpha:1.0).cgColor
+        passWord_1.layer.borderWidth = 2
+    }
+    @IBAction func password_1EditEnd(_ sender: AnyObject) {
+        passWord_1.layer.borderColor = UIColor.lightGray.cgColor
+        passWord_1.layer.borderWidth = 1
+    }
+    @IBAction func password_2EditBegin(_ sender: AnyObject) {
+        passWord_2.layer.borderColor = UIColor(red:0.98, green:0.49, blue:0.29, alpha:1.0).cgColor
+        passWord_2.layer.borderWidth = 2
+    }
+    @IBAction func password_2EditEnd(_ sender: AnyObject) {
+        passWord_2.layer.borderColor = UIColor.lightGray.cgColor
+        passWord_2.layer.borderWidth = 1
+    }
+    @IBAction func selectGenderEditBegin(_ sender: AnyObject) {
+        selectGenderText.layer.borderColor = UIColor(red:0.98, green:0.49, blue:0.29, alpha:1.0).cgColor
+        selectGenderText.layer.borderWidth = 2
+    }
+    @IBAction func selectGenderEditEnd(_ sender: AnyObject) {
+        selectGenderText.layer.borderColor = UIColor.lightGray.cgColor
+        selectGenderText.layer.borderWidth = 1
+    }
+    @IBAction func firstNameEditBegin(_ sender: AnyObject) {
+        firstname.layer.borderColor = UIColor(red:0.98, green:0.49, blue:0.29, alpha:1.0).cgColor
+        firstname.layer.borderWidth = 2
+    }
+    @IBAction func firstNameEditEnd(_ sender: AnyObject) {
+        firstname.layer.borderColor = UIColor.lightGray.cgColor
+        firstname.layer.borderWidth = 1
     }
     
-    let genderOption = ["男","女","男同","女同"]
+    //MARK: 所有欄位外觀設定
+    func ouletsSetting(){
+        // 送出按鈕初始外觀 切記把故事版的Type: Custom
+        submitBtn.layer.borderWidth = 1
+        submitBtn.layer.borderColor = UIColor.lightGray.cgColor
+        submitBtn.layer.cornerRadius = 0
+        submitBtn.setTitleColor(UIColor.white, for: .highlighted)
+        
+        emailText.layer.borderColor = UIColor.lightGray.cgColor
+        emailText.layer.borderWidth = 1
+        passWord_1.layer.borderColor = UIColor.lightGray.cgColor
+        passWord_1.layer.borderWidth = 1
+        passWord_2.layer.borderColor = UIColor.lightGray.cgColor
+        passWord_2.layer.borderWidth = 1
+        selectGenderText.layer.borderColor = UIColor.lightGray.cgColor
+        selectGenderText.layer.borderWidth = 1
+        firstname.layer.borderColor = UIColor.lightGray.cgColor
+        firstname.layer.borderWidth = 1
+        
+        
+    }
+    
+    let genderOption = ["","男","女","男同","女同"]
     let patter = "^[a-zA-z]"
     var photoView:SingInViewController?
     
@@ -159,6 +232,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         passWord_1.delegate = self
         passWord_2.delegate = self
         firstname.delegate = self
+        ouletsSetting()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         photoView = segue.destination as? SingInViewController

@@ -66,6 +66,24 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     
     let login_paeban_obj = login_paeban()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // 把註冊前的NAV隱藏
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // 註冊頁顯示NAV
+        //self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "sing_in_segue"{
+            self.navigationController?.isNavigationBarHidden = false
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

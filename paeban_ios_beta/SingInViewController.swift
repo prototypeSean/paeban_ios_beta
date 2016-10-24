@@ -17,9 +17,22 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
     @IBAction func addImgBtn(_ sender: AnyObject) {
         addImgBtn()
     }
+    @IBOutlet var addPhotoBG: UIView!
+    @IBOutlet weak var addPhotoBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addPhotoBG.layoutIfNeeded()
+        addPhotoBG.layer.backgroundColor = UIColor(red:0.90, green:0.89, blue:0.88, alpha:1.0).cgColor
+        addPhotoBG.layer.borderWidth = 1
+        
+        let avatorRadious = addPhotoBG.layer.bounds.size.width/4
+        print(avatorRadious)
+        print(addPhotoBG.layer.bounds.size.width)
+        addPhotoBG.layer.cornerRadius = avatorRadious
+        addPhotoBG.clipsToBounds = true
+        addPhotoBG.layer.borderColor = UIColor.gray.cgColor
     }
     
     
