@@ -196,7 +196,7 @@
                         <viewControllerLayoutGuide type="bottom" id="WaC-tm-Hey"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lo3-Qm-fMH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wcu-iW-4Fs">
@@ -218,7 +218,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="New-VA-2ba" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5332" y="33"/>
+            <point key="canvasLocation" x="-5384" y="255"/>
         </scene>
         <!--話題-->
         <scene sceneID="VON-sR-4Xb">
@@ -504,15 +504,15 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="話題" id="vG6-IY-Ij6">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="ReK-Yd-Ykl">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fnu-D3-gBb">
-                                <rect key="frame" x="311" y="7" width="83" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Setting"/>
-                                <connections>
-                                    <segue destination="fKg-5c-ll5" kind="show" identifier="segueToSetting" id="bUT-82-1fS"/>
-                                </connections>
-                            </button>
+                        <barButtonItem key="leftBarButtonItem" image="setting" style="plain" id="ReK-Yd-Ykl">
+                            <inset key="imageInsets" minX="-3" minY="5" maxX="0.0" maxY="0.0"/>
+                            <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="fKg-5c-ll5" kind="show" id="wc9-Me-EI3"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="g7a-zc-2rU">
+                            <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -522,7 +522,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4c-w9-wSg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4570" y="-742"/>
+            <point key="canvasLocation" x="-4571" y="-743"/>
         </scene>
         <!--加入的話題-->
         <scene sceneID="xNr-Pe-fgg">
@@ -660,7 +660,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O6Z-c3-l05" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4571.0144927536239" y="32.608695652173914"/>
+            <point key="canvasLocation" x="-4183" y="255"/>
         </scene>
         <!--我的話題-->
         <scene sceneID="Rjg-9b-c6S">
@@ -960,7 +960,18 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="我的話題" id="im4-xl-3t6"/>
+                    <navigationItem key="navigationItem" title="我的話題" id="im4-xl-3t6">
+                        <barButtonItem key="leftBarButtonItem" image="setting" style="plain" id="qog-CS-BS4">
+                            <inset key="imageInsets" minX="-3" minY="5" maxX="0.0" maxY="0.0"/>
+                            <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="fKg-5c-ll5" kind="show" id="vc1-tE-BTH"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="1oW-0c-N4K">
+                            <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="veQ-fo-LWe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1173,7 +1184,15 @@
                             <outlet property="delegate" destination="H5q-Ep-Az3" id="OQ2-VR-zM9"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="好友" id="i5i-Ra-d6o"/>
+                    <navigationItem key="navigationItem" title="好友" id="i5i-Ra-d6o">
+                        <barButtonItem key="leftBarButtonItem" image="setting" style="plain" id="lSY-iH-sdJ">
+                            <inset key="imageInsets" minX="-3" minY="5" maxX="0.0" maxY="0.0"/>
+                            <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="fKg-5c-ll5" kind="show" id="l0w-d5-79K"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKc-e9-cMH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1391,7 +1410,15 @@
                             <outlet property="delegate" destination="WZw-uQ-GWM" id="cEs-Ad-ePV"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="進行中" id="MhI-zc-ri9"/>
+                    <navigationItem key="navigationItem" title="進行中" id="MhI-zc-ri9">
+                        <barButtonItem key="leftBarButtonItem" image="setting" style="plain" id="MLh-D2-saz">
+                            <inset key="imageInsets" minX="-3" minY="5" maxX="0.0" maxY="0.0"/>
+                            <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <segue destination="fKg-5c-ll5" kind="show" id="In4-Fz-Oz6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oKu-0o-XaP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1413,7 +1440,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lQw-ap-tyI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4570" y="667.5"/>
+            <point key="canvasLocation" x="-4184" y="916"/>
         </scene>
         <!--Launch Screen View Controller-->
         <scene sceneID="UD4-uD-nM2">
@@ -1793,7 +1820,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bie-q2-caM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3180" y="33"/>
+            <point key="canvasLocation" x="-3178" y="255"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="ODT-yF-TlF">
@@ -1811,7 +1838,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UJc-sI-jvU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3316" y="683"/>
+            <point key="canvasLocation" x="-3181" y="905"/>
         </scene>
         <!--好友-->
         <scene sceneID="Zse-f7-ZDN">
@@ -1900,7 +1927,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HCv-Ju-asC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2487" y="34"/>
+            <point key="canvasLocation" x="-2488" y="255"/>
         </scene>
         <!--Friend Chat View Controller-->
         <scene sceneID="RcI-51-8W0">
@@ -1918,7 +1945,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HWC-Tl-57a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2354" y="683"/>
+            <point key="canvasLocation" x="-2488" y="911"/>
         </scene>
         <!--Sing In View Controller-->
         <scene sceneID="JOP-Bm-LCd">
@@ -1992,12 +2019,14 @@
         <image name="launchsimage_1242x2208" width="414" height="736"/>
         <image name="list" width="25" height="25"/>
         <image name="male" width="128" height="128"/>
+        <image name="setting" width="20" height="20"/>
         <image name="star" width="25" height="25"/>
         <image name="texting" width="25" height="25"/>
         <image name="topic" width="25" height="25"/>
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="wc9-Me-EI3"/>
         <segue reference="wZO-VC-xmQ"/>
     </inferredMetricsTieBreakers>
 </document>
