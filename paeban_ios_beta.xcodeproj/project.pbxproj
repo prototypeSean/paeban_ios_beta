@@ -35,6 +35,7 @@
 		932D0D731DA0F65700ACA795 /* FriendNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932D0D721DA0F65700ACA795 /* FriendNavViewController.swift */; };
 		936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */; };
 		93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */; };
+		93B40BE91DB8B7DB00AC3D48 /* SignInNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */; };
 		CF13867C1D98C53C00E70990 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF13867B1D98C53C00E70990 /* StoreKit.framework */; };
 		CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF13867D1D98CE0600E70990 /* LoginScrollView.swift */; };
 		CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */; };
@@ -84,6 +85,7 @@
 		932D0D721DA0F65700ACA795 /* FriendNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendNavViewController.swift; sourceTree = "<group>"; };
 		936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopicViewController.swift; sourceTree = "<group>"; };
 		93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInNavViewController.swift; sourceTree = "<group>"; };
 		BAC8DE25847EF16A13E40E0D /* Pods-paeban_ios_beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.release.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.release.xcconfig"; sourceTree = "<group>"; };
 		CCB2ABAD6DC20E3AE8B85FBB /* Pods-paeban_ios_beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.debug.xcconfig"; sourceTree = "<group>"; };
 		CF13867B1D98C53C00E70990 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -248,6 +250,7 @@
 				CF79265D1DA0E71D00821860 /* SingInViewController.swift */,
 				CF337E041DACEFEC003A133C /* SinInFramViewController.swift */,
 				CF79265F1DA0E74200821860 /* SingInModel.swift */,
+				93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */,
 			);
 			name = sing_in;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 				CFCC8A851D78327800D5EDF6 /* RecentTableViewCell.swift in Sources */,
 				CFCC8A891D78329C00D5EDF6 /* RecentTableViewModel.swift in Sources */,
 				CF79265E1DA0E71D00821860 /* SingInViewController.swift in Sources */,
+				93B40BE91DB8B7DB00AC3D48 /* SignInNavViewController.swift in Sources */,
 				CF2E9D6A1D7C76D600F485BB /* FriendChatViewController.swift in Sources */,
 				932A00E21CFEBA460036E1EA /* AppDelegate.swift in Sources */,
 				CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */,

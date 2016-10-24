@@ -23,9 +23,15 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addPhotoBG.layer.backgroundColor = UIColor(red:0.90, green:0.90, blue:0.90, alpha:1.0).cgColor
+        addPhotoBG.layoutIfNeeded()
+        addPhotoBG.layer.backgroundColor = UIColor(red:0.90, green:0.89, blue:0.88, alpha:1.0).cgColor
         addPhotoBG.layer.borderWidth = 1
-        addPhotoBG.layer.cornerRadius = 3
+        
+        let avatorRadious = addPhotoBG.layer.bounds.size.width/4
+        print(avatorRadious)
+        print(addPhotoBG.layer.bounds.size.width)
+        addPhotoBG.layer.cornerRadius = avatorRadious
+        addPhotoBG.clipsToBounds = true
         addPhotoBG.layer.borderColor = UIColor.gray.cgColor
     }
     

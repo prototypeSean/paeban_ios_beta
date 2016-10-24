@@ -185,7 +185,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wJS-FA-k6A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2618.840579710145" y="-2395.108695652174"/>
+            <point key="canvasLocation" x="-3486" y="-2395"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="sdz-dN-QzA">
@@ -559,7 +559,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hQM-93-MHZ">
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <state key="normal" title="+好友">
+                                        <state key="normal" title="好友">
                                             <color key="titleColor" red="0.49803921579999999" green="0.49803921579999999" blue="0.49803921579999999" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
@@ -1562,65 +1562,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hQu-wj-hc7">
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMp-Yc-AJ0">
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="hQu-wj-hc7" secondAttribute="height" multiplier="1:1" id="zux-0Q-Ycm"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="35" id="a1f-6m-mBM"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="IbF-Va-uvJ" kind="embed" id="TgV-dV-lqR"/>
-                                </connections>
-                            </containerView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入信箱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="quN-lh-j3J">
-                                <color key="tintColor" red="0.98039215686274506" green="0.48627450980392156" blue="0.29019607843137252" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="emailTextEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="5iB-x2-gHW"/>
-                                    <action selector="emailTextEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="vKG-b5-VDC"/>
-                                </connections>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sHx-mL-Hbr">
-                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="password_1EditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="eww-zR-ABt"/>
-                                    <action selector="password_1EditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="X7m-uX-xcb"/>
-                                </connections>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="再次輸入密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vmP-a2-gea">
-                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="password_2EditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="vEz-zJ-5tg"/>
-                                    <action selector="password_2EditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="ktO-Lg-EVD"/>
-                                </connections>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="selectGender" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="選擇性別" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="faT-OG-VF9">
-                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="selectGenderEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="ZDD-Es-Yc8"/>
-                                    <action selector="selectGenderEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="vHJ-HU-fhL"/>
-                                </connections>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="顯示的暱稱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vMr-H9-ucp">
-                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="firstNameEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="0KL-nd-kQP"/>
-                                    <action selector="firstNameEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="SGk-J3-07Y"/>
-                                </connections>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMp-Yc-AJ0">
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                 <state key="normal" title="送出">
                                     <color key="titleColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -1631,30 +1576,87 @@
                                     <action selector="submitBtnDown:" destination="w4R-P3-6jz" eventType="touchDown" id="6dO-24-iW9"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="bs5-PC-E6i">
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入信箱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="quN-lh-j3J">
+                                        <color key="tintColor" red="0.98039215686274506" green="0.48627450980392156" blue="0.29019607843137252" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="emailTextEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="5iB-x2-gHW"/>
+                                            <action selector="emailTextEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="vKG-b5-VDC"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sHx-mL-Hbr">
+                                        <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="password_1EditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="eww-zR-ABt"/>
+                                            <action selector="password_1EditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="X7m-uX-xcb"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="再次輸入密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vmP-a2-gea">
+                                        <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="password_2EditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="vEz-zJ-5tg"/>
+                                            <action selector="password_2EditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="ktO-Lg-EVD"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" restorationIdentifier="selectGender" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="選擇性別" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="faT-OG-VF9">
+                                        <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="selectGenderEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="ZDD-Es-Yc8"/>
+                                            <action selector="selectGenderEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="vHJ-HU-fhL"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="顯示的暱稱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vMr-H9-ucp">
+                                        <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="firstNameEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="0KL-nd-kQP"/>
+                                            <action selector="firstNameEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="SGk-J3-07Y"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="vmP-a2-gea" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="MFL-Af-IuH"/>
+                                    <constraint firstItem="vMr-H9-ucp" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="YHM-h9-yvz"/>
+                                    <constraint firstItem="sHx-mL-Hbr" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="gOh-K1-D78"/>
+                                    <constraint firstItem="faT-OG-VF9" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="vRE-1X-OEo"/>
+                                </constraints>
+                            </stackView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hQu-wj-hc7">
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="hQu-wj-hc7" secondAttribute="height" multiplier="1:1" id="zux-0Q-Ycm"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="IbF-Va-uvJ" kind="embed" id="TgV-dV-lqR"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="vmP-a2-gea" firstAttribute="centerX" secondItem="hQu-wj-hc7" secondAttribute="centerX" id="0WW-a2-bEs"/>
-                            <constraint firstItem="faT-OG-VF9" firstAttribute="centerX" secondItem="hQu-wj-hc7" secondAttribute="centerX" id="B5J-hT-Jge"/>
-                            <constraint firstItem="vMp-Yc-AJ0" firstAttribute="width" secondItem="quN-lh-j3J" secondAttribute="width" id="Jxm-2Y-gPa"/>
-                            <constraint firstItem="MqG-qN-EyE" firstAttribute="top" secondItem="vMp-Yc-AJ0" secondAttribute="bottom" multiplier="1.1" constant="8" symbolic="YES" id="M99-1E-1Er"/>
-                            <constraint firstItem="vMr-H9-ucp" firstAttribute="centerX" secondItem="hQu-wj-hc7" secondAttribute="centerX" id="OHN-9S-GaV"/>
-                            <constraint firstItem="sHx-mL-Hbr" firstAttribute="width" secondItem="quN-lh-j3J" secondAttribute="width" id="U1y-mz-LfT"/>
-                            <constraint firstItem="faT-OG-VF9" firstAttribute="top" secondItem="vmP-a2-gea" secondAttribute="bottom" constant="8" symbolic="YES" id="XPt-16-Kqd"/>
+                            <constraint firstItem="MqG-qN-EyE" firstAttribute="top" secondItem="vMp-Yc-AJ0" secondAttribute="bottom" constant="-1" id="1Ee-qe-p17"/>
+                            <constraint firstItem="bs5-PC-E6i" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hQu-wj-hc7" secondAttribute="bottom" constant="8" symbolic="YES" id="2Oy-hc-IIM"/>
+                            <constraint firstItem="vMp-Yc-AJ0" firstAttribute="top" secondItem="bs5-PC-E6i" secondAttribute="bottom" constant="12" id="9Ui-QI-vfa"/>
+                            <constraint firstItem="bs5-PC-E6i" firstAttribute="centerX" secondItem="Q1a-im-ZWl" secondAttribute="centerX" id="AUT-OS-zma"/>
+                            <constraint firstItem="bs5-PC-E6i" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" multiplier="0.7" constant="1" id="D11-id-O7d"/>
+                            <constraint firstAttribute="trailing" secondItem="vMp-Yc-AJ0" secondAttribute="trailing" constant="-2" id="b7T-ji-l4I"/>
                             <constraint firstItem="hQu-wj-hc7" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" multiplier="0.5" id="ces-5f-T7O"/>
-                            <constraint firstItem="vmP-a2-gea" firstAttribute="width" secondItem="quN-lh-j3J" secondAttribute="width" id="cxD-Aj-pPq"/>
-                            <constraint firstItem="vMr-H9-ucp" firstAttribute="top" secondItem="faT-OG-VF9" secondAttribute="bottom" constant="8" symbolic="YES" id="eZb-MD-OLr"/>
-                            <constraint firstItem="sHx-mL-Hbr" firstAttribute="centerX" secondItem="hQu-wj-hc7" secondAttribute="centerX" id="eg1-Ph-7Tf"/>
                             <constraint firstItem="hQu-wj-hc7" firstAttribute="centerX" secondItem="Q1a-im-ZWl" secondAttribute="centerX" id="f3S-Gd-0z5"/>
-                            <constraint firstItem="faT-OG-VF9" firstAttribute="width" secondItem="quN-lh-j3J" secondAttribute="width" id="hCq-bi-Nv3"/>
-                            <constraint firstItem="quN-lh-j3J" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" multiplier="0.7" id="hK8-Wf-TEI"/>
-                            <constraint firstItem="quN-lh-j3J" firstAttribute="centerX" secondItem="Q1a-im-ZWl" secondAttribute="centerX" id="irq-uR-WRg"/>
-                            <constraint firstItem="vmP-a2-gea" firstAttribute="top" secondItem="sHx-mL-Hbr" secondAttribute="bottom" constant="8" symbolic="YES" id="kxY-nM-y16"/>
-                            <constraint firstItem="vMp-Yc-AJ0" firstAttribute="top" secondItem="vMr-H9-ucp" secondAttribute="bottom" constant="8" symbolic="YES" id="mmQ-52-uEJ"/>
-                            <constraint firstItem="vMr-H9-ucp" firstAttribute="width" secondItem="quN-lh-j3J" secondAttribute="width" id="wgs-7L-Q6o"/>
-                            <constraint firstItem="sHx-mL-Hbr" firstAttribute="top" secondItem="quN-lh-j3J" secondAttribute="bottom" constant="8" symbolic="YES" id="wuu-T3-iuG"/>
-                            <constraint firstItem="hQu-wj-hc7" firstAttribute="centerY" secondItem="Q1a-im-ZWl" secondAttribute="centerY" multiplier="0.6" id="x5d-h1-0me"/>
-                            <constraint firstItem="vMp-Yc-AJ0" firstAttribute="centerX" secondItem="hQu-wj-hc7" secondAttribute="centerX" id="zaQ-fw-e6k"/>
+                            <constraint firstItem="hQu-wj-hc7" firstAttribute="centerY" secondItem="Q1a-im-ZWl" secondAttribute="centerY" multiplier="0.55" id="prK-on-zwW"/>
+                            <constraint firstItem="vMp-Yc-AJ0" firstAttribute="leading" secondItem="Q1a-im-ZWl" secondAttribute="leading" constant="-2" id="tdB-UD-PgC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="dSB-C9-wBv"/>
@@ -1922,9 +1924,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="207" height="207"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHw-e0-giL">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-3F-RCL">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHw-e0-giL">
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="選擇照片">
+                                <state key="normal" title="選擇照片" backgroundImage="user_avator_placeholder">
                                     <color key="titleColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -1934,10 +1939,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="kHw-e0-giL" firstAttribute="top" secondItem="Hqh-69-5KG" secondAttribute="bottom" id="QSe-or-cXo"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="kHw-e0-giL" secondAttribute="trailing" id="a91-lR-X1K"/>
-                            <constraint firstItem="4OT-WY-yjj" firstAttribute="top" secondItem="kHw-e0-giL" secondAttribute="bottom" id="vD8-DW-8ED"/>
-                            <constraint firstItem="kHw-e0-giL" firstAttribute="leading" secondItem="Abu-oL-DiC" secondAttribute="leadingMargin" id="zp6-SV-ncH"/>
+                            <constraint firstItem="GKP-3F-RCL" firstAttribute="height" secondItem="Abu-oL-DiC" secondAttribute="height" multiplier="0.1" id="2EA-mC-TDT"/>
+                            <constraint firstAttribute="trailing" secondItem="GKP-3F-RCL" secondAttribute="trailing" id="FLu-JP-1Rt"/>
+                            <constraint firstItem="GKP-3F-RCL" firstAttribute="leading" secondItem="Abu-oL-DiC" secondAttribute="leading" id="O5n-0b-c94"/>
+                            <constraint firstItem="kHw-e0-giL" firstAttribute="top" secondItem="Hqh-69-5KG" secondAttribute="bottom" constant="10" id="QSe-or-cXo"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="kHw-e0-giL" secondAttribute="trailing" constant="10" id="a91-lR-X1K"/>
+                            <constraint firstItem="4OT-WY-yjj" firstAttribute="top" secondItem="kHw-e0-giL" secondAttribute="bottom" constant="6" id="vD8-DW-8ED"/>
+                            <constraint firstItem="4OT-WY-yjj" firstAttribute="top" secondItem="GKP-3F-RCL" secondAttribute="bottom" constant="-2" id="wtV-9l-bno"/>
+                            <constraint firstItem="kHw-e0-giL" firstAttribute="leading" secondItem="Abu-oL-DiC" secondAttribute="leadingMargin" constant="10" id="zp6-SV-ncH"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1949,10 +1958,10 @@
             </objects>
             <point key="canvasLocation" x="-5379" y="-921"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Sign In Nav View Controller-->
         <scene sceneID="sXa-r4-9pS">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xcW-lD-yfC" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xcW-lD-yfC" customClass="SignInNavViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oxd-ii-78P">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -1978,6 +1987,7 @@
         <image name="star" width="25" height="25"/>
         <image name="texting" width="25" height="25"/>
         <image name="topic" width="25" height="25"/>
+        <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="wZO-VC-xmQ"/>

@@ -19,7 +19,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     
     // MARK: 送出按鈕按下放開行為＆外觀
     @IBAction func submitBtnDown(_ sender: AnyObject) {
-        submitBtn.layer.backgroundColor = UIColor(red:0.93, green:0.49, blue:0.21, alpha:1.0).cgColor
+        submitBtn.layer.backgroundColor = UIColor(red:0.98, green:0.49, blue:0.29, alpha:1.0).cgColor
     }
 
     @IBAction func sentSinginData(_ sender: AnyObject) {
@@ -76,7 +76,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         // 送出按鈕初始外觀 切記把故事版的Type: Custom
         submitBtn.layer.borderWidth = 1
         submitBtn.layer.borderColor = UIColor.lightGray.cgColor
-        submitBtn.layer.cornerRadius = 3
+        submitBtn.layer.cornerRadius = 0
         submitBtn.setTitleColor(UIColor.white, for: .highlighted)
         
         emailText.layer.borderColor = UIColor.lightGray.cgColor
