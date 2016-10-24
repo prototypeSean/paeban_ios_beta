@@ -508,7 +508,7 @@
                             <inset key="imageInsets" minX="-3" minY="5" maxX="0.0" maxY="0.0"/>
                             <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="fKg-5c-ll5" kind="show" id="wc9-Me-EI3"/>
+                                <segue destination="fKg-5c-ll5" kind="show" identifier="topicToSetting" id="wc9-Me-EI3"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="g7a-zc-2rU">
@@ -965,7 +965,7 @@
                             <inset key="imageInsets" minX="-3" minY="5" maxX="0.0" maxY="0.0"/>
                             <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="fKg-5c-ll5" kind="show" id="vc1-tE-BTH"/>
+                                <segue destination="fKg-5c-ll5" kind="show" identifier="myTopicToSetting" id="vc1-tE-BTH"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="1oW-0c-N4K">
@@ -1189,7 +1189,7 @@
                             <inset key="imageInsets" minX="-3" minY="5" maxX="0.0" maxY="0.0"/>
                             <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="fKg-5c-ll5" kind="show" id="l0w-d5-79K"/>
+                                <segue destination="fKg-5c-ll5" kind="show" identifier="friendToSetting" id="l0w-d5-79K"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1411,11 +1411,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="進行中" id="MhI-zc-ri9">
-                        <barButtonItem key="leftBarButtonItem" image="setting" style="plain" id="MLh-D2-saz">
-                            <inset key="imageInsets" minX="-3" minY="5" maxX="0.0" maxY="0.0"/>
-                            <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <barButtonItem key="leftBarButtonItem" image="setting" id="DCs-Mm-F04">
+                            <color key="tintColor" red="0.50196081400000003" green="0.0" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="fKg-5c-ll5" kind="show" id="In4-Fz-Oz6"/>
+                                <segue destination="fKg-5c-ll5" kind="show" id="XH3-qg-Ahu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -2026,7 +2025,7 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wc9-Me-EI3"/>
         <segue reference="wZO-VC-xmQ"/>
+        <segue reference="vc1-tE-BTH"/>
     </inferredMetricsTieBreakers>
 </document>
