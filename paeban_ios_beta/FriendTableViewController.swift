@@ -37,19 +37,18 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
         return cell2
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let index = (self.tableView.indexPathForSelectedRow as NSIndexPath?)?.row
-        let topicViewCon = segue.destination as! FriendChatUpViewController
-        let getSegueData = model!.getSegueData(index!)
-        topicViewCon.setID = userData.id
-        topicViewCon.setName = userData.name
-        topicViewCon.setImg = userData.img
-        topicViewCon.clientId = getSegueData["clientId"] as? String
-        topicViewCon.clientName = getSegueData["clientName"] as? String
-        topicViewCon.clientImg = getSegueData["clientImg"] as? UIImage
-        topicViewCon.title = "好友"
-        
-        
-        
+        if segue.identifier == "friendConBox"{
+            let index = (self.tableView.indexPathForSelectedRow as NSIndexPath?)?.row
+            let topicViewCon = segue.destination as! FriendChatUpViewController
+            let getSegueData = model!.getSegueData(index!)
+            topicViewCon.setID = userData.id
+            topicViewCon.setName = userData.name
+            topicViewCon.setImg = userData.img
+            topicViewCon.clientId = getSegueData["clientId"] as? String
+            topicViewCon.clientName = getSegueData["clientName"] as? String
+            topicViewCon.clientImg = getSegueData["clientImg"] as? UIImage
+            topicViewCon.title = "好友"
+        }
     }
     
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){

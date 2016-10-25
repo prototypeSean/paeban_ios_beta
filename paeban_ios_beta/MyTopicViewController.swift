@@ -82,7 +82,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { 
             let http_obj = HttpRequestCenter()
             http_obj.getTopicContentHistory(self.setID!, topicId: self.topicId!, InViewAct: { (returnDic) in
-                print(returnDic)
+                
                 let checkMsgType = returnDic.index(where: { (msg_type, _) -> Bool in
                     if msg_type == "msg_type"{
                         //話題已關閉

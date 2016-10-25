@@ -17,29 +17,32 @@ class SettingViewController: UIViewController {
     
     // internal func
     func logOut(){
-        cookie = nil
-        myFriendsList = []
-        logInState = false
-        firstConnect = true
-        socket.disconnect()
-        fbLoginManager.logOut()
-        let session = URLSession.shared
-        session.finishTasksAndInvalidate()        
-        
-        print("=======")
-        
-        session.reset {
-            DispatchQueue.main.async(execute: {
-                self.dismiss(animated: true, completion: {
-                    self.parent?.dismiss(animated: true, completion: {
-                        self.parent?.dismiss(animated: true, completion: {
-                            
-                        })
-                        
-                    })
-                })
-            })
+//        cookie = nil
+//        myFriendsList = []
+//        logInState = false
+//        firstConnect = true
+//        socket.disconnect()
+//        fbLoginManager.logOut()
+//        let session = URLSession.shared
+//        session.finishTasksAndInvalidate()        
+//        
+//        print("=======")
+//        
+//        session.reset {
+//            DispatchQueue.main.async(execute: {
+//                print(self)
+//                print(self.parent)
+//                self.dismiss(animated: true, completion: {
+//
+//                })
+//            })
+//        }
+        // =====test=====
+        let navc = self.parent as! UINavigationController
+        navc.dismiss(animated: true) { 
+            //code
         }
+        //navc.popToRootViewController(animated: true)
         
     }
     

@@ -519,16 +519,18 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     // 畫面轉跳
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let indexPath = self.tableView.indexPathForSelectedRow!
-        let dataposition:Int = (indexPath as NSIndexPath).row
-        let nextView = segue.destination as! MyTopicViewController
-        let data = mytopic[dataposition]
-        nextView.setID = data.clientId_detial
-        nextView.setName = data.clientName_detial
-        nextView.topicId = data.topicId_title
-        nextView.clientImg = data.clientPhoto_detial
-        nextView.topicTitle = data.topicTitle_title
-        nextView.title = data.clientName_detial
+        if segue.identifier == "masterModeSegue"{
+            let indexPath = self.tableView.indexPathForSelectedRow!
+            let dataposition:Int = (indexPath as NSIndexPath).row
+            let nextView = segue.destination as! MyTopicViewController
+            let data = mytopic[dataposition]
+            nextView.setID = data.clientId_detial
+            nextView.setName = data.clientName_detial
+            nextView.topicId = data.topicId_title
+            nextView.clientImg = data.clientPhoto_detial
+            nextView.topicTitle = data.topicTitle_title
+            nextView.title = data.clientName_detial
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {return 1}

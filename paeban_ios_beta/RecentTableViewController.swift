@@ -40,15 +40,18 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let index = (self.tableView.indexPathForSelectedRow as NSIndexPath?)?.row
-        let topicViewCon = segue.destination as! TopicViewController
-        let getSegueData = rTVModel.getSegueData(index!)
-        topicViewCon.topicId = getSegueData["topicId"] as? String
-        topicViewCon.ownerId = getSegueData["ownerId"] as? String
-        topicViewCon.ownerImg = getSegueData["ownerImg"] as? UIImage
-        topicViewCon.topicTitle = getSegueData["topicTitle"] as? String
-        topicViewCon.title = getSegueData["title"] as? String
-        //topicViewCon.delegate = self
+        if segue.identifier == "clientModeSegue3"{
+            let index = (self.tableView.indexPathForSelectedRow as NSIndexPath?)?.row
+            let topicViewCon = segue.destination as! TopicViewController
+            let getSegueData = rTVModel.getSegueData(index!)
+            topicViewCon.topicId = getSegueData["topicId"] as? String
+            topicViewCon.ownerId = getSegueData["ownerId"] as? String
+            topicViewCon.ownerImg = getSegueData["ownerImg"] as? UIImage
+            topicViewCon.topicTitle = getSegueData["topicTitle"] as? String
+            topicViewCon.title = getSegueData["title"] as? String
+            //topicViewCon.delegate = self
+        }
+        
     }
     
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
