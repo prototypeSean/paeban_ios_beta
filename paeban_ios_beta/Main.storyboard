@@ -264,7 +264,7 @@
                                                                 </imageView>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CYX-FE-IxU">
                                                                     <subviews>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Bwp-70-ti3">
+                                                                        <stackView opaque="NO" contentMode="right" distribution="equalSpacing" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Bwp-70-ti3">
                                                                             <subviews>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="True_photo" translatesAutoresizingMaskIntoConstraints="NO" id="Efe-P4-ZU2">
                                                                                     <color key="backgroundColor" red="0.94655213635384616" green="0.94655213635384616" blue="0.94655213635384616" alpha="1" colorSpace="calibratedRGB"/>
@@ -318,15 +318,15 @@
                                                                         </label>
                                                                     </subviews>
                                                                     <constraints>
+                                                                        <constraint firstAttribute="trailing" secondItem="Bwp-70-ti3" secondAttribute="trailing" id="3Xu-Sx-mI5"/>
+                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="leading" secondItem="CYX-FE-IxU" secondAttribute="leading" id="7Gc-0i-DP9"/>
                                                                         <constraint firstItem="Bwp-70-ti3" firstAttribute="top" secondItem="CYX-FE-IxU" secondAttribute="top" id="9dv-U1-tEk"/>
                                                                         <constraint firstAttribute="height" constant="16" id="A4M-tz-c0d"/>
                                                                         <constraint firstItem="Bwp-70-ti3" firstAttribute="top" secondItem="CYX-FE-IxU" secondAttribute="top" constant="2" id="Eoc-GP-wRL"/>
-                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="leading" secondItem="CYX-FE-IxU" secondAttribute="leading" constant="-5" id="Jee-2o-JcY"/>
-                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="top" secondItem="CYX-FE-IxU" secondAttribute="top" constant="-5" id="Mwy-ZM-Tcm"/>
+                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="height" secondItem="CYX-FE-IxU" secondAttribute="height" multiplier="0.3" id="LW7-fV-eKW"/>
+                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="top" secondItem="CYX-FE-IxU" secondAttribute="top" id="Mwy-ZM-Tcm"/>
                                                                         <constraint firstAttribute="bottom" secondItem="Bwp-70-ti3" secondAttribute="bottom" id="Ndd-eC-kb3"/>
-                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="height" secondItem="Bwp-70-ti3" secondAttribute="height" multiplier="0.5" id="Qxh-8i-S8a"/>
                                                                         <constraint firstAttribute="width" constant="20" id="e2l-Na-apY"/>
-                                                                        <constraint firstItem="Bwp-70-ti3" firstAttribute="centerX" secondItem="CYX-FE-IxU" secondAttribute="centerX" id="rZt-c9-JdY"/>
                                                                         <constraint firstAttribute="bottom" secondItem="Bwp-70-ti3" secondAttribute="bottom" id="vUh-ZL-X5e"/>
                                                                     </constraints>
                                                                     <variation key="default">
@@ -2031,6 +2031,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="wZO-VC-xmQ"/>
-        <segue reference="wc9-Me-EI3"/>
+        <segue reference="l0w-d5-79K"/>
     </inferredMetricsTieBreakers>
 </document>
