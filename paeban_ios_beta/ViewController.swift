@@ -103,6 +103,11 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         find_user_kb_height()
         BtnOutlet()
         // MARK: 飛行前移除
+        // set device token
+//        let settings = UIUserNotificationSettings(types: UIUserNotificationType.alert, categories: nil)
+//        let application = UIApplication.shared
+//        application.registerUserNotificationSettings(settings)
+//        application.registerForRemoteNotifications()
         
     }
     func find_user_kb_height(){

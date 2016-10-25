@@ -36,7 +36,6 @@
 		936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */; };
 		93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */; };
 		93B40BE91DB8B7DB00AC3D48 /* SignInNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */; };
-		CF13867C1D98C53C00E70990 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF13867B1D98C53C00E70990 /* StoreKit.framework */; };
 		CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF13867D1D98CE0600E70990 /* LoginScrollView.swift */; };
 		CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */; };
 		CF2E9D621D7BDF9E00F485BB /* FriendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E9D611D7BDF9E00F485BB /* FriendTableViewController.swift */; };
@@ -47,6 +46,7 @@
 		CF337E051DACEFEC003A133C /* SinInFramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF337E041DACEFEC003A133C /* SinInFramViewController.swift */; };
 		CF79265E1DA0E71D00821860 /* SingInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265D1DA0E71D00821860 /* SingInViewController.swift */; };
 		CF7926601DA0E74200821860 /* SingInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265F1DA0E74200821860 /* SingInModel.swift */; };
+		CF89A2A61DBFCAC6005FA8AF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF89A2A51DBFCAC6005FA8AF /* StoreKit.framework */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
 		CFBA00AF1DB4CE5C00400C98 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */; };
 		CFCC8A851D78327800D5EDF6 /* RecentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */; };
@@ -89,7 +89,6 @@
 		93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInNavViewController.swift; sourceTree = "<group>"; };
 		BAC8DE25847EF16A13E40E0D /* Pods-paeban_ios_beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.release.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.release.xcconfig"; sourceTree = "<group>"; };
 		CCB2ABAD6DC20E3AE8B85FBB /* Pods-paeban_ios_beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.debug.xcconfig"; sourceTree = "<group>"; };
-		CF13867B1D98C53C00E70990 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CF13867D1D98CE0600E70990 /* LoginScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScrollView.swift; sourceTree = "<group>"; };
 		CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendChatUpViewController.swift; sourceTree = "<group>"; };
 		CF2E9D611D7BDF9E00F485BB /* FriendTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewController.swift; sourceTree = "<group>"; };
@@ -100,6 +99,7 @@
 		CF337E041DACEFEC003A133C /* SinInFramViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinInFramViewController.swift; sourceTree = "<group>"; };
 		CF79265D1DA0E71D00821860 /* SingInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInViewController.swift; sourceTree = "<group>"; };
 		CF79265F1DA0E74200821860 /* SingInModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInModel.swift; sourceTree = "<group>"; };
+		CF89A2A51DBFCAC6005FA8AF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = paeban_ios_beta.entitlements; sourceTree = "<group>"; };
 		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
 		CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -114,8 +114,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CF13867C1D98C53C00E70990 /* StoreKit.framework in Frameworks */,
 				73E59CAE7906529E9934E916 /* Pods_paeban_ios_beta.framework in Frameworks */,
+				CF89A2A61DBFCAC6005FA8AF /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,7 +125,7 @@
 		1741F3FC9375CBC3750A7722 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CF13867B1D98C53C00E70990 /* StoreKit.framework */,
+				CF89A2A51DBFCAC6005FA8AF /* StoreKit.framework */,
 				5DA9AB49DFA16020BF975A80 /* Pods_paeban_ios_beta.framework */,
 			);
 			name = Frameworks;
@@ -319,6 +319,9 @@
 							};
 							com.apple.Maps.iOS = {
 								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
 							};
 						};
 					};
