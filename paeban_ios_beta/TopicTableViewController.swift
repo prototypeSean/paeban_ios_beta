@@ -169,10 +169,19 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         cell.topicOwner.text = topic.ownerName
         cell.topicOwnerImage.image = topic.photo
         
-        var isMeImg:UIImage
-        if topic.isMe{isMeImg = UIImage(named:"True_photo")!}
-        else{isMeImg = UIImage(named:"Fake_photo")!}
-        cell.isMe.image = isMeImg
+        cell.isMe.layoutIfNeeded()
+        cell.isMe.image = UIImage(named:"True_photo")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        cell.isMe.layer.cornerRadius = cell.isMe.frame.size.width/2
+        cell.isMe.clipsToBounds = true
+        if topic.isMe{
+            cell.isMe.tintColor = UIColor.orange
+        }
+        else{
+            cell.isMe.tintColor = UIColor.lightGray
+            cell.isMe.backgroundColor = UIColor.white
+        }
+        
+//        cell.isMe.image = isMeImg
         var sexImg:UIImage?
         switch topic.sex {
         case "男":
@@ -191,16 +200,22 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
         cell.sex.image = sexImg
         
-        cell.online.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-
+        cell.online.layoutIfNeeded()
+        cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let cr = (cell.online.frame.size.width)/2
+        cell.online.layer.borderWidth = 1
+        cell.online.layer.borderColor = UIColor.white.cgColor
+        cell.online.layer.cornerRadius = cr
+        cell.online.clipsToBounds = true
+        
+        
+        
         if topic.online{
-            cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
+            cell.online.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
         }
-        //MARK:下面那張圖請改 “不在線上的人圖示”
         else{
-            cell.online.tintColor = UIColor.gray
+            cell.online.tintColor = UIColor.lightGray
         }
-//        cell.online.image = onlineimage.image
         // Configure the cell...
         
         
