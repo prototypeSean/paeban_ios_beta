@@ -25,9 +25,6 @@ class SettingViewController: UIViewController {
         fbLoginManager.logOut()
         let session = URLSession.shared
         session.finishTasksAndInvalidate()        
-        
-        print("=======")
-        
         session.reset {
             DispatchQueue.main.async(execute: {
                 if let navc = self.parent?.parent?.parent as? UINavigationController{
