@@ -311,23 +311,23 @@
                                                                                 </mask>
                                                                             </variation>
                                                                         </stackView>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;99km" lineBreakMode="clip" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IIc-iW-Uqw">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;99km" lineBreakMode="clip" minimumScaleFactor="0.45000000000000001" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IIc-iW-Uqw">
                                                                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="10"/>
                                                                             <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                     </subviews>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="trailing" secondItem="Bwp-70-ti3" secondAttribute="trailing" id="3Xu-Sx-mI5"/>
-                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="leading" secondItem="CYX-FE-IxU" secondAttribute="leading" id="7Gc-0i-DP9"/>
+                                                                        <constraint firstItem="Rq4-LV-33L" firstAttribute="height" secondItem="CYX-FE-IxU" secondAttribute="height" multiplier="0.55" id="35c-Cq-Zmf"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="Bwp-70-ti3" secondAttribute="trailing" constant="2" id="3Xu-Sx-mI5"/>
                                                                         <constraint firstItem="Bwp-70-ti3" firstAttribute="top" secondItem="CYX-FE-IxU" secondAttribute="top" id="9dv-U1-tEk"/>
                                                                         <constraint firstAttribute="height" constant="16" id="A4M-tz-c0d"/>
-                                                                        <constraint firstItem="Bwp-70-ti3" firstAttribute="top" secondItem="CYX-FE-IxU" secondAttribute="top" constant="2" id="Eoc-GP-wRL"/>
-                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="height" secondItem="CYX-FE-IxU" secondAttribute="height" multiplier="0.3" id="LW7-fV-eKW"/>
-                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="top" secondItem="CYX-FE-IxU" secondAttribute="top" id="Mwy-ZM-Tcm"/>
+                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="leading" secondItem="CYX-FE-IxU" secondAttribute="leading" id="DZP-h4-ZcK"/>
+                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="height" secondItem="CYX-FE-IxU" secondAttribute="height" multiplier="0.45" id="LW7-fV-eKW"/>
+                                                                        <constraint firstItem="IIc-iW-Uqw" firstAttribute="top" secondItem="CYX-FE-IxU" secondAttribute="top" constant="-1" id="Mwy-ZM-Tcm"/>
                                                                         <constraint firstAttribute="bottom" secondItem="Bwp-70-ti3" secondAttribute="bottom" id="Ndd-eC-kb3"/>
                                                                         <constraint firstAttribute="width" constant="20" id="e2l-Na-apY"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="Bwp-70-ti3" secondAttribute="bottom" id="vUh-ZL-X5e"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="Bwp-70-ti3" secondAttribute="bottom" constant="-2" id="vUh-ZL-X5e"/>
                                                                     </constraints>
                                                                     <variation key="default">
                                                                         <mask key="constraints">
@@ -342,8 +342,7 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="bottom" secondItem="CYX-FE-IxU" secondAttribute="bottom" id="02t-lD-9wL"/>
                                                                 <constraint firstItem="CYX-FE-IxU" firstAttribute="top" secondItem="eQS-sT-Ohi" secondAttribute="bottom" id="D36-2A-8rF"/>
-                                                                <constraint firstItem="Bwp-70-ti3" firstAttribute="height" secondItem="eQS-sT-Ohi" secondAttribute="height" multiplier="0.3" id="QQC-50-y89"/>
-                                                                <constraint firstItem="CYX-FE-IxU" firstAttribute="height" relation="greaterThanOrEqual" secondItem="eQS-sT-Ohi" secondAttribute="height" multiplier="1:5" id="Txo-Dy-tTR"/>
+                                                                <constraint firstItem="CYX-FE-IxU" firstAttribute="height" secondItem="eQS-sT-Ohi" secondAttribute="height" multiplier="0.35" constant="1" id="Txo-Dy-tTR"/>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="nFO-od-fl9"/>
                                                                 <constraint firstAttribute="trailing" secondItem="CYX-FE-IxU" secondAttribute="trailing" id="nfV-Jf-kM9"/>
                                                                 <constraint firstItem="CYX-FE-IxU" firstAttribute="leading" secondItem="1Fk-yD-Efo" secondAttribute="leading" id="oTH-ZS-34t"/>
@@ -2030,7 +2029,7 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="wc9-Me-EI3"/>
         <segue reference="wZO-VC-xmQ"/>
-        <segue reference="l0w-d5-79K"/>
     </inferredMetricsTieBreakers>
 </document>
