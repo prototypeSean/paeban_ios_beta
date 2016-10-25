@@ -19,7 +19,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="600" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright © 2016年 Paeban studio. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="k3S-xV-Nns">
@@ -196,7 +196,7 @@
                         <viewControllerLayoutGuide type="bottom" id="WaC-tm-Hey"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lo3-Qm-fMH">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wcu-iW-4Fs">
@@ -229,17 +229,17 @@
                         <viewControllerLayoutGuide type="bottom" id="XzG-35-cBS"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="gVH-aT-5zH">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="tttt" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="O0h-4r-Zjc" userLabel="topicList">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCellTableViewCell" id="Wjc-mK-FT3" customClass="TopicCellTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="414" height="80"/>
+                                        <rect key="frame" x="0.0" y="92" width="1000" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
-                                            <frame key="frameInset" width="414" height="79.666666666666671"/>
+                                            <frame key="frameInset" width="383" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房主的暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPN-A9-vyF">
@@ -266,13 +266,6 @@
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="right" distribution="equalSpacing" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Bwp-70-ti3">
                                                                             <subviews>
-                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="True_photo" translatesAutoresizingMaskIntoConstraints="NO" id="Efe-P4-ZU2">
-                                                                                    <color key="backgroundColor" red="0.94655213635384616" green="0.94655213635384616" blue="0.94655213635384616" alpha="1" colorSpace="calibratedRGB"/>
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="width" secondItem="Efe-P4-ZU2" secondAttribute="height" multiplier="1:1" id="d7G-P6-dx3"/>
-                                                                                        <constraint firstAttribute="width" secondItem="Efe-P4-ZU2" secondAttribute="height" multiplier="1:1" id="ygc-fa-9Hx"/>
-                                                                                    </constraints>
-                                                                                </imageView>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="male" translatesAutoresizingMaskIntoConstraints="NO" id="Rq4-LV-33L">
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" secondItem="Rq4-LV-33L" secondAttribute="height" multiplier="1:1" id="MWT-J1-2jS"/>
@@ -285,6 +278,13 @@
                                                                                             <exclude reference="pLZ-FM-D6e"/>
                                                                                         </mask>
                                                                                     </variation>
+                                                                                </imageView>
+                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="True_photo" translatesAutoresizingMaskIntoConstraints="NO" id="Efe-P4-ZU2">
+                                                                                    <color key="backgroundColor" red="0.94655213635384616" green="0.94655213635384616" blue="0.94655213635384616" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                    <constraints>
+                                                                                        <constraint firstAttribute="width" secondItem="Efe-P4-ZU2" secondAttribute="height" multiplier="1:1" id="d7G-P6-dx3"/>
+                                                                                        <constraint firstAttribute="width" secondItem="Efe-P4-ZU2" secondAttribute="height" multiplier="1:1" id="ygc-fa-9Hx"/>
+                                                                                    </constraints>
                                                                                 </imageView>
                                                                             </subviews>
                                                                             <constraints>
@@ -509,7 +509,7 @@
                     <navigationItem key="navigationItem" title="話題" id="vG6-IY-Ij6">
                         <barButtonItem key="leftBarButtonItem" image="setting" style="plain" id="ReK-Yd-Ykl">
                             <inset key="imageInsets" minX="-3" minY="5" maxX="0.0" maxY="0.0"/>
-                            <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <segue destination="fKg-5c-ll5" kind="show" identifier="topicToSetting" id="wc9-Me-EI3"/>
                             </connections>
@@ -536,7 +536,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Rog-Sp-21z"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6Yb-S9-ebd">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ZH-7d-0if">
@@ -670,17 +670,17 @@
             <objects>
                 <tableViewController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" id="hyw-hk-lQB" customClass="MyTopicTableViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="263" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ypk-Kz-F4J" userLabel="MyRelatedTopics">
-                        <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myTopicCell_1" rowHeight="70" id="ukk-Cg-AaJ" customClass="MyTopicTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="70"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ukk-Cg-AaJ" id="ZAm-Bu-LPF">
-                                    <frame key="frameInset" width="414" height="69.5"/>
+                                    <frame key="frameInset" width="375" height="69"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的話題標題" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eYJ-3A-UKG">
@@ -761,10 +761,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myTopicCell_2" rowHeight="90" id="YR8-FS-JTg" customClass="TopicSecTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="98" width="414" height="90"/>
+                                <rect key="frame" x="0.0" y="98" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YR8-FS-JTg" id="Xdk-wf-EhQ">
-                                    <frame key="frameInset" width="414" height="89.5"/>
+                                    <frame key="frameInset" width="375" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Whx-ZO-9Ol">
@@ -949,10 +949,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="loadingCell" rowHeight="90" id="rK6-2L-EpZ" customClass="TableViewLoadingCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="188" width="414" height="90"/>
+                                <rect key="frame" x="0.0" y="188" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rK6-2L-EpZ" id="JhQ-Bl-RbK">
-                                    <frame key="frameInset" width="414" height="89.5"/>
+                                    <frame key="frameInset" width="375" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -1010,15 +1010,15 @@
             <objects>
                 <tableViewController id="H5q-Ep-Az3" customClass="FriendTableViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ojl-mX-HLv">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="FriendTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="FriendTableViewCell" rowHeight="90" id="1Rg-ol-xwy" customClass="FriendTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="414" height="90"/>
+                                <rect key="frame" x="0.0" y="92" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Rg-ol-xwy" id="UDL-7b-AkG">
-                                    <frame key="frameInset" width="414" height="89.5"/>
+                                    <frame key="frameInset" width="375" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="68K-5D-lvJ">
@@ -1206,15 +1206,15 @@
             <objects>
                 <tableViewController id="WZw-uQ-GWM" customClass="RecentTableViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="147" sectionHeaderHeight="28" sectionFooterHeight="28" id="zs3-wg-E77">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nowTopicListCell" id="bxI-lp-hL8" customClass="RecentTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="414" height="147"/>
+                                <rect key="frame" x="0.0" y="92" width="375" height="147"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bxI-lp-hL8" id="c9i-8k-6tJ">
-                                    <frame key="frameInset" width="414" height="146.5"/>
+                                    <frame key="frameInset" width="375" height="146"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="g0Y-SQ-fYN">
@@ -1435,7 +1435,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Agd-9n-p2Q"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="68R-qK-mqe">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="538"/>
+                        <rect key="frame" x="0.0" y="0.0" width="383" height="469"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -1453,7 +1453,7 @@
                         <viewControllerLayoutGuide type="bottom" id="F8n-Xj-9Eh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cxg-BR-h8T">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Copyright © 2016年 Paeban studio. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="k86-cw-gLM">
@@ -1596,7 +1596,7 @@
                         <viewControllerLayoutGuide type="bottom" id="MqG-qN-EyE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Q1a-im-ZWl">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMp-Yc-AJ0">
@@ -1744,7 +1744,7 @@
                         <viewControllerLayoutGuide type="bottom" id="SWQ-2P-P7x"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="TCa-fY-ouF">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhN-4m-hPP">
@@ -1833,7 +1833,7 @@
                         <viewControllerLayoutGuide type="bottom" id="SJa-n7-xti"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="1yC-zi-aJI">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="523"/>
+                        <rect key="frame" x="0.0" y="0.0" width="383" height="454"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -1851,7 +1851,7 @@
                         <viewControllerLayoutGuide type="bottom" id="LUn-OM-Wub"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8cW-le-aAN">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b2d-Ge-R3g">
@@ -1940,7 +1940,7 @@
                         <viewControllerLayoutGuide type="bottom" id="ryC-MS-fPW"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="ldI-Hl-dM7">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="523"/>
+                        <rect key="frame" x="0.0" y="0.0" width="383" height="454"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -1958,7 +1958,7 @@
                         <viewControllerLayoutGuide type="bottom" id="4OT-WY-yjj"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Abu-oL-DiC">
-                        <rect key="frame" x="0.0" y="0.0" width="207" height="207"/>
+                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="187.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-3F-RCL">
@@ -2022,7 +2022,7 @@
         <image name="list" width="25" height="25"/>
         <image name="male" width="128" height="128"/>
         <image name="online" width="25" height="25"/>
-        <image name="setting" width="20" height="20"/>
+        <image name="setting" width="25" height="25"/>
         <image name="star" width="25" height="25"/>
         <image name="texting" width="25" height="25"/>
         <image name="topic" width="25" height="25"/>
