@@ -154,6 +154,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         return topics.count
     }
 
+    // MARK: 設定cell裡面的顯示
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Table view cells are reused and should be dequeued using a cell identifier.
@@ -168,20 +169,19 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         cell.topicTitle.text = topic.title
         cell.topicOwner.text = topic.ownerName
         cell.topicOwnerImage.image = topic.photo
-        
+        // 本人照片
         cell.isMe.layoutIfNeeded()
         cell.isMe.image = UIImage(named:"True_photo")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         cell.isMe.layer.cornerRadius = cell.isMe.frame.size.width/2
         cell.isMe.clipsToBounds = true
         if topic.isMe{
-            cell.isMe.tintColor = UIColor.orange
+            cell.isMe.tintColor = UIColor.white
         }
         else{
-            cell.isMe.tintColor = UIColor.lightGray
-            cell.isMe.backgroundColor = UIColor.white
+            cell.isMe.tintColor = UIColor.clear
+            cell.isMe.backgroundColor = UIColor.clear
         }
-        
-//        cell.isMe.image = isMeImg
+        // 性別圖示
         var sexImg:UIImage?
         switch topic.sex {
         case "男":
@@ -196,10 +196,11 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             sexImg = UIImage(named: "male")!
             print("性別圖示分類失敗")
         }
-        
-        
         cell.sex.image = sexImg
-        
+        // 電池圖示設定
+        cell.battery.image = UIImage(named:"battery-full")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        cell.battery.tintColor = UIColor(red:0.18, green:0.80, blue:0.44, alpha:1.0)
+        // 在線上燈號
         cell.online.layoutIfNeeded()
         cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         let cr = (cell.online.frame.size.width)/2
