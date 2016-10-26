@@ -26,6 +26,7 @@ class TopicCellTableViewCell: UITableViewCell {
     
     @IBOutlet weak var online: UIImageView!
     
+    @IBOutlet weak var battery: UIImageView!
     // 記得控制的時候要用sizeToFit()讓他自動調整長度
     @IBOutlet weak var topicOwner: UILabel!
     

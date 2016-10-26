@@ -247,7 +247,30 @@
                                                     <color key="textColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <stackView opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="hVQ-wd-blz">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="male" translatesAutoresizingMaskIntoConstraints="NO" id="Rq4-LV-33L">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="Rq4-LV-33L" secondAttribute="height" multiplier="1:1" id="MWT-J1-2jS"/>
+                                                        <constraint firstAttribute="width" secondItem="Rq4-LV-33L" secondAttribute="height" multiplier="1:1" id="bCL-HO-t69"/>
+                                                        <constraint firstAttribute="width" secondItem="Rq4-LV-33L" secondAttribute="height" multiplier="1:1" id="pLZ-FM-D6e"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="MWT-J1-2jS"/>
+                                                            <exclude reference="pLZ-FM-D6e"/>
+                                                        </mask>
+                                                    </variation>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;99km" lineBreakMode="clip" minimumScaleFactor="0.45000000000000001" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IIc-iW-Uqw">
+                                                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="10"/>
+                                                    <color key="textColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="battery-full" translatesAutoresizingMaskIntoConstraints="NO" id="Txa-ij-40K">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="Txa-ij-40K" secondAttribute="height" multiplier="1:1" id="79S-lC-mLb"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="hVQ-wd-blz">
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="1Fk-yD-Efo">
                                                             <subviews>
@@ -263,94 +286,15 @@
                                                                     </variation>
                                                                 </imageView>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CYX-FE-IxU">
-                                                                    <subviews>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Bwp-70-ti3">
-                                                                            <subviews>
-                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="True_photo" translatesAutoresizingMaskIntoConstraints="NO" id="Efe-P4-ZU2">
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="width" secondItem="Efe-P4-ZU2" secondAttribute="height" multiplier="1:1" id="d7G-P6-dx3"/>
-                                                                                        <constraint firstAttribute="width" secondItem="Efe-P4-ZU2" secondAttribute="height" multiplier="1:1" id="ygc-fa-9Hx"/>
-                                                                                    </constraints>
-                                                                                </imageView>
-                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="male" translatesAutoresizingMaskIntoConstraints="NO" id="Rq4-LV-33L">
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="width" secondItem="Rq4-LV-33L" secondAttribute="height" multiplier="1:1" id="MWT-J1-2jS"/>
-                                                                                        <constraint firstAttribute="width" secondItem="Rq4-LV-33L" secondAttribute="height" multiplier="1:1" id="bCL-HO-t69"/>
-                                                                                        <constraint firstAttribute="width" secondItem="Rq4-LV-33L" secondAttribute="height" multiplier="1:1" id="pLZ-FM-D6e"/>
-                                                                                    </constraints>
-                                                                                    <variation key="default">
-                                                                                        <mask key="constraints">
-                                                                                            <exclude reference="MWT-J1-2jS"/>
-                                                                                            <exclude reference="pLZ-FM-D6e"/>
-                                                                                        </mask>
-                                                                                    </variation>
-                                                                                </imageView>
-                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="texting" translatesAutoresizingMaskIntoConstraints="NO" id="fug-jH-rwJ">
-                                                                                    <constraints>
-                                                                                        <constraint firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="height" multiplier="1:1" id="EGF-TP-3OY"/>
-                                                                                        <constraint firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="height" multiplier="1:1" constant="1" id="EQJ-Jy-6ww"/>
-                                                                                        <constraint firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="height" multiplier="1:1" id="PPg-NW-w5c"/>
-                                                                                        <constraint firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="height" multiplier="1:1" id="cF2-iK-F08"/>
-                                                                                    </constraints>
-                                                                                    <variation key="default">
-                                                                                        <mask key="constraints">
-                                                                                            <exclude reference="EQJ-Jy-6ww"/>
-                                                                                            <exclude reference="PPg-NW-w5c"/>
-                                                                                            <exclude reference="cF2-iK-F08"/>
-                                                                                        </mask>
-                                                                                    </variation>
-                                                                                </imageView>
-                                                                            </subviews>
-                                                                            <constraints>
-                                                                                <constraint firstAttribute="bottom" secondItem="fug-jH-rwJ" secondAttribute="bottom" id="9Di-iR-ZCg"/>
-                                                                                <constraint firstItem="Efe-P4-ZU2" firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="width" id="AG8-pl-PTi"/>
-                                                                                <constraint firstItem="Rq4-LV-33L" firstAttribute="leading" secondItem="Efe-P4-ZU2" secondAttribute="trailing" constant="8" symbolic="YES" id="AHa-aZ-UkM"/>
-                                                                                <constraint firstItem="fug-jH-rwJ" firstAttribute="top" secondItem="Bwp-70-ti3" secondAttribute="top" id="JRj-mj-Lxu"/>
-                                                                                <constraint firstItem="Rq4-LV-33L" firstAttribute="width" secondItem="Rq4-LV-33L" secondAttribute="height" multiplier="1:1" id="PBx-Ab-1wh"/>
-                                                                                <constraint firstItem="fug-jH-rwJ" firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="height" multiplier="1:1" id="PCa-tY-gQi"/>
-                                                                                <constraint firstItem="Rq4-LV-33L" firstAttribute="width" secondItem="Rq4-LV-33L" secondAttribute="height" multiplier="1:1" id="QxC-eI-O29"/>
-                                                                                <constraint firstItem="Efe-P4-ZU2" firstAttribute="top" secondItem="Bwp-70-ti3" secondAttribute="top" id="TTg-sc-yl2"/>
-                                                                                <constraint firstAttribute="bottom" secondItem="Efe-P4-ZU2" secondAttribute="bottom" id="V0u-Uc-d8g"/>
-                                                                                <constraint firstItem="Rq4-LV-33L" firstAttribute="top" secondItem="Bwp-70-ti3" secondAttribute="top" id="gTZ-9j-pYJ"/>
-                                                                                <constraint firstItem="Efe-P4-ZU2" firstAttribute="width" secondItem="Rq4-LV-33L" secondAttribute="width" id="iom-6N-GBE"/>
-                                                                                <constraint firstItem="fug-jH-rwJ" firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="height" multiplier="1:1" id="kBz-20-RrY"/>
-                                                                                <constraint firstAttribute="bottom" secondItem="Rq4-LV-33L" secondAttribute="bottom" id="wUt-RO-BQA"/>
-                                                                                <constraint firstItem="Efe-P4-ZU2" firstAttribute="leading" secondItem="Bwp-70-ti3" secondAttribute="leading" id="yWA-BL-t86"/>
-                                                                            </constraints>
-                                                                            <variation key="default">
-                                                                                <mask key="constraints">
-                                                                                    <exclude reference="TTg-sc-yl2"/>
-                                                                                    <exclude reference="V0u-Uc-d8g"/>
-                                                                                    <exclude reference="yWA-BL-t86"/>
-                                                                                    <exclude reference="AHa-aZ-UkM"/>
-                                                                                    <exclude reference="PBx-Ab-1wh"/>
-                                                                                    <exclude reference="QxC-eI-O29"/>
-                                                                                    <exclude reference="gTZ-9j-pYJ"/>
-                                                                                    <exclude reference="wUt-RO-BQA"/>
-                                                                                    <exclude reference="9Di-iR-ZCg"/>
-                                                                                    <exclude reference="JRj-mj-Lxu"/>
-                                                                                    <exclude reference="PCa-tY-gQi"/>
-                                                                                    <exclude reference="kBz-20-RrY"/>
-                                                                                </mask>
-                                                                            </variation>
-                                                                        </stackView>
-                                                                    </subviews>
                                                                     <constraints>
-                                                                        <constraint firstItem="Bwp-70-ti3" firstAttribute="leading" secondItem="CYX-FE-IxU" secondAttribute="leading" constant="2" id="0ML-Lg-f4E"/>
-                                                                        <constraint firstAttribute="trailing" secondItem="Bwp-70-ti3" secondAttribute="trailing" constant="2" id="3fV-3c-jKn"/>
-                                                                        <constraint firstItem="Bwp-70-ti3" firstAttribute="top" secondItem="CYX-FE-IxU" secondAttribute="top" id="9dv-U1-tEk"/>
                                                                         <constraint firstAttribute="height" constant="16" id="A4M-tz-c0d"/>
-                                                                        <constraint firstItem="Bwp-70-ti3" firstAttribute="top" secondItem="CYX-FE-IxU" secondAttribute="top" constant="2" id="Eoc-GP-wRL"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="Bwp-70-ti3" secondAttribute="bottom" id="Ndd-eC-kb3"/>
+                                                                        <constraint firstAttribute="height" id="Ikv-Jc-m8G"/>
                                                                         <constraint firstAttribute="width" constant="20" id="e2l-Na-apY"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="Bwp-70-ti3" secondAttribute="bottom" id="vUh-ZL-X5e"/>
                                                                     </constraints>
                                                                     <variation key="default">
                                                                         <mask key="constraints">
                                                                             <exclude reference="A4M-tz-c0d"/>
                                                                             <exclude reference="e2l-Na-apY"/>
-                                                                            <exclude reference="9dv-U1-tEk"/>
-                                                                            <exclude reference="Ndd-eC-kb3"/>
                                                                         </mask>
                                                                     </variation>
                                                                 </view>
@@ -358,7 +302,6 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="bottom" secondItem="CYX-FE-IxU" secondAttribute="bottom" id="02t-lD-9wL"/>
                                                                 <constraint firstItem="CYX-FE-IxU" firstAttribute="top" secondItem="eQS-sT-Ohi" secondAttribute="bottom" id="D36-2A-8rF"/>
-                                                                <constraint firstItem="CYX-FE-IxU" firstAttribute="height" relation="greaterThanOrEqual" secondItem="eQS-sT-Ohi" secondAttribute="height" multiplier="1:5" id="Txo-Dy-tTR"/>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="nFO-od-fl9"/>
                                                                 <constraint firstAttribute="trailing" secondItem="CYX-FE-IxU" secondAttribute="trailing" id="nfV-Jf-kM9"/>
                                                                 <constraint firstItem="CYX-FE-IxU" firstAttribute="leading" secondItem="1Fk-yD-Efo" secondAttribute="leading" id="oTH-ZS-34t"/>
@@ -459,23 +402,59 @@
                                                         </mask>
                                                     </variation>
                                                 </stackView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="online" translatesAutoresizingMaskIntoConstraints="NO" id="fug-jH-rwJ">
+                                                    <color key="tintColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="height" multiplier="1:1" constant="1" id="EQJ-Jy-6ww"/>
+                                                        <constraint firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="height" multiplier="1:1" id="PPg-NW-w5c"/>
+                                                        <constraint firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="height" multiplier="1:1" id="cF2-iK-F08"/>
+                                                        <constraint firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="height" multiplier="1:1" id="qcQ-9G-RB1"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="EQJ-Jy-6ww"/>
+                                                            <exclude reference="PPg-NW-w5c"/>
+                                                            <exclude reference="cF2-iK-F08"/>
+                                                        </mask>
+                                                    </variation>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="True_photo" translatesAutoresizingMaskIntoConstraints="NO" id="Efe-P4-ZU2">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="Efe-P4-ZU2" secondAttribute="height" multiplier="1:1" id="d7G-P6-dx3"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="jPN-A9-vyF" firstAttribute="top" secondItem="DgY-qs-9aX" secondAttribute="topMargin" id="29s-Ht-pga"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="hVQ-wd-blz" secondAttribute="bottom" id="2qB-HY-v4m"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="jPN-A9-vyF" secondAttribute="trailing" constant="2" id="5RQ-ep-xsG"/>
                                                 <constraint firstItem="hVQ-wd-blz" firstAttribute="top" secondItem="DgY-qs-9aX" secondAttribute="topMargin" id="84D-pP-gwV"/>
                                                 <constraint firstItem="hVQ-wd-blz" firstAttribute="leading" secondItem="DgY-qs-9aX" secondAttribute="leadingMargin" constant="8" id="AUJ-zK-KUO"/>
+                                                <constraint firstItem="Efe-P4-ZU2" firstAttribute="centerX" secondItem="fug-jH-rwJ" secondAttribute="centerX" id="FWL-sv-6s4"/>
+                                                <constraint firstItem="Rq4-LV-33L" firstAttribute="trailing" secondItem="jPN-A9-vyF" secondAttribute="leading" constant="-4" id="FYf-Uz-Ax1"/>
+                                                <constraint firstItem="fug-jH-rwJ" firstAttribute="trailing" secondItem="eQS-sT-Ohi" secondAttribute="trailing" multiplier="1.07" id="IaC-tR-iAu"/>
+                                                <constraint firstItem="IIc-iW-Uqw" firstAttribute="trailing" secondItem="jPN-A9-vyF" secondAttribute="trailing" id="M4D-a7-O0g"/>
+                                                <constraint firstItem="Efe-P4-ZU2" firstAttribute="width" secondItem="fug-jH-rwJ" secondAttribute="width" multiplier="0.8" id="Q16-rV-Dwr"/>
+                                                <constraint firstItem="fug-jH-rwJ" firstAttribute="top" secondItem="eQS-sT-Ohi" secondAttribute="top" multiplier="0.7" id="cwd-1p-RiJ"/>
+                                                <constraint firstItem="IIc-iW-Uqw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hVQ-wd-blz" secondAttribute="trailing" id="eBC-bA-e4K"/>
+                                                <constraint firstItem="Txa-ij-40K" firstAttribute="leading" secondItem="eQS-sT-Ohi" secondAttribute="trailing" constant="-2" id="gog-eI-wVG"/>
+                                                <constraint firstItem="Rq4-LV-33L" firstAttribute="bottom" secondItem="jPN-A9-vyF" secondAttribute="bottom" id="idY-4I-NNf"/>
+                                                <constraint firstItem="IIc-iW-Uqw" firstAttribute="top" secondItem="Rq4-LV-33L" secondAttribute="bottom" constant="2" id="jPR-fB-afz"/>
                                                 <constraint firstItem="hVQ-wd-blz" firstAttribute="top" secondItem="DgY-qs-9aX" secondAttribute="topMargin" id="lHC-kA-fdy"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="jPN-A9-vyF" secondAttribute="trailing" id="laE-yQ-2St"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="hVQ-wd-blz" secondAttribute="bottom" id="mpc-qc-4EM"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="hVQ-wd-blz" secondAttribute="trailing" id="nHr-kk-HwT"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="hVQ-wd-blz" secondAttribute="bottom" id="qFz-8t-KxB"/>
+                                                <constraint firstItem="Txa-ij-40K" firstAttribute="height" secondItem="eQS-sT-Ohi" secondAttribute="height" multiplier="0.38" id="sZv-cx-lVQ"/>
+                                                <constraint firstItem="Rq4-LV-33L" firstAttribute="height" secondItem="jPN-A9-vyF" secondAttribute="height" id="shc-ZZ-eiC"/>
+                                                <constraint firstItem="Efe-P4-ZU2" firstAttribute="centerY" secondItem="fug-jH-rwJ" secondAttribute="centerY" id="uKv-21-aR0"/>
+                                                <constraint firstItem="fug-jH-rwJ" firstAttribute="width" secondItem="eQS-sT-Ohi" secondAttribute="width" multiplier="0.3" id="w7t-r0-S9R"/>
                                                 <constraint firstItem="jPN-A9-vyF" firstAttribute="height" secondItem="wb4-kw-iy4" secondAttribute="height" multiplier="1:3" id="wlN-rE-pdg"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Txa-ij-40K" secondAttribute="bottom" constant="4" id="xuD-OK-D25"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="4" right="8"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
+                                            <outlet property="battery" destination="Txa-ij-40K" id="fJ1-cp-S66"/>
                                             <outlet property="hashtags" destination="uS3-xb-XE1" id="eyH-Gf-xgI"/>
                                             <outlet property="isMe" destination="Efe-P4-ZU2" id="deY-Id-wB7"/>
                                             <outlet property="labels" destination="CYX-FE-IxU" id="0HB-hP-Wmv"/>
@@ -506,7 +485,7 @@
                     <navigationItem key="navigationItem" title="話題" id="vG6-IY-Ij6">
                         <barButtonItem key="leftBarButtonItem" image="setting" style="plain" id="ReK-Yd-Ykl">
                             <inset key="imageInsets" minX="-3" minY="5" maxX="0.0" maxY="0.0"/>
-                            <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <segue destination="fKg-5c-ll5" kind="show" identifier="topicToSetting" id="wc9-Me-EI3"/>
                             </connections>
@@ -522,7 +501,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4c-w9-wSg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4571" y="-743"/>
+            <point key="canvasLocation" x="-4572" y="-743.47826086956525"/>
         </scene>
         <!--加入的話題-->
         <scene sceneID="xNr-Pe-fgg">
@@ -2013,12 +1992,14 @@
     </scenes>
     <resources>
         <image name="FB-f-Logo__blue_100" width="100" height="100"/>
-        <image name="True_photo" width="128" height="128"/>
+        <image name="True_photo" width="25" height="25"/>
+        <image name="battery-full" width="25" height="25"/>
         <image name="friends" width="25" height="25"/>
         <image name="launchsimage_1242x2208" width="414" height="736"/>
         <image name="list" width="25" height="25"/>
         <image name="male" width="128" height="128"/>
-        <image name="setting" width="20" height="20"/>
+        <image name="online" width="25" height="25"/>
+        <image name="setting" width="25" height="25"/>
         <image name="star" width="25" height="25"/>
         <image name="texting" width="25" height="25"/>
         <image name="topic" width="25" height="25"/>
