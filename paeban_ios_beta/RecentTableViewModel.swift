@@ -140,6 +140,7 @@ class RecentTableViewModel{
         
         cell.lastLine.text = topicWriteToRow.lastLine_detial
         
+        
         cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         if topicWriteToRow.clientOnline_detial!{
             
