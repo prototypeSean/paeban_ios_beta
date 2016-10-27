@@ -47,7 +47,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     
     
     @IBAction func loninBottom(_ sender: AnyObject) {
-        fbLogIn()
+        check_online(in: self, with: fbLogIn)
     }
     @IBOutlet weak var fbButtonOutlet: UIButton!
         
@@ -55,7 +55,9 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     }
     
     @IBAction func logIn(_ sender: AnyObject) {
-        paeban_login_with_IDPW(id:loginId.text!,pw:logInPw.text!)
+        check_online(in: self) { 
+            self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
+        }
     }
     
     @IBOutlet weak var loginId: UITextField!
@@ -86,8 +88,19 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //isInternetAvailable
         login_paeban_obj.delegate = self
+        loginId.delegate = self
+        logInPw.delegate = self
+        find_user_kb_height()
+        BtnOutlet()
+        check_online(in: self, with: autoLogin)
+        
+    }
+    
+    //autoLogin()
+    
+    func autoLogin(){
         if let _ = FBSDKAccessToken.current(){
             paeban_login()
             logInState = true
@@ -96,19 +109,6 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             login_paeban_obj.get_cookie_csrf()
             
         }
-        
-
-        loginId.delegate = self
-        logInPw.delegate = self
-        find_user_kb_height()
-        BtnOutlet()
-        // MARK: 飛行前移除
-        // set device token
-//        let settings = UIUserNotificationSettings(types: UIUserNotificationType.alert, categories: nil)
-//        let application = UIApplication.shared
-//        application.registerUserNotificationSettings(settings)
-//        application.registerForRemoteNotifications()
-        
     }
     func find_user_kb_height(){
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -117,8 +117,6 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
-    
-    
     func get_cookie_csrf_report(state:String,setcookie:String){
         print(state)
         print(setcookie)

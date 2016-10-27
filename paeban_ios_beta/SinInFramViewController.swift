@@ -21,9 +21,8 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     @IBAction func submitBtnDown(_ sender: AnyObject) {
         submitBtn.layer.backgroundColor = UIColor(red:0.98, green:0.49, blue:0.29, alpha:1.0).cgColor
     }
-
     @IBAction func sentSinginData(_ sender: AnyObject) {
-        sentSinginData()
+        check_online(in: self, with: sentSinginData)
         submitBtn.layer.backgroundColor = UIColor.clear.cgColor
     }
     @IBAction func submitBtnCancel(_ sender: AnyObject) {
@@ -69,28 +68,6 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     @IBAction func firstNameEditEnd(_ sender: AnyObject) {
         firstname.layer.borderColor = UIColor.lightGray.cgColor
         firstname.layer.borderWidth = 1
-    }
-    
-    //MARK: 所有欄位外觀設定
-    func ouletsSetting(){
-        // 送出按鈕初始外觀 切記把故事版的Type: Custom
-        submitBtn.layer.borderWidth = 1
-        submitBtn.layer.borderColor = UIColor.lightGray.cgColor
-        submitBtn.layer.cornerRadius = 0
-        submitBtn.setTitleColor(UIColor.white, for: .highlighted)
-        
-        emailText.layer.borderColor = UIColor.lightGray.cgColor
-        emailText.layer.borderWidth = 1
-        passWord_1.layer.borderColor = UIColor.lightGray.cgColor
-        passWord_1.layer.borderWidth = 1
-        passWord_2.layer.borderColor = UIColor.lightGray.cgColor
-        passWord_2.layer.borderWidth = 1
-        selectGenderText.layer.borderColor = UIColor.lightGray.cgColor
-        selectGenderText.layer.borderWidth = 1
-        firstname.layer.borderColor = UIColor.lightGray.cgColor
-        firstname.layer.borderWidth = 1
-        
-        
     }
     
     let genderOption = ["","男","女","男同","女同"]
@@ -222,6 +199,25 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         }
         
         
+    }
+    //      MARK: 所有欄位外觀設定
+    func ouletsSetting(){
+        // 送出按鈕初始外觀 切記把故事版的Type: Custom
+        submitBtn.layer.borderWidth = 1
+        submitBtn.layer.borderColor = UIColor.lightGray.cgColor
+        submitBtn.layer.cornerRadius = 0
+        submitBtn.setTitleColor(UIColor.white, for: .highlighted)
+        
+        emailText.layer.borderColor = UIColor.lightGray.cgColor
+        emailText.layer.borderWidth = 1
+        passWord_1.layer.borderColor = UIColor.lightGray.cgColor
+        passWord_1.layer.borderWidth = 1
+        passWord_2.layer.borderColor = UIColor.lightGray.cgColor
+        passWord_2.layer.borderWidth = 1
+        selectGenderText.layer.borderColor = UIColor.lightGray.cgColor
+        selectGenderText.layer.borderWidth = 1
+        firstname.layer.borderColor = UIColor.lightGray.cgColor
+        firstname.layer.borderWidth = 1
     }
     
     // override
