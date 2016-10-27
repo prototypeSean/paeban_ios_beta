@@ -107,7 +107,7 @@ class RecentTableViewModel{
         func letoutOnlineImg(_ online:Bool) -> UIImageView{
             let onlineimage = UIImageView()
             
-            onlineimage.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            onlineimage.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             if online{
                 onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
             }
@@ -140,7 +140,7 @@ class RecentTableViewModel{
         
         cell.lastLine.text = topicWriteToRow.lastLine_detial
         
-        cell.online.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         if topicWriteToRow.clientOnline_detial!{
             cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }

@@ -28,8 +28,8 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
         addPhotoBG.layer.borderWidth = 1
         
         let avatorRadious = addPhotoBG.layer.bounds.size.width/4
-        print(avatorRadious)
-        print(addPhotoBG.layer.bounds.size.width)
+//        print(avatorRadious)
+//        print(addPhotoBG.layer.bounds.size.width)
         addPhotoBG.layer.cornerRadius = avatorRadious
         addPhotoBG.clipsToBounds = true
         addPhotoBG.layer.borderColor = UIColor.gray.cgColor
