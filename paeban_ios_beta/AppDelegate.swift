@@ -73,8 +73,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func registerForPushNotifications(application: UIApplication) {
         //let notificationSettings = UIUserNotificationSettings(
             //forTypes: [.Badge, .Sound, .Alert], categories: nil)
-        let nosSet = UIUserNotificationSettings(types: UIUserNotificationType.alert, categories: nil)
+        let nosSet = UIUserNotificationSettings(types: UIUserNotificationType.sound, categories: nil)
+        
         application.registerUserNotificationSettings(nosSet)
+        application.registerUserNotificationSettings(UIUserNotificationSettings(types: UIUserNotificationType.sound, categories: nil))
+        
     }
 }
 
