@@ -142,9 +142,11 @@ class RecentTableViewModel{
         
         cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         if topicWriteToRow.clientOnline_detial!{
+            print("aaaa")
             cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
         else{
+            print("ccccccc")
             cell.online.tintColor = UIColor.gray
         }        
         

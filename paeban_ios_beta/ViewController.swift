@@ -57,6 +57,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     @IBAction func logIn(_ sender: AnyObject) {
         check_online(in: self) { 
             self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
+            self.logInPw.text = ""
         }
     }
     
