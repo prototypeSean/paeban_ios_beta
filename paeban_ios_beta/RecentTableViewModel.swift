@@ -59,7 +59,7 @@ class RecentTableViewModel{
             ouputObj.topicContentId_detial = inputData["topic_content_id"] as? String
             ouputObj.read_detial = inputData["is_read"] as? Bool
             ouputObj.clientIsRealPhoto_detial = inputData["owner_is_real_img"] as?Bool
-            ouputObj.clientOnline_detial = inputData["owner_is_real_img"] as? Bool
+            ouputObj.clientOnline_detial = inputData["owner_online"] as? Bool
             ouputObj.tag_detial = inputData["tag_list"] as? Array<String>
             let httpSendDic = ["client_id":inputData["owner"] as! String,
                                "topic_id":inputKey]
@@ -142,11 +142,11 @@ class RecentTableViewModel{
         
         cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         if topicWriteToRow.clientOnline_detial!{
-            print("aaaa")
+            
             cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         }
         else{
-            print("ccccccc")
+            
             cell.online.tintColor = UIColor.gray
         }        
         
