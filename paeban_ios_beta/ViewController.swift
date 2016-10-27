@@ -24,6 +24,7 @@ public struct setUserData{
     var id:String?
     var name:String?
     var img:UIImage?
+    var deviceToken:String?
 }
 public var userData = setUserData()
 

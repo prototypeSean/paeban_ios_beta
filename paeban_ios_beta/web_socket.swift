@@ -11,7 +11,7 @@ import  Starscream
 
 
 func ws_connected(_ ws:WebSocket){
-    let online_msg = json_dumps(["msg_type":"online"])
+    let online_msg = json_dumps(["msg_type":"online","device_token":userData.deviceToken!])
     ws.write(data: online_msg)
 }
 

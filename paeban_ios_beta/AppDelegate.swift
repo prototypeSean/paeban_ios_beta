@@ -24,20 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
-        
-        
-        
-        
-        
-        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
-        print(deviceTokenString)
-        
         var token = ""
         for i in 0..<deviceToken.count {
             token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
         }
-        print(token)
+        userData.deviceToken = token
     }
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print(error)
