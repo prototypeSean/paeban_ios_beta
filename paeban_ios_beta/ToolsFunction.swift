@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SystemConfiguration
 import UIKit
 
 //MARK: 封裝成json
@@ -142,3 +143,44 @@ func regMatches(for regex: String, in text: String) -> [String] {
         return []
     }
 }
+
+//確認網路連線
+func isInternetAvailable() -> Bool{
+    var zeroAddress = sockaddr_in()
+    zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+    zeroAddress.sin_family = sa_family_t(AF_INET)
+    
+    let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+        $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+            SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+        }
+    }
+    
+    var flags = SCNetworkReachabilityFlags()
+    if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+        return false
+    }
+    let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
+    let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
+    return (isReachable && !needsConnection)
+}
+
+//偵測是否連線
+func check_online(in vc:UIViewController, with original_func:@escaping ()->Void){
+    if isInternetAvailable(){
+        original_func()
+    }
+    else{
+        let alert = UIAlertController(title: "警告", message: "網路尚未連線", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler:nil))
+        alert.addAction(UIAlertAction(title: "重試", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+            check_online(in: vc, with: original_func)
+        }))
+        vc.present(alert, animated: true, completion: nil)
+    }
+}
+
+
+
+
+
