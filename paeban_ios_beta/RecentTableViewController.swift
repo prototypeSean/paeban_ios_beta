@@ -32,9 +32,9 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         let cell2 = rTVModel.getCell((indexPath as NSIndexPath).row,cell: cell)
         
         // MARK: cell照片圓角
-        let myPhotoLayer:CALayer = cell2.clientImg.layer
-        myPhotoLayer.masksToBounds = true
-        myPhotoLayer.cornerRadius = 6
+//        let myPhotoLayer:CALayer = cell2.clientImg.layer
+//        myPhotoLayer.masksToBounds = true
+//        myPhotoLayer.cornerRadius = 6
         
         return cell2
     }
