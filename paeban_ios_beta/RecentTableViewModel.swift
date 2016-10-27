@@ -125,6 +125,8 @@ class RecentTableViewModel{
         
         cell.clientImg.image = topicWriteToRow.clientPhoto_detial
         cell.clientSex.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
+        
+        
         cell.isMyPic.image = letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!)
         
         var lastSpeakerName:String?

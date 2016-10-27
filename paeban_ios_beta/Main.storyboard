@@ -1219,7 +1219,8 @@
                                             <color key="textColor" red="0.49803921579999999" green="0.49803921579999999" blue="0.49803921579999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3mX-M8-ShF" customClass="HashTagsContorller" customModule="paeban_ios_beta" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3mX-M8-ShF" customClass="HashTagsContorller" customModule="paeban_ios_beta" customModuleProvider="target">
+                                            <frame key="frameInset" minX="58" minY="43.5" width="244.5" height="18"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPO-18-ITR">
@@ -1229,7 +1230,8 @@
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZaL-BX-fiD">
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="ZaL-BX-fiD" secondAttribute="height" multiplier="1:1" id="URR-Nk-Dgy"/>
+                                                <constraint firstAttribute="width" constant="12" id="HEk-JG-2zR"/>
+                                                <constraint firstAttribute="height" constant="12" id="iVe-QE-ths"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
@@ -1237,17 +1239,15 @@
                                         <constraint firstItem="LPO-18-ITR" firstAttribute="top" secondItem="Cx8-BH-6Wa" secondAttribute="top" id="3eq-m7-4jH"/>
                                         <constraint firstItem="LPO-18-ITR" firstAttribute="height" secondItem="KNy-ul-90h" secondAttribute="height" id="3he-X6-uog"/>
                                         <constraint firstItem="3mX-M8-ShF" firstAttribute="top" secondItem="MhD-FL-UGt" secondAttribute="bottom" id="43D-Si-NCR"/>
-                                        <constraint firstItem="ZaL-BX-fiD" firstAttribute="centerY" secondItem="LPO-18-ITR" secondAttribute="centerY" id="6zp-Lb-qjx"/>
+                                        <constraint firstItem="ZaL-BX-fiD" firstAttribute="leading" secondItem="KNy-ul-90h" secondAttribute="trailing" constant="211.5" id="8O5-zo-JxV"/>
                                         <constraint firstItem="MhD-FL-UGt" firstAttribute="top" secondItem="KNy-ul-90h" secondAttribute="bottom" id="AV4-hn-cDi"/>
                                         <constraint firstItem="KNy-ul-90h" firstAttribute="leading" secondItem="Cx8-BH-6Wa" secondAttribute="trailing" constant="8" symbolic="YES" id="CAK-zq-5ir"/>
                                         <constraint firstItem="nVL-zD-wk6" firstAttribute="centerX" secondItem="v0d-vG-ran" secondAttribute="centerX" id="INB-MJ-AQA"/>
-                                        <constraint firstItem="ZaL-BX-fiD" firstAttribute="height" secondItem="LPO-18-ITR" secondAttribute="height" multiplier="0.6" id="Imu-TU-3Jb"/>
                                         <constraint firstItem="KNy-ul-90h" firstAttribute="top" secondItem="Cx8-BH-6Wa" secondAttribute="top" id="Q2w-xu-EuY"/>
-                                        <constraint firstItem="ZaL-BX-fiD" firstAttribute="leading" secondItem="3mX-M8-ShF" secondAttribute="trailing" constant="8" symbolic="YES" id="QhZ-fw-rAh"/>
                                         <constraint firstItem="3mX-M8-ShF" firstAttribute="leading" secondItem="MhD-FL-UGt" secondAttribute="leading" id="UGa-FO-e4o"/>
                                         <constraint firstItem="MhD-FL-UGt" firstAttribute="leading" secondItem="KNy-ul-90h" secondAttribute="leading" id="Vdu-wx-UMR"/>
+                                        <constraint firstItem="ZaL-BX-fiD" firstAttribute="top" secondItem="Cx8-BH-6Wa" secondAttribute="top" id="YET-Tt-U9i"/>
                                         <constraint firstItem="v0d-vG-ran" firstAttribute="width" secondItem="Cx8-BH-6Wa" secondAttribute="width" multiplier="0.3" id="YoY-bb-PnQ"/>
-                                        <constraint firstItem="LPO-18-ITR" firstAttribute="leading" secondItem="ZaL-BX-fiD" secondAttribute="trailing" constant="2" id="cSS-l5-rpU"/>
                                         <constraint firstItem="v0d-vG-ran" firstAttribute="trailing" secondItem="Cx8-BH-6Wa" secondAttribute="trailing" multiplier="1.07" id="duA-6e-shC"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="LPO-18-ITR" secondAttribute="trailing" id="gE5-GV-GJ3"/>
                                         <constraint firstItem="3mX-M8-ShF" firstAttribute="height" secondItem="MhD-FL-UGt" secondAttribute="height" id="lnI-1c-0Iy"/>
@@ -1261,12 +1261,12 @@
                                 <connections>
                                     <outlet property="clientImg" destination="Cx8-BH-6Wa" id="uor-Dg-baK"/>
                                     <outlet property="clientSex" destination="ZaL-BX-fiD" id="sSc-2R-Ysa"/>
-                                    <outlet property="hashtag" destination="3mX-M8-ShF" id="Lw1-nI-2wz"/>
-                                    <outlet property="isMyPic" destination="nVL-zD-wk6" id="0aP-iV-7iY"/>
-                                    <outlet property="lastLine" destination="MhD-FL-UGt" id="T4v-tb-eKO"/>
-                                    <outlet property="lastSpeaker" destination="KNy-ul-90h" id="ZPe-yl-szH"/>
+                                    <outlet property="hashtag" destination="3mX-M8-ShF" id="yah-R0-HTe"/>
+                                    <outlet property="isMyPic" destination="nVL-zD-wk6" id="WsL-Bi-NNv"/>
+                                    <outlet property="lastLine" destination="MhD-FL-UGt" id="9XR-Ge-AR5"/>
+                                    <outlet property="lastSpeaker" destination="KNy-ul-90h" id="WlP-Cb-gyW"/>
                                     <outlet property="online" destination="v0d-vG-ran" id="yQl-eQ-bU9"/>
-                                    <outlet property="ownerName" destination="LPO-18-ITR" id="d4a-cU-1BG"/>
+                                    <outlet property="ownerName" destination="LPO-18-ITR" id="MZC-cQ-NDL"/>
                                     <segue destination="FBi-3N-jAs" kind="show" identifier="clientModeSegue3" id="lxg-Ec-9Hp"/>
                                 </connections>
                             </tableViewCell>
@@ -1893,7 +1893,7 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="vc1-tE-BTH"/>
         <segue reference="lxg-Ec-9Hp"/>
+        <segue reference="XH3-qg-Ahu"/>
     </inferredMetricsTieBreakers>
 </document>
