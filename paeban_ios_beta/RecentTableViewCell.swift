@@ -18,7 +18,7 @@ class RecentTableViewCell: UITableViewCell {
     @IBOutlet weak var lastSpeaker: UILabel!
     @IBOutlet weak var hashtag: HashTagsContorller!
     @IBOutlet weak var ownerName: UILabel!
-    
+    @IBOutlet weak var battery: UIImageView!
     
     
     override func awakeFromNib() {

@@ -14,6 +14,8 @@ class MyTopicTableViewCell: UITableViewCell {
     @IBOutlet weak var unReadS: UILabel!
     @IBOutlet weak var unReadM: UILabel!
     
+    @IBOutlet weak var myTopicHashtag: HashTagsContorller!
+    @IBOutlet weak var myTopicbattery: UIImageView!
     @IBOutlet weak var topicTableDetail: UITableView!
 
     override func awakeFromNib() {
