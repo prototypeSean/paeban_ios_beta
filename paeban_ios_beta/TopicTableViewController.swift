@@ -82,7 +82,10 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                 topicViewCon.ownerImg = selectTopicData.photo
                 topicViewCon.topicTitle = selectTopicData.title
                 topicViewCon.title = selectTopicData.ownerName
+                topicViewCon.setID = selectTopicData.owner
+                topicViewCon.setName = selectTopicData.ownerName
                 topicViewCon.delegate = self
+                
                 //            topicViewCon.topicTitleContent.text = selectTopicData.title
             }
         }

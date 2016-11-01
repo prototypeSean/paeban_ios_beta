@@ -29,6 +29,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     var setID:String? = "anonymous"
     var setName:String? = "anonymous"
+    var clientID:String?
+    var clientName:String?
     var topicId:String?
     var ownerId:String?
     
@@ -201,7 +203,12 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             updataNowTopicCellList(resultDic)
             for dicKey in resultDic{
                 let msgData = dicKey.1 as! Dictionary<String,AnyObject>
-                if setID != nil && topicId != nil{
+                // MARK: 飛行前移除
+                print(setID!)
+                print(topicId!)
+                print(clientID!)
+                // MARK: 飛行前移除
+                if setID != nil && topicId != nil && clientID != nil{
                     if msgData["sender"] as? String == setID && msgData["topic_id"] as? String == topicId{
                         //自己說的話
                         //可插入“移除送出中的符號”的code
@@ -219,7 +226,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                         }
                         
                     }
-                    else{
+                    else if msgData["receiver"] as? String == clientID{
                         //別人說的話
                         //topic_content_read
                         //topic_content_id

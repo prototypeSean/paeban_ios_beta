@@ -145,6 +145,10 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         chatViewCon.setName = userData.name
         chatViewCon.topicId = self.topicId
         chatViewCon.ownerId = self.setID
+        chatViewCon.clientID = self.setID
+        chatViewCon.clientName = self.setName
+        
+        
         if self.msg == nil {
             self.contanterView = chatViewCon
         }
