@@ -57,7 +57,7 @@ open class webSocketActiveCenter{
     
     let mainWorkList = ["online","off_line","new_member"]
 
-    var test_List = [""]
+    var test_List = ["topic_msg"]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
     let wsad_ForTopicTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed","search_topic"]
     var wasd_ForTopicViewController:webSocketActiveCenterDelegate?

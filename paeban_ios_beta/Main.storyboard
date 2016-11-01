@@ -236,10 +236,10 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCellTableViewCell" id="Wjc-mK-FT3" customClass="TopicCellTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="1000" height="80"/>
+                                        <rect key="frame" x="0.0" y="92" width="383" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
-                                            <frame key="frameInset" width="1000" height="79.5"/>
+                                            <frame key="frameInset" width="383" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房主的暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPN-A9-vyF">
@@ -467,12 +467,23 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rXZ-0P-r1F">
+                                <constraints>
+                                    <constraint firstAttribute="height" id="Bb3-oc-1Bc"/>
+                                    <constraint firstAttribute="width" id="tvp-L2-wmg"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="UGG-xm-hsF" kind="embed" identifier="segue_edit_area" id="CDh-3R-uBd"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="XzG-35-cBS" firstAttribute="top" secondItem="O0h-4r-Zjc" secondAttribute="bottom" id="4qi-oI-gn1"/>
                             <constraint firstItem="O0h-4r-Zjc" firstAttribute="top" secondItem="tiT-Pj-mp3" secondAttribute="bottom" id="Ca4-9j-3XH"/>
+                            <constraint firstItem="rXZ-0P-r1F" firstAttribute="centerX" secondItem="O0h-4r-Zjc" secondAttribute="centerX" id="Pdc-cG-ZkU"/>
                             <constraint firstItem="O0h-4r-Zjc" firstAttribute="top" secondItem="gVH-aT-5zH" secondAttribute="topMargin" constant="90" id="azC-e2-PjX"/>
+                            <constraint firstItem="rXZ-0P-r1F" firstAttribute="top" secondItem="tiT-Pj-mp3" secondAttribute="bottom" id="nXU-bJ-NOG"/>
                             <constraint firstAttribute="trailingMargin" secondItem="O0h-4r-Zjc" secondAttribute="trailing" constant="-20" id="vc3-Jd-efD"/>
                             <constraint firstItem="O0h-4r-Zjc" firstAttribute="leading" secondItem="gVH-aT-5zH" secondAttribute="leadingMargin" constant="-20" id="yWu-0F-4wT"/>
                         </constraints>
@@ -492,9 +503,13 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="g7a-zc-2rU">
                             <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="new_topic:" destination="b8c-mf-ecX" id="vrr-Xh-gAZ"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="editArea" destination="rXZ-0P-r1F" id="1VW-X6-Dpd"/>
                         <outlet property="topicList" destination="O0h-4r-Zjc" id="eDN-Rq-DvL"/>
                         <segue destination="FBi-3N-jAs" kind="show" identifier="clientModeSegue" id="wZO-VC-xmQ"/>
                     </connections>
@@ -1876,6 +1891,35 @@
             </objects>
             <point key="canvasLocation" x="-6288.4057971014499" y="-2395.108695652174"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="llx-XW-tmj">
+            <objects>
+                <viewController id="UGG-xm-hsF" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CDK-2w-8cK">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7CP-7u-68c">
+                                <color key="backgroundColor" red="0.56720009429999996" green="1" blue="0.67755557570000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="6DP-29-tW4"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="7CP-7u-68c" firstAttribute="top" secondItem="CDK-2w-8cK" secondAttribute="top" id="Pvy-4y-bsA"/>
+                            <constraint firstAttribute="trailing" secondItem="7CP-7u-68c" secondAttribute="trailing" id="bRL-L5-KQj"/>
+                            <constraint firstItem="7CP-7u-68c" firstAttribute="leading" secondItem="CDK-2w-8cK" secondAttribute="leading" id="eaF-OK-3G1"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CJD-gg-38s" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5214.3999999999996" y="-566.71664167916049"/>
+        </scene>
     </scenes>
     <resources>
         <image name="FB-f-Logo__blue_100" width="100" height="100"/>
@@ -1893,7 +1937,7 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lxg-Ec-9Hp"/>
-        <segue reference="XH3-qg-Ahu"/>
+        <segue reference="wZO-VC-xmQ"/>
+        <segue reference="wc9-Me-EI3"/>
     </inferredMetricsTieBreakers>
 </document>

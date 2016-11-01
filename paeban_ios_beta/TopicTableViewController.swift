@@ -32,6 +32,10 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     
     @IBOutlet weak var isMe: UIImageView!
     
+    @IBAction func new_topic(_ sender: AnyObject) {
+        openEditTopicArea()
+    }
+    @IBOutlet weak var editArea: UIView!
     
     var topics:[Topic] = []
     var topicsBackup:Array<Topic> = []
@@ -39,8 +43,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     var requestUpDataSwitch = true
     
     
-    //var refreshControl = UIRefreshControl()
-
+    // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
         //loadSampleTopics()
@@ -62,8 +65,34 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         topicList.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
 
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //print(segue.identifier)
+        if segue.identifier == "clientModeSegue"{
+            let indexPath = topicList.indexPathForSelectedRow!
+            let dataposition:Int = (indexPath as NSIndexPath).row
+            
+            if segue.identifier == "masterModeSegue"{
+                // MARK: master模式看要做啥
+            }
+            else{
+                let topicViewCon = segue.destination as! TopicViewController
+                let selectTopicData = topics[dataposition]
+                topicViewCon.topicId = selectTopicData.topicID
+                topicViewCon.ownerId = selectTopicData.owner
+                topicViewCon.ownerImg = selectTopicData.photo
+                topicViewCon.topicTitle = selectTopicData.title
+                topicViewCon.title = selectTopicData.ownerName
+                topicViewCon.delegate = self
+                //            topicViewCon.topicTitleContent.text = selectTopicData.title
+            }
+        }
+        
+        //print(topicOwnerID)
+        
+    }
+
     
-    // MARk:更新程式
+    // MARk:internal function
     fileprivate func gettopic(){
         //let qos = Int(DispatchQoS.QoSClass.userInitiated.rawValue)
         DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async{ () -> Void in
@@ -88,7 +117,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             })
         }
     }
-    
     func update(_ refreshControl:UIRefreshControl?){
         if requestUpDataSwitch == true{
             print("updataing")
@@ -123,17 +151,33 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
         
     }
-    
     func new_topic_did_load(_ http_obj:HttpRequestCenter){
         //print("websocket data did load")
     }
+    func openEditTopicArea(){
+        let parent_width = topicList.bounds.width
+        
+//        UIView.animate(withDuration: 1, animations: {
+//            self.editArea.frame = CGRect(x: parent_width/2-150, y: 0, width: 300, height: 30)
+//        })
+        func sss(){
+            self.editArea.frame = CGRect(x: parent_width/2-150, y: 0, width: 300, height: 30)
+        }
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                sss()
+            }) { (finish) in
+                //sss()
+        }
+        
+        
+
+    }
     
-    // MARK: TableView 的內建功能
+    // MARK: delegate -> TableView
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let indexPath = topicList.indexPathForSelectedRow!
         let dataposition:Int = (indexPath as NSIndexPath).row
@@ -148,13 +192,10 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
         
     }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return topics.count
     }
-
-    // MARK: 設定cell裡面的顯示
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Table view cells are reused and should be dequeued using a cell identifier.
@@ -223,8 +264,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
         return cell
     }
-    
-    // MARK: 向下滾動更新
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         hideKeybroad()
         let scroolHeight = self.topicList.contentOffset.y + self.topicList.frame.height
@@ -265,10 +304,9 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             }
         }
     }
-        //NSIndexPath* ipath = [NSIndexPath indexPathForRow: cells_count-1 inSection: sections_count-1];
-    //[tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: YES];
 
-    // MARK: websocketDelegate
+    
+    // socket
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>) {
         if let msg_type:String =  msg["msg_type"] as? String{
             //有人離線
@@ -499,36 +537,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
     }
     
-    // MARK: 準備跳頁
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //print(segue.identifier)
-        if segue.identifier == "clientModeSegue"{
-            let indexPath = topicList.indexPathForSelectedRow!
-            let dataposition:Int = (indexPath as NSIndexPath).row
-            
-            if segue.identifier == "masterModeSegue"{
-                // MARK: master模式看要做啥
-            }
-            else{
-                let topicViewCon = segue.destination as! TopicViewController
-                let selectTopicData = topics[dataposition]
-                topicViewCon.topicId = selectTopicData.topicID
-                topicViewCon.ownerId = selectTopicData.owner
-                topicViewCon.ownerImg = selectTopicData.photo
-                topicViewCon.topicTitle = selectTopicData.title
-                topicViewCon.title = selectTopicData.ownerName
-                topicViewCon.delegate = self
-                //            topicViewCon.topicTitleContent.text = selectTopicData.title
-            }
-        }
-        
-        
-        
-        
-        //print(topicOwnerID)
-        
-    }
-    
+
+    // MARK: =====以下高義區=====
     // MARK: 設定搜尋列
     func configureTopicSearchController() {
         topicSearchController = TopicSearchController(

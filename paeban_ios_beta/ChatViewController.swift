@@ -201,40 +201,43 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             updataNowTopicCellList(resultDic)
             for dicKey in resultDic{
                 let msgData = dicKey.1 as! Dictionary<String,AnyObject>
-                if msgData["sender"] as? String == setID{
-                    //自己說的話
-                    //可插入“移除送出中的符號”的code
-                    //print(msg)
-                    
-                    let temp_topic_msg_id = msgData["temp_topic_msg_id"] as! String
-                    let findElement = messages.index(where: { (target) -> Bool in
-                        if target.topicTempid == temp_topic_msg_id{
-                            return true
+                if setID != nil && topicId != nil{
+                    if msgData["sender"] as? String == setID && msgData["topic_id"] as? String == topicId{
+                        //自己說的話
+                        //可插入“移除送出中的符號”的code
+                        //print(msg)
+                        
+                        let temp_topic_msg_id = msgData["temp_topic_msg_id"] as! String
+                        let findElement = messages.index(where: { (target) -> Bool in
+                            if target.topicTempid == temp_topic_msg_id{
+                                return true
+                            }
+                            else{return false}
+                        })
+                        if let targetPosition = findElement{
+                            messages[targetPosition].topicContentId = dicKey.0
                         }
-                        else{return false}
-                    })
-                    if let targetPosition = findElement{
-                        messages[targetPosition].topicContentId = dicKey.0
+                        
                     }
-                    
+                    else{
+                        //別人說的話
+                        //topic_content_read
+                        //topic_content_id
+                        
+                        let msgToJSQ = JSQMessage2(senderId: msgData["sender"] as? String, displayName: "non", text: msgData["topic_content"] as? String)
+                        msgToJSQ?.topicContentId = dicKey.0
+                        messages += [msgToJSQ!]
+                        
+                        let sendData = [
+                            "msg_type":"topic_content_read",
+                            "topic_content_id":dicKey.0
+                        ]
+                        socket.write(data:json_dumps(sendData as NSDictionary))
+                        self.finishSendingMessage(animated: true)
+                        self.collectionView?.reloadData()
+                    }
                 }
-                else{
-                    //別人說的話
-                    //topic_content_read
-                    //topic_content_id
-                    
-                    let msgToJSQ = JSQMessage2(senderId: msgData["sender"] as? String, displayName: "non", text: msgData["topic_content"] as? String)
-                    msgToJSQ?.topicContentId = dicKey.0
-                    messages += [msgToJSQ!]
-                    
-                    let sendData = [
-                        "msg_type":"topic_content_read",
-                        "topic_content_id":dicKey.0
-                    ]
-                    socket.write(data:json_dumps(sendData as NSDictionary))
-                    self.finishSendingMessage(animated: true)
-                    self.collectionView?.reloadData()
-                }
+                
             }
             
         }

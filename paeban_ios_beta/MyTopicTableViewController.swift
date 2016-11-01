@@ -63,7 +63,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         //                                       -- topic_content
         //                                       -- receiver
         //                                       -- topic_id
-        //print(msg)
+        
         let result_dic = msg["result_dic"] as! Dictionary<String,Dictionary<String,String>>
         for topic_content_id in result_dic{
             let topic_content_data = topic_content_id.1
@@ -422,7 +422,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     }
                     else{
                         print("timeOut")
-                        //print(NSDate().timeIntervalSince1970)
                         // 顯示手動更新按鈕
                     }
                 }

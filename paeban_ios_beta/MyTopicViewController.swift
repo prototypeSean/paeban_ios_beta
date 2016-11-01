@@ -158,7 +158,6 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
         if msgType == "topic_msg"{
-            print(msg)
             let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
             if msg["img"] as? String != nil && msg["img"] as? String != ""{
                 let imgStr = msg["img"] as? String

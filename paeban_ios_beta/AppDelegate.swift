@@ -29,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
         }
         userData.deviceToken = token
+        print(token)
     }
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print(error)
@@ -73,11 +74,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func registerForPushNotifications(application: UIApplication) {
         //let notificationSettings = UIUserNotificationSettings(
             //forTypes: [.Badge, .Sound, .Alert], categories: nil)
-        let nosSet = UIUserNotificationSettings(types: UIUserNotificationType.sound, categories: nil)
+        let nosSet = UIUserNotificationSettings(types: UIUserNotificationType.alert, categories: nil)
         
         application.registerUserNotificationSettings(nosSet)
         application.registerUserNotificationSettings(UIUserNotificationSettings(types: UIUserNotificationType.sound, categories: nil))
-        
+        application.registerUserNotificationSettings(UIUserNotificationSettings(types: UIUserNotificationType.badge, categories: nil))
     }
 }
 
