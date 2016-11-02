@@ -235,6 +235,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             topicTitleData.topicTitle_title = topicTitle
             topicTitleData.topicId_title = topicId
             topicTitleData.topicWithWhoDic_title = topicWithWhoDic
+            print("123",topicTitleData.tag_detial)
             tempMytopicList += [topicTitleData]
         }
         
@@ -484,13 +485,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cell.unReadM.text = "/"+String(topicWriteToRow.allMsg_title)
             cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
             
+//            cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
+//            cell.myTopicHashtag.drawButton()
+            
             // 給ET：之後要加入電池的選項CASE對應參數
             letoutBattery(battery: cell.myTopicbattery)
             return cell
-            
-            // Hashtag 沒有作用不知道位啥
-            cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
-            cell.myTopicHashtag.drawButton()
         }
         else if topicWriteToRow.dataType == "detail"{
             // 子cell
