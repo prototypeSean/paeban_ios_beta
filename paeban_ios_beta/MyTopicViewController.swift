@@ -17,6 +17,37 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     @IBOutlet weak var myPhoto: UIImageView!
     @IBOutlet weak var topicTitleContent: UILabel!
     @IBOutlet weak var topicInfoBG: UIView!
+    @IBOutlet weak var btnAddFriend: UIButton!
+    @IBOutlet weak var btnIgnroe: UIButton!
+    @IBOutlet weak var btnBlock: UIButton!
+    
+    @IBAction func addFriendClick(_ sender: AnyObject) {
+        btnAddFriend.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
+        btnAddFriend.layer.borderWidth = 0
+    }
+    @IBAction func addFriendRelease(_ sender: AnyObject) {
+        btnAddFriend.layer.backgroundColor = UIColor.white.cgColor
+        btnAddFriend.layer.borderWidth = 1
+    }
+    @IBAction func btnIgnorClick(_ sender: AnyObject) {
+        btnIgnroe.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
+        btnIgnroe.layer.borderWidth = 0
+    }
+    @IBAction func btnIgnorRelease(_ sender: AnyObject) {
+        btnIgnroe.layer.backgroundColor = UIColor.white.cgColor
+        btnIgnroe.layer.borderWidth = 1
+    }
+    @IBAction func btnBlockClick(_ sender: AnyObject) {
+        btnBlock.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
+        btnBlock.layer.borderWidth = 0
+    }
+    @IBAction func btnBlockRelease(_ sender: AnyObject) {
+        btnBlock.layer.backgroundColor = UIColor.white.cgColor
+        btnBlock.layer.borderWidth = 1
+    }
+
+    
+    
     let gradientLayer = CAGradientLayer()
     
     var setID:String?
@@ -32,15 +63,16 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     func setImage(){
         guestPhoto.image = clientImg
         
-        // MARK: 試著把照片切成圓形
-        let myPhotoLayer:CALayer = myPhoto.layer
-        myPhotoLayer.masksToBounds = true
-        myPhotoLayer.cornerRadius = myPhoto.frame.size.width/2
+        // MARK: 照片圓角
+        myPhoto.layoutIfNeeded()
+        myPhoto.layer.cornerRadius = myPhoto.frame.size.width/2
+        myPhoto.clipsToBounds = true
         
+        guestPhoto.layoutIfNeeded()
         guestPhoto.layer.cornerRadius = guestPhoto.frame.size.width/2
         guestPhoto.clipsToBounds = true
         
-        // MARK: 照片陰影
+        // MARK: 照片陰影 (先作陰影在蓋上照片)
         let myPhotoShadow = UIView(frame: myPhoto.frame)
         myPhoto.frame = CGRect(x: 0, y: 0, width: myPhoto.frame.size.width, height: myPhoto.frame.size.height)
         myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
@@ -50,6 +82,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         myPhotoShadow.layer.cornerRadius = myPhoto.frame.size.width/2
         myPhotoShadow.clipsToBounds = false
         myPhotoShadow.addSubview(myPhoto)
+        self.view.addSubview(myPhotoShadow)
         
         let guestPhotoShadow = UIView(frame: guestPhoto.frame)
         guestPhoto.frame = CGRect(x: 0, y: 0, width: guestPhoto.frame.size.width, height: guestPhoto.frame.size.height)
@@ -60,23 +93,46 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         myPhotoShadow.layer.cornerRadius = guestPhoto.frame.size.width/2
         myPhotoShadow.clipsToBounds = false
         myPhotoShadow.addSubview(guestPhoto)
-        
-        self.view.addSubview(myPhotoShadow)
         self.view.addSubview(guestPhotoShadow)
         
-        // MARK: 作邊框
-        topicInfoBG.layer.borderWidth = 1
-        topicInfoBG.layer.borderColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:0.3).cgColor
+        // MARK: topicInfoBG背景白色漸層
+        topicInfoBG.layer.borderColor = UIColor.gray.cgColor
+        topicInfoBG.layer.borderWidth = 0.5
         
-        // MARK: 漸層
         topicInfoBG.backgroundColor = UIColor.white
         gradientLayer.frame = topicInfoBG.bounds
         let color1 = UIColor(red:0.97, green:0.97, blue:0.97, alpha:0.2).cgColor as CGColor
         let color2 = UIColor(red:0.95, green:0.95, blue:0.95, alpha:0.2).cgColor as CGColor
         gradientLayer.colors = [color1, color2]
         gradientLayer.locations = [0.0, 1.0]
-        
         topicInfoBG.layer.addSublayer(gradientLayer)
+        
+//        MARK: 設定按鈕
+        // 按下按鈕文字回白
+        btnAddFriend.setTitleColor(UIColor.white, for: .highlighted)
+        btnIgnroe.setTitleColor(UIColor.white, for: .highlighted)
+        btnBlock.setTitleColor(UIColor.white, for: .highlighted)
+        
+        // 按鈕初始外觀
+        btnAddFriend.layoutIfNeeded()
+        let btn_radius:CGFloat = CGFloat(btnAddFriend.bounds.size.height)/2
+        btnAddFriend.layer.cornerRadius = btn_radius
+        btnAddFriend.layer.borderWidth = 1
+        btnAddFriend.layer.borderColor = UIColor.gray.cgColor
+        btnAddFriend.clipsToBounds = true
+        
+        btnIgnroe.layoutIfNeeded()
+        btnIgnroe.layer.borderWidth = 1
+        btnIgnroe.layer.borderColor = UIColor.gray.cgColor
+        btnIgnroe.layer.cornerRadius = btn_radius
+        btnIgnroe.clipsToBounds = true
+        
+        btnBlock.layoutIfNeeded()
+        btnBlock.layer.borderWidth = 1
+        btnBlock.layer.borderColor = UIColor.gray.cgColor
+        btnBlock.layer.cornerRadius = btn_radius
+        btnBlock.clipsToBounds = true
+
     }
     func getHistory(){
         DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { 
@@ -135,7 +191,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         wsActive.wasd_ForMyTopicViewController = self
-        guestPhoto.image = clientImg //修正後移除
+        setImage()
         topicTitleContent.text = topicTitle
         getHistory()
     }
