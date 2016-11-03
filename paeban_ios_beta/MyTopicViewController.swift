@@ -20,7 +20,6 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     @IBOutlet weak var btnAddFriend: UIButton!
     @IBOutlet weak var btnIgnroe: UIButton!
     @IBOutlet weak var btnBlock: UIButton!
-    
     @IBAction func addFriendClick(_ sender: AnyObject) {
         btnAddFriend.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
         btnAddFriend.layer.borderWidth = 0
@@ -73,27 +72,27 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         guestPhoto.clipsToBounds = true
         
         // MARK: 照片陰影 (先作陰影在蓋上照片)
-        let myPhotoShadow = UIView(frame: myPhoto.frame)
-        myPhoto.frame = CGRect(x: 0, y: 0, width: myPhoto.frame.size.width, height: myPhoto.frame.size.height)
-        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
-        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
-        myPhotoShadow.layer.shadowOpacity = 1
-        myPhotoShadow.layer.shadowRadius = 1
-        myPhotoShadow.layer.cornerRadius = myPhoto.frame.size.width/2
-        myPhotoShadow.clipsToBounds = false
-        myPhotoShadow.addSubview(myPhoto)
-        self.view.addSubview(myPhotoShadow)
-        
-        let guestPhotoShadow = UIView(frame: guestPhoto.frame)
-        guestPhoto.frame = CGRect(x: 0, y: 0, width: guestPhoto.frame.size.width, height: guestPhoto.frame.size.height)
-        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
-        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
-        myPhotoShadow.layer.shadowOpacity = 1
-        myPhotoShadow.layer.shadowRadius = 1
-        myPhotoShadow.layer.cornerRadius = guestPhoto.frame.size.width/2
-        myPhotoShadow.clipsToBounds = false
-        myPhotoShadow.addSubview(guestPhoto)
-        self.view.addSubview(guestPhotoShadow)
+//        let myPhotoShadow = UIView(frame: myPhoto.frame)
+//        myPhoto.frame = CGRect(x: 0, y: 0, width: myPhoto.frame.size.width, height: myPhoto.frame.size.height)
+//        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
+//        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+//        myPhotoShadow.layer.shadowOpacity = 1
+//        myPhotoShadow.layer.shadowRadius = 1
+//        myPhotoShadow.layer.cornerRadius = myPhoto.frame.size.width/2
+//        myPhotoShadow.clipsToBounds = false
+//        myPhotoShadow.addSubview(myPhoto)
+//        self.view.addSubview(myPhotoShadow)
+//        
+//        let guestPhotoShadow = UIView(frame: guestPhoto.frame)
+//        guestPhoto.frame = CGRect(x: 0, y: 0, width: guestPhoto.frame.size.width, height: guestPhoto.frame.size.height)
+//        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
+//        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+//        myPhotoShadow.layer.shadowOpacity = 1
+//        myPhotoShadow.layer.shadowRadius = 1
+//        myPhotoShadow.layer.cornerRadius = guestPhoto.frame.size.width/2
+//        myPhotoShadow.clipsToBounds = false
+//        myPhotoShadow.addSubview(guestPhoto)
+//        self.view.addSubview(guestPhotoShadow)
         
         // MARK: topicInfoBG背景白色漸層
         topicInfoBG.layer.borderColor = UIColor.gray.cgColor
@@ -191,10 +190,20 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         wsActive.wasd_ForMyTopicViewController = self
-        setImage()
+//        setImage()
         topicTitleContent.text = topicTitle
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         getHistory()
     }
+    
+    override func viewDidLayoutSubviews() {
+        setImage()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let chatViewCon = segue.destination as! ChatViewController
         chatViewCon.setID = userData.id

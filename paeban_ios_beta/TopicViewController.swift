@@ -40,14 +40,22 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //guestPhoto.image = ownerImg
         wsActive.wasd_ForTopicViewController = self
         topicTitleContent.text = topicTitle
-        setImage()
+//        getHttpData()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         getHttpData()
     }
     
+    override func viewDidLayoutSubviews() {
+        setImage()
+    }
     
+        
     
     @IBAction func addFriendClick(_ sender: AnyObject) {
         btnAddFriend.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
@@ -190,31 +198,31 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         myPhoto.clipsToBounds = true
         
         guestPhoto.layoutIfNeeded()
-        guestPhoto.layer.cornerRadius = guestPhoto.frame.size.width/2
+        guestPhoto.layer.cornerRadius = guestPhoto.frame.size.height/2
         guestPhoto.clipsToBounds = true
         
         // MARK: 照片陰影 (先作陰影在蓋上照片)
-        let myPhotoShadow = UIView(frame: myPhoto.frame)
-        myPhoto.frame = CGRect(x: 0, y: 0, width: myPhoto.frame.size.width, height: myPhoto.frame.size.height)
-        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
-        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
-        myPhotoShadow.layer.shadowOpacity = 1
-        myPhotoShadow.layer.shadowRadius = 1
-        myPhotoShadow.layer.cornerRadius = myPhoto.frame.size.width/2
-        myPhotoShadow.clipsToBounds = false
-        myPhotoShadow.addSubview(myPhoto)
-        self.view.addSubview(myPhotoShadow)
+//        let myPhotoShadow = UIView(frame: myPhoto.frame)
+//        myPhoto.frame = CGRect(x: 0, y: 0, width: myPhoto.frame.size.width, height: myPhoto.frame.size.height)
+//        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
+//        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+//        myPhotoShadow.layer.shadowOpacity = 1
+//        myPhotoShadow.layer.shadowRadius = 1
+//        myPhotoShadow.layer.cornerRadius = myPhoto.frame.size.width/2
+//        myPhotoShadow.clipsToBounds = false
+//        myPhotoShadow.addSubview(myPhoto)
+//        self.view.addSubview(myPhotoShadow)
         
-        let guestPhotoShadow = UIView(frame: guestPhoto.frame)
-        guestPhoto.frame = CGRect(x: 0, y: 0, width: guestPhoto.frame.size.width, height: guestPhoto.frame.size.height)
-        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
-        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
-        myPhotoShadow.layer.shadowOpacity = 1
-        myPhotoShadow.layer.shadowRadius = 1
-        myPhotoShadow.layer.cornerRadius = guestPhoto.frame.size.width/2
-        myPhotoShadow.clipsToBounds = false
-        myPhotoShadow.addSubview(guestPhoto)
-        self.view.addSubview(guestPhotoShadow)
+//        let guestPhotoShadow = UIView(frame: guestPhoto.frame)
+//        guestPhoto.frame = CGRect(x: 0, y: 0, width: guestPhoto.frame.size.width, height: guestPhoto.frame.size.height)
+//        guestPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
+//        guestPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+//        guestPhotoShadow.layer.shadowOpacity = 1
+//        guestPhotoShadow.layer.shadowRadius = 1
+//        guestPhotoShadow.layer.cornerRadius = guestPhoto.frame.size.width/2
+//        guestPhotoShadow.clipsToBounds = false
+//        guestPhotoShadow.addSubview(guestPhoto)
+//        self.view.addSubview(guestPhotoShadow)
         
         // MARK: topicInfoBG背景白色漸層
         topicInfoBG.layer.borderColor = UIColor.gray.cgColor
