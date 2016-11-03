@@ -44,7 +44,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         btnBlock.layer.backgroundColor = UIColor.white.cgColor
         btnBlock.layer.borderWidth = 1
     }
-
+    var myPhotoSave:UIImage?
     
     
     let gradientLayer = CAGradientLayer()
@@ -60,39 +60,52 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     
     // internal func
     func setImage(){
-        guestPhoto.image = clientImg
+        // MARK: 為了陰影跟圓角 要作三層圖曾
+        // add the shadow to the base view 最底層作陰影
+        guestPhoto.backgroundColor = UIColor.clear
+        guestPhoto.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
+        guestPhoto.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+        guestPhoto.layer.shadowOpacity = 1
+        guestPhoto.layer.shadowRadius = 2
         
-        // MARK: 照片圓角
-        myPhoto.layoutIfNeeded()
-        myPhoto.layer.cornerRadius = myPhoto.frame.size.width/2
-        myPhoto.clipsToBounds = true
+        // add the border to subview 第二層做邊框（這邊設0因為不需要）
+        let guetsborderView = UIView()
+        guetsborderView.frame = guestPhoto.bounds
+        guetsborderView.layer.cornerRadius = guestPhoto.frame.size.height/2
+        guetsborderView.layer.borderColor = UIColor.black.cgColor
+        guetsborderView.layer.borderWidth = 0
+        guetsborderView.layer.masksToBounds = true
+        guestPhoto.addSubview(guetsborderView)
         
-        guestPhoto.layoutIfNeeded()
-        guestPhoto.layer.cornerRadius = guestPhoto.frame.size.width/2
-        guestPhoto.clipsToBounds = true
+        // add any other subcontent that you want clipped 最上層才放圖片進去
+        let guestPhotoImg = UIImageView()
+        guestPhotoImg.image = clientImg
+        guestPhotoImg.frame = guetsborderView.bounds
+        guetsborderView.addSubview(guestPhotoImg)
         
-        // MARK: 照片陰影 (先作陰影在蓋上照片)
-//        let myPhotoShadow = UIView(frame: myPhoto.frame)
-//        myPhoto.frame = CGRect(x: 0, y: 0, width: myPhoto.frame.size.width, height: myPhoto.frame.size.height)
-//        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
-//        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
-//        myPhotoShadow.layer.shadowOpacity = 1
-//        myPhotoShadow.layer.shadowRadius = 1
-//        myPhotoShadow.layer.cornerRadius = myPhoto.frame.size.width/2
-//        myPhotoShadow.clipsToBounds = false
-//        myPhotoShadow.addSubview(myPhoto)
-//        self.view.addSubview(myPhotoShadow)
-//        
-//        let guestPhotoShadow = UIView(frame: guestPhoto.frame)
-//        guestPhoto.frame = CGRect(x: 0, y: 0, width: guestPhoto.frame.size.width, height: guestPhoto.frame.size.height)
-//        myPhotoShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
-//        myPhotoShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
-//        myPhotoShadow.layer.shadowOpacity = 1
-//        myPhotoShadow.layer.shadowRadius = 1
-//        myPhotoShadow.layer.cornerRadius = guestPhoto.frame.size.width/2
-//        myPhotoShadow.clipsToBounds = false
-//        myPhotoShadow.addSubview(guestPhoto)
-//        self.view.addSubview(guestPhotoShadow)
+        // -------------------上面guest 下面自己------------------------
+        
+        // add the shadow to the base view 最底層作陰影
+        myPhoto.backgroundColor = UIColor.clear
+        myPhoto.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
+        myPhoto.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+        myPhoto.layer.shadowOpacity = 1
+        myPhoto.layer.shadowRadius = 2
+        
+        // add the border to subview 第二層做邊框（這邊設0因為不需要）
+        let myphotoborderView = UIView()
+        myphotoborderView.frame = myPhoto.bounds
+        myphotoborderView.layer.cornerRadius = guestPhoto.frame.size.height/2
+        myphotoborderView.layer.borderColor = UIColor.black.cgColor
+        myphotoborderView.layer.borderWidth = 0
+        myphotoborderView.layer.masksToBounds = true
+        myPhoto.addSubview(myphotoborderView)
+        
+        // add any other subcontent that you want clipped 最上層才放圖片進去
+        let myPhotoImg = UIImageView()
+        myPhotoImg.image = myPhotoSave
+        myPhotoImg.frame = myphotoborderView.bounds
+        myphotoborderView.addSubview(myPhotoImg)
         
         // MARK: topicInfoBG背景白色漸層
         topicInfoBG.layer.borderColor = UIColor.gray.cgColor
@@ -106,7 +119,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         gradientLayer.locations = [0.0, 1.0]
         topicInfoBG.layer.addSublayer(gradientLayer)
         
-//        MARK: 設定按鈕
+//      MARK: 設定按鈕
         // 按下按鈕文字回白
         btnAddFriend.setTitleColor(UIColor.white, for: .highlighted)
         btnIgnroe.setTitleColor(UIColor.white, for: .highlighted)
@@ -153,7 +166,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
                     
                     let msg = returnDic["msg"] as! Dictionary<String,AnyObject>
                     DispatchQueue.main.async(execute: {
-                        self.myPhoto.image = myImg
+                        self.myPhotoSave = myImg
                         
                         let chatViewCon = self.contanterView
                         chatViewCon?.historyMsg = msg
