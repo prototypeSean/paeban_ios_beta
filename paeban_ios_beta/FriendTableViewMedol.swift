@@ -21,57 +21,46 @@ class FriendTableViewMedol{
     }
     
     func getCell(_ index:Int,cell:FriendTableViewCell) -> FriendTableViewCell {
-        func letoutSexLogo(_ sex:String) -> UIImage {
-            var sexImg:UIImage
-            switch sex {
-            case "男":
-                sexImg = UIImage(named: "male")!
-            case "女":
-                sexImg = UIImage(named:"gay")!
-            case "男同":
-                sexImg = UIImage(named:"gay")!
-            case "女同":
-                sexImg = UIImage(named:"lesbain")!
-            default:
-                sexImg = UIImage(named: "male")!
-                print("性別圖示分類失敗")
-            }
-            return sexImg
-        }
-        func letoutIsTruePhoto(_ isTruePhoto:Bool) -> UIImage {
-            var isMeImg:UIImage
-            if isTruePhoto{isMeImg = UIImage(named:"True_photo")!}
-            else{isMeImg = UIImage(named:"Fake_photo")!}
-            return isMeImg
-        }
-        func letoutOnlineImg(_ online:Bool) -> UIImageView{
-            let onlineimage = UIImageView()
-            
-            onlineimage.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-            if online{
-                onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
-            }
-            else{
-                onlineimage.tintColor = UIColor.gray
-            }
-            return onlineimage
-        }
+        
+        // 都加好友不知道性別可以去死了
+//        func letoutSexLogo(_ sex:String) -> UIImage {
+//            var sexImg:UIImage
+//            switch sex {
+//            case "男":
+//                sexImg = UIImage(named: "male")!
+//            case "女":
+//                sexImg = UIImage(named:"gay")!
+//            case "男同":
+//                sexImg = UIImage(named:"gay")!
+//            case "女同":
+//                sexImg = UIImage(named:"lesbain")!
+//            default:
+//                sexImg = UIImage(named: "male")!
+//                print("性別圖示分類失敗")
+//            }
+//            return sexImg
+//        }
+        
         
         let data = friendsList[index]
         
         cell.photo.image = data.photo
-        cell.truePhoto.image = letoutIsTruePhoto(data.isRealPhoto!)
-        cell.sexImg.image = letoutSexLogo(data.sex!)
-        cell.name.text = data.name
-        cell.onlineImg.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-        if data.online!{
-            cell.onlineImg.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
+        cell.truePhoto.image = UIImage(named:"True_photo")
+        if data.isRealPhoto!{
+            cell.truePhoto.tintColor = UIColor.white
         }
         else{
-            cell.onlineImg.tintColor = UIColor.gray
+            cell.truePhoto.tintColor = UIColor.clear
         }
-        
-        
+//        cell.sexImg.image = letoutSexLogo(data.sex!)
+        cell.name.text = data.name
+        cell.onlineImg.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        if data.online!{
+            cell.onlineImg.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
+        }
+        else{
+            cell.onlineImg.tintColor = UIColor.lightGray
+        }
         return cell
     }
     
