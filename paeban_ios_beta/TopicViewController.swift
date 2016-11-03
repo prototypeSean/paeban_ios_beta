@@ -110,6 +110,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                     let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
                     DispatchQueue.main.async(execute: {
                         self.myPhotoSave = myImg
+                        self.myPhotoImg.image = self.myPhotoSave
                         let chatViewCon = self.contanterView
                         chatViewCon?.historyMsg = msg
                         self.msg = msg

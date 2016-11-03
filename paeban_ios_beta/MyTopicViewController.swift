@@ -205,12 +205,12 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         wsActive.wasd_ForMyTopicViewController = self
 //        setImage()
         topicTitleContent.text = topicTitle
-        
+        getHistory()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getHistory()
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -247,7 +247,8 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
                         let msgData = dicKey.1 as! Dictionary<String,AnyObject>
                         let sender = msgData["sender"] as! String
                         if sender == userData.id{
-                            myPhoto.image = tempImg
+                            myPhotoSave = tempImg
+                            myPhotoImg.image = myPhotoSave
                         }
                         else{
                             guestPhoto.image = tempImg
