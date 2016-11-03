@@ -192,7 +192,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             httpObj.get_my_topic_title { (returnData) in
                 DispatchQueue.main.async(execute: {
                     self.mytopic = self.transferToStandardType_title(returnData)
-
+                    print(returnData)
                     self.tableView.reloadData()
                 })
             }
@@ -486,11 +486,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             
             // 給ET：之後要加入電池的選項CASE對應參數
             letoutBattery(battery: cell.myTopicbattery)
-            return cell
             
             // Hashtag 沒有作用不知道位啥
-            cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
-            cell.myTopicHashtag.drawButton()
+            print(topicWriteToRow.tag_detial)
+            //cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
+            //cell.myTopicHashtag.drawButton()
+            return cell
         }
         else if topicWriteToRow.dataType == "detail"{
             // 子cell
