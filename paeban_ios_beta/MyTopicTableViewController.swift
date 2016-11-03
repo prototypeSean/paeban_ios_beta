@@ -53,6 +53,20 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         if msg["msg_type"] as! String == "topic_msg"{
             updataSecTopic(msg)
         }
+        else if msg["msg_type"] as! String == "new_topic"{
+            for msg_keys in msg.keys{
+                if msg_keys != "msg_type"{
+                    let msg_vals = msg[msg_keys] as! Dictionary<String,AnyObject>
+                    if let topic_publisher = msg_vals["topic_publisher"] as? String{
+                        print(topic_publisher)
+                        if topic_publisher == userData.id{
+                            get_my_topic_title()
+                            break
+                        }
+                    }
+                }
+            }
+        }
     }
     
     func updataSecTopic(_ msg:Dictionary<String,AnyObject>){
@@ -220,6 +234,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     func transferToStandardType_title(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
         // return_dic = topic_id* -- topic_title : String
         //                        -- topics               -- topic_with_who_id* -- read:Bool
+        print(inputData)
         var tempMytopicList = [MyTopicStandardType]()
         for topic_id in inputData{
             let topicTitleData = MyTopicStandardType(dataType:"title")
@@ -235,6 +250,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             topicTitleData.topicTitle_title = topicTitle
             topicTitleData.topicId_title = topicId
             topicTitleData.topicWithWhoDic_title = topicWithWhoDic
+            topicTitleData.tag_detial = (topic_id.1 as! Dictionary<String,AnyObject>)["hash_tag"] as! Array<String>
             tempMytopicList += [topicTitleData]
         }
         

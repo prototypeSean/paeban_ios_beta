@@ -57,7 +57,7 @@ open class webSocketActiveCenter{
     
     let mainWorkList = ["online","off_line","new_member"]
 
-    var test_List = ["topic_msg"]
+    var test_List = [""]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
     let wsad_ForTopicTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed","search_topic"]
     var wasd_ForTopicViewController:webSocketActiveCenterDelegate?
@@ -65,7 +65,7 @@ open class webSocketActiveCenter{
     var wasd_ForChatViewController:webSocketActiveCenterDelegate?
     let wasd_ForChatViewControllerList = ["topic_msg","topic_content_been_read"]
     var wasd_ForMyTopicTableViewController:webSocketActiveCenterDelegate?
-    let wasd_ForMyTopicTableViewControllerList = ["topic_msg"]
+    let wasd_ForMyTopicTableViewControllerList = ["topic_msg","new_topic"]
     var wasd_ForRecentTableViewController:webSocketActiveCenterDelegate?
     let wasd_ForRecentTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed","recentDataCheck"]
     var wasd_ForFriendTableViewController:webSocketActiveCenterDelegate?

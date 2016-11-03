@@ -52,6 +52,7 @@
 		CFCC8A851D78327800D5EDF6 /* RecentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */; };
 		CFCC8A891D78329C00D5EDF6 /* RecentTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */; };
 		CFCC8A8B1D78336500D5EDF6 /* RecentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */; };
+		CFD48D671DCB13FD006C48A2 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD48D661DCB13FD006C48A2 /* EditViewController.swift */; };
 		CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -106,6 +107,7 @@
 		CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewCell.swift; sourceTree = "<group>"; };
 		CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewModel.swift; sourceTree = "<group>"; };
 		CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewController.swift; sourceTree = "<group>"; };
+		CFD48D661DCB13FD006C48A2 /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewLoadingCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -219,6 +221,7 @@
 				932A00D91CFEBA460036E1EA /* TopicNavViewController.swift */,
 				932A00D61CFEBA460036E1EA /* TopicCellTableViewCell.swift */,
 				932A00D51CFEBA460036E1EA /* TopicTableViewController.swift */,
+				CFD48D661DCB13FD006C48A2 /* EditViewController.swift */,
 				932A00DA1CFEBA460036E1EA /* TopicViewController.swift */,
 				9301F6031D1D16F900D1F8C0 /* TopicSearchBar.swift */,
 				9301F6051D1D1A2800D1F8C0 /* TopicSearchController.swift */,
@@ -431,6 +434,7 @@
 				CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */,
 				936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */,
 				CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */,
+				CFD48D671DCB13FD006C48A2 /* EditViewController.swift in Sources */,
 				932A00E41CFEBA460036E1EA /* ViewController.swift in Sources */,
 				932A00F11CFEBA460036E1EA /* LaunchScreenViewController.swift in Sources */,
 				932A00ED1CFEBA460036E1EA /* Labels.swift in Sources */,
