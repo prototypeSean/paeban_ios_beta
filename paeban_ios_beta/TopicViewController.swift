@@ -41,13 +41,13 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         wsActive.wasd_ForTopicViewController = self
-        
+        getHttpData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         topicTitleContent.text = topicTitle
-        getHttpData()
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -82,7 +82,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     
     var myPhotoSave:UIImage?
-    
+    let myPhotoImg = UIImageView()
     
     func getHttpData() {
         DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
@@ -110,7 +110,6 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                     let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
                     DispatchQueue.main.async(execute: {
                         self.myPhotoSave = myImg
-                        
                         let chatViewCon = self.contanterView
                         chatViewCon?.historyMsg = msg
                         self.msg = msg
@@ -149,7 +148,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                         let msgData = dicKey.1 as! Dictionary<String,AnyObject>
                         let sender = msgData["sender"] as! String
                         if sender == userData.id{
-                            myPhoto.image = tempImg
+                            myPhotoSave = tempImg
+                            myPhotoImg.image = myPhotoSave
+//                            print("refresh")
                         }
                         else{
                             guestPhoto.image = tempImg
@@ -231,8 +232,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         myPhoto.addSubview(myphotoborderView)
         
         // add any other subcontent that you want clipped 最上層才放圖片進去
-        let myPhotoImg = UIImageView()
+        
         myPhotoImg.image = myPhotoSave
+        print(myPhotoSave)
         myPhotoImg.frame = myphotoborderView.bounds
         myphotoborderView.addSubview(myPhotoImg)
 

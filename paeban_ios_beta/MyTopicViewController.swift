@@ -45,7 +45,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         btnBlock.layer.borderWidth = 1
     }
     var myPhotoSave:UIImage?
-    
+    let myPhotoImg = UIImageView()
     
     let gradientLayer = CAGradientLayer()
     
@@ -102,7 +102,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         myPhoto.addSubview(myphotoborderView)
         
         // add any other subcontent that you want clipped 最上層才放圖片進去
-        let myPhotoImg = UIImageView()
+        
         myPhotoImg.image = myPhotoSave
         myPhotoImg.frame = myphotoborderView.bounds
         myphotoborderView.addSubview(myPhotoImg)
@@ -167,7 +167,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
                     let msg = returnDic["msg"] as! Dictionary<String,AnyObject>
                     DispatchQueue.main.async(execute: {
                         self.myPhotoSave = myImg
-                        
+                        self.myPhotoImg.image = self.myPhotoSave
                         let chatViewCon = self.contanterView
                         chatViewCon?.historyMsg = msg
                         self.msg = msg
