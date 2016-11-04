@@ -203,12 +203,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             updataNowTopicCellList(resultDic)
             for dicKey in resultDic{
                 let msgData = dicKey.1 as! Dictionary<String,AnyObject>
-                // MARK: 飛行前移除
-                print(setID!)
-                print(topicId!)
-                print(clientID!)
-                // MARK: 飛行前移除
                 if setID != nil && topicId != nil && clientID != nil{
+                    
                     if msgData["sender"] as? String == setID && msgData["topic_id"] as? String == topicId{
                         //自己說的話
                         //可插入“移除送出中的符號”的code
@@ -226,7 +222,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                         }
                         
                     }
-                    else if msgData["receiver"] as? String == clientID{
+                    else if msgData["receiver"] as? String == setID{
                         //別人說的話
                         //topic_content_read
                         //topic_content_id
@@ -240,8 +236,10 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                             "topic_content_id":dicKey.0
                         ]
                         socket.write(data:json_dumps(sendData as NSDictionary))
-                        self.finishSendingMessage(animated: true)
+                        //self.finishSendingMessage(animated: true)
                         self.collectionView?.reloadData()
+                        
+                        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
                     }
                 }
                 
