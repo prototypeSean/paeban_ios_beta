@@ -41,8 +41,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     var topicsBackup:Array<Topic> = []
     var httpOBJ = HttpRequestCenter()
     var requestUpDataSwitch = true
-    
-    
+        
     // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,9 +165,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         self.editArea.isHidden = false
         let parent_width = topicList.bounds.width
         
-//        UIView.animate(withDuration: 1, animations: {
-//            self.editArea.frame = CGRect(x: parent_width/2-150, y: 0, width: 300, height: 30)
-//        })
+
         func sss(){
             let editArea_x = (parent_width-(parent_width-20))/2
             self.editArea.frame = CGRect(x: editArea_x, y: 6, width: parent_width-20, height: 50)

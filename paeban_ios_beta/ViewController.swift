@@ -12,23 +12,20 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 import FBSDKShareKit
 
-
+// MARK:公用變數
 public var socket:WebSocket!
-public var firstConnect = true
-public var logInState = true
-public var wsActive = webSocketActiveCenter()
-
-
-public var cookie:String?
+public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
+public var logInState = true    //記錄現在是否為登入狀態
+public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
+public var cookie:String?       //全域紀錄的餅乾
 public struct setUserData{
     var id:String?
     var name:String?
     var img:UIImage?
     var deviceToken:String?
-}
+}   //用戶個人資料
 public var userData = setUserData()
-
-public var nowTopicCellList:Array<MyTopicStandardType> = []
+public var nowTopicCellList:Array<MyTopicStandardType> = [] //話題清單
 public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
     if let _ = nowTopicCellList.index(where: { (target) -> Bool in
         if target.topicId_title == input_data.topicId_title{
@@ -38,56 +35,47 @@ public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
     }){}
     else{nowTopicCellList.insert(input_data, at: 0)}
 }
-
-public var myFriendsList:Array<FriendStanderType> = []
+public var myFriendsList:Array<FriendStanderType> = [] //好友清單
 public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 
 
 
 class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
-    
     @IBAction func loninBottom(_ sender: AnyObject) {
         check_online(in: self, with: fbLogIn)
     }
     @IBOutlet weak var fbButtonOutlet: UIButton!
-        
     @IBAction func singIn(_ sender: AnyObject) {
     }
-    
     @IBAction func logIn(_ sender: AnyObject) {
         check_online(in: self) { 
             self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
             self.logInPw.text = ""
         }
     }
-    
     @IBOutlet weak var loginId: UITextField!
-
     @IBOutlet weak var logInPw: UITextField!
-    
     @IBOutlet weak var shiftView: UIView!
     
     let login_paeban_obj = login_paeban()
     
+    // MARK: override
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // 把註冊前的NAV隱藏
         self.navigationController?.isNavigationBarHidden = true
     }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 註冊頁顯示NAV
         //self.navigationController?.isNavigationBarHidden = false
     }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sing_in_segue"{
             self.navigationController?.isNavigationBarHidden = false
         }
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         //isInternetAvailable
@@ -100,8 +88,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         
     }
     
-    //autoLogin()
-    
+    // MARK: 內部函數
     func autoLogin(){
         if let _ = FBSDKAccessToken.current(){
             paeban_login()
@@ -137,7 +124,6 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             print(state)
         }
     }
-    
     func BtnOutlet()  {
         fbButtonOutlet.layer.borderWidth = 1.2
         fbButtonOutlet.layer.cornerRadius = 2
@@ -147,7 +133,6 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         logInPw.layer.borderWidth = 1
         logInPw.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
     }
-    
     func fbLogIn() {
         fbLoginManager.logIn(withReadPermissions: ["email"],from: self.parent, handler: { (result, error) -> Void in
             if (error == nil){
@@ -199,9 +184,6 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             print("登入失敗!!!")
         }
     }
-    
-    
-    
     func paeban_login_with_IDPW(id:String,pw:String){
         print("開始登入...")
         if id != "" && pw != ""{

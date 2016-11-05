@@ -21,6 +21,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     var switchFirst = true
     var nowAcceptTopicId:String?
     var selectIndex:Int?
+    
+    // MARK: override
     override func viewDidLoad() {
         super.viewDidLoad()
         get_my_topic_title()
@@ -28,27 +30,135 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         wsActive.ware_ForMyTopicTableViewController = self
         self.tableView.tableFooterView = UIView()
     }
-    
-    // MARK: 父CELL漸層
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        let cellIndex = (indexPath as NSIndexPath).row
-//        if mytopic[cellIndex].dataType == "title"{
-//            let gradientBackgroundColors = [UIColor(red:0.97, green:0.97, blue:0.96, alpha:1.0).cgColor, UIColor.white.cgColor,UIColor(red:0.97, green:0.97, blue:0.96, alpha:1.0).cgColor]
-//            let gradientLocations = [0.0,1.0,0.0]
-//            
-//            let gradientLayer = CAGradientLayer()
-//            gradientLayer.colors = gradientBackgroundColors
-//            gradientLayer.locations = gradientLocations as [NSNumber]?
-//            
-//            gradientLayer.frame = cell.bounds
-//            let backgroundView = UIView(frame: cell.bounds)
-//            backgroundView.layer.insertSublayer(gradientLayer, at: 0)
-//            
-//            cell.backgroundView = backgroundView
-//        }
     }
-
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
+    }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let topicWriteToRow = mytopic[(indexPath as NSIndexPath).row]
+        if topicWriteToRow.dataType == "title"{
+            // 父cell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_1", for: indexPath) as! MyTopicTableViewCell
+            cell.topicTitle.text = topicWriteToRow.topicTitle_title
+            cell.unReadM.text = "/"+String(topicWriteToRow.allMsg_title)
+            cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
+            cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
+            cell.myTopicHashtag.drawButton()
+            
+            // 給ET：之後要加入電池的選項CASE對應參數
+            letoutBattery(battery: cell.myTopicbattery)
+            
+            // Hashtag 沒有作用不知道位啥
+            print("====================")
+            print(topicWriteToRow.tag_detial)
+            //cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
+            //cell.myTopicHashtag.drawButton()
+            return cell
+        }
+        else if topicWriteToRow.dataType == "detail"{
+            // 子cell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_2", for: indexPath) as! TopicSecTableViewCell
+            cell.clientName.text = topicWriteToRow.clientName_detial
+            cell.speaker.text = topicWriteToRow.lastSpeaker_detial
+            cell.lastLine.text = topicWriteToRow.lastLine_detial
+            cell.photo.image = topicWriteToRow.clientPhoto_detial
+            cell.sexLogo.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
+            
+            letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
+            letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
+            
+            // 切子cell照片圓角
+            let myPhotoLayer:CALayer = cell.photo.layer
+            myPhotoLayer.masksToBounds = true
+            myPhotoLayer.cornerRadius = 6
+            
+            return cell
+        }
+        else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "loadingCell", for: indexPath) as! TableViewLoadingCell
+            // 調整刷新圖示的地方
+            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+            activityIndicator.frame = CGRect(x: 0, y: 0, width: cell.frame.maxX, height: 70)
+            //activityIndicator.center = cell.center
+            activityIndicator.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+            activityIndicator.startAnimating()
+            cell.addSubview(activityIndicator)
+            
+            return cell
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "masterModeSegue"{
+            let indexPath = self.tableView.indexPathForSelectedRow!
+            let dataposition:Int = (indexPath as NSIndexPath).row
+            let nextView = segue.destination as! MyTopicViewController
+            let data = mytopic[dataposition]
+            nextView.setID = data.clientId_detial
+            nextView.setName = data.clientName_detial
+            nextView.topicId = data.topicId_title
+            nextView.clientImg = data.clientPhoto_detial
+            nextView.topicTitle = data.topicTitle_title
+            nextView.title = data.clientName_detial
+        }
+    }
+    override func numberOfSections(in tableView: UITableView) -> Int {return 1}
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return mytopic.count}
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cellIndex = (indexPath as NSIndexPath).row
+        var actMode = false
+        if mytopic[cellIndex].dataType == "title"{
+            if cellIndex == mytopic.count-1{
+                actMode = true
+            }
+            else if mytopic[cellIndex + 1].dataType != "detail"{
+                actMode = true
+            }
+            if actMode{
+                // 伸展子cell
+                let topicId_title = mytopic[cellIndex].topicId_title
+                
+                updateSelectIndex(topicId_title!, anyFunction: {
+                    self.removeLoadingCell()
+                    self.collectCell()
+                })
+                getSecCellData(mytopic[self.selectIndex!].topicId_title!,selectIndex: Int(self.selectIndex!))
+            }
+            else{
+                //縮回子cell
+                if let topicId_title = mytopic[cellIndex].topicId_title{
+                    updateSelectIndex(topicId_title, anyFunction: {
+                        self.removeLoadingCell()
+                    })
+                }
+                
+                
+                let dataLen = mytopic.count
+                var removeRowList = [IndexPath]()
+                var removeIndexList = [Int]()
+                for removeIndex in (selectIndex!+1)..<dataLen{
+                    if mytopic[removeIndex].dataType == "detail"{
+                        removeIndexList.insert(removeIndex, at: 0)
+                        let removeRow = IndexPath(row: removeIndex, section: 0)
+                        removeRowList += [removeRow]
+                    }
+                    else{
+                        break
+                    }
+                }
+                for removeIndex in removeIndexList{
+                    mytopic.remove(at: removeIndex)
+                }
+                self.tableView.beginUpdates()
+                self.tableView.deleteRows(at: removeRowList, with: UITableViewRowAnimation.automatic)
+                self.tableView.endUpdates()
+                self.tableView.deselectRow(at: indexPath, animated: true)
+            }
+        }
+    }
     
+    
+    // MARK: delegate
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if msg["msg_type"] as! String == "topic_msg"{
             updataSecTopic(msg)
@@ -68,7 +178,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             }
         }
     }
+    func wsReconnected(){
+        //dic -- title* -- detail* --
+        checkData()
+    }
     
+    // MARK: 內部函數
     func updataSecTopic(_ msg:Dictionary<String,AnyObject>){
         // msg -- msg_type:"topic_msg"
         //     -- img:String
@@ -181,7 +296,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         
         
     }
-    
     func updataTitleUnread(_ topicId:String){
         let tagretIndex = self.mytopic.index { (obj_s) -> Bool in
             if obj_s.dataType == "title" && obj_s.topicId_title! == topicId{
@@ -199,7 +313,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             }
         }
     }
-    
     func get_my_topic_title() {
         DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
             let httpObj = HttpRequestCenter()
@@ -212,7 +325,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             }
         }
     }
-    
     func get_my_topic_detail(_ topicId:String){
         
         DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
@@ -230,7 +342,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             })
         }
     }
-    
     func transferToStandardType_title(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
         // return_dic = topic_id* -- topic_title : String
         //                        -- topics               -- topic_with_who_id* -- read:Bool
@@ -256,7 +367,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         
         return tempMytopicList
     }
-    
     func transferToStandardType_detail(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType> {
         // return_dic --topic_id:String
         //            --topic_contents-topic_with_who_id*- topic_with_who_name:String
@@ -302,8 +412,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         })
         self.selectIndex = newCellIndex
     }
-    
-    
     func collectCell(){
         var removeList = [Int]()
         var removeNSIndexPathList = [IndexPath]()
@@ -321,7 +429,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.deleteRows(at: removeNSIndexPathList, with: UITableViewRowAnimation.automatic)
         self.tableView.endUpdates()
     }
-    
     func getSecCellData(_ topicId:String,selectIndex:Int){
         let secCellDataIndex = secTopic.index { (topicIdInIndex, _) -> Bool in
             if topicIdInIndex == topicId{
@@ -338,7 +445,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             insertSecCell(secTopic[topicId]! as Array<MyTopicStandardType>, selectIndex: selectIndex)
         }
     }
-    
     func insertSecCell(_ inputList:[MyTopicStandardType], selectIndex:Int) {
         
         var updataIndexList = [IndexPath]()
@@ -355,8 +461,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.endUpdates()
 
     }
-    
-    // MARK:等待中
     func waitSecTopicData(_ topicId:String,selectIndex:Int) {
         
         var toExecution = true
@@ -445,7 +549,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         
     }
-    
     func updataTitleCellList_isRead(_ topicId:String,topicWithWho:String,read:Bool){
         let titleIndex = mytopic.index { (MyTopicStandardType) -> Bool in
             if MyTopicStandardType.topicId_title == topicId{
@@ -457,8 +560,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             mytopic[titleIndex!].topicWithWhoDic_title!["topicWithWho"] = read
         }
     }
-    
-    
     func insertLoadingCell(_ selectIndex:Int) {
         let insertObj = MyTopicStandardType(dataType: "reloading")
         mytopic.insert(insertObj, at: selectIndex+1)
@@ -466,7 +567,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.insertRows(at: [IndexPath(row: selectIndex+1, section: 0)], with: UITableViewRowAnimation.automatic)
         self.tableView.endUpdates()
     }
-    
     func removeLoadingCell() {
         var removeTopicObjIndexList = [Int]()
         var removeNSIndexPachList = [IndexPath]()
@@ -486,146 +586,14 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
-    }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let topicWriteToRow = mytopic[(indexPath as NSIndexPath).row]
-        if topicWriteToRow.dataType == "title"{
-            // 父cell
-            let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_1", for: indexPath) as! MyTopicTableViewCell
-            cell.topicTitle.text = topicWriteToRow.topicTitle_title
-            cell.unReadM.text = "/"+String(topicWriteToRow.allMsg_title)
-            cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
-            cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
-            cell.myTopicHashtag.drawButton()
-            
-            // 給ET：之後要加入電池的選項CASE對應參數
-            letoutBattery(battery: cell.myTopicbattery)
-            
-            // Hashtag 沒有作用不知道位啥
-            print("====================")
-            print(topicWriteToRow.tag_detial)
-            //cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
-            //cell.myTopicHashtag.drawButton()
-            return cell
-        }
-        else if topicWriteToRow.dataType == "detail"{
-            // 子cell
-            let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_2", for: indexPath) as! TopicSecTableViewCell
-            cell.clientName.text = topicWriteToRow.clientName_detial
-            cell.speaker.text = topicWriteToRow.lastSpeaker_detial
-            cell.lastLine.text = topicWriteToRow.lastLine_detial
-            cell.photo.image = topicWriteToRow.clientPhoto_detial
-            cell.sexLogo.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
-            
-            letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
-            letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
-            
-            // MARK: 切子cell照片圓角
-            let myPhotoLayer:CALayer = cell.photo.layer
-            myPhotoLayer.masksToBounds = true
-            myPhotoLayer.cornerRadius = 6
-            
-            return cell
-        }
-        else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "loadingCell", for: indexPath) as! TableViewLoadingCell
-            // MARK:調整刷新圖示的地方
-            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
-            activityIndicator.frame = CGRect(x: 0, y: 0, width: cell.frame.maxX, height: 70)
-            //activityIndicator.center = cell.center
-            activityIndicator.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-            activityIndicator.startAnimating()
-            cell.addSubview(activityIndicator)
-            
-            return cell
-        }
-    }
-    // 畫面轉跳
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "masterModeSegue"{
-            let indexPath = self.tableView.indexPathForSelectedRow!
-            let dataposition:Int = (indexPath as NSIndexPath).row
-            let nextView = segue.destination as! MyTopicViewController
-            let data = mytopic[dataposition]
-            nextView.setID = data.clientId_detial
-            nextView.setName = data.clientName_detial
-            nextView.topicId = data.topicId_title
-            nextView.clientImg = data.clientPhoto_detial
-            nextView.topicTitle = data.topicTitle_title
-            nextView.title = data.clientName_detial
-        }
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {return 1}
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return mytopic.count}
-    
-    // MARK: 選擇cell後
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cellIndex = (indexPath as NSIndexPath).row
-        var actMode = false
-        if mytopic[cellIndex].dataType == "title"{
-            if cellIndex == mytopic.count-1{
-                actMode = true
-            }
-            else if mytopic[cellIndex + 1].dataType != "detail"{
-                actMode = true
-            }
-            if actMode{
-                // 伸展子cell
-                let topicId_title = mytopic[cellIndex].topicId_title
-                
-                updateSelectIndex(topicId_title!, anyFunction: {
-                    self.removeLoadingCell()
-                    self.collectCell()
-                })
-                getSecCellData(mytopic[self.selectIndex!].topicId_title!,selectIndex: Int(self.selectIndex!))
-            }
-            else{
-                //縮回子cell
-                if let topicId_title = mytopic[cellIndex].topicId_title{
-                    updateSelectIndex(topicId_title, anyFunction: {
-                        self.removeLoadingCell()
-                    })
-                }
-                
-                
-                let dataLen = mytopic.count
-                var removeRowList = [IndexPath]()
-                var removeIndexList = [Int]()
-                for removeIndex in (selectIndex!+1)..<dataLen{
-                    if mytopic[removeIndex].dataType == "detail"{
-                        removeIndexList.insert(removeIndex, at: 0)
-                        let removeRow = IndexPath(row: removeIndex, section: 0)
-                        removeRowList += [removeRow]
-                    }
-                    else{
-                        break
-                    }
-                }
-                for removeIndex in removeIndexList{
-                    mytopic.remove(at: removeIndex)
-                }
-                self.tableView.beginUpdates()
-                self.tableView.deleteRows(at: removeRowList, with: UITableViewRowAnimation.automatic)
-                self.tableView.endUpdates()
-                self.tableView.deselectRow(at: indexPath, animated: true)
-            }
-        }
-    }
-    
-    // MARK: 設定cell 裡面的圖示
+    //設定cell 裡面的圖示
 
     //之後要加入電池的選項CASE
     func letoutBattery(battery:UIImageView){
         battery.image = UIImage(named:"battery-low")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         battery.tintColor = UIColor.red
     }
-    
-    
     func letoutSexLogo(_ sex:String) -> UIImage {
         var sexImg:UIImage
         switch sex {
@@ -663,12 +631,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cellOnlineLogo.tintColor = UIColor.lightGray
         }
     }
-    
-    func wsReconnected(){
-        //dic -- title* -- detail* --
-        checkData()
-    }
-    
     func checkData(){
         // dic - topicId* - topicWithWho* - topicContentId
         var ckeckDic:Dictionary<String,Dictionary<String,String>>
