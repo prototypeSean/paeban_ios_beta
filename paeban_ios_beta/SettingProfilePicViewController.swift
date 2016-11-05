@@ -10,10 +10,12 @@ import UIKit
 
 class SettingProfilePicViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var imageViewTemp:UIImageView?
+    var imgView:UIImageView?
     
     // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
+        setMyOldImg()
     }
     
     // MARK:internal func
@@ -53,7 +55,21 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
         let imageView = UIImageView(image: resizeImage(image: img, newWidth: 200))
         imageViewTemp = imageView
         imageView.frame = view.bounds
-        view.addSubview(imageView)
+        imgView?.image = imageView.image
+    }
+    func setMyOldImg(){
+        imgView = UIImageView()
+        imgView?.image = userData.img
+        imgView?.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+        imgView?.isUserInteractionEnabled = true
+        //let gesture = UITapGestureRecognizer(target: self, action: Selector(("addImgBtn:")))
+        // or for swift 2 +
+        let gest = UITapGestureRecognizer(target: self, action: #selector(addImgBtn))
+        imgView?.addGestureRecognizer(gest)
+        
+        
+        
+        self.view.addSubview(imgView!)
     }
     
     
@@ -68,3 +84,10 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
         
     }
 }
+
+
+
+
+
+
+
