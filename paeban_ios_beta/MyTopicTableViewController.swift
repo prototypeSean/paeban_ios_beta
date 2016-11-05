@@ -68,7 +68,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
             letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
             
-            // MARK: 切子cell照片圓角
+            // 切子cell照片圓角
             let myPhotoLayer:CALayer = cell.photo.layer
             myPhotoLayer.masksToBounds = true
             myPhotoLayer.cornerRadius = 6
@@ -77,7 +77,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "loadingCell", for: indexPath) as! TableViewLoadingCell
-            // MARK:調整刷新圖示的地方
+            // 調整刷新圖示的地方
             let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
             activityIndicator.frame = CGRect(x: 0, y: 0, width: cell.frame.maxX, height: 70)
             //activityIndicator.center = cell.center
@@ -587,7 +587,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     
     
-    // MARK: 設定cell 裡面的圖示
+    //設定cell 裡面的圖示
 
     //之後要加入電池的選項CASE
     func letoutBattery(battery:UIImageView){
