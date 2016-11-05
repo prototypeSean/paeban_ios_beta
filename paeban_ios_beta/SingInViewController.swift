@@ -49,28 +49,27 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
     func addImgBtn(){
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
             //初始化图片控制器
-            print("SingInViewController＿flag_1")
+            
             let picker = UIImagePickerController()
             //设置代理
-            print("2")
             picker.delegate = self
             //设置媒体类型
-            print("3")
+            
             picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: UIImagePickerControllerSourceType.photoLibrary)!
             
             //指定图片控制器类型
-            print("4")
+            
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
             //设置是否允许编辑
-            print("5")
+            
             picker.allowsEditing = true
             //弹出控制器，显示界面
-            print("6")
+            
             
             self.present(picker, animated: true, completion: {
                 () -> Void in
             })
-            print("7")
+            
         }else{
             print("相簿讀取錯誤")
         }
@@ -87,9 +86,6 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
         
     }
-    
-    
-    // delegate -> UIScrollViewDelegate
 
     
 }
