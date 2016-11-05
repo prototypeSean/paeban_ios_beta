@@ -31,7 +31,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         let cell = tableView.dequeueReusableCell(withIdentifier: "nowTopicListCell", for: indexPath) as! RecentTableViewCell
         let cell2 = rTVModel.getCell((indexPath as NSIndexPath).row,cell: cell)
         
-        // MARK: cell照片圓角
+//      MARK: cell照片圓角
         let myPhotoLayer:CALayer = cell2.clientImg.layer
         myPhotoLayer.masksToBounds = true
         myPhotoLayer.cornerRadius = 6

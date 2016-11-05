@@ -80,10 +80,10 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAt indexPath: IndexPath!) -> CGFloat {
         return CGFloat(20)
     }
-    //MARK:顯示"已讀"
+    //MARK: 顯示"已讀"
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         if messages[indexPath.item].isRead == true{
-            return NSAttributedString(string:"已讀")
+            return NSAttributedString(string:"已讀"+" ")
         }
         else{
             return NSAttributedString(string:"")
@@ -91,11 +91,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
 
     
-    // 設定訊息顏色，用JSQ的套件
+    // MARK: 設定訊息顏色，用JSQ的套件
     fileprivate func setupBubbles() {
         let factory = JSQMessagesBubbleImageFactory()
         outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(
-            with: UIColor.init(red:0.98, green:0.49, blue:0.29, alpha:1.0))
+            with: UIColor(red:0.97, green:0.49, blue:0.31, alpha:1.0))
         incomingBubbleImageView = factory?.incomingMessagesBubbleImage(
             with: UIColor.jsq_messageBubbleLightGray())
     }

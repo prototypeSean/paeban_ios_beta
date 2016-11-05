@@ -98,37 +98,40 @@ class RecentTableViewModel{
             }
             return sexImg
         }
-        func letoutIsTruePhoto(_ isTruePhoto:Bool) -> UIImage {
-            var isMeImg:UIImage
-            if isTruePhoto{isMeImg = UIImage(named:"True_photo")!}
-            else{isMeImg = UIImage(named:"Fake_photo")!}
-            return isMeImg
-        }
-        func letoutOnlineImg(_ online:Bool) -> UIImageView{
-            let onlineimage = UIImageView()
-            
-            onlineimage.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-            if online{
-                onlineimage.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
-            }
-            else{
-                onlineimage.tintColor = UIColor.gray
-            }
-            return onlineimage
-        }
+        // 沒作用
+//        func letoutIsTruePhoto(_ isTruePhoto:Bool) -> UIImageView {
+//            let isMeImg = UIImageView()
+//            isMeImg.image = UIImage(named:"True_photo")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+//            
+//            return isMeImg
+//        }
+        // 沒作用
+//        func letoutOnlineImg(_ online:Bool) -> UIImageView{
+//            let onlineimage = UIImageView()
+//            onlineimage.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+//            return onlineimage
+//        }
         
+        // 麻煩的東西這邊才開始畫外觀
         let topicWriteToRow = recentDataBase[index]
         //print(topicWriteToRow.topicTitle_title)
         
+        // Hashtag
         cell.hashtag.tagListInContorller = topicWriteToRow.tag_detial
         cell.hashtag.drawButton()
-        
+        // 照片，但是設定圓角在VC
         cell.clientImg.image = topicWriteToRow.clientPhoto_detial
+        // 性別圖示
         cell.clientSex.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
-        
-        
-        cell.isMyPic.image = letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!)
-        
+        // 本人照片圖示
+        cell.isMyPic.image = UIImage(named:"True_photo")
+        if topicWriteToRow.clientIsRealPhoto_detial!{
+            cell.isMyPic.tintColor = UIColor.white
+        }
+        else{
+            cell.isMyPic.tintColor = UIColor.clear
+        }
+        // 發話人標籤
         var lastSpeakerName:String?
         if topicWriteToRow.lastSpeaker_detial! == userData.id{
             lastSpeakerName = userData.name
@@ -138,21 +141,22 @@ class RecentTableViewModel{
         }
         cell.lastSpeaker.text = "\(lastSpeakerName!):"
         
+        // 話題owner
         cell.ownerName.text = topicWriteToRow.clientName_detial
-        
+        // 最新一句對話
         cell.lastLine.text = topicWriteToRow.lastLine_detial
         
         
         cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         if topicWriteToRow.clientOnline_detial!{
-            
-            cell.online.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
+            cell.online.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
         }
         else{
             
-            cell.online.tintColor = UIColor.gray
+            cell.online.tintColor = UIColor.lightGray
         }        
-        
+        cell.battery.image = UIImage(named:"battery-half")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        cell.battery.tintColor = UIColor(red:1.00, green:0.77, blue:0.18, alpha:1.0)
         return cell
     }
     

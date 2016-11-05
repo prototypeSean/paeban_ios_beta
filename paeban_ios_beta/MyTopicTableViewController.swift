@@ -206,7 +206,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             httpObj.get_my_topic_title { (returnData) in
                 DispatchQueue.main.async(execute: {
                     self.mytopic = self.transferToStandardType_title(returnData)
-
+                    print(returnData)
                     self.tableView.reloadData()
                 })
             }
@@ -493,24 +493,35 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let topicWriteToRow = mytopic[(indexPath as NSIndexPath).row]
         if topicWriteToRow.dataType == "title"{
-            // 標題型cell
+            // 父cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_1", for: indexPath) as! MyTopicTableViewCell
             cell.topicTitle.text = topicWriteToRow.topicTitle_title
             cell.unReadM.text = "/"+String(topicWriteToRow.allMsg_title)
             cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
+            cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
+            cell.myTopicHashtag.drawButton()
             
+            // 給ET：之後要加入電池的選項CASE對應參數
+            letoutBattery(battery: cell.myTopicbattery)
+            
+            // Hashtag 沒有作用不知道位啥
+            print("====================")
+            print(topicWriteToRow.tag_detial)
+            //cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
+            //cell.myTopicHashtag.drawButton()
             return cell
         }
         else if topicWriteToRow.dataType == "detail"{
-            // 子對話型cell
+            // 子cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_2", for: indexPath) as! TopicSecTableViewCell
             cell.clientName.text = topicWriteToRow.clientName_detial
             cell.speaker.text = topicWriteToRow.lastSpeaker_detial
             cell.lastLine.text = topicWriteToRow.lastLine_detial
             cell.photo.image = topicWriteToRow.clientPhoto_detial
             cell.sexLogo.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
-            cell.isTruePhoto.image = letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!)
+            
             letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
+            letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
             
             // MARK: 切子cell照片圓角
             let myPhotoLayer:CALayer = cell.photo.layer
@@ -606,6 +617,15 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
     }
     
+    // MARK: 設定cell 裡面的圖示
+
+    //之後要加入電池的選項CASE
+    func letoutBattery(battery:UIImageView){
+        battery.image = UIImage(named:"battery-low")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        battery.tintColor = UIColor.red
+    }
+    
+    
     func letoutSexLogo(_ sex:String) -> UIImage {
         var sexImg:UIImage
         switch sex {
@@ -623,21 +643,24 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         return sexImg
     }
-    func letoutIsTruePhoto(_ isTruePhoto:Bool) -> UIImage {
-        var isMeImg:UIImage
-        if isTruePhoto{isMeImg = UIImage(named:"True_photo")!}
-        else{isMeImg = UIImage(named:"Fake_photo")!}
-        return isMeImg
+    func letoutIsTruePhoto(_ isTruePhoto:Bool,isMeImg:UIImageView){
+        isMeImg.image = UIImage(named:"True_photo")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        if isTruePhoto{
+            isMeImg.tintColor = UIColor.white
+        }
+        else{
+            isMeImg.tintColor = UIColor.clear
+        }
     }
     func letoutOnlineLogo(_ isOnline:Bool,cellOnlineLogo:UIImageView){
         
-        cellOnlineLogo.image = UIImage(named:"texting")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        cellOnlineLogo.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         
         if isOnline{
-            cellOnlineLogo.tintColor = UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
+            cellOnlineLogo.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
         }
         else{
-            cellOnlineLogo.tintColor = UIColor.gray
+            cellOnlineLogo.tintColor = UIColor.lightGray
         }
     }
     
