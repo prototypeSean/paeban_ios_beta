@@ -38,7 +38,7 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
     }
     func collapseInputBox(){
         let parVC = self.parent! as! TopicTableViewController
-        parVC.editArea.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        parVC.editArea.isHidden = true
     }
     
 }

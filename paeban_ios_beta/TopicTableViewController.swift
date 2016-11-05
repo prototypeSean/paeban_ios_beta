@@ -63,7 +63,10 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
         // 我不知道為什麼-1 就可以了 高度明明是35....
         topicList.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
-
+    }
+    // 覆蓋掉故事板的初始設定顯示
+    override func viewDidLayoutSubviews() {
+        initAddTopicArea()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //print(segue.identifier)
@@ -157,14 +160,20 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func new_topic_did_load(_ http_obj:HttpRequestCenter){
         //print("websocket data did load")
     }
+    
+    func initAddTopicArea(){
+        self.editArea.isHidden = true
+    }
+    
     func openEditTopicArea(){
+        self.editArea.isHidden = false
         let parent_width = topicList.bounds.width
         
 //        UIView.animate(withDuration: 1, animations: {
 //            self.editArea.frame = CGRect(x: parent_width/2-150, y: 0, width: 300, height: 30)
 //        })
         func sss(){
-            self.editArea.frame = CGRect(x: parent_width/2-150, y: 0, width: 300, height: 30)
+            self.editArea.frame = CGRect(x: 10, y: 6, width: parent_width-20, height: 50)
         }
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 sss()
@@ -173,7 +182,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
         
         
-
     }
     
     // MARK: delegate -> TableView
