@@ -155,7 +155,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         else{
             refreshControl?.endRefreshing()
         }
-        
     }
     func new_topic_did_load(_ http_obj:HttpRequestCenter){
         //print("websocket data did load")
@@ -171,7 +170,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
 //            self.editArea.frame = CGRect(x: parent_width/2-150, y: 0, width: 300, height: 30)
 //        })
         func sss(){
-            self.editArea.frame = CGRect(x: 10, y: 6, width: parent_width-20, height: 50)
+            let editArea_x = (parent_width-(parent_width-20))/2
+            self.editArea.frame = CGRect(x: editArea_x, y: 6, width: parent_width-20, height: 50)
         }
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 sss()
