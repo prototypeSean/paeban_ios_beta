@@ -37,6 +37,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     @IBOutlet weak var editArea: UIView!
     
+    
     var topics:[Topic] = []
     var topicsBackup:Array<Topic> = []
     var httpOBJ = HttpRequestCenter()
