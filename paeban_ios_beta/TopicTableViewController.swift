@@ -163,12 +163,12 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     func openEditTopicArea(){
         self.editArea.isHidden = false
-        let parent_width = topicList.bounds.width
+        // 不能用清單寬度因為被我動過，要用最外層VIEW
+        let parent_width = self.view.frame.size.width
         
 
         func sss(){
-            let editArea_x = (parent_width-(parent_width-20))/2
-            self.editArea.frame = CGRect(x: editArea_x, y: 6, width: parent_width-20, height: 50)
+            self.editArea.frame = CGRect(x: 10, y: 5, width: parent_width-20, height: 50)
         }
         UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 sss()
