@@ -250,7 +250,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             topicTitleData.topicTitle_title = topicTitle
             topicTitleData.topicId_title = topicId
             topicTitleData.topicWithWhoDic_title = topicWithWhoDic
-            topicTitleData.tag_detial = (topic_id.1 as! Dictionary<String,AnyObject>)["hash_tag"] as! Array<String>
+            topicTitleData.tag_detial = (topic_id.1 as! Dictionary<String,AnyObject>)["hash_tag"] as? Array<String>
             tempMytopicList += [topicTitleData]
         }
         
