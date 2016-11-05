@@ -180,8 +180,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             }) { (finish) in
                 //sss()
         }
-        
-        
     }
     
     // MARK: delegate -> TableView
