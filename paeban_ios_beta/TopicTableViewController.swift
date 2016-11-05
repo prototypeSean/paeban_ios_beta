@@ -33,7 +33,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     @IBOutlet weak var isMe: UIImageView!
     
     @IBAction func new_topic(_ sender: AnyObject) {
-        openEditTopicArea()
+        switchEditTopicArea()
     }
     @IBOutlet weak var editArea: UIView!
     
@@ -162,20 +162,30 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func initAddTopicArea(){
         self.editArea.isHidden = true
     }
-    func openEditTopicArea(){
-        self.editArea.isHidden = false
+    func switchEditTopicArea(){
         // 不能用清單寬度因為被我動過，要用最外層VIEW
         let parent_width = self.view.frame.size.width
-        
-
-        func sss(){
+        func editArea_position_init(){
+            self.editArea.frame = CGRect(x: 10, y: -50, width: parent_width-20, height: 50)
+        }
+        func editArea_position_set(){
             self.editArea.frame = CGRect(x: 10, y: 5, width: parent_width-20, height: 50)
         }
-        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0, initialSpringVelocity: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                sss()
+        if self.editArea.isHidden{
+            editArea_position_init()
+            self.editArea.isHidden = false
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0, initialSpringVelocity: 0, options: UIViewAnimationOptions.beginFromCurrentState, animations: {
+                editArea_position_set()
             }) { (finish) in
                 //sss()
+            }
         }
+        else{
+            self.editArea.isHidden = true
+        }
+        
+        
+        
     }
     
     // MARK: delegate -> TableView
