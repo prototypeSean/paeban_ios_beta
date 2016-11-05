@@ -33,6 +33,7 @@
 		932D0D6F1DA0D8B800ACA795 /* RecentNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932D0D6E1DA0D8B800ACA795 /* RecentNavViewController.swift */; };
 		932D0D711DA0F61100ACA795 /* MytopicNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932D0D701DA0F61100ACA795 /* MytopicNavViewController.swift */; };
 		932D0D731DA0F65700ACA795 /* FriendNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932D0D721DA0F65700ACA795 /* FriendNavViewController.swift */; };
+		933B77921DCDCD5800110D8C /* SettingProfilePicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B77911DCDCD5800110D8C /* SettingProfilePicViewController.swift */; };
 		934EBB001DCB0A3600FB9748 /* Designable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934EBAFF1DCB0A3600FB9748 /* Designable.swift */; };
 		936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */; };
 		93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */; };
@@ -86,6 +87,7 @@
 		932D0D6E1DA0D8B800ACA795 /* RecentNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentNavViewController.swift; sourceTree = "<group>"; };
 		932D0D701DA0F61100ACA795 /* MytopicNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MytopicNavViewController.swift; sourceTree = "<group>"; };
 		932D0D721DA0F65700ACA795 /* FriendNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendNavViewController.swift; sourceTree = "<group>"; };
+		933B77911DCDCD5800110D8C /* SettingProfilePicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingProfilePicViewController.swift; sourceTree = "<group>"; };
 		934EBAFF1DCB0A3600FB9748 /* Designable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Designable.swift; sourceTree = "<group>"; };
 		936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopicViewController.swift; sourceTree = "<group>"; };
 		93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */,
+				933B77911DCDCD5800110D8C /* SettingProfilePicViewController.swift */,
 			);
 			name = setting;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 				CFCC8A8B1D78336500D5EDF6 /* RecentTableViewController.swift in Sources */,
 				9301F6041D1D16F900D1F8C0 /* TopicSearchBar.swift in Sources */,
 				932A00E81CFEBA460036E1EA /* TopicCellTableViewCell.swift in Sources */,
+				933B77921DCDCD5800110D8C /* SettingProfilePicViewController.swift in Sources */,
 				9301F6061D1D1A2800D1F8C0 /* TopicSearchController.swift in Sources */,
 				932A00EB1CFEBA460036E1EA /* TopicNavViewController.swift in Sources */,
 				932D0D711DA0F61100ACA795 /* MytopicNavViewController.swift in Sources */,
