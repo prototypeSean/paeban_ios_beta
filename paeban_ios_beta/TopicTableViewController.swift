@@ -160,11 +160,9 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func new_topic_did_load(_ http_obj:HttpRequestCenter){
         //print("websocket data did load")
     }
-    
     func initAddTopicArea(){
         self.editArea.isHidden = true
     }
-    
     func openEditTopicArea(){
         self.editArea.isHidden = false
         let parent_width = topicList.bounds.width
