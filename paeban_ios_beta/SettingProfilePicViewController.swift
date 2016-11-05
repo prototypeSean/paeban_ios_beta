@@ -60,12 +60,11 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
     func setMyOldImg(){
         imgView = UIImageView()
         imgView?.image = userData.img
-        imgView?.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+        let long = self.view.frame.width/2
+        imgView?.frame = CGRect(x: 0, y: 0, width:long , height: long)
         imgView?.isUserInteractionEnabled = true
-        //let gesture = UITapGestureRecognizer(target: self, action: Selector(("addImgBtn:")))
-        // or for swift 2 +
-        let gest = UITapGestureRecognizer(target: self, action: #selector(addImgBtn))
-        imgView?.addGestureRecognizer(gest)
+        let tapAction = UITapGestureRecognizer(target: self, action: #selector(addImgBtn))
+        imgView?.addGestureRecognizer(tapAction)
         
         
         
