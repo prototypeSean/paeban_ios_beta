@@ -33,7 +33,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     @IBOutlet weak var isMe: UIImageView!
     
     @IBAction func new_topic(_ sender: AnyObject) {
-        openEditTopicArea()
+        switchEditTopicArea()
     }
     @IBOutlet weak var editArea: UIView!
     
@@ -162,7 +162,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func initAddTopicArea(){
         self.editArea.isHidden = true
     }
-    func openEditTopicArea(){
+    func switchEditTopicArea(){
         self.editArea.isHidden = false
         // 不能用清單寬度因為被我動過，要用最外層VIEW
         let parent_width = self.view.frame.size.width
