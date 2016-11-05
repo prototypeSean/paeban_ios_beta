@@ -160,9 +160,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func openEditTopicArea(){
         let parent_width = topicList.bounds.width
         
-//        UIView.animate(withDuration: 1, animations: {
-//            self.editArea.frame = CGRect(x: parent_width/2-150, y: 0, width: 300, height: 30)
-//        })
+
         func sss(){
             self.editArea.frame = CGRect(x: parent_width/2-150, y: 0, width: 300, height: 30)
         }
