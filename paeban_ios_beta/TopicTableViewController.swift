@@ -41,8 +41,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     var topicsBackup:Array<Topic> = []
     var httpOBJ = HttpRequestCenter()
     var requestUpDataSwitch = true
-    
-    
+        
     // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
