@@ -1913,11 +1913,18 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kkI-h8-HjJ">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Fx-D8-EXR">
+                                <state key="normal" title="Button"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="kkI-h8-HjJ" firstAttribute="centerY" secondItem="0ti-bP-oS9" secondAttribute="centerY" id="Pyc-WV-k59"/>
+                            <constraint firstItem="7Fx-D8-EXR" firstAttribute="centerY" secondItem="kkI-h8-HjJ" secondAttribute="centerY" id="brv-81-Jo2"/>
+                            <constraint firstItem="7Fx-D8-EXR" firstAttribute="width" secondItem="kkI-h8-HjJ" secondAttribute="width" multiplier="0.9" id="dVb-bh-bjw"/>
+                            <constraint firstItem="7Fx-D8-EXR" firstAttribute="height" secondItem="kkI-h8-HjJ" secondAttribute="height" multiplier="0.9" id="j8H-VL-npy"/>
                             <constraint firstItem="kkI-h8-HjJ" firstAttribute="height" secondItem="0ti-bP-oS9" secondAttribute="height" id="noK-TT-4GZ"/>
+                            <constraint firstItem="7Fx-D8-EXR" firstAttribute="centerX" secondItem="kkI-h8-HjJ" secondAttribute="centerX" id="s0j-IE-lGT"/>
                             <constraint firstItem="kkI-h8-HjJ" firstAttribute="width" secondItem="0ti-bP-oS9" secondAttribute="width" id="www-Ca-LfI"/>
                             <constraint firstItem="kkI-h8-HjJ" firstAttribute="centerX" secondItem="0ti-bP-oS9" secondAttribute="centerX" id="xfZ-Jw-9Md"/>
                         </constraints>
