@@ -39,7 +39,6 @@ public var myFriendsList:Array<FriendStanderType> = [] //好友清單
 public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 
 
-
 class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
     @IBAction func loninBottom(_ sender: AnyObject) {
