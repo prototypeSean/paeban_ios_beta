@@ -14,6 +14,7 @@ class SettingViewController: UIViewController {
     @IBAction func logOutBtn(_ sender: AnyObject) {
         logOut()
     }
+    @IBOutlet weak var pencilIcon: UIImageView!
     
     // internal func
     func logOut(){
@@ -39,7 +40,11 @@ class SettingViewController: UIViewController {
     // override
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        pencilIcon.image = UIImage(named:"pencil")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        pencilIcon.tintColor = UIColor.orange
+        pencilIcon.layer.shadowColor = UIColor.black.cgColor
+        pencilIcon.layer.shadowOffset = CGSize(width:2,height:2)
+        
         // Do any additional setup after loading the view.
     }
 

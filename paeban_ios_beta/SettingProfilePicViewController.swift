@@ -10,11 +10,17 @@ import UIKit
 
 class SettingProfilePicViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var imageViewTemp:UIImageView?
-    var imgView:UIImageView?
+//    var imgView:UIImageView?
     
+    let profilePicImg = UIImageView()
+    
+    @IBOutlet weak var profilePicBtn: UIButton!
+    @IBOutlet weak var profilePicShadow: UIView!
     // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    override func viewDidLayoutSubviews() {
         setMyOldImg()
     }
     
@@ -55,20 +61,47 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
         let imageView = UIImageView(image: resizeImage(image: img, newWidth: 200))
         imageViewTemp = imageView
         imageView.frame = view.bounds
-        imgView?.image = imageView.image
+        profilePicImg.image = imageView.image
     }
     func setMyOldImg(){
-        imgView = UIImageView()
-        imgView?.image = userData.img
-        let long = self.view.frame.width/2
-        imgView?.frame = CGRect(x: 0, y: 0, width:long , height: long)
-        imgView?.isUserInteractionEnabled = true
+//        imgView = UIImageView()
+//        imgView?.image = userData.img
+//        let long = self.view.frame.width/2
+//        imgView?.frame = CGRect(x: 0, y: 0, width:long , height: long)
+        
+        // 開始設定照片
+        profilePicShadow.backgroundColor = UIColor.clear
+        profilePicShadow.layer.shadowColor = UIColor(red:0.57, green:0.57, blue:0.57, alpha:1).cgColor
+        profilePicShadow.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
+        profilePicShadow.layer.shadowOpacity = 1
+        profilePicShadow.layer.shadowRadius = 2
+//        print(profilePicShadow.bounds)
+        // add the border to subview 第二層做邊框（這邊設0因為不需要）
+        let profilePicborderView = UIView()
+        profilePicborderView.frame = profilePicShadow.bounds
+        profilePicborderView.layer.cornerRadius = profilePicShadow.frame.width/2
+        profilePicborderView.layer.borderColor = UIColor.white.cgColor
+        profilePicborderView.layer.borderWidth = 2
+        profilePicborderView.layer.masksToBounds = true
+        profilePicShadow.addSubview(profilePicborderView)
+        // add any other subcontent that you want clipped 最上層才放圖片進去
+        profilePicImg.image = userData.img
+        profilePicImg.frame = profilePicborderView.bounds
+//        profilePicBtn.layoutIfNeeded()
+//        profilePicBtn.clipsToBounds = true
+        profilePicborderView.addSubview(profilePicImg)
+        // 莫名其妙成功了的一行
+        profilePicImg.addSubview(profilePicBtn)
+        
+        print(profilePicImg.frame.size.height,profilePicImg.frame.size.width)
+        
+        profilePicImg.isUserInteractionEnabled = true
         let tapAction = UITapGestureRecognizer(target: self, action: #selector(addImgBtn))
-        imgView?.addGestureRecognizer(tapAction)
+        profilePicImg.addGestureRecognizer(tapAction)
         
         
         
-        self.view.addSubview(imgView!)
+//        self.view.addSubview(imgView!)
     }
     
     
