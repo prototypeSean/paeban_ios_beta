@@ -215,7 +215,10 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let Center_1 = (((initFearm?.height)! - keyboardSize.height))/2
             let delta_x = ((selectedTextField?.center.y)! + stackView.frame.minY) - Center_1
-            let newCenter_y = (initCenter?.y)! - delta_x
+            var newCenter_y = (initCenter?.y)! - delta_x
+            if delta_x > keyboardSize.height{
+                newCenter_y = (initCenter?.y)! - keyboardSize.height
+            }
             self.view.center = CGPoint(x: self.view.center.x, y: newCenter_y)
         }
     }
