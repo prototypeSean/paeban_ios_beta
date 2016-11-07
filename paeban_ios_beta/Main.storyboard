@@ -326,10 +326,10 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCellTableViewCell" id="Wjc-mK-FT3" customClass="TopicCellTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="383" height="80"/>
+                                        <rect key="frame" x="0.0" y="92" width="1000" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
-                                            <frame key="frameInset" width="383" height="79.5"/>
+                                            <frame key="frameInset" width="1000" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房主的暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPN-A9-vyF">
@@ -769,7 +769,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ukk-Cg-AaJ" id="ZAm-Bu-LPF">
-                                    <frame key="frameInset" width="375" height="69.5"/>
+                                    <frame key="frameInset" width="375" height="69"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的話題標題" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eYJ-3A-UKG">
@@ -864,7 +864,7 @@
                                 <rect key="frame" x="0.0" y="98" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YR8-FS-JTg" id="Xdk-wf-EhQ">
-                                    <frame key="frameInset" width="375" height="89.5"/>
+                                    <frame key="frameInset" width="375" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7eN-S9-UjC">
@@ -975,7 +975,7 @@
                                 <rect key="frame" x="0.0" y="188" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rK6-2L-EpZ" id="JhQ-Bl-RbK">
-                                    <frame key="frameInset" width="375" height="89.5"/>
+                                    <frame key="frameInset" width="375" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -1041,7 +1041,7 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Rg-ol-xwy" id="UDL-7b-AkG">
-                                    <frame key="frameInset" width="375" height="89.5"/>
+                                    <frame key="frameInset" width="375" height="89"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ehY-EL-rgm">
@@ -1148,7 +1148,7 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="131"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bxI-lp-hL8" id="c9i-8k-6tJ">
-                                    <frame key="frameInset" width="375" height="130.5"/>
+                                    <frame key="frameInset" width="375" height="130"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cx8-BH-6Wa">
@@ -1436,6 +1436,89 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u1j-dc-D67">
+                                <subviews>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hQu-wj-hc7">
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="hQu-wj-hc7" secondAttribute="height" multiplier="1:1" id="zux-0Q-Ycm"/>
+                                        </constraints>
+                                        <connections>
+                                            <segue destination="IbF-Va-uvJ" kind="embed" id="TgV-dV-lqR"/>
+                                        </connections>
+                                    </containerView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="bs5-PC-E6i">
+                                        <subviews>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入信箱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="quN-lh-j3J">
+                                                <color key="tintColor" red="0.98039215686274506" green="0.48627450980392156" blue="0.29019607843137252" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="emailTextEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="5iB-x2-gHW"/>
+                                                    <action selector="emailTextEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="vKG-b5-VDC"/>
+                                                </connections>
+                                            </textField>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sHx-mL-Hbr">
+                                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="password_1EditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="eww-zR-ABt"/>
+                                                    <action selector="password_1EditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="X7m-uX-xcb"/>
+                                                </connections>
+                                            </textField>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="再次輸入密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vmP-a2-gea">
+                                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="password_2EditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="vEz-zJ-5tg"/>
+                                                    <action selector="password_2EditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="ktO-Lg-EVD"/>
+                                                </connections>
+                                            </textField>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" restorationIdentifier="selectGender" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="選擇性別" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="faT-OG-VF9">
+                                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="selectGenderEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="ZDD-Es-Yc8"/>
+                                                    <action selector="selectGenderEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="vHJ-HU-fhL"/>
+                                                </connections>
+                                            </textField>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="顯示的暱稱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vMr-H9-ucp">
+                                                <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="firstNameEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="0KL-nd-kQP"/>
+                                                    <action selector="firstNameEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="SGk-J3-07Y"/>
+                                                </connections>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="vmP-a2-gea" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="MFL-Af-IuH"/>
+                                            <constraint firstItem="vMr-H9-ucp" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="YHM-h9-yvz"/>
+                                            <constraint firstItem="sHx-mL-Hbr" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="gOh-K1-D78"/>
+                                            <constraint firstItem="faT-OG-VF9" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="vRE-1X-OEo"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="bs5-PC-E6i" firstAttribute="width" secondItem="u1j-dc-D67" secondAttribute="width" multiplier="0.7" id="BTh-ng-dBr"/>
+                                    <constraint firstAttribute="bottom" secondItem="bs5-PC-E6i" secondAttribute="bottom" constant="183" id="RdQ-fM-HYk"/>
+                                    <constraint firstAttribute="bottom" secondItem="hQu-wj-hc7" secondAttribute="bottom" constant="389" id="U7c-3P-V6Z"/>
+                                    <constraint firstItem="hQu-wj-hc7" firstAttribute="leading" secondItem="u1j-dc-D67" secondAttribute="leading" constant="94" id="WJv-XO-0ob"/>
+                                    <constraint firstAttribute="trailing" secondItem="hQu-wj-hc7" secondAttribute="trailing" constant="93" id="esX-0o-Lso"/>
+                                    <constraint firstAttribute="trailing" secondItem="bs5-PC-E6i" secondAttribute="trailing" constant="56" id="lrW-d2-Kfk"/>
+                                    <constraint firstItem="hQu-wj-hc7" firstAttribute="top" secondItem="u1j-dc-D67" secondAttribute="top" constant="90" id="tt9-e8-EKC"/>
+                                    <constraint firstItem="bs5-PC-E6i" firstAttribute="leading" secondItem="u1j-dc-D67" secondAttribute="leading" constant="56" id="u5Y-AY-DtG"/>
+                                    <constraint firstItem="bs5-PC-E6i" firstAttribute="centerX" secondItem="u1j-dc-D67" secondAttribute="centerX" id="uWy-Hg-hMz"/>
+                                </constraints>
+                            </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMp-Yc-AJ0">
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="35" id="a1f-6m-mBM"/>
@@ -1450,87 +1533,19 @@
                                     <action selector="submitBtnDown:" destination="w4R-P3-6jz" eventType="touchDown" id="6dO-24-iW9"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="bs5-PC-E6i">
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入信箱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="quN-lh-j3J">
-                                        <color key="tintColor" red="0.98039215686274506" green="0.48627450980392156" blue="0.29019607843137252" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <action selector="emailTextEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="5iB-x2-gHW"/>
-                                            <action selector="emailTextEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="vKG-b5-VDC"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sHx-mL-Hbr">
-                                        <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <action selector="password_1EditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="eww-zR-ABt"/>
-                                            <action selector="password_1EditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="X7m-uX-xcb"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="再次輸入密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vmP-a2-gea">
-                                        <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <action selector="password_2EditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="vEz-zJ-5tg"/>
-                                            <action selector="password_2EditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="ktO-Lg-EVD"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" restorationIdentifier="selectGender" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="選擇性別" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="faT-OG-VF9">
-                                        <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <action selector="selectGenderEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="ZDD-Es-Yc8"/>
-                                            <action selector="selectGenderEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="vHJ-HU-fhL"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="顯示的暱稱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vMr-H9-ucp">
-                                        <color key="tintColor" red="0.98039215690000003" green="0.48627450979999998" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <action selector="firstNameEditBegin:" destination="w4R-P3-6jz" eventType="editingDidBegin" id="0KL-nd-kQP"/>
-                                            <action selector="firstNameEditEnd:" destination="w4R-P3-6jz" eventType="editingDidEnd" id="SGk-J3-07Y"/>
-                                        </connections>
-                                    </textField>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="vmP-a2-gea" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="MFL-Af-IuH"/>
-                                    <constraint firstItem="vMr-H9-ucp" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="YHM-h9-yvz"/>
-                                    <constraint firstItem="sHx-mL-Hbr" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="gOh-K1-D78"/>
-                                    <constraint firstItem="faT-OG-VF9" firstAttribute="height" secondItem="quN-lh-j3J" secondAttribute="height" id="vRE-1X-OEo"/>
-                                </constraints>
-                            </stackView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hQu-wj-hc7">
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="hQu-wj-hc7" secondAttribute="height" multiplier="1:1" id="zux-0Q-Ycm"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="IbF-Va-uvJ" kind="embed" id="TgV-dV-lqR"/>
-                                </connections>
-                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="MqG-qN-EyE" firstAttribute="top" secondItem="vMp-Yc-AJ0" secondAttribute="bottom" constant="-1" id="1Ee-qe-p17"/>
-                            <constraint firstItem="bs5-PC-E6i" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hQu-wj-hc7" secondAttribute="bottom" constant="8" symbolic="YES" id="2Oy-hc-IIM"/>
-                            <constraint firstItem="vMp-Yc-AJ0" firstAttribute="top" secondItem="bs5-PC-E6i" secondAttribute="bottom" constant="12" id="9Ui-QI-vfa"/>
-                            <constraint firstItem="bs5-PC-E6i" firstAttribute="centerX" secondItem="Q1a-im-ZWl" secondAttribute="centerX" id="AUT-OS-zma"/>
-                            <constraint firstItem="bs5-PC-E6i" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" multiplier="0.7" constant="1" id="D11-id-O7d"/>
+                            <constraint firstItem="hQu-wj-hc7" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" multiplier="0.5" id="2kD-SV-42f"/>
+                            <constraint firstAttribute="trailing" secondItem="u1j-dc-D67" secondAttribute="trailing" id="8aw-Rw-mgu"/>
+                            <constraint firstItem="u1j-dc-D67" firstAttribute="top" secondItem="Q1a-im-ZWl" secondAttribute="top" constant="-0.5" id="F6T-jY-p1O"/>
+                            <constraint firstItem="u1j-dc-D67" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" id="ad1-9q-HLC"/>
                             <constraint firstAttribute="trailing" secondItem="vMp-Yc-AJ0" secondAttribute="trailing" constant="-2" id="b7T-ji-l4I"/>
-                            <constraint firstItem="hQu-wj-hc7" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" multiplier="0.5" id="ces-5f-T7O"/>
-                            <constraint firstItem="hQu-wj-hc7" firstAttribute="centerX" secondItem="Q1a-im-ZWl" secondAttribute="centerX" id="f3S-Gd-0z5"/>
-                            <constraint firstItem="hQu-wj-hc7" firstAttribute="centerY" secondItem="Q1a-im-ZWl" secondAttribute="centerY" multiplier="0.55" id="prK-on-zwW"/>
+                            <constraint firstItem="u1j-dc-D67" firstAttribute="leading" secondItem="Q1a-im-ZWl" secondAttribute="leading" id="hFn-LA-lko"/>
+                            <constraint firstItem="hQu-wj-hc7" firstAttribute="centerX" secondItem="Q1a-im-ZWl" secondAttribute="centerX" id="oUA-He-m5K"/>
                             <constraint firstItem="vMp-Yc-AJ0" firstAttribute="leading" secondItem="Q1a-im-ZWl" secondAttribute="leading" constant="-2" id="tdB-UD-PgC"/>
+                            <constraint firstItem="u1j-dc-D67" firstAttribute="centerY" secondItem="Q1a-im-ZWl" secondAttribute="centerY" id="xjD-0V-vfC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="dSB-C9-wBv"/>
@@ -1850,7 +1865,7 @@
                         <viewControllerLayoutGuide type="bottom" id="4OT-WY-yjj"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Abu-oL-DiC">
-                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="187.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="188" height="188"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-3F-RCL">
@@ -1966,7 +1981,7 @@
                         <viewControllerLayoutGuide type="bottom" id="nWj-ca-5dv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0ti-bP-oS9">
-                        <rect key="frame" x="0.0" y="0.0" width="188" height="188"/>
+                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="187.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kkI-h8-HjJ">
