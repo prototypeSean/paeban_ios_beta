@@ -200,7 +200,44 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         
         
     }
-    //      MARK: 所有欄位外觀設定
+    func find_user_kb_height(){
+        NotificationCenter.default.addObserver(self, selector: #selector(SinInFramViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SinInFramViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SinInFramViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    // 監聽鍵盤出現上滑
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                kb_h = keyboardSize.height
+                self.view.frame.origin.y -= (keyboardSize.height)
+                
+                print("上高度＝",keyboardSize.height)
+                print("上kb_h=",kb_h)
+            }
+        }
+    }
+    
+    // 這個變數用來儲存上去時候的鍵盤高度，收起鍵盤時用他，不然會亂跳
+    var kb_h:CGFloat = 0.0
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += kb_h
+                //                print("下高度＝",keyboardSize.height)
+                //                print("下kb_h=",kb_h)
+            }
+        }
+    }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+    // MARK: 所有欄位外觀設定
     func ouletsSetting(){
         // 送出按鈕初始外觀 切記把故事版的Type: Custom
         submitBtn.layer.borderWidth = 1
@@ -228,7 +265,11 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         passWord_1.delegate = self
         passWord_2.delegate = self
         firstname.delegate = self
+        
         ouletsSetting()
+    }
+    override func viewWillLayoutSubviews() {
+        find_user_kb_height()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         photoView = segue.destination as? SingInViewController
