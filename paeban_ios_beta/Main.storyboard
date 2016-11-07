@@ -325,11 +325,11 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="tttt" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="O0h-4r-Zjc" userLabel="topicList">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCellTableViewCell" id="Wjc-mK-FT3" customClass="TopicCellTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCellTableViewCell" id="Wjc-mK-FT3" customClass="TopicCellTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="92" width="1000" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
-                                            <frame key="frameInset" width="383" height="79"/>
+                                            <frame key="frameInset" width="1000" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房主的暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPN-A9-vyF">
@@ -1517,8 +1517,8 @@
                         <constraints>
                             <constraint firstItem="bs5-PC-E6i" firstAttribute="centerX" secondItem="Q1a-im-ZWl" secondAttribute="centerX" id="9lk-JX-YV7"/>
                             <constraint firstItem="hQu-wj-hc7" firstAttribute="centerX" secondItem="Q1a-im-ZWl" secondAttribute="centerX" id="Ctm-cB-BsK"/>
-                            <constraint firstItem="hQu-wj-hc7" firstAttribute="centerY" secondItem="Q1a-im-ZWl" secondAttribute="centerY" multiplier="0.55" id="GfN-BF-H1g"/>
                             <constraint firstItem="vMp-Yc-AJ0" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" id="KiP-Au-snk"/>
+                            <constraint firstItem="hQu-wj-hc7" firstAttribute="top" secondItem="1vo-cR-r5d" secondAttribute="bottom" constant="25" id="OtZ-Nc-CFv"/>
                             <constraint firstItem="vMp-Yc-AJ0" firstAttribute="top" secondItem="bs5-PC-E6i" secondAttribute="bottom" constant="8" symbolic="YES" id="TYn-Xt-odv"/>
                             <constraint firstItem="bs5-PC-E6i" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hQu-wj-hc7" secondAttribute="bottom" constant="2" id="W26-0V-TFp"/>
                             <constraint firstItem="bs5-PC-E6i" firstAttribute="width" secondItem="Q1a-im-ZWl" secondAttribute="width" multiplier="0.65" id="fce-VK-gXB"/>

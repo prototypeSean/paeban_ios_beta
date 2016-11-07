@@ -225,7 +225,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     
     func keyboardWillHide(notification: NSNotification) {
         if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
-            self.view.frame = initFearm!
+            self.view.center = self.initCenter!
         }
     }
     
@@ -256,16 +256,16 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     // override
     override func viewDidLoad() {
         super.viewDidLoad()
-        initFearm = self.view.frame
-        initCenter = self.view.center
         selectGenderText.delegate = self
         emailText.delegate = self
         passWord_1.delegate = self
         passWord_2.delegate = self
         firstname.delegate = self
         ouletsSetting()
-        
-        
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        initFearm = self.view.frame
+        initCenter = self.view.center
     }
     override func viewWillLayoutSubviews() {
         find_user_kb_height()
