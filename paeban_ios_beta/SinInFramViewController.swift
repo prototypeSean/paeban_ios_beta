@@ -16,6 +16,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     @IBOutlet weak var passWord_2: UITextField!
     @IBOutlet weak var firstname: UITextField!
     @IBOutlet weak var submitBtn: UIButton!
+    @IBOutlet weak var stackView: UIStackView!
     
     // MARK: 送出按鈕按下放開行為＆外觀
     @IBAction func submitBtnDown(_ sender: AnyObject) {
@@ -73,7 +74,9 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     let genderOption = ["","男","女","男同","女同"]
     let patter = "^[a-zA-z]"
     var photoView:SingInViewController?
-    
+    var initFearm:CGRect?
+    var initCenter:CGPoint?
+    var selectedTextField:UITextField?
     
     // internal func
     func simpoAlert(reason:String){
@@ -209,15 +212,11 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     // 監聽鍵盤出現上滑
     func keyboardWillShow(notification: NSNotification) {
-//        print("6565")
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-//            print(self.view.frame.origin.y)
-            if self.view.frame.origin.y == 64{
-                kb_h = keyboardSize.height
-                self.view.frame.origin.y -= (keyboardSize.height)
-//                print("上高度＝",keyboardSize.height)
-//                print("上kb_h=",kb_h)
-            }
+            let Center_1 = (((initFearm?.height)! - keyboardSize.height))/2
+            let delta_x = ((selectedTextField?.center.y)! + stackView.frame.minY) - Center_1
+            let newCenter_y = (initCenter?.y)! - delta_x
+            self.view.center = CGPoint(x: self.view.center.x, y: newCenter_y)
         }
     }
     
@@ -226,11 +225,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     
     func keyboardWillHide(notification: NSNotification) {
         if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
-            if self.view.frame.origin.y != 64{
-                self.view.frame.origin.y += kb_h
-                //                print("下高度＝",keyboardSize.height)
-                //                print("下kb_h=",kb_h)
-            }
+            self.view.frame = initFearm!
         }
     }
     
@@ -261,6 +256,8 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     // override
     override func viewDidLoad() {
         super.viewDidLoad()
+        initFearm = self.view.frame
+        initCenter = self.view.center
         selectGenderText.delegate = self
         emailText.delegate = self
         passWord_1.delegate = self
@@ -272,8 +269,8 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     override func viewWillLayoutSubviews() {
         find_user_kb_height()
-        print(self.view.frame.origin.y)
-        print(self.navigationController?.view.frame.size.height)
+        //print(self.view.frame.origin.y)
+        //print(self.navigationController?.view.frame.size.height)
 //        if self.view.frame.origin.y != 64{
 //            print("==64")
 //            self.navigationController?.isNavigationBarHidden = true
@@ -297,6 +294,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
             picker.dataSource = self
             selectGenderText.inputView = picker
         }
+        selectedTextField = textField
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool{
         textField.resignFirstResponder()
