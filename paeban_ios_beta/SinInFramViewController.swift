@@ -31,7 +31,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     @IBAction func emailTextEditBegin(_ sender: AnyObject) {
         emailText.layer.borderColor = UIColor(red:0.98, green:0.49, blue:0.29, alpha:1.0).cgColor
         emailText.layer.borderWidth = 2
-        
+//        print(emailText.frame)
     }
     @IBAction func emailTextEditEnd(_ sender: AnyObject) {
         emailText.layer.borderColor = UIColor.lightGray.cgColor
@@ -209,23 +209,24 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     // 監聽鍵盤出現上滑
     func keyboardWillShow(notification: NSNotification) {
+//        print("6565")
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
+//            print(self.view.frame.origin.y)
+            if self.view.frame.origin.y == 64{
                 kb_h = keyboardSize.height
                 self.view.frame.origin.y -= (keyboardSize.height)
-                
-                print("上高度＝",keyboardSize.height)
-                print("上kb_h=",kb_h)
+//                print("上高度＝",keyboardSize.height)
+//                print("上kb_h=",kb_h)
             }
         }
     }
     
     // 這個變數用來儲存上去時候的鍵盤高度，收起鍵盤時用他，不然會亂跳
-    var kb_h:CGFloat = 0.0
+    var kb_h:CGFloat = 64
     
     func keyboardWillHide(notification: NSNotification) {
         if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
-            if self.view.frame.origin.y != 0{
+            if self.view.frame.origin.y != 64{
                 self.view.frame.origin.y += kb_h
                 //                print("下高度＝",keyboardSize.height)
                 //                print("下kb_h=",kb_h)
@@ -265,11 +266,21 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         passWord_1.delegate = self
         passWord_2.delegate = self
         firstname.delegate = self
-        
         ouletsSetting()
+        
+        
     }
     override func viewWillLayoutSubviews() {
         find_user_kb_height()
+        print(self.view.frame.origin.y)
+        print(self.navigationController?.view.frame.size.height)
+//        if self.view.frame.origin.y != 64{
+//            print("==64")
+//            self.navigationController?.isNavigationBarHidden = true
+//        }
+//        else{
+//            self.navigationController?.isNavigationBarHidden = false
+//        }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         photoView = segue.destination as? SingInViewController
