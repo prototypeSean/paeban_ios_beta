@@ -85,6 +85,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         BtnOutlet()
         check_online(in: self, with: autoLogin)
         
+        
     }
     
     // MARK: 內部函數
@@ -138,11 +139,12 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
                 let fbloginresult : FBSDKLoginManagerLoginResult = result!
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
-                    self.getFBUserData()
+                    //self.getFBUserData()
                     logInState = true
                 }
             }
             else{
+                print(error)
                 print("FB LogIn Error!")
             }
         })
