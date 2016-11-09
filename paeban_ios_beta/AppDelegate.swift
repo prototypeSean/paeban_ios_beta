@@ -36,6 +36,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     //========deviceToken=======
     
+    //========收到推播=========
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        //code
+        print("=====nsf=======")
+        print(userInfo)
+    }
+    //========收到推播=========
+    
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
     }
@@ -44,6 +52,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         registerForPushNotifications(application: application)
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         // Override point for customization after application launch.
+        
+        
+        
         return true
     }
 
@@ -74,11 +85,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func registerForPushNotifications(application: UIApplication) {
         //let notificationSettings = UIUserNotificationSettings(
             //forTypes: [.Badge, .Sound, .Alert], categories: nil)
-        let nosSet = UIUserNotificationSettings(types: UIUserNotificationType.alert, categories: nil)
         
-        application.registerUserNotificationSettings(nosSet)
-        application.registerUserNotificationSettings(UIUserNotificationSettings(types: UIUserNotificationType.sound, categories: nil))
-        application.registerUserNotificationSettings(UIUserNotificationSettings(types: UIUserNotificationType.badge, categories: nil))
+        let settings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil)
+        application.registerUserNotificationSettings(settings)
+        
     }
 }
 

@@ -85,6 +85,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         BtnOutlet()
         check_online(in: self, with: autoLogin)
         
+        
     }
     
     // MARK: 內部函數
@@ -143,6 +144,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
                 }
             }
             else{
+                print(error)
                 print("FB LogIn Error!")
             }
         })
