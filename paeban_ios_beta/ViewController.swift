@@ -299,7 +299,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             if self.view.frame.origin.y == 0{
                 kb_h = keyboardSize.height
                 self.view.frame.origin.y -= (keyboardSize.height)
-                print("上高度＝",keyboardSize.height)
+//                print("上高度＝",keyboardSize.height)
 //                print("上kb_h=",kb_h)
             }
         }
