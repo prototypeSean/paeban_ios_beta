@@ -25,10 +25,13 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     // MARK: override
     override func viewDidLoad() {
         super.viewDidLoad()
-        get_my_topic_title()
         wsActive.wasd_ForMyTopicTableViewController = self
         wsActive.ware_ForMyTopicTableViewController = self
         self.tableView.tableFooterView = UIView()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        print("歡迎來到mytopic")
+        get_my_topic_title()
     }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     }

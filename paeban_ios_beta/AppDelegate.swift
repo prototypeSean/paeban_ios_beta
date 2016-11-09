@@ -42,9 +42,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if logInState{
             if let segue_inf = userInfo["segue_inf"] as? Dictionary<String,String>{
                 print(segue_inf)
-                let rootVC = self.window?.rootViewController!
-                rootVC?.performSegue(withIdentifier: "showLogin", sender: nil)
-                //print(self.window?.rootViewController!)
+                
+                let rootVC = self.window?.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "MyTopic")
+                window?.rootViewController = rootVC
+                window?.makeKeyAndVisible()
+                //rootVC?.performSegue(withIdentifier: "segueToMainUI", sender: nil)
             }
         }
     }
