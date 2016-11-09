@@ -163,7 +163,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         self.editArea.isHidden = true
     }
     func switchEditTopicArea(){
-        self.editArea.isHidden = false
+//        self.editArea.isHidden = false
         // 不能用清單寬度因為被我動過，要用最外層VIEW
         let parent_width = self.view.frame.size.width
         func editArea_position_init(){
