@@ -139,7 +139,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
                 let fbloginresult : FBSDKLoginManagerLoginResult = result!
                 if(fbloginresult.grantedPermissions.contains("email"))
                 {
-                    //self.getFBUserData()
+                    self.getFBUserData()
                     logInState = true
                 }
             }
