@@ -38,9 +38,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     //========收到推播=========
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        //code
-        print("=====nsf=======")
-        print(userInfo)
+        // segue_inf
+        if logInState{
+            if let segue_inf = userInfo["segue_inf"] as? Dictionary<String,String>{
+                print(segue_inf)
+                let rootVC = self.window?.rootViewController!
+                rootVC?.performSegue(withIdentifier: "showLogin", sender: nil)
+                //print(self.window?.rootViewController!)
+            }
+        }
     }
     //========收到推播=========
     
