@@ -63,6 +63,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
         // 我不知道為什麼-1 就可以了 高度明明是35....
         topicList.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
+        
     }
     // 覆蓋掉故事板的初始設定顯示
     override func viewDidLayoutSubviews() {
@@ -183,6 +184,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
         else{
             self.editArea.isHidden = true
+            view.endEditing(true)
         }
         
         
@@ -617,6 +619,11 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
 
             }
         }
+    }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     func hideKeybroad() {

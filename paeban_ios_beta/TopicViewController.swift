@@ -238,7 +238,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         // add any other subcontent that you want clipped 最上層才放圖片進去
         
         myPhotoImg.image = myPhotoSave
-        print(myPhotoSave)
+//        print(myPhotoSave)
         myPhotoImg.frame = myphotoborderView.bounds
         myphotoborderView.addSubview(myPhotoImg)
 

@@ -21,6 +21,8 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         editText.delegate = self
+//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(EditViewController.dismissKeyboard))
+//        view.addGestureRecognizer(tap)
     }
     
     
@@ -39,6 +41,12 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
     func collapseInputBox(){
         let parVC = self.parent! as! TopicTableViewController
         parVC.editArea.isHidden = true
+        dismissKeyboard()
+    }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
 }
