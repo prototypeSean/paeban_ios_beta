@@ -37,12 +37,20 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     @IBOutlet weak var editArea: UIView!
     
+    @IBAction func testBtn(_ sender: AnyObject) {
+        
+        leap(from: self, to: 2)
+        
+    }
     
     var topics:[Topic] = []
     var topicsBackup:Array<Topic> = []
     var httpOBJ = HttpRequestCenter()
     var requestUpDataSwitch = true
-        
+    // =====test=====
+    // MARK: delegate -> Notification
+    
+    // =====test=====
     // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,6 +104,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         //print(topicOwnerID)
         
     }
+    
 
     
     // MARk:internal function
@@ -177,6 +186,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                 //sss()
         }
     }
+    
     
     // MARK: delegate -> TableView
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -309,7 +319,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             }
         }
     }
-
+    
+    
     
     // socket
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>) {
@@ -562,11 +573,9 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     
     // 客製化的代理功能在這
-    
     func didStartSearching(_ searchBar: UISearchBar) {
         //點了搜尋按鈕
     }
-    
     func didTapOnSearchButton(_ searchBar: UISearchBar) {
         //開始查詢
         if searchBar.text != nil{
@@ -584,11 +593,9 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             socket.write(data:json_dumps(sendData))
         }
     }
-    
     func didTapOnCancelButton(_ searchBar: UISearchBar) {
         //刪除查詢
     }
-    
     func didChangeSearchText(_ searchBar: UISearchBar) {
         // 打字一次搜尋一次
         if searchBar.text != nil{
@@ -607,11 +614,9 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             }
         }
     }
-    
     func hideKeybroad() {
         topicSearchController?.customSearchBar.resignFirstResponder()
     }
-    
     func reLoadTopic(_ topicId:String){
         let removeTopicPosition = topics.index { (Topic) -> Bool in
             if Topic.topicID == topicId{
@@ -624,7 +629,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             topicList.reloadData()
         }
     }
-    
     func turnTopicDataType(_ inputData:Topic) -> MyTopicStandardType{
         let returnData = MyTopicStandardType(dataType: "detail")
         returnData.topicTitle_title = inputData.title

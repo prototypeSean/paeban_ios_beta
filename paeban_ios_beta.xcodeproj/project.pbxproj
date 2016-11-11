@@ -49,6 +49,8 @@
 		CF79265E1DA0E71D00821860 /* SingInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265D1DA0E71D00821860 /* SingInViewController.swift */; };
 		CF7926601DA0E74200821860 /* SingInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265F1DA0E74200821860 /* SingInModel.swift */; };
 		CF89A2A61DBFCAC6005FA8AF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF89A2A51DBFCAC6005FA8AF /* StoreKit.framework */; };
+		CF89EF781DD34E1F00876298 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */; };
+		CF89EF7A1DD498C700876298 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF791DD498C700876298 /* TabBarController.swift */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
 		CFBA00AF1DB4CE5C00400C98 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */; };
 		CFCC8A851D78327800D5EDF6 /* RecentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */; };
@@ -105,6 +107,8 @@
 		CF79265D1DA0E71D00821860 /* SingInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInViewController.swift; sourceTree = "<group>"; };
 		CF79265F1DA0E74200821860 /* SingInModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInModel.swift; sourceTree = "<group>"; };
 		CF89A2A51DBFCAC6005FA8AF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
+		CF89EF791DD498C700876298 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = paeban_ios_beta.entitlements; sourceTree = "<group>"; };
 		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
 		CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -160,9 +164,11 @@
 			children = (
 				CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */,
 				932A00D01CFEBA460036E1EA /* AppDelegate.swift */,
+				CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */,
 				932A00D11CFEBA460036E1EA /* ToolsFunction.swift */,
 				CF13867D1D98CE0600E70990 /* LoginScrollView.swift */,
 				932A00D31CFEBA460036E1EA /* ＨttpRequestCenter.swift */,
+				CF89EF791DD498C700876298 /* TabBarController.swift */,
 				932A00E01CFEBA460036E1EA /* Login_paeban.swift */,
 				932A00D21CFEBA460036E1EA /* ViewController.swift */,
 				932A00E11CFEBA460036E1EA /* web_socket.swift */,
@@ -425,6 +431,7 @@
 				932A00F31CFEBA460036E1EA /* web_socket.swift in Sources */,
 				CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */,
 				932D0D731DA0F65700ACA795 /* FriendNavViewController.swift in Sources */,
+				CF89EF7A1DD498C700876298 /* TabBarController.swift in Sources */,
 				932A00F21CFEBA460036E1EA /* Login_paeban.swift in Sources */,
 				930983E81D056971005B8E3B /* HashTagsContorller.swift in Sources */,
 				CFCC8A8B1D78336500D5EDF6 /* RecentTableViewController.swift in Sources */,
@@ -445,6 +452,7 @@
 				932A00E41CFEBA460036E1EA /* ViewController.swift in Sources */,
 				932A00F11CFEBA460036E1EA /* LaunchScreenViewController.swift in Sources */,
 				932A00ED1CFEBA460036E1EA /* Labels.swift in Sources */,
+				CF89EF781DD34E1F00876298 /* NotificationDelegate.swift in Sources */,
 				CF2E9D621D7BDF9E00F485BB /* FriendTableViewController.swift in Sources */,
 				CF2E9D661D7BDFE300F485BB /* FriendTableViewMedol.swift in Sources */,
 				CFCC8A851D78327800D5EDF6 /* RecentTableViewCell.swift in Sources */,

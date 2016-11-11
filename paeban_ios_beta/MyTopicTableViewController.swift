@@ -15,6 +15,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     // MARK: Properties
     var mytopic:Array<MyTopicStandardType> = []
     var secTopic:Dictionary = [String: [MyTopicStandardType]]()
+    var segueData:MyTopicStandardType?
     let heightOfCell:CGFloat = 85
     var heightOfSecCell:CGFloat = 130
     var selectItemId:String?
@@ -32,6 +33,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     override func viewWillAppear(_ animated: Bool) {
         print("歡迎來到mytopic")
         get_my_topic_title()
+        autoLeap()
     }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     }
@@ -53,8 +55,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             letoutBattery(battery: cell.myTopicbattery)
             
             // Hashtag 沒有作用不知道位啥
-            print("====================")
-            print(topicWriteToRow.tag_detial)
+            //print("====================")
+            //print(topicWriteToRow.tag_detial)
             //cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
             //cell.myTopicHashtag.drawButton()
             return cell
@@ -93,16 +95,27 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "masterModeSegue"{
-            let indexPath = self.tableView.indexPathForSelectedRow!
-            let dataposition:Int = (indexPath as NSIndexPath).row
+            var data:MyTopicStandardType
             let nextView = segue.destination as! MyTopicViewController
-            let data = mytopic[dataposition]
+            
+            if self.tableView.indexPathForSelectedRow != nil{
+                //用選擇的方式
+                let indexPath = self.tableView.indexPathForSelectedRow!
+                let dataposition:Int = (indexPath as NSIndexPath).row
+                
+                data = mytopic[dataposition]
+            }
+            else{
+                data = self.segueData!
+            }
             nextView.setID = data.clientId_detial
             nextView.setName = data.clientName_detial
             nextView.topicId = data.topicId_title
             nextView.clientImg = data.clientPhoto_detial
             nextView.topicTitle = data.topicTitle_title
             nextView.title = data.clientName_detial
+            
+            self.segueData = nil
         }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {return 1}
@@ -158,6 +171,10 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 self.tableView.deselectRow(at: indexPath, animated: true)
             }
         }
+//        else if mytopic[cellIndex].dataType == "detail"{
+//            self.segueData = mytopic[cellIndex]
+//            performSegue(withIdentifier: "masterModeSegue", sender: nil)
+//        }
     }
     
     
@@ -322,7 +339,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             httpObj.get_my_topic_title { (returnData) in
                 DispatchQueue.main.async(execute: {
                     self.mytopic = self.transferToStandardType_title(returnData)
-                    print(returnData)
                     self.tableView.reloadData()
                 })
             }
@@ -337,8 +353,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     let topicId = returnData["topic_id"] as! String
                     let returnDataList = self.transferToStandardType_detail(returnData)
                     self.secTopic[topicId] = returnDataList
-                    
-                    
                     print("第\(self.secTopic.count)筆詳細資料下載完畢")
                     
                 })
@@ -348,7 +362,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     func transferToStandardType_title(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
         // return_dic = topic_id* -- topic_title : String
         //                        -- topics               -- topic_with_who_id* -- read:Bool
-        print(inputData)
+        //print(inputData)
         var tempMytopicList = [MyTopicStandardType]()
         for topic_id in inputData{
             let topicTitleData = MyTopicStandardType(dataType:"title")
@@ -588,7 +602,53 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.endUpdates()
         
     }
-    
+    func autoLeap(){
+        if notificationSegueInf != [:]{
+            let segue_topic_id = notificationSegueInf["topic_id"]
+            let segue_user_id = notificationSegueInf["user_id"]
+            
+            var targetData_Dickey:DictionaryIndex<String, [MyTopicStandardType]>?
+            var targetData_Dicval:Array<MyTopicStandardType>.Index?
+            
+            var while_pertect = 5000
+            
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                while targetData_Dickey == nil && targetData_Dicval == nil && while_pertect >= 0{
+                    
+                    targetData_Dickey = self.secTopic.index(where: { (key: String, value: [MyTopicStandardType]) -> Bool in
+                        if key == segue_topic_id{
+                            return true
+                        }
+                        else{return false}
+                    })
+                    
+                    if targetData_Dickey != nil{
+                        let dic_key_obj = self.secTopic[targetData_Dickey!].value
+                        targetData_Dicval = dic_key_obj.index(where: { (MyTopicStandardType) -> Bool in
+                            if MyTopicStandardType.clientId_detial == segue_user_id{
+                                return true
+                            }
+                            else{return false}
+                        })
+                    }
+                    
+                    if targetData_Dickey != nil && targetData_Dicval != nil{
+                        DispatchQueue.main.async {
+                            self.segueData = self.secTopic[targetData_Dickey!].value[targetData_Dicval!]
+                            self.performSegue(withIdentifier: "masterModeSegue", sender: nil)
+                            notificationSegueInf = [:]
+                        }
+                        
+                    }
+                    usleep(100000)
+                    while_pertect -= 100
+                }
+                self.segueData = nil
+                notificationSegueInf = [:]
+            }
+            
+        }
+    }
     
     //設定cell 裡面的圖示
 

@@ -18,6 +18,8 @@ public var firstConnect = true  //紀錄是否為登入後第一次連接websock
 public var logInState = true    //記錄現在是否為登入狀態
 public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
 public var cookie:String?       //全域紀錄的餅乾
+public var notificationSegueInf:Dictionary<String,String> = [:]
+public var socketState = false  //socket是否連線中
 public struct setUserData{
     var id:String?
     var name:String?
@@ -37,7 +39,7 @@ public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
 }
 public var myFriendsList:Array<FriendStanderType> = [] //好友清單
 public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
-
+public let notificationDelegateCenter_obj = NotificationDelegateCenter()
 
 class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
@@ -167,6 +169,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         if let fb_session = FBSDKAccessToken.current(){
             login_paeban_obj.fb_ssesion = fb_session.tokenString
             login_paeban_obj.get_cookie()
+            print("開始登入")
         }
         else{
             print("還沒登入ＦＢ!!!")
@@ -256,6 +259,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         }
     }
     func websocketDidConnect(socket: WebSocket){
+        socketState = true
         reConnectCount = 0
         //print(NSDate())
         wsTimer?.invalidate()
@@ -274,12 +278,12 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         
     }
     func websocketDidDisconnect(socket: WebSocket, error: NSError?){
+        socketState = false
         print("disConnect")
         if logInState{
             wsTimer?.invalidate()
             wsTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
         }
-        //print(NSDate())
     }
     func websocketDidReceiveMessage(socket: WebSocket, text: String){
         //print("msgincome=======")

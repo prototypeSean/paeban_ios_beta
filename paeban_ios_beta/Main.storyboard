@@ -170,8 +170,8 @@
         <!--Tab Bar Controller-->
         <scene sceneID="KGA-aL-GIv">
             <objects>
-                <tabBarController id="Ukn-gV-ex4" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="NWh-y9-sTD">
+                <tabBarController restorationIdentifier="tabBar" storyboardIdentifier="tabBar" id="Ukn-gV-ex4" customClass="TabBarController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" restorationIdentifier="tabBar" id="NWh-y9-sTD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -511,6 +511,15 @@
                                     <segue destination="UGG-xm-hsF" kind="embed" identifier="segue_edit_area" id="CDh-3R-uBd"/>
                                 </connections>
                             </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jY6-5a-pb1">
+                                <frame key="frameInset" minX="76" minY="368" width="222" height="118"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.56720009429999996" green="1" blue="0.67755557570000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="testBtn:" destination="b8c-mf-ecX" eventType="touchUpInside" id="2PL-cN-6tC"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
