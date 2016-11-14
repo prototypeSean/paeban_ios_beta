@@ -28,7 +28,6 @@ class RecentTableViewModel{
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
                     sleep(1)
                     sendws(times: times - 1)
-                    print("sendd")
                 }
             }
         }

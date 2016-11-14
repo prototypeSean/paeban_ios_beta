@@ -12,8 +12,6 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
 //        print(nowTopicCellList)
     }
     override func viewWillAppear(_ animated: Bool) {
-        print("into  RecentTableViewController")
-        print(socketState)
         rTVModel.reCheckDataBase()
         autoLeap()
     }
@@ -124,6 +122,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
                     
                     if targetData_Dickey != nil{
                         DispatchQueue.main.async {
+                            notificationSegueInf = [:]
                             self.rTVModel.segueDataIndex = targetData_Dickey! as Int
                             self.performSegue(withIdentifier: "clientModeSegue3", sender: nil)
                             notificationSegueInf = [:]

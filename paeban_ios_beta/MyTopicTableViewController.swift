@@ -35,6 +35,9 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         get_my_topic_title()
         autoLeap()
     }
+    override func awakeFromNib() {
+        print("aaaaaaaaaasaaadga")
+    }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

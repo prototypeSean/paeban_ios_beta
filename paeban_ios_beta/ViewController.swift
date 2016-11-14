@@ -27,6 +27,7 @@ public struct setUserData{
     var deviceToken:String?
 }   //用戶個人資料
 public var userData = setUserData()
+public var recive_apns_switch = true
 public var nowTopicCellList:Array<MyTopicStandardType> = [] //話題清單
 public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
     if let _ = nowTopicCellList.index(where: { (target) -> Bool in

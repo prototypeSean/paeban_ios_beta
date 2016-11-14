@@ -511,15 +511,6 @@
                                     <segue destination="UGG-xm-hsF" kind="embed" identifier="segue_edit_area" id="CDh-3R-uBd"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jY6-5a-pb1">
-                                <frame key="frameInset" minX="76" minY="368" width="222" height="118"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.56720009429999996" green="1" blue="0.67755557570000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="testBtn:" destination="b8c-mf-ecX" eventType="touchUpInside" id="2PL-cN-6tC"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -1963,7 +1954,7 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="wc9-Me-EI3"/>
         <segue reference="wZO-VC-xmQ"/>
-        <segue reference="vc1-tE-BTH"/>
     </inferredMetricsTieBreakers>
 </document>
