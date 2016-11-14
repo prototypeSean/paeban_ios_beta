@@ -591,8 +591,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
 
     //之後要加入電池的選項CASE
     func letoutBattery(battery:UIImageView){
-        battery.image = UIImage(named:"battery-low")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-        battery.tintColor = UIColor.red
+        battery.image = UIImage(named:"battery-low")
+//        battery.tintColor = UIColor.red
     }
     func letoutSexLogo(_ sex:String) -> UIImage {
         var sexImg:UIImage

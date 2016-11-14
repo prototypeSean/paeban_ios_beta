@@ -71,6 +71,9 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //print(segue.identifier)
+        // 轉跳頁面時，收起鍵盤跟開話題的視窗（如果有的話）
+        self.editArea.isHidden = true
+        dismissKeyboard()
         if segue.identifier == "clientModeSegue"{
             let indexPath = topicList.indexPathForSelectedRow!
             let dataposition:Int = (indexPath as NSIndexPath).row
@@ -163,6 +166,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func initAddTopicArea(){
         self.editArea.isHidden = true
     }
+    
+    // MARK: 開新話題
     func switchEditTopicArea(){
 //        self.editArea.isHidden = false
         // 不能用清單寬度因為被我動過，要用最外層VIEW
@@ -184,7 +189,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
         else{
             self.editArea.isHidden = true
-            view.endEditing(true)
+            dismissKeyboard()
         }
         
         
@@ -215,7 +220,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         return topics.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        // MARK: 開始設定CELL跟裡面的圖示
         // Table view cells are reused and should be dequeued using a cell identifier.
         let topic = topics[(indexPath as NSIndexPath).row]
 //        tagList = topic.hashtags!
@@ -257,8 +262,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
         cell.sex.image = sexImg
         // 電池圖示設定
-        cell.battery.image = UIImage(named:"battery-full")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-        cell.battery.tintColor = UIColor(red:0.18, green:0.80, blue:0.44, alpha:1.0)
+        cell.battery.image = UIImage(named:"battery-full")
+//        cell.battery.tintColor = UIColor(red:0.18, green:0.80, blue:0.44, alpha:1.0)
         // 在線上燈號
         cell.online.layoutIfNeeded()
         cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)

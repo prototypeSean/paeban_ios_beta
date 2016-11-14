@@ -155,8 +155,8 @@ class RecentTableViewModel{
             
             cell.online.tintColor = UIColor.lightGray
         }        
-        cell.battery.image = UIImage(named:"battery-half")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-        cell.battery.tintColor = UIColor(red:1.00, green:0.77, blue:0.18, alpha:1.0)
+        cell.battery.image = UIImage(named:"battery-half")
+//        cell.battery.tintColor = UIColor(red:1.00, green:0.77, blue:0.18, alpha:1.0)
         return cell
     }
     

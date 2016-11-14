@@ -89,7 +89,7 @@ open class webSocketActiveCenter{
                     //建立個人資料
                     userData.id = msg["user_id"] as? String
                     userData.name = msg["user_name"] as? String
-                    let url = "http://www.paeban.com/media/\(msg["user_pic"] as! String)"
+                    let url = "https://www.paeban.com/media/\(msg["user_pic"] as! String)"
                     HttpRequestCenter().getHttpImg(url){(img:UIImage) -> Void in
                         userData.img = img
                     }
