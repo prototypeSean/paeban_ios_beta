@@ -57,6 +57,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         registerForPushNotifications(application: application)
+        //===========================
+        
+        
+        
+        if ((launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification]) != nil){
+            let nts = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as! Dictionary<String,AnyObject>
+            let segue_inf = nts["segue_inf"] as? Dictionary<String,String>
+            notificationSegueInf = segue_inf!
+        }
+        
+        
+        //===========================
+        
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         // Override point for customization after application launch.
         
@@ -64,14 +77,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         
         return true
     }
-
+    
+    
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        print("applicationDidEnterBackground")
+        if (socket != nil){
+            socket.disconnect()
+        }
         notificationSegueInf = [:]
         socketState = false
         recive_apns_switch = true
@@ -89,7 +106,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("====applicationDidBecomeActive====")
         FBSDKAppEvents.activateApp()
-        recive_apns_switch = false
+        
+        if (socket != nil){
+            socket.connect()
+        }
         
         
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.

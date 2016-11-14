@@ -13,6 +13,7 @@ import FBSDKCoreKit
 import FBSDKShareKit
 
 // MARK:公用變數
+public var ssss:String?
 public var socket:WebSocket!
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
 public var logInState = true    //記錄現在是否為登入狀態
@@ -61,7 +62,6 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     @IBOutlet weak var shiftView: UIView!
     
     let login_paeban_obj = login_paeban()
-    
     // MARK: override
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -87,7 +87,9 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         find_user_kb_height()
         BtnOutlet()
         check_online(in: self, with: autoLogin)
-        
+        //testdata
+        //notificationSegueInf = ["type":"priv_msg","user_id":"aaasss","topic_id":"nano"]
+        //testdata
         
     }
     
@@ -268,8 +270,9 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         if firstConnect{
             ws_connected(socket)
             print("connected")
-            self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             firstConnect = false
+            self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+            
         }
         else{
             print("wsReConnected")
@@ -330,7 +333,15 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         view.endEditing(true)
     }
     
-
+    func simpoAlert(reason:String){
+        let mailAlert = UIAlertController(title: "錯誤", message: reason, preferredStyle: UIAlertControllerStyle.alert)
+        mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+            //code
+        }))
+        self.present(mailAlert, animated: true, completion: {
+            //code
+        })
+    }
 }
 
 

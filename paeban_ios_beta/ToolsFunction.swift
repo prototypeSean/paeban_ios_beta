@@ -219,7 +219,15 @@ func leapToPage(segueInf:Dictionary<String,String>) -> Int?{
     return returnInt
 }
 
-
+func simpoAlert2(view:UIViewController , reason:String){
+    let mailAlert = UIAlertController(title: "錯誤", message: reason, preferredStyle: UIAlertControllerStyle.alert)
+    mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+        //code
+    }))
+    view.present(mailAlert, animated: true, completion: {
+        //code
+    })
+}
 
 
 

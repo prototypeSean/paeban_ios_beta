@@ -17,7 +17,7 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
         wsActive.wasd_ForFriendTableViewController = self
     }
     override func viewWillAppear(_ animated: Bool) {
-        autoLeap()
+        //autoLeap()
         self.tableView.reloadData()
     }
     // MARK: - Table view data source
@@ -40,6 +40,7 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "friendConBox"{
+            
             let topicViewCon = segue.destination as! FriendChatUpViewController
             var getSegueData:Dictionary<String, AnyObject>
             
@@ -73,7 +74,8 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
         }
     }
     func autoLeap(){
-        
+        print("act")
+        print(recive_apns_switch)
         if notificationSegueInf != [:] && recive_apns_switch{
             let segue_user_id = notificationSegueInf["user_id"]
             var targetData_Dickey:Array<FriendStanderType>.Index?
@@ -99,6 +101,7 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
                             print("=========segue=======")
                             self.performSegue(withIdentifier: "friendConBox", sender: nil)
                             break_flag = true
+                            recive_apns_switch = false
                         }
                     }
                     if break_flag{
@@ -108,6 +111,7 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
                         while_pertect -= 100
                     }
                 }
+                print("end...")
                 //self.segueData = nil
                 notificationSegueInf = [:]
             

@@ -33,7 +33,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     override func viewWillAppear(_ animated: Bool) {
         print("歡迎來到mytopic")
         get_my_topic_title()
-        autoLeap()
+        //autoLeap()
     }
     override func awakeFromNib() {
         print("aaaaaaaaaasaaadga")

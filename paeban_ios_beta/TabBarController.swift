@@ -13,6 +13,9 @@ class TabBarController: UITabBarController, NotificationDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if notificationSegueInf != [:]{
+            switchToView(segueInf: notificationSegueInf)
+        }
         notificationDelegateCenter_obj.delegata = self
     }
     func switchToView(segueInf:Dictionary<String,String>){
@@ -32,10 +35,24 @@ class TabBarController: UITabBarController, NotificationDelegate {
             }
             for class_s in childView{
                 let classFullName = String(describing: class_s.self)
-                //print(getClassName(classFullName: classFullName))
+                if targetClassName == getClassName(classFullName: classFullName){
+                    let target_VC = class_s.self.childViewControllers[0].self
+                    switch pageInt {
+                    case 1:
+                        let target_VC_transform = target_VC as! MyTopicTableViewController
+                        target_VC_transform.autoLeap()
+                    case 2:
+                        let target_VC_transform = target_VC as! RecentTableViewController
+                        target_VC_transform.autoLeap()
+                    case 3:
+                        let target_VC_transform = target_VC as! FriendTableViewController
+                        target_VC_transform.autoLeap()
+                    default:
+                        print("targetClassName is nil")
+                    }
+                }
+                
             }
-            print("ttttttttttttttttttt")
-            print(childView[1].self.childViewControllers)
         }
     }
     

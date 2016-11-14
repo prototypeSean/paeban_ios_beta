@@ -13,7 +13,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     }
     override func viewWillAppear(_ animated: Bool) {
         rTVModel.reCheckDataBase()
-        autoLeap()
+        //autoLeap()
     }
     // MARK: - Table view data source
     
