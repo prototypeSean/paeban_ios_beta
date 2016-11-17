@@ -20,7 +20,7 @@ class TabBarController: UITabBarController, NotificationDelegate {
     }
     func switchToView(segueInf:Dictionary<String,String>){
         if let pageInt = leapToPage(segueInf: segueInf){
-            self.selectedIndex = pageInt
+            
             let childView = self.childViewControllers
             var targetClassName:String
             switch pageInt{
@@ -34,18 +34,29 @@ class TabBarController: UITabBarController, NotificationDelegate {
                 targetClassName = ""
             }
             for class_s in childView{
+                
                 let classFullName = String(describing: class_s.self)
                 if targetClassName == getClassName(classFullName: classFullName){
+//                    print("rrrrrrrrrrrrrrrrr")
+//                    let class_s_n = class_s as! UINavigationController
+//                    class_s_n.popToRootViewController(animated: false)
+                    
+                    self.selectedIndex = pageInt
                     let target_VC = class_s.self.childViewControllers[0].self
                     switch pageInt {
                     case 1:
                         let target_VC_transform = target_VC as! MyTopicTableViewController
+                        
+                        
                         target_VC_transform.autoLeap()
                     case 2:
                         let target_VC_transform = target_VC as! RecentTableViewController
+                        
+                        
                         target_VC_transform.autoLeap()
                     case 3:
                         let target_VC_transform = target_VC as! FriendTableViewController
+                        
                         target_VC_transform.autoLeap()
                     default:
                         print("targetClassName is nil")

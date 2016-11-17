@@ -607,6 +607,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     func autoLeap(){
         if notificationSegueInf != [:]{
+            let parent = self.parent as! UINavigationController
+            parent.popToRootViewController(animated: false)
             let segue_topic_id = notificationSegueInf["topic_id"]
             let segue_user_id = notificationSegueInf["user_id"]
             
@@ -615,7 +617,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             
             var while_pertect = 5000
             
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
                 while targetData_Dickey == nil && targetData_Dicval == nil && while_pertect >= 0{
                     
                     targetData_Dickey = self.secTopic.index(where: { (key: String, value: [MyTopicStandardType]) -> Bool in

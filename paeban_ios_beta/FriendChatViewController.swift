@@ -41,6 +41,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             var addDic:Dictionary<String,AnyObject> = [:]
             addDic["missionType"] = missionType as AnyObject?
             addDic["data"] = data
+            removeWorkList("request_history_priv_msg", data: nil)
             workList.append(addDic)
             executeWork(addDic)
         }
@@ -51,7 +52,9 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         let wsSendList = ["request_history_priv_msg","priv_msg","priv_msg_been_read"]
         if let _ = wsSendList.index(of: missionType){
             let sendData = dataDic["data"] as! NSDictionary
-            socket.write(data:json_dumps(sendData))
+            if socketState{
+                socket.write(data:json_dumps(sendData))
+            }
         }
         
         if missionType == "request_history_priv_msg"{
@@ -136,14 +139,15 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         //      self.topContentAdditionalInset = 90
         
         //wsActive.wasd_ForChatViewController = self
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         let sendDic:NSDictionary = ["msg_type":"request_history_priv_msg",
-                       "receiver_id":clientId!,
-                       "last_id_of_msg":"0"]
+                                    "receiver_id":clientId!,
+                                    "last_id_of_msg":"0"]
         wsActive.wasd_ForFriendChatViewController = self
         addRequestMission("request_history_priv_msg",data: sendDic)
-        
     }
-    
     // 下面兩個負責讀取訊息
     // JSQ的列表顯示view, 在物件索引位至的訊息
     override func collectionView(_ collectionView: JSQMessagesCollectionView!,
@@ -279,6 +283,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
         else if msgType == "history_priv_msg"{
+            self.removeWorkList("request_history_priv_msg", data: nil)
             var tempMsgList:Array<JSQMessage3> = []
             let history_msg_names_list = msg["history_msg_names_list"] as! Array<String>
             let history_msg_userid_list = msg["history_msg_userid_list"] as! Array<String>
@@ -321,7 +326,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 }
             }
             
-            self.removeWorkList("request_history_priv_msg", data: nil)
+            
             
         }
         else if msgType == "priv_msg_been_read"{

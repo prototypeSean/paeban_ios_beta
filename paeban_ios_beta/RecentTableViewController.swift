@@ -103,6 +103,8 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     // internal func
     func autoLeap(){
         if notificationSegueInf != [:]{
+            let parent = self.parent as! UINavigationController
+            parent.popToRootViewController(animated: false)
             let segue_topic_id = notificationSegueInf["topic_id"]
             let segue_user_id = notificationSegueInf["user_id"]
             
@@ -110,7 +112,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             
             var while_pertect = 5000
             
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
                 while targetData_Dickey == nil && while_pertect >= 0{
                     
                     targetData_Dickey = self.rTVModel.recentDataBase.index(where: { (MyTopicStandardType) -> Bool in

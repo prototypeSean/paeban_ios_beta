@@ -74,15 +74,15 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
         }
     }
     func autoLeap(){
-        print("act")
-        print(recive_apns_switch)
         if notificationSegueInf != [:] && recive_apns_switch{
+            let parent = self.parent as! UINavigationController
+            parent.popToRootViewController(animated: false)
             let segue_user_id = notificationSegueInf["user_id"]
             var targetData_Dickey:Array<FriendStanderType>.Index?
             
             var while_pertect = 5000
             
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
                 while targetData_Dickey == nil && while_pertect >= 0{
                     var break_flag = false
                     targetData_Dickey = self.model?.friendsList.index(where: { (FriendStanderType) -> Bool in
