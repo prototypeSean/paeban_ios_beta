@@ -13,11 +13,14 @@ import FBSDKCoreKit
 import FBSDKShareKit
 
 // MARK:公用變數
+public var ssss:String?
 public var socket:WebSocket!
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
 public var logInState = true    //記錄現在是否為登入狀態
 public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
 public var cookie:String?       //全域紀錄的餅乾
+public var notificationSegueInf:Dictionary<String,String> = [:]
+public var socketState = false  //socket是否連線中
 public struct setUserData{
     var id:String?
     var name:String?
@@ -25,6 +28,7 @@ public struct setUserData{
     var deviceToken:String?
 }   //用戶個人資料
 public var userData = setUserData()
+public var recive_apns_switch = true
 public var nowTopicCellList:Array<MyTopicStandardType> = [] //話題清單
 public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
     if let _ = nowTopicCellList.index(where: { (target) -> Bool in
@@ -37,7 +41,7 @@ public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
 }
 public var myFriendsList:Array<FriendStanderType> = [] //好友清單
 public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
-
+public let notificationDelegateCenter_obj = NotificationDelegateCenter()
 
 class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
@@ -58,7 +62,6 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     @IBOutlet weak var shiftView: UIView!
     
     let login_paeban_obj = login_paeban()
-    
     // MARK: override
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -84,7 +87,9 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         find_user_kb_height()
         BtnOutlet()
         check_online(in: self, with: autoLogin)
-        
+        //testdata
+        //notificationSegueInf = ["type":"priv_msg","user_id":"aaasss","topic_id":"nano"]
+        //testdata
         
     }
     
@@ -167,6 +172,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         if let fb_session = FBSDKAccessToken.current(){
             login_paeban_obj.fb_ssesion = fb_session.tokenString
             login_paeban_obj.get_cookie()
+            print("開始登入")
         }
         else{
             print("還沒登入ＦＢ!!!")
@@ -256,6 +262,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         }
     }
     func websocketDidConnect(socket: WebSocket){
+        socketState = true
         reConnectCount = 0
         //print(NSDate())
         wsTimer?.invalidate()
@@ -263,8 +270,9 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         if firstConnect{
             ws_connected(socket)
             print("connected")
-            self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             firstConnect = false
+            self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+            
         }
         else{
             print("wsReConnected")
@@ -274,12 +282,12 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         
     }
     func websocketDidDisconnect(socket: WebSocket, error: NSError?){
+        socketState = false
         print("disConnect")
         if logInState{
             wsTimer?.invalidate()
             wsTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
         }
-        //print(NSDate())
     }
     func websocketDidReceiveMessage(socket: WebSocket, text: String){
         //print("msgincome=======")
@@ -325,7 +333,15 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         view.endEditing(true)
     }
     
-
+    func simpoAlert(reason:String){
+        let mailAlert = UIAlertController(title: "錯誤", message: reason, preferredStyle: UIAlertControllerStyle.alert)
+        mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+            //code
+        }))
+        self.present(mailAlert, animated: true, completion: {
+            //code
+        })
+    }
 }
 
 

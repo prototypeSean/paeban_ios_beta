@@ -181,6 +181,60 @@ func check_online(in vc:UIViewController, with original_func:@escaping ()->Void)
 }
 
 
+func leap(from currentVC:UIViewController, to page:Int){
+    var PartentVC:UIViewController?
+    PartentVC = currentVC.parent
+    for _ in 0..<5{
+        if PartentVC != nil{
+            let rid = PartentVC?.restorationIdentifier
+            if rid == "tabBar"{
+                let tab = PartentVC as! UITabBarController
+                tab.selectedIndex = page
+                break
+            }
+            PartentVC = PartentVC?.parent
+        }
+        else{
+            break
+        }
+        
+    }
+}
+
+
+func leapToPage(segueInf:Dictionary<String,String>) -> Int?{
+    var returnInt:Int?
+    if let type = segueInf["type"]{
+        switch type {
+        case "topic_msg_master":
+            returnInt = 1
+        case "topic_msg_client":
+            returnInt = 2
+        case "priv_msg":
+            returnInt = 3
+        default:
+            returnInt = nil
+        }
+    }
+    return returnInt
+}
+
+func simpoAlert2(view:UIViewController , reason:String){
+    let mailAlert = UIAlertController(title: "錯誤", message: reason, preferredStyle: UIAlertControllerStyle.alert)
+    mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+        //code
+    }))
+    view.present(mailAlert, animated: true, completion: {
+        //code
+    })
+}
+
+
+
+
+
+
+
 
 
 

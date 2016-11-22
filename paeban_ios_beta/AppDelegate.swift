@@ -12,7 +12,7 @@ import FBSDKLoginKit
 import FBSDKShareKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegate{
 
     var window: UIWindow?
     
@@ -37,11 +37,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //========deviceToken=======
     
     //========收到推播=========
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        //code
-        print("=====nsf=======")
-        print(userInfo)
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        
+        if logInState{
+            if let segue_inf = userInfo["segue_inf"] as? Dictionary<String,String>{
+                print("========segue_inf=========")
+                //print(segue_inf)
+                notificationSegueInf = segue_inf
+                notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
+            }
+        }
     }
+    
     //========收到推播=========
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
@@ -50,6 +57,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         registerForPushNotifications(application: application)
+        //===========================
+        
+        
+        
+        if ((launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification]) != nil){
+            let nts = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as! Dictionary<String,AnyObject>
+            let segue_inf = nts["segue_inf"] as? Dictionary<String,String>
+            notificationSegueInf = segue_inf!
+        }
+        
+        
+        //===========================
+        
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         // Override point for customization after application launch.
         
@@ -57,13 +77,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-
+    
+    
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        if (socket != nil){
+            socket.disconnect()
+        }
+        notificationSegueInf = [:]
+        socketState = false
+        recive_apns_switch = true
+        print("====applicationDidEnterBackground======")
+        
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
@@ -71,10 +101,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
-
+    
+    
     func applicationDidBecomeActive(_ application: UIApplication) {
-        
+        print("====applicationDidBecomeActive====")
         FBSDKAppEvents.activateApp()
+        
+        if (socket != nil){
+            socket.connect()
+        }
+        
         
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }

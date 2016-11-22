@@ -15,12 +15,24 @@ class RecentTableViewModel{
             return addEffectiveData(nowTopicCellList)
         }
     }
-    
+    var segueDataIndex:Int?
     func reCheckDataBase() {
         let sentData:NSDictionary = [
         "msg_type":"recentDataCheck"
         ]
-        socket.write(data:json_dumps(sentData))
+        func sendws(times:Int){
+            if socketState{
+                socket.write(data:json_dumps(sentData))
+            }
+            else if times > 0{
+                DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
+                    sleep(1)
+                    sendws(times: times - 1)
+                }
+            }
+        }
+        sendws(times: 5)
+        
     }
     
 //    func updataNowTopicCellList(returmDic:NSDictionary){

@@ -8,10 +8,10 @@
 
 import UIKit
 
-class SignInNavViewController: UINavigationController  {
+
+
+class SignInNavViewController: UINavigationController {
     let gradientLayer = CAGradientLayer()
-    
-    
     fileprivate func imageLayerForGradientBackground() -> UIImage {
         
         var updatedFrame = self.navigationBar.bounds
@@ -24,7 +24,6 @@ class SignInNavViewController: UINavigationController  {
         UIGraphicsEndImageContext()
         return image!
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationBar.isTranslucent = false
@@ -33,21 +32,9 @@ class SignInNavViewController: UINavigationController  {
         self.navigationBar.titleTextAttributes = fontDictionary
         self.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
     }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
-    
+    // delegate -> NotificationDelegate
 }

@@ -20,9 +20,9 @@ class login_paeban{
     var fb_ssesion:String?
     var delegate:login_paeban_delegate?
     var csrf_string = ""
-    
     func get_cookie(){
-        let url = "http://www.paeban.com/register-by-token/facebook/\(fb_ssesion!)"
+        print("asd")
+        let url = "https://www.paeban.com/register-by-token/facebook/\(fb_ssesion!)"
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
         let session = URLSession.shared
@@ -33,6 +33,7 @@ class login_paeban{
             else{
                 let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
                 if ouput != "log in fail"{
+                    print("001")
                     if let httpResponse = response as? HTTPURLResponse {
                         if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
                             self.delegate?.get_cookie_login_report!(state: response_cookie)
@@ -41,8 +42,9 @@ class login_paeban{
                 }
                 else{
                     self.delegate?.get_cookie_login_report!(state: "login_no")
+                    print("002")
                 }
-                //print("回應內容物： \(ouput)")
+                print("回應內容物： \(ouput)")
             }
             
         })
@@ -68,15 +70,18 @@ class login_paeban{
                     //                        print("========print(response)========")
                     //                        print(response)
                     if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
+                        print("001")
                         self.delegate?.get_cookie_csrf_report!(state: ouput as! String,setcookie:response_cookie)
                     }
                     else{
                         self.delegate?.get_cookie_csrf_report!(state: "login_fail",setcookie:"")
+                        print("002")
                     }
                     
                 }
                 else{
                     self.delegate?.get_cookie_csrf_report!(state: "login_fail",setcookie:"")
+                    print("003")
                 }
                 
                 //print(ouput)
