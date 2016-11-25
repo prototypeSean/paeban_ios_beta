@@ -36,6 +36,8 @@
 		933B77921DCDCD5800110D8C /* SettingProfilePicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B77911DCDCD5800110D8C /* SettingProfilePicViewController.swift */; };
 		934EBB001DCB0A3600FB9748 /* Designable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934EBAFF1DCB0A3600FB9748 /* Designable.swift */; };
 		936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */; };
+		9390D06D1DE82EE400FEC14A /* FriendInvitedListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390D06C1DE82EE400FEC14A /* FriendInvitedListTableViewCell.swift */; };
+		9390D06F1DE82F8C00FEC14A /* FriendInvitedCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390D06E1DE82F8C00FEC14A /* FriendInvitedCellTableViewCell.swift */; };
 		93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */; };
 		93B40BE91DB8B7DB00AC3D48 /* SignInNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */; };
 		CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF13867D1D98CE0600E70990 /* LoginScrollView.swift */; };
@@ -92,6 +94,8 @@
 		933B77911DCDCD5800110D8C /* SettingProfilePicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingProfilePicViewController.swift; sourceTree = "<group>"; };
 		934EBAFF1DCB0A3600FB9748 /* Designable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Designable.swift; sourceTree = "<group>"; };
 		936F9FEE1D72C50200A3F1C9 /* MyTopicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopicViewController.swift; sourceTree = "<group>"; };
+		9390D06C1DE82EE400FEC14A /* FriendInvitedListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendInvitedListTableViewCell.swift; sourceTree = "<group>"; };
+		9390D06E1DE82F8C00FEC14A /* FriendInvitedCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendInvitedCellTableViewCell.swift; sourceTree = "<group>"; };
 		93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInNavViewController.swift; sourceTree = "<group>"; };
 		BAC8DE25847EF16A13E40E0D /* Pods-paeban_ios_beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.release.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.release.xcconfig"; sourceTree = "<group>"; };
@@ -206,6 +210,7 @@
 		93AEF28E1D01410A007FDE51 /* friends */ = {
 			isa = PBXGroup;
 			children = (
+				9390D06E1DE82F8C00FEC14A /* FriendInvitedCellTableViewCell.swift */,
 				932D0D721DA0F65700ACA795 /* FriendNavViewController.swift */,
 				CF2E9D611D7BDF9E00F485BB /* FriendTableViewController.swift */,
 				CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */,
@@ -213,6 +218,7 @@
 				CF2E9D651D7BDFE300F485BB /* FriendTableViewMedol.swift */,
 				CF2E9D631D7BDFC000F485BB /* FriendTableViewCell.swift */,
 				CF2E9D671D7BE33C00F485BB /* FriendStanderType.swift */,
+				9390D06C1DE82EE400FEC14A /* FriendInvitedListTableViewCell.swift */,
 			);
 			name = friends;
 			sourceTree = "<group>";
@@ -429,6 +435,7 @@
 				930983E21D0166F5005B8E3B /* MyTopics.swift in Sources */,
 				932A00E51CFEBA460036E1EA /* ＨttpRequestCenter.swift in Sources */,
 				932A00F31CFEBA460036E1EA /* web_socket.swift in Sources */,
+				9390D06D1DE82EE400FEC14A /* FriendInvitedListTableViewCell.swift in Sources */,
 				CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */,
 				932D0D731DA0F65700ACA795 /* FriendNavViewController.swift in Sources */,
 				CF89EF7A1DD498C700876298 /* TabBarController.swift in Sources */,
@@ -438,6 +445,7 @@
 				9301F6041D1D16F900D1F8C0 /* TopicSearchBar.swift in Sources */,
 				932A00E81CFEBA460036E1EA /* TopicCellTableViewCell.swift in Sources */,
 				933B77921DCDCD5800110D8C /* SettingProfilePicViewController.swift in Sources */,
+				9390D06F1DE82F8C00FEC14A /* FriendInvitedCellTableViewCell.swift in Sources */,
 				9301F6061D1D1A2800D1F8C0 /* TopicSearchController.swift in Sources */,
 				932A00EB1CFEBA460036E1EA /* TopicNavViewController.swift in Sources */,
 				932D0D711DA0F61100ACA795 /* MytopicNavViewController.swift in Sources */,
