@@ -71,6 +71,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     @IBAction func btnIgnorRelease(_ sender: AnyObject) {
         btnIgnroe.layer.backgroundColor = UIColor.white.cgColor
         btnIgnroe.layer.borderWidth = 1
+        reportAbuse()
     }
     @IBAction func btnBlockClick(_ sender: AnyObject) {
         btnBlock.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
@@ -79,11 +80,12 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     @IBAction func btnBlockRelease(_ sender: AnyObject) {
         btnBlock.layer.backgroundColor = UIColor.white.cgColor
         btnBlock.layer.borderWidth = 1
+        block()
     }
     
     var myPhotoSave:UIImage?
     let myPhotoImg = UIImageView()
-    
+    // MARK: internal func
     func getHttpData() {
         DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
             let httpObj = HttpRequestCenter()
@@ -124,7 +126,6 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             })
         }
     }
-    
     func alertTopicClosed(){
         let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.alert)
         
@@ -135,64 +136,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         self.delegate?.reLoadTopic(self.topicId!)
         self.present(refreshAlert, animated: true, completion: nil)
     }
-    
-    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
-        let msgType =  msg["msg_type"] as! String
-        if msgType == "topic_msg"{
-            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
-            if msg["img"] as? String != nil && msg["img"] as? String != ""{
-                let imgStr = msg["img"] as? String
-                let tempImg = updateImg(imgStr)
-                if tempImg != nil{
-                    //print("updateImg")
-                    for dicKey in resultDic{
-                        let msgData = dicKey.1 as! Dictionary<String,AnyObject>
-                        let sender = msgData["sender"] as! String
-                        if sender == userData.id{
-                            myPhotoSave = tempImg
-                            myPhotoImg.image = myPhotoSave
-//                            print("refresh")
-                        }
-                        else{
-                            guestPhoto.image = tempImg
-                        }
-                        break
-                    }
-                }
-            }
-        }
-        
-        else if msgType == "topic_closed"{
-            let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
-            if closeTopicIdList != nil{
-                if closeTopicIdList?.index(of: self.topicId!) != nil{
-                    self.alertTopicClosed()
-                }
-            }
-        }
-        
-        
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let chatViewCon = segue.destination as! ChatViewController
-        chatViewCon.setID = userData.id
-        chatViewCon.setName = userData.name
-        chatViewCon.topicId = self.topicId
-        chatViewCon.ownerId = self.ownerId
-        chatViewCon.clientID = self.setID
-        chatViewCon.clientName = self.setName
-        
-        if self.msg == nil {
-            self.contanterView = chatViewCon
-        }
-        else{
-            chatViewCon.historyMsg = self.msg!
-        }
-    }
-    
-    
-    // 設置照片+按鈕外觀
+        // 設置照片+按鈕外觀
     func setImage(){
         // MARK: 為了陰影跟圓角 要作三層圖曾
         // add the shadow to the base view 最底層作陰影
@@ -238,10 +182,10 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         // add any other subcontent that you want clipped 最上層才放圖片進去
         
         myPhotoImg.image = myPhotoSave
-//        print(myPhotoSave)
+        //        print(myPhotoSave)
         myPhotoImg.frame = myphotoborderView.bounds
         myphotoborderView.addSubview(myPhotoImg)
-
+        
         // MARK: topicInfoBG背景白色漸層
         topicInfoBG.layer.borderColor = UIColor.gray.cgColor
         topicInfoBG.layer.borderWidth = 0.5
@@ -288,4 +232,128 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         }
         else{return nil}
     }
+        // 封鎖
+    func block(){
+        let data:NSDictionary = [
+            "block_id":setID!,
+            "topic_id":topicId!
+        ]
+        let confirm = UIAlertController(title: "封鎖", message: "封鎖  \(setName!) ? 將再也無法聯繫他", preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+            HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
+                if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
+                    if key == "msgtype"{
+                        return true
+                    }
+                    else{return false}
+                }){
+                    if Dictionary["msgtype"] as! String == "block_success"{
+                        //code
+                    }
+                }
+            }
+        }))
+        self.present(confirm, animated: true, completion: nil)
+        
+    }
+        // 舉報
+    func reportAbuse(){
+        let sendDic:NSDictionary = [
+            "report_id":setID!,
+            "topic_id":topicId!
+        ]
+        let confirm = UIAlertController(title: "舉報", message: "向管理員反應收到  \(setName!) 的騷擾內容", preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction_void) in
+            HttpRequestCenter().privacy_function(msg_type: "report_topic", send_dic: sendDic, inViewAct: { (Dictionary) in
+                let msg_type = Dictionary["msg_type"] as! String
+                let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+                if msg_type == "success"{
+                    alert.title = "舉報"
+                    alert.message = "感謝您的回報，我們將儘速處理"
+                    
+                }
+                else if msg_type == "user_not_exist"{
+                    alert.title = "錯誤"
+                    alert.message = "用戶不存在"
+                }
+                else if msg_type == "topic_not_exist"{
+                    alert.title = "錯誤"
+                    alert.message = "話題不存在"
+                }
+                else if msg_type == "unknown_error"{
+                    alert.title = "錯誤"
+                    alert.message = "未知的錯誤"
+                }
+                DispatchQueue.main.async {
+                    self.present(alert, animated: true, completion: nil)
+
+                }
+                            })
+        }))
+        self.present(confirm, animated: true, completion: nil)
+        
+    }
+    
+    // MARK: delegate -> websocket
+    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
+        let msgType =  msg["msg_type"] as! String
+        if msgType == "topic_msg"{
+            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
+            if msg["img"] as? String != nil && msg["img"] as? String != ""{
+                let imgStr = msg["img"] as? String
+                let tempImg = updateImg(imgStr)
+                if tempImg != nil{
+                    //print("updateImg")
+                    for dicKey in resultDic{
+                        let msgData = dicKey.1 as! Dictionary<String,AnyObject>
+                        let sender = msgData["sender"] as! String
+                        if sender == userData.id{
+                            myPhotoSave = tempImg
+                            myPhotoImg.image = myPhotoSave
+//                            print("refresh")
+                        }
+                        else{
+                            guestPhoto.image = tempImg
+                        }
+                        break
+                    }
+                }
+            }
+        }
+        
+        else if msgType == "topic_closed"{
+            let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
+            if closeTopicIdList != nil{
+                if closeTopicIdList?.index(of: self.topicId!) != nil{
+                    self.alertTopicClosed()
+                }
+            }
+        }
+        
+        
+    }
+    
+    // MARK: override function
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let chatViewCon = segue.destination as! ChatViewController
+        chatViewCon.setID = userData.id
+        chatViewCon.setName = userData.name
+        chatViewCon.topicId = self.topicId
+        chatViewCon.ownerId = self.ownerId
+        chatViewCon.clientID = self.setID
+        chatViewCon.clientName = self.setName
+        
+        if self.msg == nil {
+            self.contanterView = chatViewCon
+        }
+        else{
+            chatViewCon.historyMsg = self.msg!
+        }
+    }
+    
+    
+    
 }
