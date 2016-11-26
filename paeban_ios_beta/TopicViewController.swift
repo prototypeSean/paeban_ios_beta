@@ -63,6 +63,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     @IBAction func addFriendRelease(_ sender: AnyObject) {
         btnAddFriend.layer.backgroundColor = UIColor.white.cgColor
         btnAddFriend.layer.borderWidth = 1
+        addFriend()
     }
     @IBAction func btnIgnorClick(_ sender: AnyObject) {
         btnIgnroe.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
@@ -241,6 +242,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         let confirm = UIAlertController(title: "封鎖", message: "封鎖  \(setName!) ? 將再也無法聯繫他", preferredStyle: UIAlertControllerStyle.alert)
         confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
         confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+            let nav = self.parent as! UINavigationController
+            nav.popViewController(animated: true)
             HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
                 if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
                     if key == "msgtype"{
@@ -253,6 +256,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                     }
                 }
             }
+            
+            
+            
         }))
         self.present(confirm, animated: true, completion: nil)
         
@@ -296,6 +302,15 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         self.present(confirm, animated: true, completion: nil)
         
     }
+    func addFriend(){
+        let sendDic:NSDictionary = [
+            "msg_type":"add_friend",
+            "friend_id":setID
+        ]
+        socket.write(data: json_dumps(sendDic))
+    }
+    
+    
     
     // MARK: delegate -> websocket
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
@@ -323,7 +338,6 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                 }
             }
         }
-        
         else if msgType == "topic_closed"{
             let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
             if closeTopicIdList != nil{
@@ -332,6 +346,12 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                 }
             }
         }
+        else if msgType == "has_been_friend"{
+            let alert = UIAlertController(title: "好友", message: "已經是好友了", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else if msgType == "has_been_block"{}
         
         
     }

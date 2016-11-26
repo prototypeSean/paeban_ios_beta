@@ -22,24 +22,6 @@ class FriendTableViewMedol{
     
     func getCell(_ index:Int,cell:FriendTableViewCell) -> FriendTableViewCell {
         
-        // 都加好友不知道性別可以去死了
-//        func letoutSexLogo(_ sex:String) -> UIImage {
-//            var sexImg:UIImage
-//            switch sex {
-//            case "男":
-//                sexImg = UIImage(named: "male")!
-//            case "女":
-//                sexImg = UIImage(named:"gay")!
-//            case "男同":
-//                sexImg = UIImage(named:"gay")!
-//            case "女同":
-//                sexImg = UIImage(named:"lesbain")!
-//            default:
-//                sexImg = UIImage(named: "male")!
-//                print("性別圖示分類失敗")
-//            }
-//            return sexImg
-//        }
         
         
         let data = friendsList[index]
