@@ -53,6 +53,9 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             }
             
             topicViewCon.topicId = getSegueData["topicId"] as? String
+            topicViewCon.setID = getSegueData["ownerId"] as? String
+            topicViewCon.setName = getSegueData["ownerName"] as? String
+            
             topicViewCon.ownerId = getSegueData["ownerId"] as? String
             topicViewCon.ownerImg = getSegueData["ownerImg"] as? UIImage
             topicViewCon.topicTitle = getSegueData["topicTitle"] as? String
