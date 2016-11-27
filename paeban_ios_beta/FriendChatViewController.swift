@@ -283,6 +283,15 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
         else if msgType == "history_priv_msg"{
+            func turnToMessage3(_ inputDic:Dictionary<String,AnyObject>) -> JSQMessage3{
+                let returnObj = JSQMessage3(senderId: inputDic["senderId"] as! String,
+                                            displayName: inputDic["displayName"] as! String,
+                                            text: inputDic["text"] as! String)
+                returnObj?.topicId = inputDic["topicId"] as? String
+                returnObj?.topicTempid = inputDic["topicTempid"] as? String
+                returnObj?.isRead = inputDic["isRead"] as? Bool
+                return returnObj!
+            }
             self.removeWorkList("request_history_priv_msg", data: nil)
             var tempMsgList:Array<JSQMessage3> = []
             let history_msg_names_list = msg["history_msg_names_list"] as! Array<String>
@@ -303,7 +312,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 else{
                     tempDic["isRead"] = true as AnyObject?
                 }
-                tempMsgList.insert(FriendTableViewMedol().turnToMessage3(tempDic), at: 0)
+                tempMsgList.insert(turnToMessage3(tempDic), at: 0)
             }
             let msgCountBefore = messages.count
             self.messages = tempMsgList + self.messages

@@ -151,6 +151,14 @@ class HttpRequestCenter{
             inViewAct(returnDic)
         }
     }
+    func friend_function(msg_type:String, send_dic:NSDictionary,inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
+        let url = "https://www.paeban.com/friend_function/"
+        let jsonData = json_dumps2(send_dic)
+        let sendData = "msg_type=\(msg_type);data=\(jsonData!)"
+        ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
+            inViewAct(returnDic)
+        }
+    }
     
     // MARK:================私有函數===============
     

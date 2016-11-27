@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 open class FriendStanderType{
+    var cell_type:String?
+    //friend, invite, list
     var id:String?
     var name:String?
     var sex:String?
@@ -17,10 +19,14 @@ open class FriendStanderType{
     var online:Bool?
     var photoHttpStr:String?
     var photo:UIImage?
+    var lastLine:String?
+    var last_speaker:String?
+    var invite_list_count:Int?
 }
 
 public func turnToFriendStanderType(_ id:String,name:String,sex:String,isRealPhoto:Bool,online:Bool,photoString:String) ->FriendStanderType{
     let returnObj = FriendStanderType()
+    returnObj.cell_type = "friend"
     returnObj.id = id
     returnObj.name = name
     returnObj.sex = sex

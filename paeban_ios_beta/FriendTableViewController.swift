@@ -13,12 +13,13 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
     var segue_data_index:Int?
     override func viewDidLoad() {
         super.viewDidLoad()
-        model = FriendTableViewMedol()
+        model = FriendTableViewMedol(with: self)
         wsActive.wasd_ForFriendTableViewController = self
     }
     override func viewWillAppear(_ animated: Bool) {
         //autoLeap()
         self.tableView.reloadData()
+        //getInvitwList()
     }
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -30,13 +31,22 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
         return model!.getDataCount()
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FriendTableViewCell", for: indexPath) as! FriendTableViewCell
-        let cell2 = model!.getCell((indexPath as NSIndexPath).row, cell: cell)
-        let thePhotoLayer:CALayer = cell2.photo.layer
-        thePhotoLayer.masksToBounds = true
-        thePhotoLayer.cornerRadius = 6
         
-        return cell2
+        if self.model?.friendsList[indexPath.row].cell_type == "friend"{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FriendTableViewCell", for: indexPath)
+            let cell2 = model!.getCell((indexPath as NSIndexPath).row, cell:cell)
+            return cell2
+        }
+        else if self.model?.friendsList[indexPath.row].cell_type == "list"{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FriendInvitedListTableViewCell", for: indexPath)
+            let cell2 = model!.getCell((indexPath as NSIndexPath).row, cell:cell)
+            return cell2
+        }
+        else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FriendInvitedCellTableViewCell", for: indexPath)
+            let cell2 = model!.getCell((indexPath as NSIndexPath).row, cell:cell)
+            return cell2
+        }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "friendConBox"{
@@ -60,7 +70,7 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
         }
     }
     
-    
+    // MARK:delegate -> websocket
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgtype = msg["msg_type"] as! String
         if msgtype == "online"{
@@ -73,6 +83,8 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
             self.tableView.reloadData()
         }
     }
+    
+    // MARk: internal func
     func autoLeap(){
         if notificationSegueInf != [:] && recive_apns_switch{
             let parent = self.parent as! UINavigationController
@@ -115,6 +127,27 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
                 //self.segueData = nil
                 notificationSegueInf = [:]
             
+        }
+    }
+    func getFrientList(){
+        let send_dic:NSDictionary = [
+            "none": "none"
+        ]
+        HttpRequestCenter().friend_function(msg_type: "get_friend_list", send_dic: send_dic) { (return_dic) in
+            //code
+        }
+    }
+    func getInvitwList(){
+        let send_dic:NSDictionary = [
+            "none": "none"
+        ]
+        HttpRequestCenter().friend_function(msg_type: "get_invite_list", send_dic: send_dic) { (return_dic) in
+            if !return_dic.isEmpty{
+                DispatchQueue.main.async {
+                    self.model?.addInviteList(input_dic: return_dic)
+                }
+                
+            }
         }
     }
     
