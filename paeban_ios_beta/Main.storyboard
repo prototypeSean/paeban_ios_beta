@@ -175,10 +175,18 @@
             </objects>
             <point key="canvasLocation" x="-5381.1594202898559" y="-2395.108695652174"/>
         </scene>
+        <!--Page View Controller-->
+        <scene sceneID="uJ8-tb-Li1">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="IJU-dt-a9R" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NEp-BM-KlP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5381" y="-3181"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="wCD-5l-xCr">
             <objects>
-                <viewController id="TFG-9J-YTq" sceneMemberID="viewController">
+                <viewController id="TFG-9J-YTq" customClass="EULAViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZtN-2K-Zze"/>
                         <viewControllerLayoutGuide type="bottom" id="xHV-Gh-uxg"/>
@@ -192,7 +200,7 @@
                                     <constraint firstAttribute="height" constant="44" id="iRC-kz-bwh"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <color key="textColor" red="0.49803921579999999" green="0.49803921579999999" blue="0.49803921579999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="感謝您加入漸漸" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMQ-B7-DCc">
@@ -205,7 +213,7 @@
                                 <color key="textColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" contentMode="center" placeholderIntrinsicWidth="372" placeholderIntrinsicHeight="368" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ufx-fc-cuh">
+                            <textView clipsSubviews="YES" contentMode="top" placeholderIntrinsicWidth="372" placeholderIntrinsicHeight="368" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ufx-fc-cuh">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <attributedString key="attributedText">
                                     <fragment>
@@ -226,7 +234,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <string key="content">請勿以任何形式傳遞或暗示不雅訊息，我們將會移除您的帳戶。
+                                        <string key="content">請勿以任何形式傳遞或暗示不雅訊息，確認屬時後我們將會移除您的帳戶。
 </string>
                                         <attributes>
                                             <color key="NSColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -264,7 +272,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <string key="content">若您認為此人訊息包含不雅內容，請按下「檢舉」按鈕，管理員會確認並做出處置。
+                                        <string key="content">若是您收到不雅訊息，請按下「檢舉」按鈕，管理員會確認並做出處置。
 </string>
                                         <attributes>
                                             <color key="NSColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -302,7 +310,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <string key="content">若是任何訊息令您感到不適，請按下「封鎖」按鈕，您將再也不會見到他。
+                                        <string key="content">任何訊息令您感到不適，您可以按下「封鎖」按鈕，將再也不會見到他。
 </string>
                                         <attributes>
                                             <color key="NSColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -340,7 +348,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <string key="content">請不要再對話中留下您的帳戶密碼或機敏資訊，工作人員不會以任何形式向您索取。
+                                        <string key="content">請不要再對話中留下您的帳戶密碼或機敏資訊，工作人員亦不會以任何形式向您索取。
 </string>
                                         <attributes>
                                             <color key="NSColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -363,6 +371,16 @@
                                 </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eVe-03-SoK">
+                                <color key="backgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="jgD-Qp-YxM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <state key="normal" title="我已閱讀並了解使用者須知">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -371,18 +389,25 @@
                             <constraint firstItem="CMQ-B7-DCc" firstAttribute="width" secondItem="t75-Wg-olW" secondAttribute="width" id="C8O-CV-uvO"/>
                             <constraint firstItem="Ufx-fc-cuh" firstAttribute="height" relation="greaterThanOrEqual" secondItem="UnK-lU-uyy" secondAttribute="height" multiplier="0.5" id="Ghh-oJ-plA"/>
                             <constraint firstItem="Ufx-fc-cuh" firstAttribute="width" secondItem="UnK-lU-uyy" secondAttribute="width" multiplier="0.9" id="H51-eO-YpN"/>
+                            <constraint firstItem="xHV-Gh-uxg" firstAttribute="top" secondItem="eVe-03-SoK" secondAttribute="bottom" id="Iih-eN-s66"/>
+                            <constraint firstItem="eVe-03-SoK" firstAttribute="width" secondItem="UnK-lU-uyy" secondAttribute="width" id="J8q-zx-8ti"/>
                             <constraint firstItem="IiC-uN-zR8" firstAttribute="centerX" secondItem="CMQ-B7-DCc" secondAttribute="centerX" id="Lib-oo-UKS"/>
                             <constraint firstItem="CMQ-B7-DCc" firstAttribute="height" secondItem="t75-Wg-olW" secondAttribute="height" multiplier="0.5" id="Ls6-Cz-bdH"/>
                             <constraint firstItem="CMQ-B7-DCc" firstAttribute="centerX" secondItem="t75-Wg-olW" secondAttribute="centerX" id="NsD-PH-BYX"/>
-                            <constraint firstItem="IiC-uN-zR8" firstAttribute="top" secondItem="CMQ-B7-DCc" secondAttribute="bottom" constant="2" id="Qwo-Y0-IQ4"/>
+                            <constraint firstItem="IiC-uN-zR8" firstAttribute="top" secondItem="CMQ-B7-DCc" secondAttribute="bottom" constant="4" id="Qwo-Y0-IQ4"/>
                             <constraint firstItem="IiC-uN-zR8" firstAttribute="width" secondItem="CMQ-B7-DCc" secondAttribute="width" multiplier="0.77" id="UyE-NI-7c6"/>
-                            <constraint firstItem="t75-Wg-olW" firstAttribute="top" secondItem="UnK-lU-uyy" secondAttribute="top" constant="20" id="Yft-5Y-Ymg"/>
+                            <constraint firstItem="eVe-03-SoK" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Ufx-fc-cuh" secondAttribute="bottom" constant="8" symbolic="YES" id="V4t-zn-ejn"/>
+                            <constraint firstItem="t75-Wg-olW" firstAttribute="top" secondItem="UnK-lU-uyy" secondAttribute="top" constant="24" id="Yft-5Y-Ymg"/>
+                            <constraint firstItem="eVe-03-SoK" firstAttribute="centerX" secondItem="UnK-lU-uyy" secondAttribute="centerX" id="kgm-EM-q6g"/>
                             <constraint firstItem="xHV-Gh-uxg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Ufx-fc-cuh" secondAttribute="bottom" id="mcQ-ht-qPi"/>
                             <constraint firstItem="Ufx-fc-cuh" firstAttribute="top" secondItem="IiC-uN-zR8" secondAttribute="bottom" constant="20" id="qlt-Fi-c4M"/>
                             <constraint firstAttribute="leading" secondItem="t75-Wg-olW" secondAttribute="leading" id="ray-ci-sMs"/>
-                            <constraint firstItem="CMQ-B7-DCc" firstAttribute="top" secondItem="t75-Wg-olW" secondAttribute="bottom" id="xc4-sA-mcw"/>
+                            <constraint firstItem="CMQ-B7-DCc" firstAttribute="top" secondItem="t75-Wg-olW" secondAttribute="bottom" constant="8" id="xc4-sA-mcw"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="EULAContentText" destination="Ufx-fc-cuh" id="RWq-La-Ubn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ume-ts-Djm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1051,9 +1076,9 @@
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
+                                            <exclude reference="eNc-l3-BpL"/>
                                             <exclude reference="BB9-1c-hf1"/>
                                             <exclude reference="Mk5-YD-1W5"/>
-                                            <exclude reference="eNc-l3-BpL"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
