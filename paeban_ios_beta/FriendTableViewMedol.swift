@@ -16,7 +16,6 @@ class FriendTableViewMedol{
         }
         set{
             myFriendsList = newValue
-            targetVC.tableView.reloadData()
         }
     }
     var invite_list:Array<FriendStanderType> = []
@@ -55,11 +54,35 @@ class FriendTableViewMedol{
             thePhotoLayer.cornerRadius = 6
             return cell2
         }
-        else if data.cell_type == "invuted"{
-            return cell
+            
+        else if data.cell_type == "invite"{
+            let cell2 = cell as! FriendInvitedCellTableViewCell
+            cell2.photo.image = data.photo
+            cell2.true_photo.image = UIImage(named:"True_photo")
+            if data.isRealPhoto!{
+                cell2.true_photo.tintColor = UIColor.white
+            }
+            else{
+                cell2.true_photo.tintColor = UIColor.clear
+            }
+            cell2.name.text = data.name
+            cell2.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            if data.online!{
+                cell2.online.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
+            }
+            else{
+                cell2.online.tintColor = UIColor.lightGray
+            }
+            let thePhotoLayer:CALayer = cell2.photo.layer
+            thePhotoLayer.masksToBounds = true
+            thePhotoLayer.cornerRadius = 6
+            return cell2
         }
+            
         else if data.cell_type == "list"{
-            return cell
+            let cell2 = cell as! FriendInvitedListTableViewCell
+            cell2.invited_count.text = String(describing: data.invite_list_count!)
+            return cell2
         }
         else{
             return cell
@@ -113,7 +136,7 @@ class FriendTableViewMedol{
             return false
         }){
             let list_index_int = list_index as Int
-            if friendsList.count == list_index_int - 1{
+            if friendsList.count == list_index_int + 1{
                 extend_btn_state = 2
             }
             else{extend_btn_state = 3}
@@ -125,29 +148,63 @@ class FriendTableViewMedol{
         let list_extend_btn = FriendStanderType()
         list_extend_btn.cell_type = "list"
         list_extend_btn.invite_list_count = self.invite_list.count
-        friendsList.append(list_extend_btn)
+        friendsList = friendsList + [list_extend_btn]
     }
     func add_invite_list_to_table() {
         friendsList += invite_list
     }
+    func remove_invite_list_to_table(){
+        if let list_btn_index = friendsList.index(where: { (target) -> Bool in
+            if target.cell_type == "list"{
+                return true
+            }
+            return false
+        }){
+            
+            var new_friendsList = friendsList
+            let list_btn_index_int = list_btn_index as Int
+            for remove_position_rev in 1 ..< friendsList.count{
+                let remove_position = friendsList.count - remove_position_rev
+                if remove_position > list_btn_index_int{
+                    new_friendsList.remove(at: remove_position)
+                }
+                else{
+                    break
+                }
+            }
+            friendsList = new_friendsList
+        
+        }
+    }
     func updateModel() {
+        
         let extend_btn_state:Int = table_view_state()
+        
         // 1.原本沒有伸展按鈕
         // 2.有伸展按鈕但沒打開
         // 3.有伸展按鈕且有打開
         if extend_btn_state == 1{
             if !self.invite_list.isEmpty{
                 add_list_extend_btn()
+                targetVC.tableView.reloadData()
             }
         }
         else if extend_btn_state == 2{
-            friendsList.remove(at: friendsList.count - 1)
+            var new_friendsList = friendsList
+            new_friendsList.remove(at: friendsList.count - 1)
+            friendsList = new_friendsList
             add_list_extend_btn()
+            targetVC.tableView.reloadData()
+            
         }
         else if extend_btn_state == 3{
-            friendsList.remove(at: friendsList.count - 1)
+            remove_invite_list_to_table()
+            var new_friendsList = friendsList
+            new_friendsList.remove(at: friendsList.count - 1)
+            friendsList = new_friendsList
             add_list_extend_btn()
             add_invite_list_to_table()
+            targetVC.tableView.reloadData()
         }
     }
     

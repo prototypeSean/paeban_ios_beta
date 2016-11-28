@@ -10,6 +10,8 @@ import UIKit
 
 class FriendInvitedListTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var invited_count: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
