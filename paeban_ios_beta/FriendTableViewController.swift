@@ -19,7 +19,7 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
     override func viewWillAppear(_ animated: Bool) {
         //autoLeap()
         self.tableView.reloadData()
-        //getInvitwList()
+        getInvitwList()
     }
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -67,6 +67,49 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
             topicViewCon.clientName = getSegueData["clientName"] as? String
             topicViewCon.clientImg = getSegueData["clientImg"] as? UIImage
             topicViewCon.title = "好友"
+        }
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if model?.friendsList[indexPath.row].cell_type == "list"{
+            if indexPath.row + 1 == model?.friendsList.count{
+                //伸
+                let befort_collapse_int = model?.friendsList.count
+                model?.add_invite_list_to_table()
+                let after_collapse_int = model?.friendsList.count
+                if after_collapse_int! > befort_collapse_int!{
+                    var insert_index_list:Array<IndexPath> = []
+                    for index_s in befort_collapse_int! ..< after_collapse_int!{
+                        let index_path = IndexPath(row: index_s, section: 0)
+                        insert_index_list.append(index_path)
+                    }
+                    self.tableView.beginUpdates()
+                    self.tableView.insertRows(at: insert_index_list, with: UITableViewRowAnimation.automatic)
+                    self.tableView.endUpdates()
+                }
+                else{
+                    self.tableView.reloadData()
+                }
+            }
+            else{
+                //收
+                let befort_collapse_int = model?.friendsList.count
+                model?.remove_invite_list_to_table()
+                let after_collapse_int = model?.friendsList.count
+                if befort_collapse_int! > after_collapse_int!{
+                    var insert_index_list:Array<IndexPath> = []
+                    for index_s in after_collapse_int! ..< befort_collapse_int!{
+                        let index_path = IndexPath(row: index_s, section: 0)
+                        insert_index_list.append(index_path)
+                    }
+                    self.tableView.beginUpdates()
+                    self.tableView.deleteRows(at: insert_index_list, with: UITableViewRowAnimation.automatic)
+                    self.tableView.endUpdates()
+                }
+                else{
+                    self.tableView.reloadData()
+                }
+            }
+            //收
         }
     }
     
@@ -145,6 +188,7 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
             if !return_dic.isEmpty{
                 DispatchQueue.main.async {
                     self.model?.addInviteList(input_dic: return_dic)
+                    self.model?.updateModel()
                 }
                 
             }

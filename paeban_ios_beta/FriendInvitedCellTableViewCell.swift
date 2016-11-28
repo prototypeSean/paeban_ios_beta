@@ -10,6 +10,18 @@ import UIKit
 
 class FriendInvitedCellTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var photo: UIImageView!
+    @IBOutlet weak var online: UIImageView!
+    @IBOutlet weak var true_photo: UIImageView!
+    @IBOutlet weak var name: UILabel!
+    @IBAction func ok_btn(_ sender: AnyObject) {
+    }
+    @IBAction func no_btn(_ sender: AnyObject) {
+    }
+
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
