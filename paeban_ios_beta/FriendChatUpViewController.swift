@@ -120,6 +120,72 @@ class FriendChatUpViewController: UIViewController {
         
     }
 
-    
+    // 封鎖
+    func block(){
+        let data:NSDictionary = [
+            "block_id":clientId!,
+        ]
+        let confirm = UIAlertController(title: "封鎖", message: "封鎖  \(clientName!) ? 將再也無法聯繫他", preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+            let nav = self.parent as! UINavigationController
+            nav.popViewController(animated: true)
+            HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
+                if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
+                    if key == "msgtype"{
+                        return true
+                    }
+                    else{return false}
+                }){
+                    if Dictionary["msgtype"] as! String == "block_success"{
+                        //code
+                    }
+                }
+            }
+            
+            
+            
+        }))
+        self.present(confirm, animated: true, completion: nil)
+        
+    }
+    // 舉報
+    func reportAbuse(){
+        let sendDic:NSDictionary = [
+            "report_id":clientId!,
+        ]
+        let confirm = UIAlertController(title: "舉報", message: "向管理員反應收到  \(clientName!) 的騷擾內容", preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction_void) in
+            HttpRequestCenter().privacy_function(msg_type: "report_friend", send_dic: sendDic, inViewAct: { (Dictionary) in
+                let msg_type = Dictionary["msg_type"] as! String
+                let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+                if msg_type == "success"{
+                    alert.title = "舉報"
+                    alert.message = "感謝您的回報，我們將儘速處理"
+                    
+                }
+                else if msg_type == "user_not_exist"{
+                    alert.title = "錯誤"
+                    alert.message = "用戶不存在"
+                }
+                else if msg_type == "topic_not_exist"{
+                    alert.title = "錯誤"
+                    alert.message = "話題不存在"
+                }
+                else if msg_type == "unknown_error"{
+                    alert.title = "錯誤"
+                    alert.message = "未知的錯誤"
+                }
+                DispatchQueue.main.async {
+                    self.present(alert, animated: true, completion: nil)
+                    
+                }
+            })
+        }))
+        self.present(confirm, animated: true, completion: nil)
+        
+    }
 
 }

@@ -15,7 +15,7 @@ class FriendTableViewCell: UITableViewCell {
     @IBOutlet weak var sexImg: UIImageView!
     @IBOutlet weak var onlineImg: UIImageView!
     @IBOutlet weak var name: UILabel!
-    
+    var cell_type:String!
     
     
     
