@@ -10,6 +10,7 @@ import UIKit
 import FBSDKLoginKit
 import FBSDKCoreKit
 import FBSDKShareKit
+import Starscream
 
 class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
     @IBAction func fbloninBottom(_ sender: AnyObject) {
@@ -96,6 +97,19 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
         }
         else{
             print("還沒登入ＦＢ!!!")
+        }
+    }
+    func get_cookie_login_report(state:String) {
+        if state != "login_no"{
+            print("登入成功!!!")
+            cookie = state
+            socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            socket.headers["Cookie"] = cookie
+            socket.delegate = main_vc
+            ws_connect_fun(socket)
+        }
+        else{
+            print("登入失敗!!!")
         }
     }
     /*

@@ -42,8 +42,10 @@ public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
 public var myFriendsList:Array<FriendStanderType> = [] //好友清單
 public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 public let notificationDelegateCenter_obj = NotificationDelegateCenter()
+public var main_vc:ViewController?
 
-class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
+
+public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
     @IBAction func loninBottom(_ sender: AnyObject) {
         check_online(in: self, with: fbLogIn)
@@ -63,24 +65,25 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     
     let login_paeban_obj = login_paeban()
     // MARK: override
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // 把註冊前的NAV隱藏
         self.navigationController?.isNavigationBarHidden = true
     }
-    override func viewWillDisappear(_ animated: Bool) {
+    override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 註冊頁顯示NAV
         //self.navigationController?.isNavigationBarHidden = false
     }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sing_in_segue"{
             self.navigationController?.isNavigationBarHidden = false
         }
     }
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         //isInternetAvailable
+        main_vc = self
         login_paeban_obj.delegate = self
         loginId.delegate = self
         logInPw.delegate = self
@@ -266,7 +269,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             wsTimer?.invalidate()
         }
     }
-    func websocketDidConnect(socket: WebSocket){
+    public func websocketDidConnect(socket: WebSocket){
         socketState = true
         reConnectCount = 0
         //print(NSDate())
@@ -286,7 +289,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         }
         
     }
-    func websocketDidDisconnect(socket: WebSocket, error: NSError?){
+    public func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         socketState = false
         print("disConnect")
         if logInState{
@@ -294,7 +297,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             wsTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
         }
     }
-    func websocketDidReceiveMessage(socket: WebSocket, text: String){
+    public func websocketDidReceiveMessage(socket: WebSocket, text: String){
         //print("msgincome=======")
         let msgPack = wsMsgTextToDic(text)
         wsActive.wsOnMsg(msgPack)
@@ -304,7 +307,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             }
         }
     }
-    func websocketDidReceiveData(socket: WebSocket, data: Data){
+    public func websocketDidReceiveData(socket: WebSocket, data: Data){
         print("data")
     }
     
