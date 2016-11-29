@@ -124,6 +124,9 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         }
         else if state == "login_no"{
             cookie = setcookie
+            DispatchQueue.main.async {
+                self.seugeToTutorial()
+            }
         }
         else{
             print(state)
@@ -138,6 +141,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
         logInPw.layer.borderWidth = 1
         logInPw.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
     }
+    //cc
     func fbLogIn() {
         fbLoginManager.logIn(withReadPermissions: ["email"],from: self.parent, handler: { (result, error) -> Void in
             if (error == nil){
@@ -191,6 +195,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             print("登入失敗!!!")
         }
     }
+    // cc
     func paeban_login_with_IDPW(id:String,pw:String){
         print("開始登入...")
         if id != "" && pw != ""{
@@ -247,7 +252,7 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
     }
     
     
-    // MARK:webSocket
+    // MARK: webSocket
     var wsTimer:Timer?
     var reConnectCount:Int = 0
     func stayConnect() {
@@ -342,9 +347,9 @@ class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, 
             //code
         })
     }
+    
+    // 如果沒登入導向教學頁面
+    func seugeToTutorial(){
+        self.performSegue(withIdentifier: "segueToTutorial", sender: self)
+    }
 }
-
-
-
-
-

@@ -9,7 +9,8 @@
 import UIKit
 
 class FriendInvitedCellTableViewCell: UITableViewCell {
-
+    @IBOutlet weak var no_btn_Outlet: UIButton!
+    @IBOutlet weak var ok_btn_Outlet: UIButton!
     @IBOutlet weak var photo: UIImageView!
     @IBOutlet weak var online: UIImageView!
     @IBOutlet weak var true_photo: UIImageView!
@@ -20,6 +21,15 @@ class FriendInvitedCellTableViewCell: UITableViewCell {
     }
 
     
+    @IBAction func no_btn_touchDown(_ sender: AnyObject) {
+        no_btn_Outlet.imageView?.image = UIImage(named:"cross")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        no_btn_Outlet.imageView?.tintColor = UIColor.red
+    }
+    @IBAction func ok_btn_touchDown(_ sender: AnyObject) {
+        ok_btn_Outlet.imageView?.image = UIImage(named:"check")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        ok_btn_Outlet.imageView?.tintColor = UIColor.green
+    }
+    
     
     
     override func awakeFromNib() {
@@ -29,7 +39,6 @@ class FriendInvitedCellTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
 
