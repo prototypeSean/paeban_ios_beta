@@ -7,6 +7,10 @@
 //
 
 import UIKit
+protocol FriendInvitedCellTableViewCell_delegate {
+    func slide_left(row_id:String)
+}
+
 
 class FriendInvitedCellTableViewCell: UITableViewCell {
 
@@ -14,37 +18,29 @@ class FriendInvitedCellTableViewCell: UITableViewCell {
     @IBOutlet weak var online: UIImageView!
     @IBOutlet weak var true_photo: UIImageView!
     @IBOutlet weak var name: UILabel!
-    @IBAction func ok_btn(_ sender: AnyObject) {
-    }
-    @IBAction func no_btn(_ sender: AnyObject) {
-    }
+    @IBOutlet weak var ok_btn: UIButton!
     var id:String?
-    
-    
+    var delegate:FriendInvitedCellTableViewCell_delegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        let swipeLeft: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(self.slide))
+        swipeLeft.direction = UISwipeGestureRecognizerDirection.left
+        self.addGestureRecognizer(swipeLeft)
     }
-
+    func slide(){
+        self.delegate?.slide_left(row_id: self.id!)
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
     
-    func remove_self(){
-        
-    }
     
-    func friend_confirm(answer:String){
-        let send_dic:NSDictionary = [
-            "msg_type":"friend_confirm",
-            "friend_id":self.id!,
-            "answer":answer
-        ]
-        socket.write(data: json_dumps(send_dic))
-    }
+    
 
 }
 

@@ -121,6 +121,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             let thePhotoLayer:CALayer = cell2.photo.layer
             thePhotoLayer.masksToBounds = true
             thePhotoLayer.cornerRadius = 6
+            cell2.delegate = targetVC
             return cell2
         }
             
@@ -219,6 +220,23 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             }
             friendsList = new_friendsList
         
+        }
+    }
+    func remove_cell(with id:String){
+        if targetVC.delete_alot_switch{
+            if let remove_id_index = friendsList.index(where: { (target) -> Bool in
+                if target.id == id{
+                    return true
+                }
+                return false
+            }){
+                let remove_id_index_int = remove_id_index as Int
+                friendsList.remove(at: remove_id_index_int)
+                let remove_index_path = IndexPath(row: remove_id_index_int, section: 0)
+                targetVC.tableView.beginUpdates()
+                targetVC.tableView.deleteRows(at: [remove_index_path], with: UITableViewRowAnimation.left)
+                targetVC.tableView.endUpdates()
+            }
         }
     }
     func updateModel() {

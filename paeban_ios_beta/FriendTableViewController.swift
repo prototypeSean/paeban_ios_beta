@@ -8,12 +8,22 @@
 
 import UIKit
 
-class FriendTableViewController: UITableViewController {
+class FriendTableViewController: UITableViewController,FriendInvitedCellTableViewCell_delegate {
     var model:FriendTableViewMedol?
     var segue_data_index:Int?
+    @IBAction func ok_btn(_ sender: AnyObject) {
+        let cell = sender.superview??.superview as! UITableViewCell
+        let indexPath = self.tableView.indexPath(for: cell)
+        ok_btn_click(click_row: indexPath!.row)
+    }
+    var delete_alot_switch = false
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         model = FriendTableViewMedol(with: self)
+        //self.tableView.gestureRecognizerShouldBegin(self.tableView.gestureRecognizers) = false
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         //autoLeap()
@@ -113,6 +123,7 @@ class FriendTableViewController: UITableViewController {
     }
 
     
+    
     // MARk: internal func
     func autoLeap(){
         if notificationSegueInf != [:] && recive_apns_switch{
@@ -180,6 +191,24 @@ class FriendTableViewController: UITableViewController {
         }
     }
     
+    
+    // MARK: event for cell button
+    func ok_btn_click(click_row:Int){
+        print("click")
+    }
+    func friend_confirm(answer:String, friend_id:String){
+        let send_dic:NSDictionary = [
+            "msg_type":"friend_confirm",
+            "friend_id":friend_id,
+            "answer":answer
+        ]
+        socket.write(data: json_dumps(send_dic))
+    }
+    
+    // MARK: delegate -> cell
+    func slide_left(row_id: String) {
+        model?.remove_cell(with: row_id)
+    }
 }
 
 
