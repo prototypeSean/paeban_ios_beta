@@ -22,6 +22,7 @@ open class FriendStanderType{
     var lastLine:String?
     var last_speaker:String?
     var invite_list_count:Int?
+    var online_checked = false
 }
 
 public func turnToFriendStanderType(_ id:String,name:String,sex:String,isRealPhoto:Bool,online:Bool,photoString:String) ->FriendStanderType{

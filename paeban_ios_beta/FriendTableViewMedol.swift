@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class FriendTableViewMedol{
+class FriendTableViewMedol:webSocketActiveCenterDelegate{
     var friendsList:Array<FriendStanderType>{
         get{
             return myFriendsList
@@ -27,6 +27,7 @@ class FriendTableViewMedol{
     
     init(with view_controller:FriendTableViewController) {
         self.targetVC = view_controller
+        wsActive.wasd_FriendTableViewMedol = self
     }
     
     func getCell(_ index:Int,cell:UITableViewCell) -> UITableViewCell {
@@ -52,12 +53,56 @@ class FriendTableViewMedol{
             let thePhotoLayer:CALayer = cell2.photo.layer
             thePhotoLayer.masksToBounds = true
             thePhotoLayer.cornerRadius = 6
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                if !data.online_checked{
+                    data.online_checked = true
+                    let send_dic:NSDictionary = [
+                        "msg_type":"check_online",
+                        "check_id":data.id!
+                    ]
+                    socket.write(data: json_dumps(send_dic))
+                }
+            }
             return cell2
         }
             
         else if data.cell_type == "invite"{
             let cell2 = cell as! FriendInvitedCellTableViewCell
+            if data.photo == nil{
+                DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                    if data.photoHttpStr != nil && data.photoHttpStr != ""{
+                        let url = "https://www.paeban.com/media/\(data.photoHttpStr!)"
+                        HttpRequestCenter().getHttpImg(url, getImg: { (get_img) in
+                            if let user_index = self.friendsList.index(where: { (target) -> Bool in
+                                if target.photoHttpStr == data.photoHttpStr!{
+                                    return true
+                                }
+                                return false
+                            }){
+                                self.friendsList[user_index].photo = get_img
+                                DispatchQueue.main.async {
+                                    self.targetVC.tableView.beginUpdates()
+                                    self.targetVC.tableView.reloadRows(at: [IndexPath(row: user_index as Int, section: 0)], with: UITableViewRowAnimation.automatic)
+                                    self.targetVC.tableView.endUpdates()
+                                }
+                            }
+                        })
+                    }
+                    
+                }
+                if !data.online_checked{
+                    data.online_checked = true
+                    let send_dic:NSDictionary = [
+                        "msg_type":"check_online",
+                        "check_id":data.id!
+                    ]
+                    socket.write(data: json_dumps(send_dic))
+                }
+                
+            }
+            
             cell2.photo.image = data.photo
+            cell2.id = data.id
             cell2.true_photo.image = UIImage(named:"True_photo")
             if data.isRealPhoto!{
                 cell2.true_photo.tintColor = UIColor.white
@@ -205,6 +250,45 @@ class FriendTableViewMedol{
             add_list_extend_btn()
             add_invite_list_to_table()
             targetVC.tableView.reloadData()
+        }
+    }
+    func update_online(){
+        
+    }
+    
+    // delegate
+    
+    func change_online_state(change_id:String, state:Bool){
+        if let update_online_index = friendsList.index(where: { (target) -> Bool in
+            if target.id == change_id{
+                return true
+            }
+            return false
+        }){
+            let update_online_index_path = IndexPath(row: update_online_index as Int, section: 0)
+            friendsList[update_online_index].online = state
+            targetVC.tableView.beginUpdates()
+            targetVC.tableView.reloadRows(at: [update_online_index_path], with: UITableViewRowAnimation.automatic)
+            targetVC.tableView.endUpdates()
+        }
+    }
+    
+    func wsOnMsg(_ msg: Dictionary<String, AnyObject>) {
+        if let msg_type:String =  msg["msg_type"] as? String{
+            if msg_type == "check_online"{
+                let check_id = msg["check_id"] as! String
+                let online = msg["online"] as! Bool
+                change_online_state(change_id: check_id, state: online)
+                
+            }
+            else if msg_type == "off_line"{
+                let check_id = msg["user_id"] as! String
+                change_online_state(change_id: check_id, state: false)
+            }
+            else if msg_type == "new_member"{
+                let check_id = msg["user_id"] as! String
+                change_online_state(change_id: check_id, state: true)
+            }
         }
     }
     

@@ -18,7 +18,7 @@ class FriendInvitedCellTableViewCell: UITableViewCell {
     }
     @IBAction func no_btn(_ sender: AnyObject) {
     }
-
+    var id:String?
     
     
     
@@ -32,5 +32,25 @@ class FriendInvitedCellTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func remove_self(){
+        
+    }
+    
+    func friend_confirm(answer:String){
+        let send_dic:NSDictionary = [
+            "msg_type":"friend_confirm",
+            "friend_id":self.id!,
+            "answer":answer
+        ]
+        socket.write(data: json_dumps(send_dic))
+    }
 
 }
+
+
+
+
+
+
+

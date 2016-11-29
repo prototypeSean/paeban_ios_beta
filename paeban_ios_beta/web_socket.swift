@@ -68,12 +68,12 @@ open class webSocketActiveCenter{
     let wasd_ForMyTopicTableViewControllerList = ["topic_msg","new_topic"]
     var wasd_ForRecentTableViewController:webSocketActiveCenterDelegate?
     let wasd_ForRecentTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed","recentDataCheck"]
-    var wasd_ForFriendTableViewController:webSocketActiveCenterDelegate?
-    let wasd_ForFriendTableViewControllerList = ["online","off_line","new_member"]
     var wasd_ForFriendChatViewController:webSocketActiveCenterDelegate?
     let wasd_ForFriendChatViewControllerList = ["history_priv_msg","priv_msg_been_read","priv_msg","has_been_read_many","online"]
     var wasd_ForMyTopicViewController:webSocketActiveCenterDelegate?
     let wasd_ForMyTopicViewControllerList = ["topic_msg","topic_closed"]
+    var wasd_FriendTableViewMedol:webSocketActiveCenterDelegate?
+    let wasd_FriendTableViewMedol_list = ["check_online","off_line","new_member"]
     
     
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
@@ -114,27 +114,6 @@ open class webSocketActiveCenter{
                     }
                     
                 }
-                else if msgtypeString == "off_line"{
-                    if let friendIndex = myFriendsList.index(where: { (friend) -> Bool in
-                        if friend.id! == msg["user_id"] as! String{
-                            return true
-                        }
-                        else{return false}
-                    }){
-                        myFriendsList[friendIndex].online = false
-                    }
-                }
-                else if msgtypeString == "new_member"{
-                    if let friendIndex = myFriendsList.index(where: { (friend) -> Bool in
-                        if friend.id! == msg["user_id"] as! String{
-                            return true
-                        }
-                        else{return false}
-                    }){
-                        myFriendsList[friendIndex].online = true
-                    }
-                }
-                
             }
             
             if wsad_ForTopicTableViewControllerList.index(of: msgtypeString) != nil {
@@ -153,15 +132,14 @@ open class webSocketActiveCenter{
             if wasd_ForRecentTableViewControllerList.index(of: msgtypeString) != nil {
                 wasd_ForRecentTableViewController?.wsOnMsg(msg)
             }
-            
-            if wasd_ForFriendTableViewControllerList.index(of: msgtypeString) != nil {
-                wasd_ForFriendTableViewController?.wsOnMsg(msg)
-            }
             if wasd_ForFriendChatViewControllerList.index(of: msgtypeString) != nil{
                 wasd_ForFriendChatViewController?.wsOnMsg(msg)
             }
             if wasd_ForMyTopicViewControllerList.index(of: msgtypeString) != nil{
                 wasd_ForMyTopicViewController?.wsOnMsg(msg)
+            }
+            if wasd_FriendTableViewMedol_list.index(of: msgtypeString) != nil{
+                wasd_FriendTableViewMedol?.wsOnMsg(msg)
             }
             
             if test_List.index(of: msgtypeString) != nil {

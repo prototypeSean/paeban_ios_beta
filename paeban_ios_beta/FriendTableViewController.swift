@@ -8,13 +8,12 @@
 
 import UIKit
 
-class FriendTableViewController: UITableViewController,webSocketActiveCenterDelegate {
+class FriendTableViewController: UITableViewController {
     var model:FriendTableViewMedol?
     var segue_data_index:Int?
     override func viewDidLoad() {
         super.viewDidLoad()
         model = FriendTableViewMedol(with: self)
-        wsActive.wasd_ForFriendTableViewController = self
     }
     override func viewWillAppear(_ animated: Bool) {
         //autoLeap()
@@ -112,20 +111,7 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
             //收
         }
     }
-    
-    // MARK:delegate -> websocket
-    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
-        let msgtype = msg["msg_type"] as! String
-        if msgtype == "online"{
-            self.tableView.reloadData()
-        }
-        else if msgtype == "off_line"{
-            self.tableView.reloadData()
-        }
-        else if msgtype == "new_member"{
-            self.tableView.reloadData()
-        }
-    }
+
     
     // MARk: internal func
     func autoLeap(){
@@ -153,7 +139,6 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
                             
                             notificationSegueInf = [:]
                             self.segue_data_index = targetData_Dickey
-                            print("=========segue=======")
                             self.performSegue(withIdentifier: "friendConBox", sender: nil)
                             break_flag = true
                             recive_apns_switch = false
