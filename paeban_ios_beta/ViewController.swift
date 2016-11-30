@@ -275,14 +275,14 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         //print(NSDate())
         wsTimer?.invalidate()
         wsTimer = Timer.scheduledTimer(timeInterval: 45, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
-        if firstConnect{
+        if firstConnect && logInState{
             ws_connected(socket)
             print("connected")
             firstConnect = false
             self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             
         }
-        else{
+        else if logInState{
             print("wsReConnected")
             ws_connected(socket)
             wsActive.wsReConnect()
@@ -292,6 +292,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         socketState = false
         print("disConnect")
+        print(logInState)
         if logInState{
             wsTimer?.invalidate()
             wsTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)

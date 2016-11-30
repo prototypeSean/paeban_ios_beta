@@ -220,84 +220,93 @@ class HttpRequestCenter{
     }
     
     fileprivate func ajax(_ url:String, sendDate:String,retryCount:Int ,outPutDic:@escaping (Dictionary<String,AnyObject>) -> Void){
-        var ouput:String?
-        var ouput_json = [String:AnyObject]()
-        var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = "POST"
-        let csrf = getCSRFToken(cookie!)
-//        print("======cookie=======")
-//        print(cookie)
-//        print(isInternetAvailable())
-        request.allHTTPHeaderFields = ["Cookie":cookie!]
-        request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
-        request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
-        request.httpBody = sendDate.data(using: String.Encoding.utf8)
-        let session = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
-            if error != nil{
-                print("======連線錯誤======")
-                print(error)
-                if retryCount > 0{
-                    DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
-                        sleep(1)
-                        self.ajax(url, sendDate: sendDate, retryCount:retryCount-1, outPutDic: outPutDic)
+        if cookie != nil{
+            var ouput:String?
+            var ouput_json = [String:AnyObject]()
+            var request = URLRequest(url: URL(string: url)!)
+            request.httpMethod = "POST"
+            let csrf = getCSRFToken(cookie!)
+            //        print("======cookie=======")
+            //        print(cookie)
+            //        print(isInternetAvailable())
+            request.allHTTPHeaderFields = ["Cookie":cookie!]
+            request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
+            request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
+            request.httpBody = sendDate.data(using: String.Encoding.utf8)
+            let session = URLSession.shared
+            let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
+                if error != nil{
+                    print("======連線錯誤======")
+                    print(error)
+                    if retryCount > 0{
+                        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
+                            sleep(1)
+                            self.ajax(url, sendDate: sendDate, retryCount:retryCount-1, outPutDic: outPutDic)
+                        }
+                        
                     }
                     
                 }
-                
-            }
-            else{
-                ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as? String
-                if let res = response as? HTTPURLResponse{
-                    let status = res.statusCode
-                    if status == 200{
-                        ouput_json = json_load(ouput!) as! Dictionary
-                        //print(ouput_json)
-                        outPutDic(ouput_json)
-                        //print(response)
+                else{
+                    ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as? String
+                    if let res = response as? HTTPURLResponse{
+                        let status = res.statusCode
+                        if status == 200{
+                            ouput_json = json_load(ouput!) as! Dictionary
+                            //print(ouput_json)
+                            outPutDic(ouput_json)
+                            //print(response)
+                        }
+                        else{
+                            print(response)
+                            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
+                        }
                     }
-                    else{
-                        print(response)
-                        print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
-                    }
+                    
                 }
-                
-            }
-        })
-        task.resume()
+            })
+            task.resume()
+        }
+        else{
+            print("cookie is nil")
+        }
+
+        
         
     }
     
     
     
     func getHttpImg(_ url:String,getImg:@escaping (_ img:UIImage)->Void){
-        
-        var ouput:UIImage?
-        var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = "GET"
-        let csrf = getCSRFToken(cookie!)
-        request.allHTTPHeaderFields = ["Cookie":cookie!]
-        request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
-        let session = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
-            if error != nil{
-                print("連線錯誤")
-            }
-            else{
-                ouput = UIImage(data: data!)
-                if let res = response as? HTTPURLResponse{
-                    let status = res.statusCode
-                    if status != 200{
-                        print(response)
-                        print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
-                    }
-                    
+        if cookie != nil{
+            var ouput:UIImage?
+            var request = URLRequest(url: URL(string: url)!)
+            request.httpMethod = "GET"
+            let csrf = getCSRFToken(cookie!)
+            request.allHTTPHeaderFields = ["Cookie":cookie!]
+            request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
+            let session = URLSession.shared
+            let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
+                if error != nil{
+                    print("連線錯誤")
                 }
-                getImg(ouput!)
-            }
-        })
-        
-        task.resume()
+                else{
+                    ouput = UIImage(data: data!)
+                    if let res = response as? HTTPURLResponse{
+                        let status = res.statusCode
+                        if status != 200{
+                            print(response)
+                            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
+                        }
+                        
+                    }
+                    getImg(ouput!)
+                }
+            })
+            
+            task.resume()
+        }
+        else{print("cookie is nil")}
     }
     
     
