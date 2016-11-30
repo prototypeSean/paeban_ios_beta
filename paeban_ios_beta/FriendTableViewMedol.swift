@@ -34,6 +34,38 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         let data = friendsList[index]
         if data.cell_type == "friend"{
             let cell2 = cell as! FriendTableViewCell
+            if data.photo == nil{
+                DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                    if data.photoHttpStr != nil && data.photoHttpStr != ""{
+                        let url = "https://www.paeban.com/media/\(data.photoHttpStr!)"
+                        HttpRequestCenter().getHttpImg(url, getImg: { (get_img) in
+                            if let user_index = self.friendsList.index(where: { (target) -> Bool in
+                                if target.photoHttpStr == data.photoHttpStr!{
+                                    return true
+                                }
+                                return false
+                            }){
+                                self.friendsList[user_index].photo = get_img
+                                DispatchQueue.main.async {
+                                    self.targetVC.tableView.beginUpdates()
+                                    self.targetVC.tableView.reloadRows(at: [IndexPath(row: user_index as Int, section: 0)], with: UITableViewRowAnimation.none)
+                                    self.targetVC.tableView.endUpdates()
+                                }
+                            }
+                        })
+                    }
+                    
+                }
+                if !data.online_checked{
+                    data.online_checked = true
+                    let send_dic:NSDictionary = [
+                        "msg_type":"check_online",
+                        "check_id":data.id!
+                    ]
+                    socket.write(data: json_dumps(send_dic))
+                }
+                
+            }
             cell2.photo.image = data.photo
             cell2.truePhoto.image = UIImage(named:"True_photo")
             if data.isRealPhoto!{
@@ -246,21 +278,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             invite_list.remove(at: remove_id_index_int)
         }
         
-        if let remove_id_index = friendsList.index(where: { (target) -> Bool in
-            if target.id == id{
-                return true
-            }
-            return false
-        }){
-            let remove_id_index_int = remove_id_index as Int
-            friendsList.remove(at: remove_id_index_int)
-            //let remove_index_path = IndexPath(row: remove_id_index_int, section: 0)
-            if invite_list.isEmpty{
-                remove_list_btn()
-                print(friendsList)
-            }
-            targetVC.tableView.reloadData()
-        }
+        updateModel()
     }
     
     func updateModel() {
@@ -297,7 +315,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
     func update_online(){
         
     }
-    func add_frienf(id:String, name:String, photoHttpStr:String, isRealPhoto:Bool){
+    func add_friend(id:String, name:String, photoHttpStr:String, isRealPhoto:Bool){
         let friend_obj = FriendStanderType()
         friend_obj.cell_type = "friend"
         friend_obj.id = id
@@ -320,13 +338,20 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         }
     }
     func add_singo_invite_cell(msg:Dictionary<String, AnyObject>){
+        print(msg)
         let invite_obj = FriendStanderType()
+        invite_obj.cell_type = "invite"
         invite_obj.id = msg["sender_id"] as? String
         invite_obj.name = msg["sender_name"] as? String
         invite_obj.photoHttpStr = msg["sender_pic"] as? String
         invite_obj.isRealPhoto = msg["isRealPhoto"] as? Bool
         invite_obj.online = false
         invite_list.append(invite_obj)
+        print(invite_obj.id)
+        print(invite_obj.name)
+        print(invite_obj.photoHttpStr)
+        print(invite_obj.isRealPhoto)
+        
         updateModel()
         
     }
@@ -365,7 +390,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             }
             else if msg_type == "friend_confirm_success"{
                 if msg["answer"] as! String == "yes"{
-                    self.add_frienf(id: msg["friend_id"] as! String,
+                    print(msg)
+                    self.add_friend(id: msg["friend_id"] as! String,
                                     name: msg["friend_name"] as! String,
                                     photoHttpStr: msg["friend_pic"] as! String,
                                     isRealPhoto: msg["isRealPhoto"] as! Bool

@@ -144,15 +144,16 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         //let img_blank_string = "         "
         //let img_check_unicode = "  \u{2714}  "
         let ok_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "  \u{2713}  ") { (UITableViewRowAction, IndexPath) in
+            self.friend_confirm(answer: "yes", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
             self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
-            //self.friend_confirm(answer: "yes", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
+            
         }
         //let img2 = UIImage(named: "check")
         
         ok_btn.backgroundColor = UIColor.green
         let del_btn = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "  \u{2A2F}  ") { (UITableViewRowAction, IndexPath) in
             print("no")
-            //self.friend_confirm(answer: "no", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
+            self.friend_confirm(answer: "no", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
             self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
         }
         //let img1 = UIImage(named: "cross")
