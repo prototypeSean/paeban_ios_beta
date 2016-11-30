@@ -77,6 +77,14 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     override func viewDidLayoutSubviews() {
         initAddTopicArea()
     }
+    // 從聊天視窗回到清單把cell的反灰取消
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let path = topicList.indexPathForSelectedRow {
+            topicList.deselectRow(at: path, animated: true)
+        }
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //print(segue.identifier)
         // 轉跳頁面時，收起鍵盤跟開話題的視窗（如果有的話）
@@ -259,15 +267,16 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         var sexImg:UIImage?
         switch topic.sex {
         case "男":
-            sexImg = UIImage(named: "male")!
+            sexImg = UIImage(named: "male")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         case "女":
-            sexImg = UIImage(named:"gay")!
+            sexImg = UIImage(named:"female")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            cell.sex.tintColor = UIColor(red:1.00, green:0.49, blue:0.42, alpha:1.0)
         case "男同":
-            sexImg = UIImage(named:"gay")!
+            sexImg = UIImage(named:"gay")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         case "女同":
-            sexImg = UIImage(named:"lesbain")!
+            sexImg = UIImage(named:"lesbain")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         default:
-            sexImg = UIImage(named: "male")!
+            sexImg = UIImage(named: "male")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             print("性別圖示分類失敗")
         }
         cell.sex.image = sexImg
