@@ -182,7 +182,7 @@
                 <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="IJU-dt-a9R" customClass="TutorialPageViewController" customModule="paeban_ios_beta" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NEp-BM-KlP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6961" y="-3444"/>
+            <point key="canvasLocation" x="-4293" y="-3417"/>
         </scene>
         <!--Page2 View Controller-->
         <scene sceneID="jfO-ot-rOG">
@@ -207,7 +207,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5NP-Hn-Y1C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5614" y="-3443"/>
+            <point key="canvasLocation" x="-2943" y="-3417"/>
         </scene>
         <!--Regist And Login View Controller-->
         <scene sceneID="USQ-O7-aZ6">
@@ -303,7 +303,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MUc-CI-h7c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4917" y="-3443"/>
+            <point key="canvasLocation" x="-2248" y="-3417"/>
         </scene>
         <!--Page1 View Controller-->
         <scene sceneID="Vmv-ig-ENd">
@@ -328,7 +328,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dGl-72-jHm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6299" y="-3444"/>
+            <point key="canvasLocation" x="-3630" y="-3418"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="wCD-5l-xCr">
@@ -558,7 +558,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ume-ts-Djm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4184" y="-2854"/>
+            <point key="canvasLocation" x="-4293" y="-2746"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="KGA-aL-GIv">
@@ -722,7 +722,7 @@
                                         <rect key="frame" x="0.0" y="92" width="414" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
-                                            <frame key="frameInset" width="414" height="79"/>
+                                            <frame key="frameInset" width="414" height="79.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房主的暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPN-A9-vyF">
@@ -2259,7 +2259,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UJc-sI-jvU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3181" y="905"/>
+            <point key="canvasLocation" x="-3178" y="915"/>
         </scene>
         <!--好友-->
         <scene sceneID="Zse-f7-ZDN">
@@ -2519,7 +2519,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CJD-gg-38s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5399" y="-324"/>
+            <point key="canvasLocation" x="-5384" y="-346"/>
         </scene>
         <!--Setting Profile Pic View Controller-->
         <scene sceneID="h4H-Gv-tUA">
