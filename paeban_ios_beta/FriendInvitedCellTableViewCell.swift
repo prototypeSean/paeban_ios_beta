@@ -32,14 +32,16 @@ class FriendInvitedCellTableViewCell: UITableViewCell {
     }
     func slide(){
         self.delegate?.slide_left(row_id: self.id!)
+        
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
-    
-    
+    override func willTransition(to state: UITableViewCellStateMask) {
+        //code
+    }
     
 
 }

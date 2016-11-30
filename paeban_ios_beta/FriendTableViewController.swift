@@ -121,7 +121,48 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             //收
         }
     }
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if model?.friendsList[indexPath.row].cell_type == "invite"{
+            return true
+        }
+        return false
+    }
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+//        func change(img2:UIImage) -> UIImage{
+//            let rect_int:CGFloat = 80
+//            let rect_int2:CGFloat = 80
+//            let rect = CGRect(x: 0, y: 0, width: rect_int, height: rect_int)
+//
+//            UIGraphicsBeginImageContext(rect.size)
+//            img2.draw(in: CGRect(x: (rect_int - rect_int2)/1, y: (rect_int - rect_int2)/1, width: rect_int2, height: rect_int2))
+//            
+//            let img1 = UIGraphicsGetImageFromCurrentImageContext()
+//            UIGraphicsEndImageContext()
+//            print(UIGraphicsGetImageFromCurrentImageContext())
+//            return img1!
+//        }
+        //let img_blank_string = "         "
+        //let img_check_unicode = "  \u{2714}  "
+        let ok_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "  \u{2713}  ") { (UITableViewRowAction, IndexPath) in
+            self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
+            //self.friend_confirm(answer: "yes", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
+        }
+        //let img2 = UIImage(named: "check")
+        
+        ok_btn.backgroundColor = UIColor.green
+        let del_btn = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "  \u{2A2F}  ") { (UITableViewRowAction, IndexPath) in
+            print("no")
+            //self.friend_confirm(answer: "no", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
+            self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
+        }
+        //let img1 = UIImage(named: "cross")
+        //del_btn.backgroundColor = UIColor(patternImage: change(img2: img1!))
+        del_btn.backgroundColor = UIColor.red
 
+        
+        
+        return [del_btn, ok_btn]
+    }
     
     
     // MARk: internal func

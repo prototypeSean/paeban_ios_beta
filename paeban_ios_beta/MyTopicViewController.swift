@@ -27,6 +27,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     @IBAction func addFriendRelease(_ sender: AnyObject) {
         btnAddFriend.layer.backgroundColor = UIColor.white.cgColor
         btnAddFriend.layer.borderWidth = 1
+        addFriend()
     }
     @IBAction func btnIgnorClick(_ sender: AnyObject) {
         btnIgnroe.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
@@ -264,6 +265,13 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         self.present(confirm, animated: true, completion: nil)
         
     }
+    func addFriend(){
+        let sendDic:NSDictionary = [
+            "msg_type":"add_friend",
+            "friend_id":setID!
+        ]
+        socket.write(data: json_dumps(sendDic))
+    }
     
     
     // override
@@ -333,6 +341,11 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
                     self.alertTopicClosed()
                 }
             }
+        }
+        else if msgType == "has_been_friend"{
+            let alert = UIAlertController(title: "好友", message: "已經是好友了", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
         
         
