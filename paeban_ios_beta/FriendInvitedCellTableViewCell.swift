@@ -19,11 +19,9 @@ class FriendInvitedCellTableViewCell: UITableViewCell {
     @IBOutlet weak var online: UIImageView!
     @IBOutlet weak var true_photo: UIImageView!
     @IBOutlet weak var name: UILabel!
-    @IBAction func ok_btn(_ sender: AnyObject) {
-    }
-    @IBAction func no_btn(_ sender: AnyObject) {
-    }
-
+    @IBOutlet weak var ok_btn: UIButton!
+    var id:String?
+    var delegate:FriendInvitedCellTableViewCell_delegate?
     
     @IBAction func no_btn_touchDown(_ sender: AnyObject) {
         no_btn_Outlet.imageView?.image = UIImage(named:"cross")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
