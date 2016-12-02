@@ -268,13 +268,16 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         switch topic.sex {
         case "男":
             sexImg = UIImage(named: "male")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            cell.sex.tintColor = UIColor(red:0.27, green:0.71, blue:0.88, alpha:1.0)
         case "女":
             sexImg = UIImage(named:"female")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             cell.sex.tintColor = UIColor(red:1.00, green:0.49, blue:0.42, alpha:1.0)
         case "男同":
             sexImg = UIImage(named:"gay")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            cell.sex.tintColor = UIColor(red:0.27, green:0.71, blue:0.88, alpha:1.0)
         case "女同":
             sexImg = UIImage(named:"lesbain")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            cell.sex.tintColor = UIColor(red:1.00, green:0.49, blue:0.42, alpha:1.0)
         default:
             sexImg = UIImage(named: "male")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             print("性別圖示分類失敗")
