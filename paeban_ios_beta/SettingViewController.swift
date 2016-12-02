@@ -9,7 +9,7 @@
 import UIKit
 import Starscream
 
-class SettingViewController: UIViewController {
+class SettingViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var isTruePhotoSwitch: UISwitch!
 
     @IBOutlet weak var isTruePhoto: UIImageView!
@@ -28,6 +28,24 @@ class SettingViewController: UIViewController {
             print("off")
             isTruePhoto.tintColor = UIColor.clear
         }
+    }
+    
+    @IBAction func text_change(_ sender: UITextField) {
+        if sender.text != nil{
+            change_name_btn_text(text: sender.text!)
+        }
+        
+    }
+    @IBOutlet weak var name_text: UITextField!
+    @IBAction func name_btn(_ sender: AnyObject) {
+        edit_name()
+    }
+    @IBOutlet weak var name_btn_obj: UIButton!
+    
+
+    @IBOutlet weak var is_true_photo_switch: UISwitch!
+    @IBAction func save_btn(_ sender: AnyObject) {
+        save_data_to_server()
     }
     // internal func
     func logOut(){
@@ -48,6 +66,74 @@ class SettingViewController: UIViewController {
             })
         }
     }
+    func edit_name(){
+        name_text.becomeFirstResponder()
+    }
+    func change_name_btn_text(text:String){
+        name_btn_obj.setTitle(text, for: UIControlState.normal)
+    }
+    func resizeImage1(image: UIImage, newWidth: CGFloat) -> UIImage {
+        let jpegImgData = UIImageJPEGRepresentation(image, 100)
+        let jpegImg = UIImage(data: jpegImgData!)
+        let scale = newWidth / jpegImg!.size.width
+        let newHeight = jpegImg!.size.height * scale
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        jpegImg!.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
+    func save_data_to_server(){
+        var is_true_photo:String
+        if is_true_photo_switch.isOn{
+            is_true_photo = "true"
+        }
+        else{is_true_photo = "false"}
+        
+        var send_dic:Dictionary<String,String> = [
+            "is_myself": is_true_photo,
+            "mode": "change_profile"
+            ]
+        let child_vc = self.childViewControllers[0] as! SettingProfilePicViewController
+        if child_vc.profilePicImg.image != userData.img && userData.img != nil{
+            var send_img_str = ""
+            var init_qulity = 200
+            while send_img_str.characters.count > 50000 || send_img_str.characters.count == 0{
+                let new_img = child_vc.profilePicImg.image
+                let re_img  = resizeImage1(image: new_img!, newWidth: CGFloat(init_qulity))
+                child_vc.profilePicImg.image = re_img
+                let new_img_base64 = imageToBase64(image: re_img, optional: "none")
+                send_img_str = new_img_base64
+                init_qulity -= 5
+            }
+            
+            send_dic["is_new_img"] = "data3image/jpeg3base64," + send_img_str
+            // ;會造成字典解析錯誤 詳見 HttpRequestCenter().change_profile
+            
+        }
+        if name_text.text != userData.name && userData.name != nil && name_text.text != ""{
+            send_dic["new_name"] = name_text.text!
+        }
+        
+        HttpRequestCenter().change_profile(send_dic: send_dic as NSDictionary) { (return_dic) in
+            print(return_dic)
+            //["old_user_name": , "show_my_gender": 1, "old_user_pic": member/154/tes_gkpZIVk.jpeg, "show_my_photo": 0, "msg_type": update_user_profile, "user_pic": member/154/tes_gkpZIVk.jpeg, "user_name": ]
+            userData.name = return_dic["user_name"] as! String?
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                let url = locale_host + "media/" + (return_dic["user_pic"] as! String)
+                HttpRequestCenter().getHttpImg(url, getImg: { (return_img) in
+                    userData.img = return_img
+                })
+            }
+            
+        }
+        let nav = self.parent as? UINavigationController
+        nav?.popToRootViewController(animated: true)
+        
+        
+    }
+    
     // override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,5 +145,26 @@ class SettingViewController: UIViewController {
         isTruePhotoSwitch.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
         // 調整勾勾圖示的預設渲染模式
         isTruePhoto.image = UIImage(named:"True_photo")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        
+        name_text.isHidden  = true
+        name_text.delegate = self
+        name_btn_obj.setTitle("name", for: UIControlState.normal)
     }
+    
+    // delegate -> textFiled
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        name_text.resignFirstResponder()
+        
+        return true
+    }
+    
 }
+
+
+
+
+
+
+
+
+

@@ -158,6 +158,18 @@ class HttpRequestCenter{
         }
     }
     
+    func change_profile(send_dic:NSDictionary, inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
+        let url = "https://www.paeban.com/change_profile/"
+        var send_dic_string = ""
+        for send_dic_s in send_dic{
+            send_dic_string += "\(send_dic_s.key)=\(send_dic_s.value);"
+        }
+        ajax(url, sendDate: send_dic_string, retryCount:5) { (returnDic) in
+            inViewAct(returnDic)
+        }
+        
+    }
+    
     // MARK:================私有函數===============
     
     // MARK:轉換為Topic的標準格式

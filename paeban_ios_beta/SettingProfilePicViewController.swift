@@ -16,6 +16,9 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
     
     @IBOutlet weak var profilePicBtn: UIButton!
     @IBOutlet weak var profilePicShadow: UIView!
+    @IBAction func change_btn(_ sender: AnyObject) {
+        addImgBtn()
+    }
     // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,13 +94,40 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
 //        profilePicBtn.clipsToBounds = true
         profilePicborderView.addSubview(profilePicImg)
         // 莫名其妙成功了的一行
-        profilePicImg.addSubview(profilePicBtn)
         
-        print(profilePicImg.frame.size.height,profilePicImg.frame.size.width)
+        //==============test============
+        //profilePicImg.addSubview(profilePicBtn)
+        profilePicBtn.isHidden = true
+        let test_view = UIView()
+        test_view.backgroundColor = UIColor.gray
+        test_view.frame = CGRect(
+            x: CGFloat(0),
+            y: (profilePicImg.frame.height * 0.8),
+            width: profilePicImg.frame.width,
+            height: (profilePicImg.frame.height * 0.2)
+        )
+        profilePicImg.addSubview(test_view)
+        let label = UILabel()
+        label.textColor = UIColor.white
+        label.text = "更換照片"
+        label.sizeToFit()
+        print(label.frame)
+        label.frame = CGRect(
+            x: CGFloat((test_view.frame.width - label.frame.width)/2),
+            y: CGFloat((test_view.frame.height - label.frame.height)/2),
+            width: label.frame.width,
+            height: label.frame.height
+        )
+        //label.center = test_view.center
+        test_view.addSubview(label)
         
-        profilePicImg.isUserInteractionEnabled = true
-        let tapAction = UITapGestureRecognizer(target: self, action: #selector(addImgBtn))
-        profilePicImg.addGestureRecognizer(tapAction)
+        
+        
+        //print(profilePicImg.frame.size.height,profilePicImg.frame.size.width)
+        
+//        profilePicImg.isUserInteractionEnabled = true
+//        let tapAction = UITapGestureRecognizer(target: self, action: #selector(addImgBtn))
+//        profilePicImg.addGestureRecognizer(tapAction)
         
         
         

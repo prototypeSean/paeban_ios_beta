@@ -42,6 +42,7 @@ public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
 public var myFriendsList:Array<FriendStanderType> = [] //好友清單
 public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 public let notificationDelegateCenter_obj = NotificationDelegateCenter()
+public let locale_host = "https://www.paeban.com/"
 
 class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
