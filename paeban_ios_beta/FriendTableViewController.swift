@@ -8,13 +8,22 @@
 
 import UIKit
 
-class FriendTableViewController: UITableViewController,webSocketActiveCenterDelegate {
+class FriendTableViewController: UITableViewController,FriendInvitedCellTableViewCell_delegate {
     var model:FriendTableViewMedol?
     var segue_data_index:Int?
+    @IBAction func ok_btn(_ sender: AnyObject) {
+        let cell = sender.superview??.superview as! UITableViewCell
+        let indexPath = self.tableView.indexPath(for: cell)
+        ok_btn_click(click_row: indexPath!.row)
+    }
+    var delete_alot_switch = false
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         model = FriendTableViewMedol(with: self)
-        wsActive.wasd_ForFriendTableViewController = self
+        //self.tableView.gestureRecognizerShouldBegin(self.tableView.gestureRecognizers) = false
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         //autoLeap()
@@ -112,20 +121,50 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
             //收
         }
     }
-    
-    // MARK:delegate -> websocket
-    func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
-        let msgtype = msg["msg_type"] as! String
-        if msgtype == "online"{
-            self.tableView.reloadData()
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if model?.friendsList[indexPath.row].cell_type == "invite"{
+            return true
         }
-        else if msgtype == "off_line"{
-            self.tableView.reloadData()
-        }
-        else if msgtype == "new_member"{
-            self.tableView.reloadData()
-        }
+        return false
     }
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+//        func change(img2:UIImage) -> UIImage{
+//            let rect_int:CGFloat = 80
+//            let rect_int2:CGFloat = 80
+//            let rect = CGRect(x: 0, y: 0, width: rect_int, height: rect_int)
+//
+//            UIGraphicsBeginImageContext(rect.size)
+//            img2.draw(in: CGRect(x: (rect_int - rect_int2)/1, y: (rect_int - rect_int2)/1, width: rect_int2, height: rect_int2))
+//            
+//            let img1 = UIGraphicsGetImageFromCurrentImageContext()
+//            UIGraphicsEndImageContext()
+//            print(UIGraphicsGetImageFromCurrentImageContext())
+//            return img1!
+//        }
+        //let img_blank_string = "         "
+        //let img_check_unicode = "  \u{2714}  "
+        let ok_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "  \u{2713}  ") { (UITableViewRowAction, IndexPath) in
+            self.friend_confirm(answer: "yes", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
+            self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
+            
+        }
+        //let img2 = UIImage(named: "check")
+        
+        ok_btn.backgroundColor = UIColor.green
+        let del_btn = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "  \u{2A2F}  ") { (UITableViewRowAction, IndexPath) in
+            print("no")
+            self.friend_confirm(answer: "no", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
+            self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
+        }
+        //let img1 = UIImage(named: "cross")
+        //del_btn.backgroundColor = UIColor(patternImage: change(img2: img1!))
+        del_btn.backgroundColor = UIColor.red
+
+        
+        
+        return [del_btn, ok_btn]
+    }
+    
     
     // MARk: internal func
     func autoLeap(){
@@ -153,7 +192,6 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
                             
                             notificationSegueInf = [:]
                             self.segue_data_index = targetData_Dickey
-                            print("=========segue=======")
                             self.performSegue(withIdentifier: "friendConBox", sender: nil)
                             break_flag = true
                             recive_apns_switch = false
@@ -195,6 +233,24 @@ class FriendTableViewController: UITableViewController,webSocketActiveCenterDele
         }
     }
     
+    
+    // MARK: event for cell button
+    func ok_btn_click(click_row:Int){
+        print("click")
+    }
+    func friend_confirm(answer:String, friend_id:String){
+        let send_dic:NSDictionary = [
+            "msg_type":"friend_confirm",
+            "friend_id":friend_id,
+            "answer":answer
+        ]
+        socket.write(data: json_dumps(send_dic))
+    }
+    
+    // MARK: delegate -> cell
+    func slide_left(row_id: String) {
+        model?.remove_cell(with: row_id)
+    }
 }
 
 

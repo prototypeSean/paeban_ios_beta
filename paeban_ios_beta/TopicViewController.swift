@@ -305,7 +305,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     func addFriend(){
         let sendDic:NSDictionary = [
             "msg_type":"add_friend",
-            "friend_id":setID
+            "friend_id":setID!
         ]
         socket.write(data: json_dumps(sendDic))
     }

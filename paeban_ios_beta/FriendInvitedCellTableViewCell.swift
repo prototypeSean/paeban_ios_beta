@@ -7,6 +7,10 @@
 //
 
 import UIKit
+protocol FriendInvitedCellTableViewCell_delegate {
+    func slide_left(row_id:String)
+}
+
 
 class FriendInvitedCellTableViewCell: UITableViewCell {
     @IBOutlet weak var no_btn_Outlet: UIButton!
@@ -35,11 +39,29 @@ class FriendInvitedCellTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        let swipeLeft: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(self.slide))
+        swipeLeft.direction = UISwipeGestureRecognizerDirection.left
+        self.addGestureRecognizer(swipeLeft)
     }
-
+    func slide(){
+        self.delegate?.slide_left(row_id: self.id!)
+        
+    }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
+    override func willTransition(to state: UITableViewCellStateMask) {
+        //code
+    }
+    
 
 }
+
+
+
+
+
+
+

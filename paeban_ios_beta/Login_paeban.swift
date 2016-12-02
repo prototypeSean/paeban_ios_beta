@@ -70,18 +70,18 @@ class login_paeban{
                     //                        print("========print(response)========")
                     //                        print(response)
                     if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
-                        print("001")
+                        
                         self.delegate?.get_cookie_csrf_report!(state: ouput as! String,setcookie:response_cookie)
                     }
                     else{
                         self.delegate?.get_cookie_csrf_report!(state: "login_fail",setcookie:"")
-                        print("002")
+                        
                     }
                     
                 }
                 else{
                     self.delegate?.get_cookie_csrf_report!(state: "login_fail",setcookie:"")
-                    print("003")
+                    
                 }
                 
                 //print(ouput)

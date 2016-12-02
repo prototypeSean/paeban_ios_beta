@@ -24,8 +24,6 @@ class HttpRequestCenter{
         let sendData = "mode=new"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) -> Void in
             let turnToType = self.topic_type(returnData as Dictionary<NSObject, AnyObject>)
-            //print("httpCenter_27")
-            //print(returnData)
             topicData(turnToType)
         }
     }
@@ -158,6 +156,18 @@ class HttpRequestCenter{
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
             inViewAct(returnDic)
         }
+    }
+    
+    func change_profile(send_dic:NSDictionary, inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
+        let url = "https://www.paeban.com/change_profile/"
+        var send_dic_string = ""
+        for send_dic_s in send_dic{
+            send_dic_string += "\(send_dic_s.key)=\(send_dic_s.value);"
+        }
+        ajax(url, sendDate: send_dic_string, retryCount:5) { (returnDic) in
+            inViewAct(returnDic)
+        }
+        
     }
     
     // MARK:================私有函數===============

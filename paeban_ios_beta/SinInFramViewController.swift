@@ -309,7 +309,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         return 1
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
-        return 4
+        return genderOption.count
     }
 
     

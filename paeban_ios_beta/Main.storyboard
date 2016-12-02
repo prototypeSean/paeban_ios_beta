@@ -656,6 +656,9 @@
                                 <state key="normal" title="儲存">
                                     <color key="titleColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="save_btn:" destination="fKg-5c-ll5" eventType="touchUpInside" id="VEo-nL-OtA"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SbO-DT-2Sj">
                                 <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -671,6 +674,29 @@
                                     <constraint firstAttribute="width" secondItem="tZa-dJ-zR5" secondAttribute="height" multiplier="1:1" id="LJG-Hy-ZjM"/>
                                 </constraints>
                             </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S25-om-PzD">
+                                <frame key="frameInset" minX="139" minY="376" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.56720009429999996" green="1" blue="0.67755557570000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="text_change:" destination="fKg-5c-ll5" eventType="editingChanged" id="Env-eg-LcR"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="32V-73-tmZ">
+                                <frame key="frameInset" minX="73" minY="281" width="228" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="name_btn:" destination="fKg-5c-ll5" eventType="touchUpInside" id="mpc-Xj-NBY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -712,12 +738,15 @@
                     <connections>
                         <outlet property="isTruePhoto" destination="uRi-2o-6l1" id="D8K-u4-xwb"/>
                         <outlet property="isTruePhotoSwitch" destination="fYH-Co-Mvs" id="QHd-P7-bCR"/>
+                        <outlet property="is_true_photo_switch" destination="fYH-Co-Mvs" id="YMk-bn-Qeq"/>
+                        <outlet property="name_btn_obj" destination="32V-73-tmZ" id="a7l-1q-qVy"/>
+                        <outlet property="name_text" destination="S25-om-PzD" id="ph7-Ac-cCn"/>
                         <outlet property="pencilIcon" destination="6PF-TS-XGb" id="UbZ-aO-djp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="New-VA-2ba" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5384" y="255"/>
+            <point key="canvasLocation" x="-5384.8000000000002" y="254.12293853073464"/>
         </scene>
         <!--話題-->
         <scene sceneID="VON-sR-4Xb">
@@ -1457,6 +1486,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <gestureRecognizers/>
                                     <constraints>
                                         <constraint firstItem="yJ2-ED-08G" firstAttribute="height" secondItem="srv-92-g6D" secondAttribute="height" id="A66-wa-KBk"/>
                                         <constraint firstItem="yJ2-ED-08G" firstAttribute="centerY" secondItem="srv-92-g6D" secondAttribute="centerY" id="BEP-iP-jif"/>
@@ -1467,6 +1497,7 @@
                                         <constraint firstItem="ySV-ty-GPB" firstAttribute="trailing" secondItem="yJ2-ED-08G" secondAttribute="trailing" id="vN3-1k-csV"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <gestureRecognizers/>
                                 <connections>
                                     <outlet property="invited_count" destination="ySV-ty-GPB" id="lcl-Sy-ay6"/>
                                 </connections>
@@ -1562,6 +1593,7 @@
                                         <constraint firstItem="rlS-vp-4g6" firstAttribute="width" secondItem="d32-bZ-Nzj" secondAttribute="width" id="wXG-1m-9a6"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <gestureRecognizers/>
                                 <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="8" right="8"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
@@ -2561,6 +2593,13 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9il-Ag-zI8">
+                                <frame key="frameInset" width="188" height="188"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="change_btn:" destination="wSW-3r-XLb" eventType="touchUpInside" id="uiB-gS-6iO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -2580,7 +2619,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3jQ-z4-OcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5383" y="776"/>
+            <point key="canvasLocation" x="-5384.3999999999996" y="774.28785607196403"/>
         </scene>
     </scenes>
     <resources>
