@@ -152,6 +152,8 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         name_text.isHidden  = true
         name_text.delegate = self
         name_btn_obj.setTitle(userData.name!, for: UIControlState.normal)
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     // delegate -> textFiled
@@ -159,6 +161,11 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         name_text.resignFirstResponder()
         
         return true
+    }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
 }
