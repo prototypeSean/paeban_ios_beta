@@ -150,7 +150,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         }
         //let img2 = UIImage(named: "check")
         
-        ok_btn.backgroundColor = UIColor.green
+        ok_btn.backgroundColor = UIColor(red:0.11, green:0.73, blue:0.62, alpha:1.0)
         let del_btn = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "  \u{2A2F}  ") { (UITableViewRowAction, IndexPath) in
             print("no")
             self.friend_confirm(answer: "no", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
