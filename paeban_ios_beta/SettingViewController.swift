@@ -73,7 +73,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         name_btn_obj.setTitle(text, for: UIControlState.normal)
     }
     func resizeImage1(image: UIImage, newWidth: CGFloat) -> UIImage {
-        let jpegImgData = UIImageJPEGRepresentation(image, 100)
+        let jpegImgData = UIImageJPEGRepresentation(image, CGFloat(1))
         let jpegImg = UIImage(data: jpegImgData!)
         let scale = newWidth / jpegImg!.size.width
         let newHeight = jpegImg!.size.height * scale
@@ -81,8 +81,8 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         jpegImg!.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
-        return newImage!
+        let img2 = UIImage(data: UIImageJPEGRepresentation(newImage!, CGFloat(0.7))!)
+        return img2!
     }
     func save_data_to_server(){
         var is_true_photo:String
@@ -99,13 +99,13 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         if child_vc.profilePicImg.image != userData.img && userData.img != nil{
             var send_img_str = ""
             var init_qulity = 200
-            while send_img_str.characters.count > 50000 || send_img_str.characters.count == 0{
-                let new_img = child_vc.profilePicImg.image
+            let new_img = child_vc.profilePicImg.image
+            while send_img_str.characters.count > 100000 || send_img_str.characters.count == 0{
                 let re_img  = resizeImage1(image: new_img!, newWidth: CGFloat(init_qulity))
                 child_vc.profilePicImg.image = re_img
                 let new_img_base64 = imageToBase64(image: re_img, optional: "none")
                 send_img_str = new_img_base64
-                init_qulity -= 5
+                init_qulity -= 1
             }
             
             send_dic["is_new_img"] = "data3image/jpeg3base64," + send_img_str

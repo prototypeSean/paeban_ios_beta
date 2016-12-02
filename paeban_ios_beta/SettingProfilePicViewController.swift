@@ -61,10 +61,10 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
         return newImage!
     }
     func addClientImg(img:UIImage){
-        let imageView = UIImageView(image: resizeImage(image: img, newWidth: 200))
-        imageViewTemp = imageView
-        imageView.frame = view.bounds
-        profilePicImg.image = imageView.image
+//        let imageView = UIImageView(image: resizeImage(image: img, newWidth: 200))
+//        imageViewTemp = imageView
+//        imageView.frame = view.bounds
+        profilePicImg.image = img
     }
     func setMyOldImg(){
 //        imgView = UIImageView()

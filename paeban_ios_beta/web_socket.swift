@@ -101,17 +101,19 @@ open class webSocketActiveCenter{
                     let friends_sex_list = msg["friends_sex_list"] as! Array<String>
                     let friends_isme_list = msg["friends_isme_list"] as! Array<Bool>
                     let friends_online_list = msg["friends_online_list"] as! Array<Bool>
-                    myFriendsList = []
-                    for listIndex in 0 ..< friends_id_list.count{
-                        let insertObj = turnToFriendStanderType(
-                            friends_id_list[listIndex],
-                            name: friends_name_list[listIndex],
-                            sex: friends_sex_list[listIndex],
-                            isRealPhoto: friends_isme_list[listIndex],
-                            online: friends_online_list[listIndex],
-                            photoString: friends_pic_list[listIndex])
-                        myFriendsList.append(insertObj)
+                    if myFriendsList.isEmpty{
+                        for listIndex in 0 ..< friends_id_list.count{
+                            let insertObj = turnToFriendStanderType(
+                                friends_id_list[listIndex],
+                                name: friends_name_list[listIndex],
+                                sex: friends_sex_list[listIndex],
+                                isRealPhoto: friends_isme_list[listIndex],
+                                online: friends_online_list[listIndex],
+                                photoString: friends_pic_list[listIndex])
+                            myFriendsList.append(insertObj)
+                        }
                     }
+                    
                     
                 }
             }
