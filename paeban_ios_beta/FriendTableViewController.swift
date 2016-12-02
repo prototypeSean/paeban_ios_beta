@@ -143,23 +143,23 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
 //        }
         //let img_blank_string = "         "
         //let img_check_unicode = "  \u{2714}  "
-        let ok_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "  \u{2713}  ") { (UITableViewRowAction, IndexPath) in
+        let ok_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "\u{2713}\n確認") { (UITableViewRowAction, IndexPath) in
             self.friend_confirm(answer: "yes", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
             self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
             
         }
         //let img2 = UIImage(named: "check")
+        ok_btn.backgroundColor = UIColor(red:0.00, green:0.67, blue:0.52, alpha:1.0)
         
-        ok_btn.backgroundColor = UIColor(red:0.11, green:0.73, blue:0.62, alpha:1.0)
-        let del_btn = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "  \u{2A2F}  ") { (UITableViewRowAction, IndexPath) in
+        let del_btn = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "\u{2715}\n刪除") { (UITableViewRowAction, IndexPath) in
             print("no")
             self.friend_confirm(answer: "no", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
             self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
         }
         //let img1 = UIImage(named: "cross")
         //del_btn.backgroundColor = UIColor(patternImage: change(img2: img1!))
-        del_btn.backgroundColor = UIColor.red
-
+//        del_btn.backgroundColor = UIColor(red:1.00, green:0.27, blue:0.00, alpha:1.0)
+        
         
         
         return [del_btn, ok_btn]

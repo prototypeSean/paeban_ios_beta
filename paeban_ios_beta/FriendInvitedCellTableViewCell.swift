@@ -53,13 +53,5 @@ class FriendInvitedCellTableViewCell: UITableViewCell {
     override func willTransition(to state: UITableViewCellStateMask) {
         //code
     }
-    
-
 }
-
-
-
-
-
-
 

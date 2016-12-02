@@ -35,6 +35,7 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
     override func viewDidLoad() {
         login_paeban_obj.delegate = self
         super.viewDidLoad()
+        BtnOutlet()
     }
 
     override func didReceiveMemoryWarning() {
@@ -111,6 +112,16 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
         else{
             print("登入失敗!!!")
         }
+    }
+    //按鈕外觀設定
+    func BtnOutlet()  {
+        fbButtonOutlet.layer.borderWidth = 1.2
+        fbButtonOutlet.layer.cornerRadius = 2
+        fbButtonOutlet.layer.borderColor = UIColor(red:0.24, green:0.35, blue:0.61, alpha:1.0).cgColor
+        loginId.layer.borderWidth = 1
+        loginId.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
+        logInPw.layer.borderWidth = 1
+        logInPw.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
     }
     /*
     // MARK: - Navigation

@@ -14,6 +14,8 @@ class TutorialPageViewController: UIPageViewController, UIPageViewControllerData
     private(set) lazy var allViewControllers: [UIViewController] = {
         return [self.getViewController(indentifier: "TPage_1ViewController"),
                 self.getViewController(indentifier: "TPage_2ViewController"),
+                self.getViewController(indentifier: "TPage_3ViewController"),
+                self.getViewController(indentifier: "TPage_4ViewController"),
                 self.getViewController(indentifier: "EULAViewController")
         ]
     }()
