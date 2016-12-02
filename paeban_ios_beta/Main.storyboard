@@ -764,10 +764,10 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCellTableViewCell" id="Wjc-mK-FT3" customClass="TopicCellTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="1000" height="80"/>
+                                        <rect key="frame" x="0.0" y="92" width="414" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
-                                            <frame key="frameInset" width="1000" height="79"/>
+                                            <frame key="frameInset" width="414" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房主的暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPN-A9-vyF">
@@ -1554,42 +1554,19 @@
                                             <color key="textColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d32-bZ-Nzj">
-                                            <state key="normal" image="check">
-                                                <color key="titleColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="ok_btn:" destination="H5q-Ep-Az3" eventType="touchUpInside" id="GOA-Gu-01A"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rlS-vp-4g6">
-                                            <state key="normal" title="Button" image="cross"/>
-                                            <connections>
-                                                <action selector="no_btn:" destination="0Q5-UY-AIL" eventType="touchUpInside" id="631-hc-Ftf"/>
-                                                <action selector="no_btn_touchDown:" destination="0Q5-UY-AIL" eventType="touchDown" id="VjO-OT-GfG"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="n3o-a1-nqD" firstAttribute="top" secondItem="gWs-93-hfq" secondAttribute="top" multiplier="0.7" id="0AD-Mo-sIo"/>
                                         <constraint firstItem="Age-uM-Snv" firstAttribute="leading" secondItem="gWs-93-hfq" secondAttribute="trailing" constant="8" symbolic="YES" id="2qz-M7-ySJ"/>
                                         <constraint firstItem="n3o-a1-nqD" firstAttribute="height" secondItem="gWs-93-hfq" secondAttribute="height" multiplier="0.3" id="CH1-Ws-b4V"/>
                                         <constraint firstItem="Age-uM-Snv" firstAttribute="centerY" secondItem="4Jy-ji-5hp" secondAttribute="centerY" id="GFi-en-PH4"/>
-                                        <constraint firstItem="d32-bZ-Nzj" firstAttribute="centerY" secondItem="4Jy-ji-5hp" secondAttribute="centerY" id="PyJ-uj-jbi"/>
-                                        <constraint firstItem="d32-bZ-Nzj" firstAttribute="leading" secondItem="rlS-vp-4g6" secondAttribute="trailing" id="R04-RY-HCf"/>
-                                        <constraint firstItem="d32-bZ-Nzj" firstAttribute="width" secondItem="gWs-93-hfq" secondAttribute="width" multiplier="0.7" id="SCK-Tc-bgY"/>
-                                        <constraint firstItem="rlS-vp-4g6" firstAttribute="centerY" secondItem="4Jy-ji-5hp" secondAttribute="centerY" id="Tqg-zM-mf0"/>
                                         <constraint firstItem="gWs-93-hfq" firstAttribute="height" secondItem="4Jy-ji-5hp" secondAttribute="height" multiplier="0.8" id="VXP-ac-dDf"/>
                                         <constraint firstItem="gWs-93-hfq" firstAttribute="leading" secondItem="4Jy-ji-5hp" secondAttribute="leadingMargin" constant="8" id="a0Y-fO-L6h"/>
-                                        <constraint firstItem="rlS-vp-4g6" firstAttribute="height" secondItem="d32-bZ-Nzj" secondAttribute="height" id="ajE-Mf-xLa"/>
                                         <constraint firstItem="GAt-Z7-j2v" firstAttribute="centerX" secondItem="n3o-a1-nqD" secondAttribute="centerX" id="cMo-Yi-oUp"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="d32-bZ-Nzj" secondAttribute="trailing" id="ccP-DA-XZh"/>
                                         <constraint firstItem="GAt-Z7-j2v" firstAttribute="centerY" secondItem="n3o-a1-nqD" secondAttribute="centerY" id="erl-nP-w6E"/>
                                         <constraint firstItem="GAt-Z7-j2v" firstAttribute="height" secondItem="n3o-a1-nqD" secondAttribute="height" multiplier="0.8" id="gUM-OH-FsG"/>
-                                        <constraint firstItem="d32-bZ-Nzj" firstAttribute="height" secondItem="4Jy-ji-5hp" secondAttribute="height" id="gkE-tT-ZL1"/>
                                         <constraint firstItem="n3o-a1-nqD" firstAttribute="trailing" secondItem="gWs-93-hfq" secondAttribute="trailing" multiplier="1.07" id="jSH-rd-ah2"/>
                                         <constraint firstItem="gWs-93-hfq" firstAttribute="centerY" secondItem="4Jy-ji-5hp" secondAttribute="centerY" id="rCS-Mo-VNv"/>
-                                        <constraint firstItem="rlS-vp-4g6" firstAttribute="width" secondItem="d32-bZ-Nzj" secondAttribute="width" id="wXG-1m-9a6"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <gestureRecognizers/>
@@ -1597,7 +1574,6 @@
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="name" destination="Age-uM-Snv" id="CTg-Z2-vHR"/>
-                                    <outlet property="ok_btn" destination="d32-bZ-Nzj" id="hzu-3G-5kc"/>
                                     <outlet property="online" destination="n3o-a1-nqD" id="sAz-sq-Shu"/>
                                     <outlet property="photo" destination="gWs-93-hfq" id="Lpd-db-KE5"/>
                                     <outlet property="true_photo" destination="GAt-Z7-j2v" id="G8t-7z-gEK"/>
@@ -1845,7 +1821,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Agd-9n-p2Q"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="68R-qK-mqe">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="625.66666666666674"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="626"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -2298,7 +2274,7 @@
                         <viewControllerLayoutGuide type="bottom" id="SJa-n7-xti"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="1yC-zi-aJI">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="625.66666666666674"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="626"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -2441,7 +2417,7 @@
                         <viewControllerLayoutGuide type="bottom" id="ryC-MS-fPW"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="ldI-Hl-dM7">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="625.66666666666674"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="626"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -2624,8 +2600,6 @@
         <image name="FB-f-Logo__blue_100" width="100" height="100"/>
         <image name="True_photo" width="25" height="25"/>
         <image name="battery-full" width="25" height="25"/>
-        <image name="check" width="25" height="25"/>
-        <image name="cross" width="20" height="20"/>
         <image name="exit" width="25" height="25"/>
         <image name="friends" width="25" height="25"/>
         <image name="launchsimage_1242x2208" width="414" height="736"/>
@@ -2642,6 +2616,6 @@
         <segue reference="nCN-DR-xXv"/>
         <segue reference="DSX-l2-ESG"/>
         <segue reference="wZO-VC-xmQ"/>
-        <segue reference="wc9-Me-EI3"/>
+        <segue reference="l0w-d5-79K"/>
     </inferredMetricsTieBreakers>
 </document>

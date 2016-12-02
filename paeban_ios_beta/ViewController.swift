@@ -43,6 +43,7 @@ public var myFriendsList:Array<FriendStanderType> = [] //好友清單
 public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 public let notificationDelegateCenter_obj = NotificationDelegateCenter()
 public let locale_host = "https://www.paeban.com/"
+public var main_vc:ViewController?
 
 
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
@@ -83,7 +84,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     override public func viewDidLoad() {
         super.viewDidLoad()
         //isInternetAvailable
-//        main_vc = self
+        main_vc = self
         login_paeban_obj.delegate = self
         loginId.delegate = self
         logInPw.delegate = self
