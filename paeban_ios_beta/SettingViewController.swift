@@ -129,7 +129,10 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
             
         }
         let nav = self.parent as? UINavigationController
-        nav?.popToRootViewController(animated: true)
+        if nav != nil{
+            nav!.popToRootViewController(animated: true)
+        }
+        
         
         
     }
@@ -148,7 +151,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         
         name_text.isHidden  = true
         name_text.delegate = self
-        name_btn_obj.setTitle("name", for: UIControlState.normal)
+        name_btn_obj.setTitle(userData.name!, for: UIControlState.normal)
     }
     
     // delegate -> textFiled
