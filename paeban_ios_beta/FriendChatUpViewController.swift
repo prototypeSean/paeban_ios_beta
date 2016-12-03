@@ -17,6 +17,12 @@ class FriendChatUpViewController: UIViewController {
     @IBOutlet weak var topicInfoBG: UIView!
     
     @IBOutlet weak var topicTitleContent: UILabel!
+    @IBAction func report(_ sender: AnyObject) {
+        reportAbuse()
+    }
+    @IBAction func block(_ sender: AnyObject) {
+        block()
+    }
     
     //var delegate:TopicViewControllerDelegate?
     var setID:String?
