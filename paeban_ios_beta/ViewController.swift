@@ -398,4 +398,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     func seugeToTutorial(){
         self.performSegue(withIdentifier: "segueToTutorial", sender: self)
     }
+    
 }
+
+
+
+
+
+
