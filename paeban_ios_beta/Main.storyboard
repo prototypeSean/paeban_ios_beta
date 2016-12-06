@@ -180,9 +180,14 @@
                     <navigationItem key="navigationItem" id="STz-pB-Tr4"/>
                     <connections>
                         <outlet property="fbButtonOutlet" destination="4Qt-oe-Dwj" id="aLe-RW-nlB"/>
+                        <outlet property="fb_logo" destination="vTK-am-ezn" id="7dm-RJ-emd"/>
                         <outlet property="logInPw" destination="8BY-go-BQQ" id="I77-CW-tI9"/>
+                        <outlet property="logIn_outlet" destination="KaK-oj-Drk" id="qam-Di-5Uq"/>
                         <outlet property="loginId" destination="ZcH-yC-Ffy" id="jnq-WX-MUa"/>
+                        <outlet property="loginbottom_outlet" destination="4Qt-oe-Dwj" id="cum-RX-Djm"/>
                         <outlet property="shiftView" destination="8bC-Xf-vdC" id="gRf-I8-j7O"/>
+                        <outlet property="singIn_outlet" destination="tAR-u1-Ad2" id="zdF-YL-ee1"/>
+                        <outlet property="tutorial" destination="M6n-vc-KN0" id="RPR-1Q-iEX"/>
                         <segue destination="Ukn-gV-ex4" kind="show" identifier="segueToMainUI" id="nCN-DR-xXv"/>
                         <segue destination="IJU-dt-a9R" kind="show" identifier="segueToTutorial" id="9Et-Zw-Bc4"/>
                     </connections>
@@ -544,7 +549,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="vt5-WT-ztG" kind="show" id="Jrg-w8-OvB"/>
+                                    <action selector="return_to_mmain_vc:" destination="TFG-9J-YTq" eventType="touchUpInside" id="oT6-4G-xuU"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -2627,8 +2632,8 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nCN-DR-xXv"/>
         <segue reference="DSX-l2-ESG"/>
+        <segue reference="nCN-DR-xXv"/>
         <segue reference="lxg-Ec-9Hp"/>
         <segue reference="l0w-d5-79K"/>
     </inferredMetricsTieBreakers>

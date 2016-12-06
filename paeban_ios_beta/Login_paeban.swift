@@ -21,7 +21,6 @@ class login_paeban{
     var delegate:login_paeban_delegate?
     var csrf_string = ""
     func get_cookie(){
-        print("asd")
         let url = "https://www.paeban.com/register-by-token/facebook/\(fb_ssesion!)"
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
