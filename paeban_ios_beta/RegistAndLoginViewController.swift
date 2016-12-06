@@ -35,7 +35,6 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
     override func viewDidLoad() {
         login_paeban_obj.delegate = self
         super.viewDidLoad()
-        BtnOutlet()
     }
 
     override func didReceiveMemoryWarning() {

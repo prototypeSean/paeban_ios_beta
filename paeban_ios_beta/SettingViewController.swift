@@ -117,7 +117,6 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         }
         
         HttpRequestCenter().change_profile(send_dic: send_dic as NSDictionary) { (return_dic) in
-            print(return_dic)
             //["old_user_name": , "show_my_gender": 1, "old_user_pic": member/154/tes_gkpZIVk.jpeg, "show_my_photo": 0, "msg_type": update_user_profile, "user_pic": member/154/tes_gkpZIVk.jpeg, "user_name": ]
             userData.name = return_dic["user_name"] as! String?
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
