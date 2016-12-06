@@ -113,15 +113,42 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
             print("登入失敗!!!")
         }
     }
-    //按鈕外觀設定
-    func BtnOutlet()  {
-        fbButtonOutlet.layer.borderWidth = 1.2
-        fbButtonOutlet.layer.cornerRadius = 2
-        fbButtonOutlet.layer.borderColor = UIColor(red:0.24, green:0.35, blue:0.61, alpha:1.0).cgColor
-        loginId.layer.borderWidth = 1
-        loginId.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
-        logInPw.layer.borderWidth = 1
-        logInPw.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
+    func get_cookie_by_IDPW_report(state:String,setcookie:String){
+        if state == "timeout"{
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "錯誤", message: "連線逾時，是否重新連線", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "是", style: UIAlertActionStyle.default, handler: { (target) in
+                    self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
+                }))
+                alert.addAction(UIAlertAction(title:"否",style: UIAlertActionStyle.default, handler: { (target) in
+                    //code
+                }))
+                self.present(alert, animated: true, completion: {
+                    //code
+                })
+            }
+        }
+        else if state == "login_yes"{
+            logInState = true
+            cookie = setcookie
+            socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            socket.headers["Cookie"] = cookie
+            socket.delegate = main_vc
+            ws_connect_fun(socket)
+        }
+        else{
+            print("登入失敗")
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "錯誤", message: "帳號或密碼錯誤", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (target) in
+                    self.logInPw.text = ""
+                    self.loginId.becomeFirstResponder()
+                }))
+                self.present(alert, animated: true, completion: {
+                    //code
+                })
+            }
+        }
     }
     /*
     // MARK: - Navigation

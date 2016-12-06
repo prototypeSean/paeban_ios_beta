@@ -66,6 +66,7 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
             //弹出控制器，显示界面
             
             
+            
             self.present(picker, animated: true, completion: {
                 () -> Void in
             })

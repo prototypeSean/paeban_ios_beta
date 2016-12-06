@@ -17,6 +17,14 @@ class EULAViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
+    @IBAction func return_to_mmain_vc(_ sender: AnyObject) {
+        print(self)
+        print(self.parent)
+        let nav_vc = self.parent?.parent as? UINavigationController
+        if nav_vc != nil{
+            nav_vc!.popToRootViewController(animated: true)
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

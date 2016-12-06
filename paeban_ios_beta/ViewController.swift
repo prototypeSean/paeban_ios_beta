@@ -44,25 +44,31 @@ public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 public let notificationDelegateCenter_obj = NotificationDelegateCenter()
 public let locale_host = "https://www.paeban.com/"
 public var main_vc:ViewController?
-
+public var open_app_frist = true
 
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
     @IBAction func loninBottom(_ sender: AnyObject) {
         check_online(in: self, with: fbLogIn)
     }
+    @IBOutlet weak var loginbottom_outlet: UIButton!
     @IBOutlet weak var fbButtonOutlet: UIButton!
     @IBAction func singIn(_ sender: AnyObject) {
     }
     @IBAction func logIn(_ sender: AnyObject) {
-        check_online(in: self) { 
+        check_online(in: self) {
             self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
             self.logInPw.text = ""
         }
     }
+    @IBOutlet weak var singIn_outlet: UIButton!
+    @IBOutlet weak var logIn_outlet: UIButton!
     @IBOutlet weak var loginId: UITextField!
     @IBOutlet weak var logInPw: UITextField!
     @IBOutlet weak var shiftView: UIView!
+    @IBOutlet weak var fb_logo: UIImageView!
+    @IBOutlet weak var tutorial: UIButton!
+    
     
     let login_paeban_obj = login_paeban()
     // MARK: override
@@ -70,6 +76,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         super.viewWillAppear(animated)
         // 把註冊前的NAV隱藏
         self.navigationController?.isNavigationBarHidden = true
+        show_items()
+        check_online(in: self, with: autoLogin)
     }
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -90,7 +98,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         logInPw.delegate = self
         find_user_kb_height()
         BtnOutlet()
-        check_online(in: self, with: autoLogin)
         //testdata
         //notificationSegueInf = ["type":"priv_msg","user_id":"aaasss","topic_id":"nano"]
         //testdata
@@ -104,8 +111,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             logInState = true
         }
         else{
+            hide_items()
             login_paeban_obj.get_cookie_csrf()
-            
         }
     }
     func find_user_kb_height(){
@@ -116,8 +123,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         view.addGestureRecognizer(tap)
     }
     func get_cookie_csrf_report(state:String,setcookie:String){
-        print(state)
-        print(setcookie)
         if state == "login_yes"{
             logInState = true
             cookie = setcookie
@@ -127,10 +132,15 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             ws_connect_fun(socket)
         }
         else if state == "login_no"{
+            show_items()
             cookie = setcookie
-            DispatchQueue.main.async {
-                self.seugeToTutorial()
+            if open_app_frist{
+                open_app_frist = false
+                DispatchQueue.main.async {
+                    self.seugeToTutorial()
+                }
             }
+            
         }
         else{
             print(state)
@@ -145,15 +155,20 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         logInPw.layer.borderWidth = 1
         logInPw.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
     }
-    //cc
     func fbLogIn() {
+        hide_items()
         fbLoginManager.logIn(withReadPermissions: ["email"],from: self.parent, handler: { (result, error) -> Void in
             if (error == nil){
                 let fbloginresult : FBSDKLoginManagerLoginResult = result!
-                if(fbloginresult.grantedPermissions.contains("email"))
-                {
-                    self.getFBUserData()
-                    logInState = true
+                if fbloginresult.isCancelled{
+                    self.show_items()
+                }
+                else{
+                    if(fbloginresult.grantedPermissions.contains("email"))
+                    {
+                        self.getFBUserData()
+                        logInState = true
+                    }
                 }
             }
             else{
@@ -177,6 +192,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
     }
     func paeban_login(){
+        hide_items()
         if let fb_session = FBSDKAccessToken.current(){
             login_paeban_obj.fb_ssesion = fb_session.tokenString
             login_paeban_obj.get_cookie()
@@ -184,6 +200,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         else{
             print("還沒登入ＦＢ!!!")
+            show_items()
         }
     }
     func get_cookie_login_report(state:String) {
@@ -197,12 +214,13 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         else{
             print("登入失敗!!!")
+            show_items()
         }
     }
-    // cc
     func paeban_login_with_IDPW(id:String,pw:String){
         print("開始登入...")
         if id != "" && pw != ""{
+            self.hide_items()
             login_paeban_obj.get_cookie_by_IDPW(id: id, pw: pw)
         }
         else{
@@ -251,7 +269,30 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 self.present(alert, animated: true, completion: {
                     //code
                 })
+                self.show_items()
             }
+        }
+    }
+    func hide_items(){
+        DispatchQueue.main.async {
+            self.loginbottom_outlet.isHidden = true
+            self.loginId.isHidden = true
+            self.logInPw.isHidden = true
+            self.logIn_outlet.isHidden = true
+            self.singIn_outlet.isHidden  = true
+            self.fb_logo.isHidden = true
+            self.tutorial.isHidden = true
+        }
+    }
+    func show_items(){
+        DispatchQueue.main.async {
+            self.loginbottom_outlet.isHidden = false
+            self.loginId.isHidden = false
+            self.logInPw.isHidden = false
+            self.logIn_outlet.isHidden = false
+            self.singIn_outlet.isHidden  = false
+            self.fb_logo.isHidden = false
+            self.tutorial.isHidden = false
         }
     }
     
@@ -357,4 +398,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     func seugeToTutorial(){
         self.performSegue(withIdentifier: "segueToTutorial", sender: self)
     }
+    
 }
+
+
+
+
+
+
