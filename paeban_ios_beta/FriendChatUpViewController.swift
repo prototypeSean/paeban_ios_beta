@@ -11,6 +11,8 @@ import UIKit
 class FriendChatUpViewController: UIViewController {
     let gradientLayer = CAGradientLayer()
     
+    @IBOutlet weak var reportOutlet: UIButton!
+    @IBOutlet weak var blockOutlet: UIButton!
     @IBOutlet weak var myPhoto: UIImageView!
     @IBOutlet weak var guestPhoto: UIImageView!
     
@@ -45,6 +47,7 @@ class FriendChatUpViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         setImage()
+        setButton()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -191,7 +194,22 @@ class FriendChatUpViewController: UIViewController {
             })
         }))
         self.present(confirm, animated: true, completion: nil)
-        
     }
+    
+    // 按鈕初始外觀
+    func setButton(){
+        reportOutlet.layoutIfNeeded()
+        let btn_radius:CGFloat = CGFloat(reportOutlet.bounds.size.height)/2
+        reportOutlet.layer.cornerRadius = btn_radius
+        reportOutlet.layer.borderWidth = 1
+        reportOutlet.layer.borderColor = UIColor.gray.cgColor
+        reportOutlet.clipsToBounds = true
+        
+        blockOutlet.layoutIfNeeded()
+        blockOutlet.layer.borderWidth = 1
+        blockOutlet.layer.borderColor = UIColor.gray.cgColor
+        blockOutlet.layer.cornerRadius = btn_radius
+        blockOutlet.clipsToBounds = true
+        }
 
 }

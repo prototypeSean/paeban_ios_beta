@@ -209,7 +209,7 @@
                         <viewControllerLayoutGuide type="bottom" id="uI1-VG-N0L"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cJD-fC-isF">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tutorial_P3" translatesAutoresizingMaskIntoConstraints="NO" id="2x3-TY-m5a"/>
@@ -438,7 +438,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Z4a-EZ-7gZ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zFN-78-l1j">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tutorial_P4" translatesAutoresizingMaskIntoConstraints="NO" id="cMM-OA-DwD"/>
@@ -890,7 +890,7 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="119" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCellTableViewCell" id="Wjc-mK-FT3" customClass="TopicCellTableViewCell" customModule="paeban_ios_beta" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="1000" height="80"/>
+                                        <rect key="frame" x="0.0" y="92" width="383" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wjc-mK-FT3" id="DgY-qs-9aX">
                                             <frame key="frameInset" width="383" height="79"/>
@@ -2522,8 +2522,10 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="hidesBottomBarWhenPushed" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
+                        <outlet property="blockOutlet" destination="xhT-9v-FIc" id="lPv-4Y-kWU"/>
                         <outlet property="guestPhoto" destination="YMF-bC-Bej" id="KGj-Uu-Qy3"/>
                         <outlet property="myPhoto" destination="Z5f-9q-SmP" id="pNu-GT-Jpp"/>
+                        <outlet property="reportOutlet" destination="Vtf-7y-si7" id="9C9-hq-Tip"/>
                         <outlet property="topicInfoBG" destination="kfz-O1-JUs" id="Dqm-hb-bOh"/>
                         <outlet property="topicTitleContent" destination="6QX-Mm-cIz" id="dBD-A5-kmq"/>
                     </connections>
