@@ -13,44 +13,29 @@ public var tagList:[String] = []
 // 所有話題清單 其實不是tabelveiw 是 UIview
 class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate,TopicViewControllerDelegate{
     // MARK: Properties
-    
     var topicSearchController: TopicSearchController?
-    
     // 用來控制要顯示上面哪個清單
     var shouldShowSearchResults = false
     
-    // 所有清單 ＆ 資料來源
-    var dataArray = [String]()
-    
     // 搜尋時的清單 ＆ 資料來源
-    var filteredArray = [String]()
-    
-    var searchKeyAndState:Dictionary<String,String?> = ["key": nil, "smallest_id": "init", "state": "none"]
-
-    
     @IBOutlet weak var topicList: UITableView!
-    
     @IBOutlet weak var isMe: UIImageView!
-    
     @IBAction func new_topic(_ sender: AnyObject) {
         switchEditTopicArea()
     }
     @IBOutlet weak var editArea: UIView!
-    
     @IBAction func testBtn(_ sender: AnyObject) {
         
         leap(from: self, to: 2)
         
     }
-    
+    var filteredArray = [String]()
+    var searchKeyAndState:Dictionary<String,String?> = ["key": nil, "smallest_id": "init", "state": "none"]
+    var dataArray = [String]()
     var topics:[Topic] = []
     var topicsBackup:Array<Topic> = []
     var httpOBJ = HttpRequestCenter()
     var requestUpDataSwitch = true
-    // =====test=====
-    // MARK: delegate -> Notification
-    
-    // =====test=====
     // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,11 +58,11 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         topicList.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
         
     }
-    // 覆蓋掉故事板的初始設定顯示
+        // 覆蓋掉故事板的初始設定顯示
     override func viewDidLayoutSubviews() {
         initAddTopicArea()
     }
-    // 從聊天視窗回到清單把cell的反灰取消
+        // 從聊天視窗回到清單把cell的反灰取消
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -117,7 +102,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
     }
     
-
     
     // MARk:internal function
     fileprivate func gettopic(){
@@ -183,8 +167,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func initAddTopicArea(){
         self.editArea.isHidden = true
     }
-    
-    // MARK: 開新話題
+        //開新話題
     func switchEditTopicArea(){
 //        self.editArea.isHidden = false
         // 不能用清單寬度因為被我動過，要用最外層VIEW
@@ -349,7 +332,98 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             }
         }
     }
-    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let block_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "封鎖") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+            func excute(){
+                let data = self.topics[IndexPath_parameter.row]
+                self.block_user(setID: data.owner, topicId: data.topicID)
+                self.remove_cell(index: IndexPath_parameter.row)
+            }
+            // MARK: 改alert
+            self.conform_excute(title: "title", msg: "msg", yes_func: excute)
+            
+        }
+        let report_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "舉報") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+            func excute(){
+                let id = self.topics[IndexPath_parameter.row].owner
+                let topic_id = self.topics[IndexPath_parameter.row].topicID
+                self.report(setID: id, topicId: topic_id)
+            }
+            // MARK: 改alert
+            self.conform_excute(title: "title", msg: "msg", yes_func: excute)
+        }
+        block_btn.backgroundColor = UIColor.red
+        report_btn.backgroundColor = UIColor.green
+        return [block_btn, report_btn]
+    }
+    func block_user(setID:String, topicId:String){
+        let data:NSDictionary = [
+            "block_id":setID,
+            "topic_id":topicId
+        ]
+        HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
+            if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
+                if key == "msgtype"{
+                    return true
+                }
+                else{return false}
+            }){
+                if Dictionary["msgtype"] as! String == "block_success"{
+                    //code
+                }
+            }
+        }
+    }
+    func remove_cell(index:Int) {
+        let cell_index_path = IndexPath(row: index, section: 0)
+        topics.remove(at: index)
+        topicList.beginUpdates()
+        topicList.deleteRows(at: [cell_index_path], with: .left)
+        topicList.endUpdates()
+    }
+    func report(setID:String, topicId:String){
+        let sendDic:NSDictionary = [
+            "report_id":setID,
+            "topic_id":topicId
+        ]
+        HttpRequestCenter().privacy_function(msg_type: "report_topic_title", send_dic: sendDic, inViewAct: { (Dictionary) in
+            let msg_type = Dictionary["msg_type"] as! String
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+            if msg_type == "success"{
+                alert.title = "舉報"
+                alert.message = "感謝您的回報，我們將儘速處理"
+                
+            }
+            else if msg_type == "user_not_exist"{
+                alert.title = "錯誤"
+                alert.message = "用戶不存在"
+            }
+            else if msg_type == "topic_not_exist"{
+                alert.title = "錯誤"
+                alert.message = "話題不存在"
+            }
+            else if msg_type == "unknown_error"{
+                alert.title = "錯誤"
+                alert.message = "未知的錯誤"
+            }
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+                
+            }
+        })
+    }
+    func conform_excute(title:String, msg:String, yes_func:@escaping ()->Void){
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+        alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (_) in
+            yes_func()
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     
     // socket
@@ -583,6 +657,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
     }
     
+    
 
     // MARK: =====以下高義區=====
     // MARK: 設定搜尋列
@@ -644,12 +719,10 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             }
         }
     }
-    
     func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
-    
     func hideKeybroad() {
         topicSearchController?.customSearchBar.resignFirstResponder()
     }

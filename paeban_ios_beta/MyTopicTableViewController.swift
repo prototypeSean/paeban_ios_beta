@@ -36,7 +36,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         //autoLeap()
     }
     override func awakeFromNib() {
-        print("aaaaaaaaaasaaadga")
+        //print("aaaaaaaaaasaaadga")
     }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     }
@@ -178,6 +178,152 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
 //            self.segueData = mytopic[cellIndex]
 //            performSegue(withIdentifier: "masterModeSegue", sender: nil)
 //        }
+    }
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let data = mytopic[indexPath.row]
+        let close_topic_btn = UITableViewRowAction(style: .default, title: "close") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+            self.remove_cell(index: IndexPath_parameter.row)
+        }
+        let delete = UITableViewRowAction(style: .default, title: "delete") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+            self.remove_cell(index: IndexPath_parameter.row)
+        }
+        let report = UITableViewRowAction(style: .default, title: "report") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+            //code
+        }
+        let block = UITableViewRowAction(style: .default, title: "block") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+            //code
+        }
+        block.backgroundColor = UIColor.red
+        close_topic_btn.backgroundColor = UIColor.green
+        delete.backgroundColor = UIColor.gray
+        report.backgroundColor = UIColor.blue
+        if data.dataType == "title"{
+            return [close_topic_btn]
+        }
+        else{
+            return [delete, report, block]
+        }
+    }
+    func close_topic(topic_id:String){
+        let send_dic:NSDictionary = [
+            "msg_type": "close_topic_btn",
+            "topic_id":topic_id
+        ]
+        socket.write(data: json_dumps(send_dic))
+    }
+    func ignore_topic(topic_id:String, topic_black_id:String){
+        let send_dic:NSDictionary = [
+            "msg_type": "topic_black",
+            "topic_id": topic_id,
+            "topic_black_id":topic_black_id
+        ]
+        socket.write(data: json_dumps(send_dic))
+    }
+    func report_client(setID:String, topicId:String){
+        let sendDic:NSDictionary = [
+            "report_id":setID,
+            "topic_id":topicId
+        ]
+        HttpRequestCenter().privacy_function(msg_type: "report_topic", send_dic: sendDic, inViewAct: { (Dictionary) in
+            let msg_type = Dictionary["msg_type"] as! String
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+            if msg_type == "success"{
+                alert.title = "舉報"
+                alert.message = "感謝您的回報，我們將儘速處理"
+                
+            }
+            else if msg_type == "user_not_exist"{
+                alert.title = "錯誤"
+                alert.message = "用戶不存在"
+            }
+            else if msg_type == "topic_not_exist"{
+                alert.title = "錯誤"
+                alert.message = "話題不存在"
+            }
+            else if msg_type == "unknown_error"{
+                alert.title = "錯誤"
+                alert.message = "未知的錯誤"
+            }
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+                
+            }
+        })
+    }
+    func block_client(setID:String, topicId:String){
+        let data:NSDictionary = [
+            "block_id":setID,
+            "topic_id":topicId
+        ]
+        HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
+            if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
+                if key == "msgtype"{
+                    return true
+                }
+                else{return false}
+            }){
+                if Dictionary["msgtype"] as! String == "block_success"{
+                    //code
+                }
+            }
+        }
+    }
+    func remove_cell(index:Int){
+        if mytopic[index].dataType == "title"{
+            let remove_detial_index = index + 1
+            //remove_detial_index < mytopic.count
+            while remove_detial_index < mytopic.count &&
+                mytopic[remove_detial_index].dataType == "detail"{
+                remove_singo_cell(index: remove_detial_index)
+                print(mytopic.count)
+            }
+            let topic_id = mytopic[index].topicId_title
+            if secTopic[topic_id!] != nil{
+                secTopic[topic_id!] = nil
+            }
+            remove_singo_cell(index: index)
+        }
+        else{
+            remove_singo_cell(index: index)
+        }
+        
+    }
+    func remove_singo_cell(index:Int){
+        if mytopic[index].dataType == "detail"{
+            let topic_id = mytopic[index].topicId_title
+            let user_id = mytopic[index].clientId_detial
+            if let database = secTopic[topic_id!]{
+                if let index = database.index(where: { (MyTopicStandardType_obj) -> Bool in
+                    if MyTopicStandardType_obj.clientId_detial == user_id{
+                        return true
+                    }
+                    return false
+                }){
+                    secTopic[topic_id!]?.remove(at: index as Int)
+                    if (secTopic[topic_id!]?.isEmpty)!{
+                        secTopic[topic_id!] = nil
+                    }
+                }
+            }
+        }
+        
+        mytopic.remove(at: index)
+        let index_path = IndexPath(row: index, section: 0)
+        self.tableView.beginUpdates()
+        self.tableView.deleteRows(at: [index_path], with: .left)
+        self.tableView.endUpdates()
+    }
+    func conform_excute(title:String, msg:String, yes_func:@escaping ()->Void){
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+        alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (_) in
+            yes_func()
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     
