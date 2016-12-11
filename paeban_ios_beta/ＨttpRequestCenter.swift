@@ -255,6 +255,9 @@ class HttpRequestCenter{
                         }
                         
                     }
+                    else{
+                        outPutDic([:])
+                    }
                     
                 }
                 else{

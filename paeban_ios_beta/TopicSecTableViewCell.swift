@@ -18,8 +18,7 @@ class TopicSecTableViewCell: UITableViewCell {
     @IBOutlet weak var sexLogo: UIImageView!
     @IBOutlet weak var onlineLogo: UIImageView!
     
-    
-    
+        
     
     override func awakeFromNib() {
         super.awakeFromNib()

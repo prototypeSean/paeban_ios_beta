@@ -47,7 +47,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         wsActive.wsad_ForTopicTableViewController = self
         gettopic()
         //socket.delegate = self
-        
+        open_app_frist = false
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(TopicTableViewController.update), for: UIControlEvents.valueChanged)
