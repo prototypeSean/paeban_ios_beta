@@ -14,7 +14,14 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
 
     // MARK: Properties
     var mytopic:Array<MyTopicStandardType> = []
-    var secTopic:Dictionary = [String: [MyTopicStandardType]]()
+    
+    var secTopic:Dictionary<String,Array<MyTopicStandardType>>{
+        get{return secTopic_x}
+        set{
+            secTopic_x = newValue
+        }
+    }
+    var secTopic_x:Dictionary = [String: [MyTopicStandardType]]()
     var segueData:MyTopicStandardType?
     let heightOfCell:CGFloat = 85
     var heightOfSecCell:CGFloat = 130
@@ -130,6 +137,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             }
             if actMode{
                 // 伸展子cell
+                topic_content_read(topic_id: mytopic[cellIndex].topicId_title!)
+                badge_update()
                 let topicId_title = mytopic[cellIndex].topicId_title
                 
                 updateSelectIndex(topicId_title!, anyFunction: {
@@ -324,6 +333,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     
     func request_sec_topic_config(topic_id:String, topicWithWho:String, topic_content_id:String, any_func:@escaping (MyTopicStandardType)->Void){
+        
         HttpRequestCenter().request_topic_msg_config(topic_id, client_id: topicWithWho, topic_content_id: topic_content_id, InViewAct: { (return_dic) in
             let detail_cell_obj = MyTopicStandardType(dataType: "detail")
             detail_cell_obj.topicId_title = topic_id
@@ -343,6 +353,35 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     
     // ===施工中===
     // 查詢線上問題待解決 鮮血入 false
+    func badge_update(){
+        HttpRequestCenter().msg_func(msg_type: "check_badge", send_dic: [:]) { (retuen_dic) in
+            if let badge_count = Int(retuen_dic["badge_count"] as! String){
+                app_instence?.applicationIconBadgeNumber = badge_count
+            }
+        }
+    }
+    func topic_content_read(topic_id:String){
+        var read_id_list:Array<String> = []
+        if secTopic[topic_id] != nil{
+            let cell_obj_list = secTopic[topic_id]!
+            for cell_obj in cell_obj_list{
+                if !cell_obj.read_detial!{
+                    cell_obj.read_detial = true
+                    read_id_list.append(cell_obj.topicContentId_detial!)
+                }
+            }
+        }
+        if !read_id_list.isEmpty{
+            for read_id_list_s in read_id_list{
+                let send_dic:NSDictionary = [
+                    "msg_type": "topic_content_read",
+                    "topic_content_id":read_id_list_s
+                ]
+                socket.write(data: json_dumps(send_dic))
+            }
+        }
+        
+    }
     func updataTitleUnread(_ topicId:String){
         let tagretIndex = self.mytopic.index { (obj_s) -> Bool in
             if obj_s.dataType == "title" && obj_s.topicId_title! == topicId{

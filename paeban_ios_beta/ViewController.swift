@@ -45,6 +45,7 @@ public let notificationDelegateCenter_obj = NotificationDelegateCenter()
 public let locale_host = "https://www.paeban.com/"
 public var main_vc:ViewController?
 public var open_app_frist = true
+public var app_instence:UIApplication?
 
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     

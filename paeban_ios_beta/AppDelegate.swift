@@ -105,6 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("====applicationDidBecomeActive====")
+        app_instence = application
         FBSDKAppEvents.activateApp()
         
         if (socket != nil){
