@@ -45,7 +45,6 @@ class MyTopicTableViewModel{
             DispatchQueue.main.async(execute: {
                 self.delegate?.model_relodata()
             })
-            
             for title_cell_s in title_cell_list{
                 self.update_detail_cell(topic_id: title_cell_s.topicId_title!, aftre_update: { (detail_cell_list) -> Void in
                     if self.topic_id_wait_to_extend_detail_cell == title_cell_s.topicId_title!{
@@ -53,9 +52,8 @@ class MyTopicTableViewModel{
                         self.remove_loading_cell()
                         self.remove_detail_cell_from_tableView()
                         self.add_detail_cell_to_tableview(topic_id: title_cell_s.topicId_title!)
-                        
                     }
-                    
+                    self.check_if_need_to_auto_leap()
                 })
             }
         }
@@ -78,6 +76,7 @@ class MyTopicTableViewModel{
         })
     }
     func did_select_row(index:Int){
+        auto_leap_data_dic = [:]
         let select_cell = mytopic[index]
         if select_cell.dataType == "title"{
             if index + 1 == mytopic.count || mytopic[index + 1].dataType == "title"{
@@ -502,16 +501,17 @@ class MyTopicTableViewModel{
     
     // ======施工中=====
     func prepare_auto_leap(topic_id:String, client_id:String){
+        
         self.auto_leap_data_dic = [
             "topic_id":topic_id,
             "client_id":client_id
         ]
+        self.check_if_need_to_auto_leap()
     }
     private func check_if_need_to_auto_leap(){
         if !self.auto_leap_data_dic.isEmpty{
             let topic_id = self.auto_leap_data_dic["topic_id"]!
             let client_id = self.auto_leap_data_dic["client_id"]!
-            self.auto_leap_data_dic = [:]
             if secTopic[topic_id] != nil{
                 if let detail_obj_index = secTopic[topic_id]!.index(where: { (element) -> Bool in
                     if element.clientId_detial == client_id{
@@ -519,12 +519,11 @@ class MyTopicTableViewModel{
                     }
                     return false
                 }){
+                    self.auto_leap_data_dic = [:]
                     let detail_obj = secTopic[topic_id]![detail_obj_index]
                     delegate?.segue_to_chat_view(detail_cell_obj: detail_obj)
                 }
             }
-            
-            
         }
     }
     // ======施工中=====

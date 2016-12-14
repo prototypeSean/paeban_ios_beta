@@ -46,7 +46,7 @@ class TabBarController: UITabBarController, NotificationDelegate {
                         let target_VC_transform = target_VC as! MyTopicTableViewController
                         
                         
-                        target_VC_transform.autoLeap()
+                        target_VC_transform.autoLeap(segeu_data: segueInf)
                     case 2:
                         let target_VC_transform = target_VC as! RecentTableViewController
                         

@@ -13,7 +13,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
 
 
     // MARK: Properties
-    var model:MyTopicTableViewModel?
+    var model = MyTopicTableViewModel()
     
     var mytopic:Array<MyTopicStandardType> = []
     var secTopic:Dictionary<String,Array<MyTopicStandardType>>{
@@ -34,14 +34,13 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     // MARK: override
     override func viewDidLoad() {
         super.viewDidLoad()
-        model = MyTopicTableViewModel()
-        model?.delegate = self
+        model.delegate = self
         wsActive.wasd_ForMyTopicTableViewController = self
         wsActive.ware_ForMyTopicTableViewController = self
         self.tableView.tableFooterView = UIView()
     }
     override func viewWillAppear(_ animated: Bool) {
-        model?.main_loading()
+        model.main_loading()
     }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     }
@@ -49,7 +48,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         return 70
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let topicWriteToRow = self.model!.mytopic[(indexPath as NSIndexPath).row]
+        let topicWriteToRow = self.model.mytopic[(indexPath as NSIndexPath).row]
         if topicWriteToRow.dataType == "title"{
             // 父cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_1", for: indexPath) as! MyTopicTableViewCell
@@ -106,7 +105,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 let indexPath = self.tableView.indexPathForSelectedRow!
                 let dataposition:Int = (indexPath as NSIndexPath).row
                 
-                data = model!.mytopic[dataposition]
+                data = model.mytopic[dataposition]
             }
             else{
                 data = self.segueData!
@@ -122,9 +121,9 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {return 1}
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return (model?.mytopic.count)!}
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return (model.mytopic.count)}
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        model?.did_select_row(index: indexPath.row)
+        model.did_select_row(index: indexPath.row)
 //        let cellIndex = (indexPath as NSIndexPath).row
 //        var actMode = false
 //        if mytopic[cellIndex].dataType == "title"{
@@ -181,12 +180,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         return true
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let data = model!.mytopic[indexPath.row]
+        let data = model.mytopic[indexPath.row]
         let close_topic_btn = UITableViewRowAction(style: .default, title: "close") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            self.model!.close_topic(index: IndexPath_parameter.row)
+            self.model.close_topic(index: IndexPath_parameter.row)
         }
         let delete = UITableViewRowAction(style: .default, title: "delete") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            self.model!.delete_detail_cell(index: IndexPath_parameter.row)
+            self.model.delete_detail_cell(index: IndexPath_parameter.row)
         }
         let report = UITableViewRowAction(style: .default, title: "report") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             //code
@@ -210,7 +209,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     // MARK: delegate
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if msg["msg_type"] as! String == "topic_msg"{
-            model!.updataSecTopic_from_socket(msg)
+            model.updataSecTopic_from_socket(msg)
         }
         else if msg["msg_type"] as! String == "new_topic"{
             for msg_keys in msg.keys{
@@ -218,7 +217,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     let msg_vals = msg[msg_keys] as! Dictionary<String,AnyObject>
                     if let topic_publisher = msg_vals["topic_publisher"] as? String{
                         if topic_publisher == userData.id{
-                            model!.main_loading()
+                            model.main_loading()
                             break
                         }
                     }
@@ -720,21 +719,19 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.endUpdates()
         
     }
-    func autoLeap(){
-        if notificationSegueInf != [:]{
-            print("notificationSegueInf")
-            print(notificationSegueInf)
+    func autoLeap(segeu_data:Dictionary<String,String>){
+        if !segeu_data.isEmpty{
             let parent = self.parent as! UINavigationController
             parent.popToRootViewController(animated: false)
-            let segue_topic_id = notificationSegueInf["topic_id"]
-            let segue_user_id = notificationSegueInf["user_id"]
+            let segue_topic_id = segeu_data["topic_id"]
+            let segue_user_id = segeu_data["user_id"]
             
 //            var targetData_Dickey:DictionaryIndex<String, [MyTopicStandardType]>?
 //            var targetData_Dicval:Array<MyTopicStandardType>.Index?
 //            
 //            var while_pertect = 5000
             notificationSegueInf = [:]
-            model?.prepare_auto_leap(topic_id: segue_topic_id!, client_id: segue_user_id!)
+            self.model.prepare_auto_leap(topic_id: segue_topic_id!, client_id: segue_user_id!)
             
 //            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
 //                while targetData_Dickey == nil && targetData_Dicval == nil && while_pertect >= 0{
