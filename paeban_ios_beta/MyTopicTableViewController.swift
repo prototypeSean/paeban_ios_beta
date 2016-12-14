@@ -9,12 +9,13 @@
 import UIKit
 
 // 我的話題清單
-class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDelegate,webSocketActiveCenterDelegate_re {
+class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDelegate,webSocketActiveCenterDelegate_re ,MyTopicTableViewModelDelegate{
 
 
     // MARK: Properties
-    var mytopic:Array<MyTopicStandardType> = []
+    var model:MyTopicTableViewModel?
     
+    var mytopic:Array<MyTopicStandardType> = []
     var secTopic:Dictionary<String,Array<MyTopicStandardType>>{
         get{return secTopic_x}
         set{
@@ -33,12 +34,14 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     // MARK: override
     override func viewDidLoad() {
         super.viewDidLoad()
+        model = MyTopicTableViewModel()
+        model?.delegate = self
         wsActive.wasd_ForMyTopicTableViewController = self
         wsActive.ware_ForMyTopicTableViewController = self
         self.tableView.tableFooterView = UIView()
     }
     override func viewWillAppear(_ animated: Bool) {
-        get_my_topic_title()
+        model?.main_loading()
     }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     }
@@ -46,7 +49,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         return 70
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let topicWriteToRow = mytopic[(indexPath as NSIndexPath).row]
+        let topicWriteToRow = self.model!.mytopic[(indexPath as NSIndexPath).row]
         if topicWriteToRow.dataType == "title"{
             // 父cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_1", for: indexPath) as! MyTopicTableViewCell
@@ -103,7 +106,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 let indexPath = self.tableView.indexPathForSelectedRow!
                 let dataposition:Int = (indexPath as NSIndexPath).row
                 
-                data = mytopic[dataposition]
+                data = model!.mytopic[dataposition]
             }
             else{
                 data = self.segueData!
@@ -119,73 +122,71 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {return 1}
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return mytopic.count}
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {return (model?.mytopic.count)!}
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cellIndex = (indexPath as NSIndexPath).row
-        var actMode = false
-        if mytopic[cellIndex].dataType == "title"{
-            if cellIndex == mytopic.count-1{
-                actMode = true
-            }
-            else if mytopic[cellIndex + 1].dataType != "detail"{
-                actMode = true
-            }
-            if actMode{
-                // 伸展子cell
-                topic_content_read(topic_id: mytopic[cellIndex].topicId_title!)
-                badge_update()
-                let topicId_title = mytopic[cellIndex].topicId_title
-                
-                updateSelectIndex(topicId_title!, anyFunction: {
-                    self.removeLoadingCell()
-                    self.collectCell()
-                })
-                getSecCellData(mytopic[indexPath.row].topicId_title!,selectIndex: indexPath.row)
-            }
-            else{
-                //縮回子cell
-                if let topicId_title = mytopic[cellIndex].topicId_title{
-                    updateSelectIndex(topicId_title, anyFunction: {
-                        self.removeLoadingCell()
-                    })
-                }
-                let dataLen = mytopic.count
-                var removeRowList = [IndexPath]()
-                var removeIndexList = [Int]()
-                for removeIndex in (selectIndex!+1)..<dataLen{
-                    if mytopic[removeIndex].dataType == "detail"{
-                        removeIndexList.insert(removeIndex, at: 0)
-                        let removeRow = IndexPath(row: removeIndex, section: 0)
-                        removeRowList += [removeRow]
-                    }
-                    else{
-                        break
-                    }
-                }
-                for removeIndex in removeIndexList{
-                    mytopic.remove(at: removeIndex)
-                }
-                self.tableView.beginUpdates()
-                self.tableView.deleteRows(at: removeRowList, with: UITableViewRowAnimation.automatic)
-                self.tableView.endUpdates()
-                self.tableView.deselectRow(at: indexPath, animated: true)
-            }
-        }
-//        else if mytopic[cellIndex].dataType == "detail"{
-//            self.segueData = mytopic[cellIndex]
-//            performSegue(withIdentifier: "masterModeSegue", sender: nil)
+        model?.did_select_row(index: indexPath.row)
+//        let cellIndex = (indexPath as NSIndexPath).row
+//        var actMode = false
+//        if mytopic[cellIndex].dataType == "title"{
+//            if cellIndex == mytopic.count-1{
+//                actMode = true
+//            }
+//            else if mytopic[cellIndex + 1].dataType != "detail"{
+//                actMode = true
+//            }
+//            if actMode{
+//                // 伸展子cell
+//                topic_content_read(topic_id: mytopic[cellIndex].topicId_title!)
+//                badge_update()
+//                let topicId_title = mytopic[cellIndex].topicId_title
+//                
+//                updateSelectIndex(topicId_title!, anyFunction: {
+//                    self.removeLoadingCell()
+//                    self.collectCell()
+//                })
+//                getSecCellData(mytopic[indexPath.row].topicId_title!,selectIndex: indexPath.row)
+//            }
+//            else{
+//                //縮回子cell
+//                if let topicId_title = mytopic[cellIndex].topicId_title{
+//                    updateSelectIndex(topicId_title, anyFunction: {
+//                        self.removeLoadingCell()
+//                    })
+//                }
+//                let dataLen = mytopic.count
+//                var removeRowList = [IndexPath]()
+//                var removeIndexList = [Int]()
+//                for removeIndex in (selectIndex!+1)..<dataLen{
+//                    if mytopic[removeIndex].dataType == "detail"{
+//                        removeIndexList.insert(removeIndex, at: 0)
+//                        let removeRow = IndexPath(row: removeIndex, section: 0)
+//                        removeRowList += [removeRow]
+//                    }
+//                    else{
+//                        break
+//                    }
+//                }
+//                for removeIndex in removeIndexList{
+//                    mytopic.remove(at: removeIndex)
+//                }
+//                self.tableView.beginUpdates()
+//                self.tableView.deleteRows(at: removeRowList, with: UITableViewRowAnimation.automatic)
+//                self.tableView.endUpdates()
+//                self.tableView.deselectRow(at: indexPath, animated: true)
+//            }
 //        }
+
     }
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let data = mytopic[indexPath.row]
+        let data = model!.mytopic[indexPath.row]
         let close_topic_btn = UITableViewRowAction(style: .default, title: "close") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            self.remove_cell(index: IndexPath_parameter.row)
+            self.model!.close_topic(index: IndexPath_parameter.row)
         }
         let delete = UITableViewRowAction(style: .default, title: "delete") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            self.remove_cell(index: IndexPath_parameter.row)
+            self.model!.delete_detail_cell(index: IndexPath_parameter.row)
         }
         let report = UITableViewRowAction(style: .default, title: "report") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             //code
@@ -228,6 +229,24 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     func wsReconnected(){
         //dic -- title* -- detail* --
         checkData()
+    }
+    func model_relodata(){
+        self.tableView.reloadData()
+    }
+    func model_relod_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){
+        self.tableView.beginUpdates()
+        self.tableView.reloadRows(at: index_path_list, with: option)
+        self.tableView.endUpdates()
+    }
+    func model_delete_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){
+        self.tableView.beginUpdates()
+        self.tableView.deleteRows(at: index_path_list, with: option)
+        self.tableView.endUpdates()
+    }
+    func model_insert_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){
+        self.tableView.beginUpdates()
+        self.tableView.insertRows(at: index_path_list, with: option)
+        self.tableView.endUpdates()
     }
     
     // MARK: 內部函數
@@ -393,6 +412,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             }
         }
     }
+    // ===c
     func get_my_topic_title() {
         DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
             let httpObj = HttpRequestCenter()
@@ -513,6 +533,9 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         return tempMytopicList
     }
+    // ===c
+    
+    
     func updateSelectIndex(_ topicId:String, anyFunction: () -> Void){
         anyFunction()
         let newCellIndex = mytopic.index(where: { (MyTopicStandardTypeObj) -> Bool in
