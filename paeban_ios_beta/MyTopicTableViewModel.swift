@@ -14,6 +14,7 @@ protocol MyTopicTableViewModelDelegate {
     func model_relod_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation)
     func model_delete_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation)
     func model_insert_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation)
+    func segue_to_chat_view(detail_cell_obj:MyTopicStandardType)
 }
 
 class MyTopicTableViewModel{
@@ -34,6 +35,7 @@ class MyTopicTableViewModel{
     var secTopic:Dictionary = [String: [MyTopicStandardType]]()
     var delegate:MyTopicTableViewModelDelegate?
     var topic_id_wait_to_extend_detail_cell:String?
+    var auto_leap_data_dic:Dictionary<String,String> = [:]
     
     
     
@@ -122,6 +124,95 @@ class MyTopicTableViewModel{
         print("xxx")
         //send msg to server
     }
+    func updataSecTopic_from_socket(_ msg:Dictionary<String,AnyObject>){
+        // msg -- msg_type:"topic_msg"
+        //     -- img:String
+        //     -- result_dic --topic_content_id* -- sender:String
+        //                                       -- temp_topic_msg_id
+        //                                       -- topic_content
+        //                                       -- receiver
+        //                                       -- topic_id
+        
+        let result_dic = msg["result_dic"] as! Dictionary<String,Dictionary<String,String>>
+        for topic_content_id in result_dic{
+            let topic_content_data = topic_content_id.1
+            let topic_id = topic_content_data["topic_id"]!
+            if let _ = secTopic.index(where: { (key, _) -> Bool in
+                if key == topic_id{
+                    return true
+                }
+                return false
+            }){
+                //本地端已有該話題
+                var topicWithWho:String
+                if userData.id == topic_content_data["sender"]{
+                    topicWithWho = topic_content_data["receiver"]!
+                }
+                else{
+                    topicWithWho = topic_content_data["sender"]!
+                }
+                let localTopicData = secTopic[topic_id]!
+                let localTopicDataIndex = localTopicData.index(where: { (MyTopicStandardType) -> Bool in
+                    if MyTopicStandardType.clientId_detial == topicWithWho{
+                        return true
+                    }
+                    else{return false}
+                })
+                
+                if localTopicDataIndex == nil{
+                    //新建資料
+                    request_sec_topic_config(topic_id: topic_id, topicWithWho: topicWithWho, topic_content_id: topic_content_id.key, any_func: {(cell_obj) in
+                        if topic_content_data["sender"] == userData.id{
+                            cell_obj.lastSpeaker_detial = userData.name
+                        }
+                        else{
+                            cell_obj.lastSpeaker_detial = cell_obj.clientName_detial
+                        }
+                        
+                        cell_obj.lastLine_detial = topic_content_data["topic_content"]
+                        self.secTopic[topic_id]?.append(cell_obj)
+                        DispatchQueue.main.async {
+                            self.update_title_unread(topic_id: topic_id)
+                            self.delegate?.model_relodata()
+                        }
+                        
+                        
+                    })
+                    
+                }
+                else{
+                    //更新現有資料
+                    let localData = localTopicData[Int(localTopicDataIndex!)]
+                    if topic_content_data["sender"] == userData.id{
+                        localData.lastSpeaker_detial = userData.name
+                    }
+                    else{
+                        localData.lastSpeaker_detial = localData.clientName_detial
+                    }
+                    localData.lastLine_detial = topic_content_data["topic_content"]
+                    let uiDataIndex = mytopic.index(where: { (MyTopicStandardType) -> Bool in
+                        if MyTopicStandardType.topicId_title == topic_id
+                            && MyTopicStandardType.clientId_detial == topicWithWho{
+                            return true
+                        }
+                        else{return false}
+                    })
+                    if uiDataIndex != nil{
+                        mytopic.remove(at: Int(uiDataIndex!))
+                        mytopic.insert(localData, at: uiDataIndex!)
+                        self.update_title_unread(topic_id: localData.topicId_title!)
+                        self.delegate?.model_relodata()
+                    }
+                }
+            }
+                
+            else{
+                //沒有這條topice,所以是另一邊的tableView要更新
+            }
+            
+        }
+        
+    }
     
     // ====tool func====
         // get internet data
@@ -144,7 +235,24 @@ class MyTopicTableViewModel{
             })
         }
     }
-    
+    private func request_sec_topic_config(topic_id:String, topicWithWho:String, topic_content_id:String, any_func:@escaping (MyTopicStandardType)->Void){
+        
+        HttpRequestCenter().request_topic_msg_config(topic_id, client_id: topicWithWho, topic_content_id: topic_content_id, InViewAct: { (return_dic) in
+            let detail_cell_obj = MyTopicStandardType(dataType: "detail")
+            detail_cell_obj.topicId_title = topic_id
+            detail_cell_obj.clientId_detial = topicWithWho
+            detail_cell_obj.clientName_detial = return_dic["client_name"] as? String
+            detail_cell_obj.topicContentId_detial = return_dic["topic_content_id"] as? String
+            let img_string = return_dic["img"] as! String
+            detail_cell_obj.clientPhoto_detial = base64ToImage(img_string)
+            detail_cell_obj.clientSex_detial = return_dic["client_sex"] as? String
+            detail_cell_obj.clientOnline_detial = false
+            detail_cell_obj.clientIsRealPhoto_detial = return_dic["client_is_real_photo"] as? Bool
+            detail_cell_obj.read_detial = return_dic["read"] as? Bool
+            
+            any_func(detail_cell_obj)
+        })
+    }
         // ====check func
     private func check_detail_cell_is_need_update(topic_id:String, check_data:Array<MyTopicStandardType>) -> Bool{
         if self.secTopic[topic_id] == nil{
@@ -391,6 +499,36 @@ class MyTopicTableViewModel{
             }
         }
     }
+    
+    // ======施工中=====
+    func prepare_auto_leap(topic_id:String, client_id:String){
+        self.auto_leap_data_dic = [
+            "topic_id":topic_id,
+            "client_id":client_id
+        ]
+    }
+    private func check_if_need_to_auto_leap(){
+        if !self.auto_leap_data_dic.isEmpty{
+            let topic_id = self.auto_leap_data_dic["topic_id"]!
+            let client_id = self.auto_leap_data_dic["client_id"]!
+            self.auto_leap_data_dic = [:]
+            if secTopic[topic_id] != nil{
+                if let detail_obj_index = secTopic[topic_id]!.index(where: { (element) -> Bool in
+                    if element.clientId_detial == client_id{
+                        return true
+                    }
+                    return false
+                }){
+                    let detail_obj = secTopic[topic_id]![detail_obj_index]
+                    delegate?.segue_to_chat_view(detail_cell_obj: detail_obj)
+                }
+            }
+            
+            
+        }
+    }
+    // ======施工中=====
+    
     
 }
 

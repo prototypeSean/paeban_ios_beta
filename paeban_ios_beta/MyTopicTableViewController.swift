@@ -210,7 +210,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     // MARK: delegate
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if msg["msg_type"] as! String == "topic_msg"{
-            updataSecTopic(msg)
+            model!.updataSecTopic_from_socket(msg)
         }
         else if msg["msg_type"] as! String == "new_topic"{
             for msg_keys in msg.keys{
@@ -218,7 +218,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     let msg_vals = msg[msg_keys] as! Dictionary<String,AnyObject>
                     if let topic_publisher = msg_vals["topic_publisher"] as? String{
                         if topic_publisher == userData.id{
-                            get_my_topic_title()
+                            model!.main_loading()
                             break
                         }
                     }
@@ -248,7 +248,10 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.insertRows(at: index_path_list, with: option)
         self.tableView.endUpdates()
     }
-    
+    func segue_to_chat_view(detail_cell_obj:MyTopicStandardType){
+        self.segueData = detail_cell_obj
+        self.performSegue(withIdentifier: "masterModeSegue", sender: nil)
+    }
     // MARK: 內部函數
     // ===施工中===
     func updataSecTopic(_ msg:Dictionary<String,AnyObject>){
@@ -719,50 +722,54 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     func autoLeap(){
         if notificationSegueInf != [:]{
+            print("notificationSegueInf")
+            print(notificationSegueInf)
             let parent = self.parent as! UINavigationController
             parent.popToRootViewController(animated: false)
             let segue_topic_id = notificationSegueInf["topic_id"]
             let segue_user_id = notificationSegueInf["user_id"]
             
-            var targetData_Dickey:DictionaryIndex<String, [MyTopicStandardType]>?
-            var targetData_Dicval:Array<MyTopicStandardType>.Index?
+//            var targetData_Dickey:DictionaryIndex<String, [MyTopicStandardType]>?
+//            var targetData_Dicval:Array<MyTopicStandardType>.Index?
+//            
+//            var while_pertect = 5000
+            notificationSegueInf = [:]
+            model?.prepare_auto_leap(topic_id: segue_topic_id!, client_id: segue_user_id!)
             
-            var while_pertect = 5000
-            
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
-                while targetData_Dickey == nil && targetData_Dicval == nil && while_pertect >= 0{
-                    
-                    targetData_Dickey = self.secTopic.index(where: { (key: String, value: [MyTopicStandardType]) -> Bool in
-                        if key == segue_topic_id{
-                            return true
-                        }
-                        else{return false}
-                    })
-                    
-                    if targetData_Dickey != nil{
-                        let dic_key_obj = self.secTopic[targetData_Dickey!].value
-                        targetData_Dicval = dic_key_obj.index(where: { (MyTopicStandardType) -> Bool in
-                            if MyTopicStandardType.clientId_detial == segue_user_id{
-                                return true
-                            }
-                            else{return false}
-                        })
-                    }
-                    
-                    if targetData_Dickey != nil && targetData_Dicval != nil{
-                        DispatchQueue.main.async {
-                            self.segueData = self.secTopic[targetData_Dickey!].value[targetData_Dicval!]
-                            self.performSegue(withIdentifier: "masterModeSegue", sender: nil)
-                            notificationSegueInf = [:]
-                        }
-                        
-                    }
-                    usleep(100000)
-                    while_pertect -= 100
-                }
-                self.segueData = nil
-                notificationSegueInf = [:]
-            }
+//            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
+//                while targetData_Dickey == nil && targetData_Dicval == nil && while_pertect >= 0{
+//                    
+//                    targetData_Dickey = self.secTopic.index(where: { (key: String, value: [MyTopicStandardType]) -> Bool in
+//                        if key == segue_topic_id{
+//                            return true
+//                        }
+//                        else{return false}
+//                    })
+//                    
+//                    if targetData_Dickey != nil{
+//                        let dic_key_obj = self.secTopic[targetData_Dickey!].value
+//                        targetData_Dicval = dic_key_obj.index(where: { (MyTopicStandardType) -> Bool in
+//                            if MyTopicStandardType.clientId_detial == segue_user_id{
+//                                return true
+//                            }
+//                            else{return false}
+//                        })
+//                    }
+//                    
+//                    if targetData_Dickey != nil && targetData_Dicval != nil{
+//                        DispatchQueue.main.async {
+//                            self.segueData = self.secTopic[targetData_Dickey!].value[targetData_Dicval!]
+//                            self.performSegue(withIdentifier: "masterModeSegue", sender: nil)
+//                            notificationSegueInf = [:]
+//                        }
+//                        
+//                    }
+//                    usleep(100000)
+//                    while_pertect -= 100
+//                }
+//                self.segueData = nil
+//                notificationSegueInf = [:]
+//            }
             
         }
     }

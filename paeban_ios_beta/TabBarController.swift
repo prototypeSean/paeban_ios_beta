@@ -17,10 +17,12 @@ class TabBarController: UITabBarController, NotificationDelegate {
             switchToView(segueInf: notificationSegueInf)
         }
         notificationDelegateCenter_obj.delegata = self
+        print("===TabBarController")
     }
     func switchToView(segueInf:Dictionary<String,String>){
+        print("=====segueInf======")
+        print(segueInf)
         if let pageInt = leapToPage(segueInf: segueInf){
-            
             let childView = self.childViewControllers
             var targetClassName:String
             switch pageInt{
@@ -37,10 +39,6 @@ class TabBarController: UITabBarController, NotificationDelegate {
                 
                 let classFullName = String(describing: class_s.self)
                 if targetClassName == getClassName(classFullName: classFullName){
-//                    print("rrrrrrrrrrrrrrrrr")
-//                    let class_s_n = class_s as! UINavigationController
-//                    class_s_n.popToRootViewController(animated: false)
-                    
                     self.selectedIndex = pageInt
                     let target_VC = class_s.self.childViewControllers[0].self
                     switch pageInt {
