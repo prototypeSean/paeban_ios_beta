@@ -13,6 +13,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     }
     override func viewWillAppear(_ animated: Bool) {
         rTVModel.reCheckDataBase()
+        self.update_badges()
         //autoLeap()
     }
     // MARK: - Table view data source
@@ -142,5 +143,9 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             }
             
         }
+    }
+    func update_badges(){
+        let tab_bar = self.parent?.parent as! TabBarController
+        tab_bar.update_badges()
     }
 }

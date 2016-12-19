@@ -17,6 +17,7 @@ class FriendTableViewCell: UITableViewCell {
     @IBOutlet weak var name: UILabel!
     var cell_type:String!
     
+    @IBOutlet weak var last_line: UILabel!
     
     
     

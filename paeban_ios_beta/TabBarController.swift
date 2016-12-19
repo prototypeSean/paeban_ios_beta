@@ -9,19 +9,18 @@
 import UIKit
 
 
-class TabBarController: UITabBarController, NotificationDelegate {
+class TabBarController: UITabBarController, NotificationDelegate, webSocketActiveCenterDelegate{
 
     override func viewDidLoad() {
         super.viewDidLoad()
         if notificationSegueInf != [:]{
             switchToView(segueInf: notificationSegueInf)
         }
+        wsActive.wasd_ForTabBarController = self
         notificationDelegateCenter_obj.delegata = self
-        print("===TabBarController")
+        update_badges()
     }
     func switchToView(segueInf:Dictionary<String,String>){
-        print("=====segueInf======")
-        print(segueInf)
         if let pageInt = leapToPage(segueInf: segueInf){
             let childView = self.childViewControllers
             var targetClassName:String
@@ -81,6 +80,36 @@ class TabBarController: UITabBarController, NotificationDelegate {
             }
         }
         return className
+    }
+    func update_badges(){
+        HttpRequestCenter().request_user_data("get_badges", send_dic: [:]) { (return_dic) in
+            DispatchQueue.main.async {
+                print("==update_badges==")
+                if return_dic["my_topic_badge"] as? String == "0"{
+                    self.tabBar.items?[1].badgeValue = nil
+                }
+                else{
+                    self.tabBar.items?[1].badgeValue = return_dic["my_topic_badge"] as? String
+                }
+                
+                if return_dic["recent_badge"] as? String == "0"{
+                    self.tabBar.items?[2].badgeValue = nil
+                }
+                else{
+                    self.tabBar.items?[2].badgeValue = return_dic["recent_badge"] as? String
+                }
+                
+                if return_dic["friend_badge"] as? String == "0"{
+                    self.tabBar.items?[3].badgeValue = nil
+                }
+                else{
+                    self.tabBar.items?[3].badgeValue = return_dic["friend_badge"] as? String
+                }
+            }
+        }
+    }
+    func wsOnMsg(_ msg: Dictionary<String, AnyObject>) {
+        self.update_badges()
     }
 }
 

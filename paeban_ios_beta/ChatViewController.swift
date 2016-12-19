@@ -89,7 +89,10 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             return NSAttributedString(string:"")
         }
     }
-
+    override func viewDidDisappear(_ animated: Bool) {
+        self.dismiss(animated: false, completion: nil)
+        wsActive.wasd_ForChatViewController = nil
+    }
     
     // MARK: 設定訊息顏色，用JSQ的套件
     fileprivate func setupBubbles() {

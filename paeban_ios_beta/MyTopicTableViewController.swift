@@ -40,7 +40,9 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.tableFooterView = UIView()
     }
     override func viewWillAppear(_ animated: Bool) {
+        model.chat_view = nil
         model.main_loading()
+        update_badges()
     }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     }
@@ -116,7 +118,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             nextView.clientImg = data.clientPhoto_detial
             nextView.topicTitle = data.topicTitle_title
             nextView.title = data.clientName_detial
-            
+            model.chat_view = nextView
             self.segueData = nil
         }
     }
@@ -229,23 +231,35 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         //dic -- title* -- detail* --
         checkData()
     }
+    func brake(){
+        let table_list = model.mytopic
+        let list_count = table_list.count
+        
+        if list_count < 6{
+            print("brike")
+        }
+    }
     func model_relodata(){
         self.tableView.reloadData()
+        brake()
     }
     func model_relod_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){
         self.tableView.beginUpdates()
         self.tableView.reloadRows(at: index_path_list, with: option)
         self.tableView.endUpdates()
+        brake()
     }
     func model_delete_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){
         self.tableView.beginUpdates()
         self.tableView.deleteRows(at: index_path_list, with: option)
         self.tableView.endUpdates()
+        brake()
     }
     func model_insert_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){
         self.tableView.beginUpdates()
         self.tableView.insertRows(at: index_path_list, with: option)
         self.tableView.endUpdates()
+        brake()
     }
     func segue_to_chat_view(detail_cell_obj:MyTopicStandardType){
         self.segueData = detail_cell_obj
@@ -253,136 +267,14 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     // MARK: 內部函數
     // MARK: ===施工中===
-    func update_badges(badge_count:Int){
-        let tab_bar = self.parent?.parent as! TabBarController
-        if badge_count == 0{
-            tab_bar.tabBar.items?[1].badgeValue = nil
-        }
-        else{
-            tab_bar.tabBar.items?[1].badgeValue = String(badge_count)
-        }
-    }
-//    func updataSecTopic(_ msg:Dictionary<String,AnyObject>){
-//        // msg -- msg_type:"topic_msg"
-//        //     -- img:String
-//        //     -- result_dic --topic_content_id* -- sender:String
-//        //                                       -- temp_topic_msg_id
-//        //                                       -- topic_content
-//        //                                       -- receiver
-//        //                                       -- topic_id
-//        
-//        let result_dic = msg["result_dic"] as! Dictionary<String,Dictionary<String,String>>
-//        for topic_content_id in result_dic{
-//            let topic_content_data = topic_content_id.1
-//            let topic_id = topic_content_data["topic_id"]!
-//            if let _ = secTopic.index(where: { (key, _) -> Bool in
-//                if key == topic_id{
-//                    return true
-//                }
-//                return false
-//            }){
-//                //本地端已有該話題
-//                var topicWithWho:String
-//                if userData.id == topic_content_data["sender"]{
-//                    topicWithWho = topic_content_data["receiver"]!
-//                }
-//                else{
-//                    topicWithWho = topic_content_data["sender"]!
-//                }
-//                let localTopicData = secTopic[topic_id]!
-//                let localTopicDataIndex = localTopicData.index(where: { (MyTopicStandardType) -> Bool in
-//                    if MyTopicStandardType.clientId_detial == topicWithWho{
-//                        return true
-//                    }
-//                    else{return false}
-//                })
-//                
-//                if localTopicDataIndex == nil{
-//                    //新建資料
-//                    request_sec_topic_config(topic_id: topic_id, topicWithWho: topicWithWho, topic_content_id: topic_content_id.key, any_func: {(cell_obj) in
-//                        if topic_content_data["sender"] == userData.id{
-//                            cell_obj.lastSpeaker_detial = userData.name
-//                        }
-//                        else{
-//                            cell_obj.lastSpeaker_detial = cell_obj.clientName_detial
-//                        }
-//                        
-//                        cell_obj.lastLine_detial = topic_content_data["topic_content"]
-//                        self.secTopic[topic_id]?.append(cell_obj)
-//                        DispatchQueue.main.async {
-//                            self.updataTitleUnread(topic_id)
-//                            self.tableView.reloadData()
-//                        }
-//                        
-//                        
-//                    })
-//                    
-//                }
-//                else{
-//                    //更新現有資料
-//                    let localData = localTopicData[Int(localTopicDataIndex!)]
-//                    if topic_content_data["sender"] == userData.id{
-//                        localData.lastSpeaker_detial = userData.name
-//                    }
-//                    else{
-//                        localData.lastSpeaker_detial = localData.clientName_detial
-//                    }
-//                    localData.lastLine_detial = topic_content_data["topic_content"]
-//                    let uiDataIndex = mytopic.index(where: { (MyTopicStandardType) -> Bool in
-//                        if MyTopicStandardType.topicId_title == topic_id
-//                            && MyTopicStandardType.clientId_detial == topicWithWho{
-//                            return true
-//                        }
-//                        else{return false}
-//                    })
-//                    if uiDataIndex != nil{
-//                        mytopic.remove(at: Int(uiDataIndex!))
-//                        mytopic.insert(localData, at: uiDataIndex!)
-//                        self.updataTitleUnread(localData.topicId_title!)
-//                        self.tableView.reloadData()
-//                    }
-//                }
-//            }
-//            
-//            else{
-//                //沒有這條topice,所以是另一邊的tableView要更新
-//            }
-//            
-//            
-//            
-//            
-//        }
-//        
-//        
-//    }
-//    
-//    func request_sec_topic_config(topic_id:String, topicWithWho:String, topic_content_id:String, any_func:@escaping (MyTopicStandardType)->Void){
-//        
-//        HttpRequestCenter().request_topic_msg_config(topic_id, client_id: topicWithWho, topic_content_id: topic_content_id, InViewAct: { (return_dic) in
-//            let detail_cell_obj = MyTopicStandardType(dataType: "detail")
-//            detail_cell_obj.topicId_title = topic_id
-//            detail_cell_obj.clientId_detial = topicWithWho
-//            detail_cell_obj.clientName_detial = return_dic["client_name"] as? String
-//            detail_cell_obj.topicContentId_detial = return_dic["topic_content_id"] as? String
-//            let img_string = return_dic["img"] as! String
-//            detail_cell_obj.clientPhoto_detial = base64ToImage(img_string)
-//            detail_cell_obj.clientSex_detial = return_dic["client_sex"] as? String
-//            detail_cell_obj.clientOnline_detial = false
-//            detail_cell_obj.clientIsRealPhoto_detial = return_dic["client_is_real_photo"] as? Bool
-//            detail_cell_obj.read_detial = return_dic["read"] as? Bool
-//            
-//            any_func(detail_cell_obj)
-//        })
-//    }
+    
+
     
     // ===施工中===
     // 查詢線上問題待解決 鮮血入 false
-    func badge_update(){
-        HttpRequestCenter().msg_func(msg_type: "check_badge", send_dic: [:]) { (retuen_dic) in
-            if let badge_count = Int(retuen_dic["badge_count"] as! String){
-                app_instence?.applicationIconBadgeNumber = badge_count
-            }
-        }
+    func update_badges(){
+        let tab_bar = self.parent?.parent as! TabBarController
+        tab_bar.update_badges()
     }
     func topic_content_read(topic_id:String){
         var read_id_list:Array<String> = []
@@ -423,7 +315,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             }
         }
     }
-    // ===c
     func get_my_topic_title() {
         DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
             let httpObj = HttpRequestCenter()
@@ -544,7 +435,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         return tempMytopicList
     }
-    // ===c
     
     
     func updateSelectIndex(_ topicId:String, anyFunction: () -> Void){

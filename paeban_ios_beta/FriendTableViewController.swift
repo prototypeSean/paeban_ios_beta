@@ -28,7 +28,9 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     override func viewWillAppear(_ animated: Bool) {
         //autoLeap()
         self.tableView.reloadData()
+        model?.getFrientList()
         getInvitwList()
+        self.update_badges()
     }
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -210,14 +212,6 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             
         }
     }
-    func getFrientList(){
-        let send_dic:NSDictionary = [
-            "none": "none"
-        ]
-        HttpRequestCenter().friend_function(msg_type: "get_friend_list", send_dic: send_dic) { (return_dic) in
-            //code
-        }
-    }
     func getInvitwList(){
         let send_dic:NSDictionary = [
             "none": "none"
@@ -232,7 +226,10 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             }
         }
     }
-    
+    func update_badges(){
+        let tab_bar = self.parent?.parent as! TabBarController
+        tab_bar.update_badges()
+    }
     
     // MARK: event for cell button
     func ok_btn_click(click_row:Int){

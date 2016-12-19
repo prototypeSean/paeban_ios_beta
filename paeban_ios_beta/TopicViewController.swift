@@ -49,7 +49,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         topicTitleContent.text = topicTitle
         
     }
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.dismiss(animated: false, completion: nil)
+    }
     override func viewDidLayoutSubviews() {
         setImage()
     }

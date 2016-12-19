@@ -38,9 +38,30 @@ public func turnToFriendStanderType(_ id:String,name:String,sex:String,isRealPho
     
     test.getHttpImg("https://www.paeban.com/media/\(photoString)") { (img) in
         returnObj.photo = img
-        
     }
     return returnObj
+}
+
+public func turnToFriendStanderType_v2(friend_dic:Dictionary<String,AnyObject>) -> Array<FriendStanderType>{
+    var return_list:Array<FriendStanderType> = []
+    for friend_name in friend_dic.keys{
+        let temp_cell = FriendStanderType()
+        temp_cell.id = friend_name
+        temp_cell.cell_type = "friend"
+        temp_cell.name = friend_dic[friend_name]?["name"] as? String
+        temp_cell.isRealPhoto = friend_dic[friend_name]?["isRealPhoto"] as? Bool
+        temp_cell.online = friend_dic[friend_name]?["online"] as? Bool
+        temp_cell.photoHttpStr = friend_dic[friend_name]?["photoHttpStr"] as? String
+        temp_cell.sex = friend_dic[friend_name]?["sex"] as? String
+        let lastLine = friend_dic[friend_name]?["lastLine"] as? String
+        let last_speaker = friend_dic[friend_name]?["last_speaker"] as? String
+        if last_speaker != "" && lastLine != ""{
+            temp_cell.lastLine = "\(last_speaker!):\(lastLine!)"
+        }
+        
+        return_list.append(temp_cell)
+    }
+    return return_list
 }
 
 

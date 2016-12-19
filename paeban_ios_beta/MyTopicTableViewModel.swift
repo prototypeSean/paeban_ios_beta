@@ -15,7 +15,6 @@ protocol MyTopicTableViewModelDelegate {
     func model_delete_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation)
     func model_insert_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation)
     func segue_to_chat_view(detail_cell_obj:MyTopicStandardType)
-    func update_badges(badge_count:Int)
 }
 
 class MyTopicTableViewModel{
@@ -37,6 +36,7 @@ class MyTopicTableViewModel{
     var delegate:MyTopicTableViewModelDelegate?
     var topic_id_wait_to_extend_detail_cell:String?
     var auto_leap_data_dic:Dictionary<String,String> = [:]
+    var chat_view:MyTopicViewController?
     
     
     
@@ -62,8 +62,9 @@ class MyTopicTableViewModel{
     func update_title_cell(aftre_update:@escaping(_ title_cell_list:Array<MyTopicStandardType>)->Void){
         get_my_topic_title { (title_cell_list) in
             if self.check_title_cell_is_need_update(check_data: title_cell_list){
-                self.mytopic = title_cell_list
-                self.delegate?.model_relodata()
+                for new_title_cell_s in title_cell_list{
+                    self.replace_title_cell_with_new(new_title_cell: new_title_cell_s)
+                }
                 aftre_update(title_cell_list)
             }
         }
@@ -74,7 +75,6 @@ class MyTopicTableViewModel{
                 self.secTopic[topic_id] = detail_cell_list
                 aftre_update(detail_cell_list)
             }
-            self.update_mytopic_badge()
         })
     }
     func did_select_row(index:Int){
@@ -98,6 +98,7 @@ class MyTopicTableViewModel{
                     DispatchQueue.global(qos: .background).async {
                         sleep(5)
                         if !self.check_detail_cell_has_been_load(topic_id: select_cell.topicId_title!){
+                            print("=======check_detail_cell_has_been_load_nil==========")
                             self.update_detail_cell(topic_id: select_cell.topicId_title!, aftre_update: { (detail_cell_list) -> Void in
                                 if self.topic_id_wait_to_extend_detail_cell == select_cell.topicId_title!{
                                     self.topic_id_wait_to_extend_detail_cell = nil
@@ -114,7 +115,6 @@ class MyTopicTableViewModel{
         else if select_cell.dataType == "detail"{
             self.set_detail_cell_to_read(topic_id: select_cell.topicId_title!, client_id: select_cell.clientId_detial!)
             self.update_title_unread(topic_id: select_cell.topicId_title!)
-            self.update_mytopic_badge()
         }
     }
     func close_topic(index:Int){
@@ -163,6 +163,13 @@ class MyTopicTableViewModel{
                         localData.lastSpeaker_detial = localData.clientName_detial
                     }
                     localData.lastLine_detial = topic_content_data["topic_content"]
+                    // MARK: testing
+                    localData.read_detial = false
+                    print("====chat_view====")
+                    print(chat_view?.setID)
+                    
+                    secTopic[topic_id]!.remove(at: localData_index!)
+                    secTopic[topic_id]!.insert(localData, at: localData_index!)
                     let uiDataIndex = mytopic.index(where: { (MyTopicStandardType) -> Bool in
                         if MyTopicStandardType.topicId_title == topic_id
                             && MyTopicStandardType.clientId_detial == topicWithWho{
@@ -173,10 +180,9 @@ class MyTopicTableViewModel{
                     if uiDataIndex != nil{
                         mytopic.remove(at: Int(uiDataIndex!))
                         mytopic.insert(localData, at: uiDataIndex!)
-                        self.update_title_unread(topic_id: localData.topicId_title!)
-                        self.delegate?.model_relodata()
-                        self.update_mytopic_badge()
                     }
+                    self.update_title_unread(topic_id: localData.topicId_title!)
+                    self.delegate?.model_relodata()
                 }
                 else{
                     //新建資料
@@ -197,7 +203,6 @@ class MyTopicTableViewModel{
                                 self.add_new_detail_cell_to_table(detail_cell: cell_obj)
                             }
                             
-                            self.update_mytopic_badge()
                         }
                         
                         
@@ -601,20 +606,34 @@ class MyTopicTableViewModel{
         }
         return id_1
     }
-    private func update_mytopic_badge(){
-        var badge_count = 0
-        for detail_cell_list in secTopic.values{
-            for detail_cell in detail_cell_list{
-                if detail_cell.read_detial == false{
-                    badge_count += 1
-                }
-            }
-        }
-        delegate?.update_badges(badge_count: badge_count)
-    }
     
     // ======施工中=====
-    
+    private func replace_title_cell_with_new(new_title_cell:MyTopicStandardType){
+        let topic_id = new_title_cell.topicId_title!
+        //new_title_cell.dataType
+        if let old_title_cell_index = mytopic.index(where: { (element) -> Bool in
+            if element.dataType == "title" && element.topicId_title == topic_id{
+                return true
+            }
+            return false
+        }){
+            DispatchQueue.main.async {
+                self.mytopic.remove(at: old_title_cell_index as Int)
+                self.mytopic.insert(new_title_cell, at: old_title_cell_index as Int)
+                let index_path = IndexPath(row: old_title_cell_index as Int, section: 0)
+                self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+            }
+            
+        }
+        else{
+            DispatchQueue.main.async {
+                let index_path = IndexPath(row: (self.mytopic.count), section: 0)
+                self.mytopic.append(new_title_cell)
+                self.delegate?.model_insert_row(index_path_list: [index_path], option: .top)
+            }
+            
+        }
+    }
     
     
     // ======施工中=====

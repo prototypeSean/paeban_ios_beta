@@ -19,6 +19,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         }
     }
     var invite_list:Array<FriendStanderType> = []
+    var friend_list_database:Array<FriendStanderType> = []
     
     func getDataCount() -> Int{
         return friendsList.count
@@ -56,14 +57,14 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                     }
                     
                 }
-                if !data.online_checked{
-                    data.online_checked = true
-                    let send_dic:NSDictionary = [
-                        "msg_type":"check_online",
-                        "check_id":data.id!
-                    ]
-                    socket.write(data: json_dumps(send_dic))
-                }
+//                if !data.online_checked{
+//                    data.online_checked = true
+//                    let send_dic:NSDictionary = [
+//                        "msg_type":"check_online",
+//                        "check_id":data.id!
+//                    ]
+//                    socket.write(data: json_dumps(send_dic))
+//                }
                 
             }
             cell2.photo.image = data.photo
@@ -75,6 +76,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 cell2.truePhoto.tintColor = UIColor.clear
             }
             cell2.name.text = data.name
+            cell2.last_line.text = data.lastLine
             cell2.onlineImg.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             if data.online!{
                 cell2.onlineImg.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
@@ -85,16 +87,16 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             let thePhotoLayer:CALayer = cell2.photo.layer
             thePhotoLayer.masksToBounds = true
             thePhotoLayer.cornerRadius = 6
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
-                if !data.online_checked{
-                    data.online_checked = true
-                    let send_dic:NSDictionary = [
-                        "msg_type":"check_online",
-                        "check_id":data.id!
-                    ]
-                    socket.write(data: json_dumps(send_dic))
-                }
-            }
+//            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+//                if !data.online_checked{
+//                    data.online_checked = true
+//                    let send_dic:NSDictionary = [
+//                        "msg_type":"check_online",
+//                        "check_id":data.id!
+//                    ]
+//                    socket.write(data: json_dumps(send_dic))
+//                }
+//            }
             return cell2
         }
             
@@ -122,14 +124,14 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                     }
                     
                 }
-                if !data.online_checked{
-                    data.online_checked = true
-                    let send_dic:NSDictionary = [
-                        "msg_type":"check_online",
-                        "check_id":data.id!
-                    ]
-                    socket.write(data: json_dumps(send_dic))
-                }
+//                if !data.online_checked{
+//                    data.online_checked = true
+//                    let send_dic:NSDictionary = [
+//                        "msg_type":"check_online",
+//                        "check_id":data.id!
+//                    ]
+//                    socket.write(data: json_dumps(send_dic))
+//                }
                 
             }
             
@@ -178,7 +180,36 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         returnDic["clientImg"] = dataSouse.photo
         return returnDic
     }
-    
+    func getFrientList(){
+        let send_dic:NSDictionary = [
+            "none": "none"
+        ]
+        HttpRequestCenter().friend_function(msg_type: "get_friend_list", send_dic: send_dic) { (return_dic) in
+            DispatchQueue.main.async {
+                print("get_friend_list")
+                let return_list = turnToFriendStanderType_v2(friend_dic: return_dic)
+                self.friend_list_database = return_list
+                self.replace_friend_cell()
+            }
+        }
+    }
+    func replace_friend_cell(){
+        for friend_cell_s in self.friend_list_database{
+            if let friend_cell_index = self.friendsList.index(where: { (element) -> Bool in
+                if element.id == friend_cell_s.id{
+                    return true
+                }
+                return false
+            }){
+                myFriendsList.remove(at: friend_cell_index as Int)
+                myFriendsList.insert(friend_cell_s, at: friend_cell_index as Int)
+                let index_path = IndexPath(row: friend_cell_index as Int, section: 0)
+                targetVC.tableView.beginUpdates()
+                targetVC.tableView.reloadRows(at: [index_path], with: .none)
+                targetVC.tableView.endUpdates()
+            }
+        }
+    }
     func turnToMessage3(_ inputDic:Dictionary<String,AnyObject>) -> JSQMessage3{
         let returnObj = JSQMessage3(senderId: inputDic["senderId"] as! String,
                                     displayName: inputDic["displayName"] as! String,
@@ -401,9 +432,39 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             else if msg_type == "friend_confirm"{
                 add_singo_invite_cell(msg: msg)
             }
+            else if msg_type == "priv_msg"{
+                let sender_name = msg["sender_name"] as! String
+                let msg_text = msg["msg"] as! String
+                let last_line = "\(sender_name):\(msg_text)"
+
+                let client_id = self.find_client_id(
+                    id_1: msg["sender_id"]! as! String,
+                    id_2: msg["receiver_id"]! as! String
+                )
+                if let friend_cell_index = friendsList.index(where: { (element) -> Bool in
+                    if element.id == client_id{
+                        return true
+                    }
+                    return false
+                }){
+                    friendsList[friend_cell_index].lastLine = last_line
+                    let index_path = IndexPath(row: friend_cell_index, section: 0)
+                    targetVC.tableView.beginUpdates()
+                    targetVC.tableView.reloadRows(at: [index_path], with: .none)
+                    targetVC.tableView.endUpdates()
+                }
+                
+            }
             
         }
     }
+    func find_client_id(id_1:String, id_2:String) -> String{
+        if id_1 == userData.id{
+            return id_2
+        }
+        return id_1
+    }
+    
     
 }
 

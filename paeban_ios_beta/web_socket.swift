@@ -73,7 +73,9 @@ open class webSocketActiveCenter{
     var wasd_ForMyTopicViewController:webSocketActiveCenterDelegate?
     let wasd_ForMyTopicViewControllerList = ["topic_msg","topic_closed"]
     var wasd_FriendTableViewMedol:webSocketActiveCenterDelegate?
-    let wasd_FriendTableViewMedol_list = ["check_online","off_line","new_member", "friend_confirm_success", "friend_confirm"]
+    let wasd_FriendTableViewMedol_list = ["check_online","off_line","new_member", "friend_confirm_success", "friend_confirm", "priv_msg"]
+    var wasd_ForTabBarController:webSocketActiveCenterDelegate?
+    let wasd_ForTabBarController_list = ["topic_msg", "priv_msg"]
     
     
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
@@ -142,6 +144,9 @@ open class webSocketActiveCenter{
             }
             if wasd_FriendTableViewMedol_list.index(of: msgtypeString) != nil{
                 wasd_FriendTableViewMedol?.wsOnMsg(msg)
+            }
+            if wasd_ForTabBarController_list.index(of: msgtypeString) != nil{
+                wasd_ForTabBarController?.wsOnMsg(msg)
             }
             
             if test_List.index(of: msgtypeString) != nil {
