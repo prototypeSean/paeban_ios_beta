@@ -85,6 +85,11 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         return img2!
     }
     func save_data_to_server(){
+        let nav = self.parent as? UINavigationController
+        if nav != nil{
+            nav!.popToRootViewController(animated: true)
+        }
+        
         var is_true_photo:String
         if is_true_photo_switch.isOn{
             is_true_photo = "true"
@@ -96,43 +101,39 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
             "mode": "change_profile"
             ]
         let child_vc = self.childViewControllers[0] as! SettingProfilePicViewController
-        if child_vc.profilePicImg.image != userData.img && userData.img != nil{
-            var send_img_str = ""
-            var init_qulity = 200
-            let new_img = child_vc.profilePicImg.image
-            while send_img_str.characters.count > 100000 || send_img_str.characters.count == 0{
-                let re_img  = resizeImage1(image: new_img!, newWidth: CGFloat(init_qulity))
-                child_vc.profilePicImg.image = re_img
-                let new_img_base64 = imageToBase64(image: re_img, optional: "none")
-                send_img_str = new_img_base64
-                init_qulity -= 1
+        DispatchQueue.global(qos: .background).async {
+            if child_vc.profilePicImg.image != userData.img && userData.img != nil{
+                var send_img_str = ""
+                var init_qulity = 200
+                let new_img = child_vc.profilePicImg.image
+                while send_img_str.characters.count > 100000 || send_img_str.characters.count == 0{
+                    let re_img  = self.resizeImage1(image: new_img!, newWidth: CGFloat(init_qulity))
+                    child_vc.profilePicImg.image = re_img
+                    let new_img_base64 = imageToBase64(image: re_img, optional: "none")
+                    send_img_str = new_img_base64
+                    init_qulity -= 1
+                }
+                
+                send_dic["is_new_img"] = "data3image/jpeg3base64," + send_img_str
+                // ;會造成字典解析錯誤 詳見 HttpRequestCenter().change_profile
+                
+            }
+            if self.name_text.text != userData.name && userData.name != nil && self.name_text.text != ""{
+                send_dic["new_name"] = self.name_text.text!
             }
             
-            send_dic["is_new_img"] = "data3image/jpeg3base64," + send_img_str
-            // ;會造成字典解析錯誤 詳見 HttpRequestCenter().change_profile
-            
-        }
-        if name_text.text != userData.name && userData.name != nil && name_text.text != ""{
-            send_dic["new_name"] = name_text.text!
-        }
-        
-        HttpRequestCenter().change_profile(send_dic: send_dic as NSDictionary) { (return_dic) in
-            //["old_user_name": , "show_my_gender": 1, "old_user_pic": member/154/tes_gkpZIVk.jpeg, "show_my_photo": 0, "msg_type": update_user_profile, "user_pic": member/154/tes_gkpZIVk.jpeg, "user_name": ]
-            userData.name = return_dic["user_name"] as! String?
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
-                let url = locale_host + "media/" + (return_dic["user_pic"] as! String)
-                HttpRequestCenter().getHttpImg(url, getImg: { (return_img) in
-                    userData.img = return_img
-                })
+            HttpRequestCenter().change_profile(send_dic: send_dic as NSDictionary) { (return_dic) in
+                //["old_user_name": , "show_my_gender": 1, "old_user_pic": member/154/tes_gkpZIVk.jpeg, "show_my_photo": 0, "msg_type": update_user_profile, "user_pic": member/154/tes_gkpZIVk.jpeg, "user_name": ]
+                userData.name = return_dic["user_name"] as! String?
+                DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                    let url = locale_host + "media/" + (return_dic["user_pic"] as! String)
+                    HttpRequestCenter().getHttpImg(url, getImg: { (return_img) in
+                        userData.img = return_img
+                    })
+                }
+                
             }
-            
         }
-        let nav = self.parent as? UINavigationController
-        if nav != nil{
-            nav!.popToRootViewController(animated: true)
-        }
-        
-        
         
     }
     

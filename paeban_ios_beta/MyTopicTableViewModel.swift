@@ -547,6 +547,32 @@ class MyTopicTableViewModel{
         }
         delegate?.model_delete_row(index_path_list: remove_index_path_list, option: .left)
     }
+    private func replace_title_cell_with_new(new_title_cell:MyTopicStandardType){
+        let topic_id = new_title_cell.topicId_title!
+        //new_title_cell.dataType
+        if let old_title_cell_index = mytopic.index(where: { (element) -> Bool in
+            if element.dataType == "title" && element.topicId_title == topic_id{
+                return true
+            }
+            return false
+        }){
+            DispatchQueue.main.async {
+                self.mytopic.remove(at: old_title_cell_index as Int)
+                self.mytopic.insert(new_title_cell, at: old_title_cell_index as Int)
+                let index_path = IndexPath(row: old_title_cell_index as Int, section: 0)
+                self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+            }
+            
+        }
+        else{
+            DispatchQueue.main.async {
+                let index_path = IndexPath(row: (self.mytopic.count), section: 0)
+                self.mytopic.append(new_title_cell)
+                self.delegate?.model_insert_row(index_path_list: [index_path], option: .top)
+            }
+            
+        }
+    }
     
         // ====operate local database
     private func remove_topic_detail_data_from_local(topic_id:String){
@@ -608,32 +634,7 @@ class MyTopicTableViewModel{
     }
     
     // ======施工中=====
-    private func replace_title_cell_with_new(new_title_cell:MyTopicStandardType){
-        let topic_id = new_title_cell.topicId_title!
-        //new_title_cell.dataType
-        if let old_title_cell_index = mytopic.index(where: { (element) -> Bool in
-            if element.dataType == "title" && element.topicId_title == topic_id{
-                return true
-            }
-            return false
-        }){
-            DispatchQueue.main.async {
-                self.mytopic.remove(at: old_title_cell_index as Int)
-                self.mytopic.insert(new_title_cell, at: old_title_cell_index as Int)
-                let index_path = IndexPath(row: old_title_cell_index as Int, section: 0)
-                self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
-            }
-            
-        }
-        else{
-            DispatchQueue.main.async {
-                let index_path = IndexPath(row: (self.mytopic.count), section: 0)
-                self.mytopic.append(new_title_cell)
-                self.delegate?.model_insert_row(index_path_list: [index_path], option: .top)
-            }
-            
-        }
-    }
+    
     
     
     // ======施工中=====

@@ -45,7 +45,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         topicList.delegate = self
         topicList.dataSource = self
         wsActive.wsad_ForTopicTableViewController = self
-        gettopic()
         //socket.delegate = self
         open_app_frist = false
         
@@ -65,7 +64,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         // 從聊天視窗回到清單把cell的反灰取消
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        gettopic()
         if let path = topicList.indexPathForSelectedRow {
             topicList.deselectRow(at: path, animated: true)
         }
