@@ -106,24 +106,18 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     fileprivate func gettopic(){
         //let qos = Int(DispatchQoS.QoSClass.userInitiated.rawValue)
         DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async{ () -> Void in
-            var temp_topic:Array<Topic>{
-                get{
-                    return []
-                }
-                set{
-                    DispatchQueue.main.async(execute: {
-                        for newValue_s in newValue{
-                            if newValue_s.owner != userData.id{
-                                self.topics += [newValue_s]
-                            }
-                        }
-
-                        self.topicList.reloadData()
-                    })
-                }
-            }
             self.httpOBJ.getTopic({ (temp_topic2) in
-                temp_topic = temp_topic2
+                DispatchQueue.main.async {
+                    var temp_topic:Array<Topic> = []
+                    for temp_topic2_s in temp_topic2{
+                        if temp_topic2_s.owner != userData.id{
+                            temp_topic.append(temp_topic2_s)
+                        }
+                    }
+                    self.topics = temp_topic
+                    self.topicList.reloadData()
+                }
+                
             })
         }
     }
