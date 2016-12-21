@@ -85,9 +85,14 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         return img2!
     }
     func save_data_to_server(){
-        let nav = self.parent as? UINavigationController
-        if nav != nil{
-            nav!.popToRootViewController(animated: true)
+        let load_view = add_loading_view()
+        DispatchQueue.global(qos: .background).async {
+            sleep(30)
+            if load_view != nil{
+                DispatchQueue.main.async {
+                    self.remove_load_view(target_view: load_view!)
+                }
+            }
         }
         
         var is_true_photo:String
@@ -101,7 +106,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
             "mode": "change_profile"
             ]
         let child_vc = self.childViewControllers[0] as! SettingProfilePicViewController
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .default).async {
             if child_vc.profilePicImg.image != userData.img && userData.img != nil{
                 var send_img_str = ""
                 var init_qulity = 200
@@ -130,11 +135,44 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
                     HttpRequestCenter().getHttpImg(url, getImg: { (return_img) in
                         userData.img = return_img
                     })
+                    DispatchQueue.main.async {
+                        load_view!.removeFromSuperview()
+                    }
+                    
                 }
                 
             }
         }
         
+    }
+    func jump_to_prev_view(){
+        let nav = self.parent as? UINavigationController
+        if nav != nil{
+            nav!.popToRootViewController(animated: true)
+        }
+    }
+    func add_loading_view() -> UIView?{
+        let nav = self.parent?.parent as? UITabBarController
+        if nav != nil{
+            let height = CGFloat(0 + (nav?.view.frame.height)!)
+            let load_view = UIView()
+            load_view.frame = CGRect(x:0, y: 0, width: self.view.frame.width, height: height)
+            load_view.backgroundColor = UIColor.gray
+            //self.view.addSubview(load_view)
+            let load_simbol = UIActivityIndicatorView()
+            load_simbol.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+            load_simbol.activityIndicatorViewStyle = .whiteLarge
+            load_view.alpha = 0.7
+            nav!.view.addSubview(load_view)
+            load_simbol.center = CGPoint(x: self.view.frame.width/2, y: height/2)
+            load_view.addSubview(load_simbol)
+            load_simbol.startAnimating()
+            return load_view
+        }
+        return nil
+    }
+    func remove_load_view(target_view:UIView){
+        target_view.removeFromSuperview()
     }
     
     // override
