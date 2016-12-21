@@ -355,7 +355,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             self.conform_excute(title: "title", msg: "msg", yes_func: excute)
         }
         block_btn.backgroundColor = UIColor.red
-        report_btn.backgroundColor = UIColor.green
+        report_btn.backgroundColor = UIColor.black
         return [block_btn, report_btn]
     }
     func block_user(setID:String, topicId:String){

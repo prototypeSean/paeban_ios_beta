@@ -183,22 +183,22 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let data = model.mytopic[indexPath.row]
-        let close_topic_btn = UITableViewRowAction(style: .default, title: "close") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let close_topic_btn = UITableViewRowAction(style: .default, title: "全部關閉") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             self.model.close_topic(index: IndexPath_parameter.row)
         }
-        let delete = UITableViewRowAction(style: .default, title: "delete") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             self.model.delete_detail_cell(index: IndexPath_parameter.row)
         }
-        let report = UITableViewRowAction(style: .default, title: "report") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let report = UITableViewRowAction(style: .default, title: "舉報") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             //code
         }
-        let block = UITableViewRowAction(style: .default, title: "block") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let block = UITableViewRowAction(style: .default, title: "封鎖") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             //code
         }
         block.backgroundColor = UIColor.red
-        close_topic_btn.backgroundColor = UIColor.green
+        close_topic_btn.backgroundColor = UIColor.black
         delete.backgroundColor = UIColor.gray
-        report.backgroundColor = UIColor.blue
+        report.backgroundColor = UIColor.black
         if data.dataType == "title"{
             return [close_topic_btn]
         }

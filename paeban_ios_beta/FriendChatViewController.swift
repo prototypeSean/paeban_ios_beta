@@ -126,7 +126,8 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         super.viewDidLoad()
         title = "好友"
         setupBubbles()
-        
+        //移除迴紋針按鈕
+        self.inputToolbar.contentView.leftBarButtonItem = nil
         // 這兩個是初始化一定要有的參數
         //MARK:自己的參數
         senderId = setID
