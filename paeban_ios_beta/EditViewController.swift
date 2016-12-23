@@ -31,6 +31,7 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
         if 0 < editText.text!.characters.count && editText.text!.characters.count < 100{
             let sendData = json_dumps(["msg_type":"new_topic","text":editText.text!])
             socket.write(data: sendData)
+            jump_tp_my_topic()
         }
         else{
             // 輸入有誤
@@ -38,6 +39,12 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
         editText.text! = ""
         collapseInputBox()
     }
+    func jump_tp_my_topic(){
+        if let tab_bar = self.parent?.parent?.parent as? TabBarController{
+            tab_bar.selectedIndex = 1
+        }
+    }
+    
     func collapseInputBox(){
         let parVC = self.parent! as! TopicTableViewController
         parVC.editArea.isHidden = true

@@ -184,9 +184,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
                     if result == "check_success"{
                         let mailAlert = UIAlertController(title: "成功", message: "已發送註冊信", preferredStyle: UIAlertControllerStyle.alert)
                         mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
-                            self.dismiss(animated: true, completion: {
-                                //code
-                            })
+                            self.jump_to_prev_view()
                             
                         }))
                         self.present(mailAlert, animated: true, completion: {
@@ -321,6 +319,14 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         selectGenderText.text = genderOption[row]
         self.view.endEditing(true)
     }
+    
+    // 施工中
+    func jump_to_prev_view(){
+        let nav = self.parent as! SignInNavViewController
+        nav.popToRootViewController(animated: true)
+        
+    }
+    // 施工中
 }
 
 

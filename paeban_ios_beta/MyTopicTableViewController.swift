@@ -226,6 +226,13 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 }
             }
         }
+        else if msg["msg_type"] as! String == "topic_closed"{
+            let topic_id_list = msg["topic_id"] as! Array<String>
+            for topic_id in topic_id_list{
+                model.topic_closed(topic_id:topic_id)
+            }
+            
+        }
     }
     func wsReconnected(){
         //dic -- title* -- detail* --

@@ -19,19 +19,7 @@ protocol MyTopicTableViewModelDelegate {
 
 class MyTopicTableViewModel{
     // 主table顯示用清單
-    //var mytopic_shadow:Array<MyTopicStandardType> = []
     var mytopic:Array<MyTopicStandardType> = []
-//        {
-//        get{return mytopic_shadow}
-//        set{
-//            mytopic_shadow = newValue
-//            var sss:Array<String> = []
-//            for c in newValue{
-//                sss.append(c.dataType)
-//            }
-//        }
-//    }
-    // 本地端子cell資料庫
     var secTopic:Dictionary = [String: [MyTopicStandardType]]()
     var delegate:MyTopicTableViewModelDelegate?
     var topic_id_wait_to_extend_detail_cell:String?
@@ -121,6 +109,7 @@ class MyTopicTableViewModel{
         let topic_id = mytopic[index].topicId_title!
         self.remove_list_cell(topic_id: topic_id)
         self.remove_topic_detail_data_from_local(topic_id: topic_id)
+        self.sent_close_topic_cmd_to_server(topic_id: topic_id)
         //send mgs to server
     }
     func delete_detail_cell(index:Int){
@@ -224,11 +213,13 @@ class MyTopicTableViewModel{
         ]
         self.check_if_need_to_auto_leap()
     }
-    
+    func topic_closed(topic_id:String){
+        self.remove_list_cell(topic_id: topic_id)
+    }
     
     
     // ====tool func====
-        // get internet data
+        // internet operate
     private func get_my_topic_title(after_get_title_cell:@escaping (_:Array<MyTopicStandardType>)->Void){
         DispatchQueue.global(qos:.background).async{ () -> Void in
             HttpRequestCenter().get_my_topic_title { (returnData) in
@@ -265,6 +256,13 @@ class MyTopicTableViewModel{
             
             any_func(detail_cell_obj)
         })
+    }
+    private func sent_close_topic_cmd_to_server(topic_id:String){
+        let send_dic:NSDictionary = [
+            "msg_type": "close_topic",
+            "topic_id": topic_id
+        ]
+        socket.write(data: json_dumps(send_dic))
     }
     
         // ====check func
@@ -393,6 +391,7 @@ class MyTopicTableViewModel{
         return false
         
     }
+    
         // ====data type transfer
     private func transferToStandardType_title(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
         // return_dic = topic_id* -- topic_title : String

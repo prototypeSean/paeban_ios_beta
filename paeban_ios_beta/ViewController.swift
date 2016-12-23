@@ -82,6 +82,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         show_items()
         check_online(in: self, with: autoLogin)
     }
+    override public func viewDidAppear(_ animated: Bool) {
+        show_items()
+    }
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 註冊頁顯示NAV
