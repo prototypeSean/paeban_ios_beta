@@ -336,7 +336,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                 self.remove_cell(index: IndexPath_parameter.row)
             }
             // MARK: 改alert
-            self.conform_excute(title: "title", msg: "msg", yes_func: excute)
+            let owner_name = self.topics[IndexPath_parameter.row].ownerName
+            self.conform_excute(title: "封鎖", msg: "封鎖 \(owner_name)？ 將再也無法聯繫他", yes_func: excute)
             
         }
         let report_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "舉報") { (UITableViewRowAction_parameter, IndexPath_parameter) in
@@ -346,7 +347,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                 self.report(setID: id, topicId: topic_id)
             }
             // MARK: 改alert
-            self.conform_excute(title: "title", msg: "msg", yes_func: excute)
+            let owner_name = self.topics[IndexPath_parameter.row].ownerName
+            self.conform_excute(title: "舉報", msg: "向管理員反應收到  \(owner_name) 的騷擾內容", yes_func: excute)
         }
         block_btn.backgroundColor = UIColor.red
         report_btn.backgroundColor = UIColor.black

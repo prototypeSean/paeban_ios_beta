@@ -15,8 +15,6 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
     }
     @IBOutlet weak var editText: UITextField!
     
-    
-    
     // MARK: override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,16 +27,44 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
     // MARK: internal func
     func clickSubmit(){
         if 0 < editText.text!.characters.count && editText.text!.characters.count < 100{
-            let sendData = json_dumps(["msg_type":"new_topic","text":editText.text!])
-            socket.write(data: sendData)
-            jump_tp_my_topic()
+            check_if_has_old_topic()
         }
         else{
-            // 輸入有誤
+            editText.text! = ""
+            collapseInputBox()
         }
-        editText.text! = ""
-        collapseInputBox()
+        
     }
+    func send_new_topic_msg_to_server(){
+        let sendData = json_dumps(["msg_type":"new_topic","text":editText.text!])
+        socket.write(data: sendData)
+        jump_tp_my_topic()
+    }
+    
+    func check_if_has_old_topic(){
+        HttpRequestCenter().get_my_topic_title { (returnData) in
+            DispatchQueue.main.async {
+                if returnData.isEmpty{
+                    self.send_new_topic_msg_to_server()
+                    self.editText.text! = ""
+                    self.collapseInputBox()
+                    self.jump_tp_my_topic()
+                }
+                else{
+                    let alert = UIAlertController(title: "開啟新話題", message: "同時只能有一個話題，確定要開啟新的話題並刪除目前的所有對話？", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "取消", style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (alert_pa) in
+                        self.send_new_topic_msg_to_server()
+                        self.editText.text! = ""
+                        self.collapseInputBox()
+                        self.jump_tp_my_topic()
+                    }))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
     func jump_tp_my_topic(){
         if let tab_bar = self.parent?.parent?.parent as? TabBarController{
             tab_bar.selectedIndex = 1

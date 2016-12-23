@@ -51,7 +51,7 @@ class MyTopicTableViewModel{
         get_my_topic_title { (title_cell_list) in
             if self.check_title_cell_is_need_update(check_data: title_cell_list){
                 for new_title_cell_s in title_cell_list{
-                    self.replace_title_cell_with_new(new_title_cell: new_title_cell_s)
+                    self.replace_or_add_title_cell_with_new(new_title_cell: new_title_cell_s)
                 }
                 aftre_update(title_cell_list)
             }
@@ -233,8 +233,13 @@ class MyTopicTableViewModel{
             let httpObj = HttpRequestCenter()
             httpObj.get_my_topic_detail(topicId, InViewAct: { (returnData) in
                 DispatchQueue.main.async(execute: {
-                    let detial_cell_data = self.transferToStandardType_detail(returnData)
-                    after_get_detail(detial_cell_data)
+                    if self.check_detail_return_dic_is_effective(return_dic: returnData){
+                        let detial_cell_data = self.transferToStandardType_detail(returnData)
+                        after_get_detail(detial_cell_data)
+                    }
+                    else{
+                        self.remove_list_cell(topic_id: topicId)
+                    }
                 })
             })
         }
@@ -391,7 +396,13 @@ class MyTopicTableViewModel{
         return false
         
     }
-    
+    private func check_detail_return_dic_is_effective(return_dic:Dictionary<String,AnyObject>)  -> Bool{
+        let topic_id = return_dic["topic_id"] as! String
+        if topic_id == "none"{
+            return false
+        }
+        return true
+    }
         // ====data type transfer
     private func transferToStandardType_title(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
         // return_dic = topic_id* -- topic_title : String
@@ -546,30 +557,26 @@ class MyTopicTableViewModel{
         }
         delegate?.model_delete_row(index_path_list: remove_index_path_list, option: .left)
     }
-    private func replace_title_cell_with_new(new_title_cell:MyTopicStandardType){
-        let topic_id = new_title_cell.topicId_title!
-        //new_title_cell.dataType
-        if let old_title_cell_index = mytopic.index(where: { (element) -> Bool in
-            if element.dataType == "title" && element.topicId_title == topic_id{
-                return true
-            }
-            return false
-        }){
-            DispatchQueue.main.async {
+    private func replace_or_add_title_cell_with_new(new_title_cell:MyTopicStandardType){
+        DispatchQueue.main.async {
+            let topic_id = new_title_cell.topicId_title!
+            //new_title_cell.dataType
+            if let old_title_cell_index = self.mytopic.index(where: { (element) -> Bool in
+                if element.dataType == "title" && element.topicId_title == topic_id{
+                    return true
+                }
+                return false
+            }){
                 self.mytopic.remove(at: old_title_cell_index as Int)
                 self.mytopic.insert(new_title_cell, at: old_title_cell_index as Int)
                 let index_path = IndexPath(row: old_title_cell_index as Int, section: 0)
                 self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
             }
-            
-        }
-        else{
-            DispatchQueue.main.async {
+            else{
                 let index_path = IndexPath(row: (self.mytopic.count), section: 0)
                 self.mytopic.append(new_title_cell)
                 self.delegate?.model_insert_row(index_path_list: [index_path], option: .top)
             }
-            
         }
     }
     
