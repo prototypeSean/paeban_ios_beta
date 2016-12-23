@@ -84,6 +84,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     override public func viewDidAppear(_ animated: Bool) {
         //show_items()
+        
     }
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
