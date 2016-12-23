@@ -79,6 +79,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         super.viewWillAppear(animated)
         // 把註冊前的NAV隱藏
         self.navigationController?.isNavigationBarHidden = true
+        print("--viewWillAppear--")
         show_items()
         check_online(in: self, with: autoLogin)
     }
