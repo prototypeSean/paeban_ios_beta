@@ -83,7 +83,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         check_online(in: self, with: autoLogin)
     }
     override public func viewDidAppear(_ animated: Bool) {
-        show_items()
+        //show_items()
     }
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
