@@ -10,12 +10,20 @@ import UIKit
 
 class TPage_1ViewController: UIViewController {
 
+    @IBOutlet weak var img_p1: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
-
+    override func viewWillAppear(_ animated: Bool) {
+        img_p1.image = UIImage(named: "Tutorial_P1")
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        img_p1.image = nil
+        self.view = nil
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

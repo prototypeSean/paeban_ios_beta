@@ -51,7 +51,10 @@ func json_load(_ input_data:String) ->NSDictionary{
         print(error)
         //print(input_data_2)
     }
-    return ouput!
+    if ouput != nil{
+        return ouput!
+    }
+    return [:]
 }
 
 

@@ -18,12 +18,37 @@ class EULAViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     @IBAction func return_to_mmain_vc(_ sender: AnyObject) {
+        print("++++++++")
         print(self)
         print(self.parent)
         let nav_vc = self.parent?.parent as? UINavigationController
+        
+        //self.view.removeFromSuperview()
         if nav_vc != nil{
             nav_vc!.popToRootViewController(animated: true)
         }
+        //let page_vc = self.parent as? TutorialPageViewController
+        //print(page_vc?.childViewControllers)
+        
+        // test
+        DispatchQueue.global(qos: .default).async {
+            sleep(1)
+            let vc_list = [self.getViewController(indentifier: "TPage_1ViewController"),
+                           self.getViewController(indentifier: "TPage_2ViewController"),
+                           self.getViewController(indentifier: "TPage_3ViewController"),
+                           self.getViewController(indentifier: "TPage_4ViewController"),
+                           self.getViewController(indentifier: "EULAViewController")
+            ]
+            for vc_s in vc_list{
+                vc_s.view = nil
+                vc_s.dismiss(animated: false, completion: nil)
+            }
+            // test
+            
+            print("done")
+        }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,7 +60,10 @@ class EULAViewController: UIViewController {
         super.viewDidLayoutSubviews()
         self.EULAContentText.setContentOffset(CGPoint.zero, animated: false)
     }
-    
+    private func getViewController(indentifier: String) -> UIViewController {
+        return UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewController(withIdentifier: "\(indentifier)")
+    }
     /*
     // MARK: - Navigation
 

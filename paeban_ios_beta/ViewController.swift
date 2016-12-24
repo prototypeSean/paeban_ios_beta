@@ -16,6 +16,7 @@ import FBSDKShareKit
 public var ssss:String?
 public var socket:WebSocket!
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
+public var firstActiveApp = true
 public var logInState = true    //記錄現在是否為登入狀態
 public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
 public var cookie:String?       //全域紀錄的餅乾
@@ -80,7 +81,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         // 把註冊前的NAV隱藏
         self.navigationController?.isNavigationBarHidden = true
         print("--viewWillAppear--")
-        show_items()
+        DispatchQueue.main.async {
+            self.show_items()
+        }
         check_online(in: self, with: autoLogin)
     }
     override public func viewDidAppear(_ animated: Bool) {
@@ -132,6 +135,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     func get_cookie_csrf_report(state:String,setcookie:String){
         if state == "login_yes"{
+            firstActiveApp = false
             logInState = true
             cookie = setcookie
             socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
@@ -169,17 +173,30 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             if (error == nil){
                 let fbloginresult : FBSDKLoginManagerLoginResult = result!
                 if fbloginresult.isCancelled{
-                    self.show_items()
-                }
-                else{
-                    if(fbloginresult.grantedPermissions.contains("email"))
-                    {
-                        self.getFBUserData()
-                        logInState = true
+                    DispatchQueue.main.async {
+                        self.show_items()
                     }
                 }
+                else{
+        
+                    if(fbloginresult.grantedPermissions.contains("email"))
+                    {
+                        self.paeban_login()
+                        //self.getFBUserData()
+                        logInState = true
+                    }
+                    else{
+                        DispatchQueue.main.async {
+                            self.show_items()
+                        }
+                    }
+                }
+                
             }
             else{
+                DispatchQueue.main.async {
+                    self.show_items()
+                }
                 print(error)
                 print("FB LogIn Error!")
             }
@@ -190,7 +207,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if((FBSDKAccessToken.current()) != nil){
             FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                 if (error == nil){
-                    print(result)
                     self.paeban_login()
                 }
                 else{
@@ -214,15 +230,21 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     func get_cookie_login_report(state:String) {
         if state != "login_no"{
             print("登入成功!!!")
+            firstActiveApp = false
             cookie = state
             socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
             socket.headers["Cookie"] = cookie
             socket.delegate = self
             ws_connect_fun(socket)
+            DispatchQueue.main.async {
+                self.show_items()
+            }
         }
         else{
             print("登入失敗!!!")
-            show_items()
+            DispatchQueue.main.async {
+                self.show_items()
+            }
         }
     }
     func paeban_login_with_IDPW(id:String,pw:String){
@@ -265,6 +287,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             socket.headers["Cookie"] = cookie
             socket.delegate = self
             ws_connect_fun(socket)
+            DispatchQueue.main.async {
+                self.show_items()
+            }
         }
         else{
             print("登入失敗")
@@ -342,7 +367,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         socketState = false
         print("disConnect")
-        print(logInState)
         if logInState{
             wsTimer?.invalidate()
             wsTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
@@ -404,7 +428,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     
     // 如果沒登入導向教學頁面
     func seugeToTutorial(){
-        self.performSegue(withIdentifier: "segueToTutorial", sender: self)
+        if firstActiveApp{
+            self.performSegue(withIdentifier: "segueToTutorial", sender: self)
+        }
+        firstActiveApp = false
     }
     
 }
