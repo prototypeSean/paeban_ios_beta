@@ -131,13 +131,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     // MARK:外加函數
     func update_badges(app:UIApplication){
         HttpRequestCenter().request_user_data("get_badges", send_dic: [:]) { (return_dic) in
-            DispatchQueue.main.async {
-                let my_topic_badge = return_dic["my_topic_badge"] as? String
-                let recent_badge = return_dic["recent_badge"] as? String
-                let friend_badge = return_dic["friend_badge"] as? String
-                let total_badge = Int(my_topic_badge!)! + Int(recent_badge!)! + Int(friend_badge!)!
-                app.applicationIconBadgeNumber = total_badge
+            if !return_dic.isEmpty{
+                DispatchQueue.main.async {
+                    let my_topic_badge = return_dic["my_topic_badge"] as? String
+                    let recent_badge = return_dic["recent_badge"] as? String
+                    let friend_badge = return_dic["friend_badge"] as? String
+                    let total_badge = Int(my_topic_badge!)! + Int(recent_badge!)! + Int(friend_badge!)!
+                    app.applicationIconBadgeNumber = total_badge
+                }
             }
+            
         }
     }
 }

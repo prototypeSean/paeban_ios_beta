@@ -58,6 +58,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBAction func singIn(_ sender: AnyObject) {
     }
     @IBAction func logIn(_ sender: AnyObject) {
+        self.hide_items()
         loginId.resignFirstResponder()
         logInPw.resignFirstResponder()
         check_online(in: self) {
@@ -81,9 +82,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         // 把註冊前的NAV隱藏
         self.navigationController?.isNavigationBarHidden = true
         print("--viewWillAppear--")
-        DispatchQueue.main.async {
-            self.show_items()
+        if !firstActiveApp{
+            DispatchQueue.main.async {
+                self.show_items()
+            }
         }
+        
         check_online(in: self, with: autoLogin)
     }
     override public func viewDidAppear(_ animated: Bool) {
@@ -103,6 +107,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     override public func viewDidLoad() {
         super.viewDidLoad()
         //isInternetAvailable
+        //self.show_items()
         main_vc = self
         login_paeban_obj.delegate = self
         loginId.delegate = self
@@ -176,6 +181,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     DispatchQueue.main.async {
                         self.show_items()
                     }
+                    
                 }
                 else{
         
@@ -194,11 +200,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 
             }
             else{
+                print(error)
+                print("FB LogIn Error!")
                 DispatchQueue.main.async {
                     self.show_items()
                 }
-                print(error)
-                print("FB LogIn Error!")
             }
         })
         
@@ -236,15 +242,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             socket.headers["Cookie"] = cookie
             socket.delegate = self
             ws_connect_fun(socket)
-            DispatchQueue.main.async {
-                self.show_items()
-            }
+//            DispatchQueue.main.async {
+//                self.show_items()
+//            }
         }
         else{
             print("登入失敗!!!")
-            DispatchQueue.main.async {
-                self.show_items()
-            }
         }
     }
     func paeban_login_with_IDPW(id:String,pw:String){
@@ -287,9 +290,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             socket.headers["Cookie"] = cookie
             socket.delegate = self
             ws_connect_fun(socket)
-            DispatchQueue.main.async {
-                self.show_items()
-            }
+            
         }
         else{
             print("登入失敗")
@@ -302,20 +303,18 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 self.present(alert, animated: true, completion: {
                     //code
                 })
-                self.show_items()
+                //self.show_items()
             }
         }
     }
     func hide_items(){
-        DispatchQueue.main.async {
-            self.loginbottom_outlet.isHidden = true
-            self.loginId.isHidden = true
-            self.logInPw.isHidden = true
-            self.logIn_outlet.isHidden = true
-            self.singIn_outlet.isHidden  = true
-            self.fb_logo.isHidden = true
-            self.tutorial.isHidden = true
-        }
+        self.loginbottom_outlet.isHidden = true
+        self.loginId.isHidden = true
+        self.logInPw.isHidden = true
+        self.logIn_outlet.isHidden = true
+        self.singIn_outlet.isHidden  = true
+        self.fb_logo.isHidden = true
+        self.tutorial.isHidden = true
     }
     func show_items(){
         DispatchQueue.main.async {
