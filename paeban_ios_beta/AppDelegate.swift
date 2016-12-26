@@ -60,12 +60,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         //===========================
         
         
-        
         if ((launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification]) != nil){
             let nts = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as! Dictionary<String,AnyObject>
             let segue_inf = nts["segue_inf"] as? Dictionary<String,String>
-            notificationSegueInf = segue_inf!
+            
+            if segue_inf != nil{
+                notificationSegueInf = segue_inf!
+            }
+            //print(segue_inf)
         }
+        
         
         
         //===========================

@@ -13,9 +13,9 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if notificationSegueInf != [:]{
-            switchToView(segueInf: notificationSegueInf)
-        }
+//        if notificationSegueInf != [:]{
+//            switchToView(segueInf: notificationSegueInf)
+//        }
         wsActive.wasd_ForTabBarController = self
         notificationDelegateCenter_obj.delegata = self
         update_badges()

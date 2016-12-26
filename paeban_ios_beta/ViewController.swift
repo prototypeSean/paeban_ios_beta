@@ -91,7 +91,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         check_online(in: self, with: autoLogin)
     }
     override public func viewDidAppear(_ animated: Bool) {
-        //show_items()
+//        let alert = UIAlertController(title: "123", message: ssss, preferredStyle: UIAlertControllerStyle.alert)
+//        self.present(alert, animated: false, completion: nil)
         
     }
     override public func viewWillDisappear(_ animated: Bool) {
@@ -354,6 +355,19 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             print("connected")
             firstConnect = false
             self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+            DispatchQueue.global(qos: .background).async {
+                while myFriendsList.isEmpty{
+                    usleep(100)
+                }
+                if !notificationSegueInf.isEmpty{
+                    //let sss = UIAlertController(title: "123", message: notificationSegueInf.first?.value, preferredStyle: .alert)
+                    //self.present(sss, animated: false, completion: nil)
+                    DispatchQueue.main.async {
+                        notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
+                    }
+                    
+                }
+            }
             
         }
         else if logInState{
