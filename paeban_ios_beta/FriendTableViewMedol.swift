@@ -57,14 +57,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                     }
                     
                 }
-//                if !data.online_checked{
-//                    data.online_checked = true
-//                    let send_dic:NSDictionary = [
-//                        "msg_type":"check_online",
-//                        "check_id":data.id!
-//                    ]
-//                    socket.write(data: json_dumps(send_dic))
-//                }
+
                 
             }
             cell2.photo.image = data.photo
@@ -87,16 +80,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             let thePhotoLayer:CALayer = cell2.photo.layer
             thePhotoLayer.masksToBounds = true
             thePhotoLayer.cornerRadius = 6
-//            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
-//                if !data.online_checked{
-//                    data.online_checked = true
-//                    let send_dic:NSDictionary = [
-//                        "msg_type":"check_online",
-//                        "check_id":data.id!
-//                    ]
-//                    socket.write(data: json_dumps(send_dic))
-//                }
-//            }
+
             return cell2
         }
             
@@ -188,10 +172,61 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             DispatchQueue.main.async {
                 print("get_friend_list")
                 let return_list = turnToFriendStanderType_v2(friend_dic: return_dic)
-                self.friend_list_database = return_list
-                self.replace_friend_cell()
+                for cell_s in return_list{
+                    if self.check_if_list_need_to_update_or_add(new_obj: cell_s){
+                        self.replace_singel_cell_or_add(new_obj: cell_s)
+                    }
+                }
             }
         }
+    }
+    func check_if_list_need_to_update_or_add(new_obj:FriendStanderType) -> Bool{
+        if let friend_cell_index = myFriendsList.index(where: {(element) -> Bool in
+            if element.id == new_obj.id{
+                return true
+            }
+            return false
+        }){
+            let old_obj = myFriendsList[friend_cell_index]
+            if old_obj.lastLine == new_obj.lastLine{
+                return false
+            }
+            return true
+        }
+        return true
+    }
+    func replace_singel_cell_or_add(new_obj:FriendStanderType){
+        if let friend_index = self.friendsList.index(where: { (element) -> Bool in
+            if element.id == new_obj.id{
+                return true
+            }
+            return false
+        }){
+            myFriendsList.remove(at: friend_index as Int)
+            myFriendsList.insert(new_obj, at: friend_index as Int)
+            let index_path = IndexPath(row: friend_index, section: 0)
+            targetVC.tableView.beginUpdates()
+            targetVC.tableView.reloadRows(at: [index_path], with: .none)
+            targetVC.tableView.endUpdates()
+        }
+        else{
+            //friend
+            self.add_new_friend_cell(new_obj: new_obj)
+        }
+    }
+    func add_new_friend_cell(new_obj:FriendStanderType){
+        var cell_index = 0
+        for cell_s in friendsList{
+            if cell_s.cell_type != "friend"{
+                break
+            }
+            cell_index += 1
+        }
+        myFriendsList.insert(new_obj, at: cell_index)
+        let index_path = IndexPath(row: cell_index, section: 0)
+        targetVC.tableView.beginUpdates()
+        targetVC.tableView.insertRows(at: [index_path], with: .left)
+        targetVC.tableView.endUpdates()
     }
     func replace_friend_cell(){
         for friend_cell_s in self.friend_list_database{
@@ -386,8 +421,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         updateModel()
         
     }
-    // delegate
     
+    // delegate
     func change_online_state(change_id:String, state:Bool){
         if let update_online_index = friendsList.index(where: { (target) -> Bool in
             if target.id == change_id{
