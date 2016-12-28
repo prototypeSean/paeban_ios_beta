@@ -73,7 +73,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cell.lastLine.text = topicWriteToRow.lastLine_detial
             cell.photo.image = topicWriteToRow.clientPhoto_detial
             cell.sexLogo.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
-            
+            print(topicWriteToRow.clientName_detial)
+            print(topicWriteToRow.clientOnline_detial)
             letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
             letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
             
@@ -232,6 +233,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 model.topic_closed(topic_id:topic_id)
             }
             
+        }
+        else if msg["msg_type"] as! String == "off_line"{
+            model.socket_client_OFF_line_signal(msg: msg)
+        }
+        else if msg["msg_type"] as! String == "new_member"{
+            model.socket_client_ON_line_signal(msg: msg)
         }
     }
     func wsReconnected(){

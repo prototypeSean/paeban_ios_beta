@@ -35,11 +35,6 @@ class RecentTableViewModel{
         
     }
     
-//    func updataNowTopicCellList(returmDic:NSDictionary){
-//        for datas in returmDic{
-//            transformStaticType(datas.key as! String,inputData: datas.value as! Dictionary<String,AnyObject>)
-//        }
-//    }
     
     func transformStaticType(_ inputKey:String,inputData:Dictionary<String,AnyObject>,reloar:@escaping ()->Void){
         if let nowTopicCellListIndex = nowTopicCellList.index(where: { (target) -> Bool in
@@ -136,7 +131,7 @@ class RecentTableViewModel{
         // 性別圖示
         cell.clientSex.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
         // 本人照片圖示
-        cell.isMyPic.image = UIImage(named:"True_photo")
+        cell.isMyPic.image = UIImage(named:"True_photo")!.withRenderingMode(.alwaysTemplate)
         if topicWriteToRow.clientIsRealPhoto_detial!{
             cell.isMyPic.tintColor = UIColor.white
         }
@@ -186,14 +181,6 @@ class RecentTableViewModel{
         return returnList
     }
     
-//    func updataDB(newDic:Dictionary<String,AnyObject>){
-//        for newDic_s in newDic{
-//            let unpackData = newDic_s.1 as! Dictionary<String,AnyObject>
-//            if let newlist = self.updataLastList(recentDataBase,newDic:unpackData){
-//                recentDataBase = newlist
-//            }
-//        }
-//    }
     
     fileprivate func updataLastList(_ dataBase:Array<MyTopicStandardType>,newDic:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>?{
         var topicWho = newDic["sender"] as! String

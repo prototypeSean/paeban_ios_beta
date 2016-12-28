@@ -360,8 +360,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     usleep(100)
                 }
                 if !notificationSegueInf.isEmpty{
-                    //let sss = UIAlertController(title: "123", message: notificationSegueInf.first?.value, preferredStyle: .alert)
-                    //self.present(sss, animated: false, completion: nil)
                     DispatchQueue.main.async {
                         notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
                     }

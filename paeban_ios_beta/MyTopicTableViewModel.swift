@@ -61,6 +61,7 @@ class MyTopicTableViewModel{
         self.get_my_topic_detail(topic_id, after_get_detail: { (detail_cell_list) in
             if self.check_detail_cell_is_need_update(topic_id: topic_id, check_data: detail_cell_list){
                 self.secTopic[topic_id] = detail_cell_list
+                // MARK: 插入總檢查更新
                 aftre_update(detail_cell_list)
             }
         })
@@ -116,7 +117,7 @@ class MyTopicTableViewModel{
         let topic_id = mytopic[index].topicId_title!
         let client_id = mytopic[index].clientId_detial!
         self.remove_single_cell(at: index)
-        self.remove_singel_detail_fata_from_local(topic_id: topic_id, client_id: client_id)
+        self.remove_singel_detail_data_from_local(topic_id: topic_id, client_id: client_id)
         self.update_title_unread(topic_id: topic_id)
         //send msg to server
     }
@@ -216,7 +217,25 @@ class MyTopicTableViewModel{
     func topic_closed(topic_id:String){
         self.remove_list_cell(topic_id: topic_id)
     }
+    func socket_client_ON_line_signal(msg:Dictionary<String,AnyObject>) {
+        let onLineUser = msg["user_id"] as! String
+        if self.check_if_need_update_online_state(client_id: onLineUser, new_online_state: true){
+            self.update_online_state_in_sec_topic(client_id: onLineUser, new_online_state: true)
+        }
+    }
+    func socket_client_OFF_line_signal(msg:Dictionary<String,AnyObject>) {
+        let offLineUser = msg["user_id"] as! String
+        if self.check_if_need_update_online_state(client_id: offLineUser, new_online_state: false){
+            self.update_online_state_in_sec_topic(client_id: offLineUser, new_online_state: false)
+        }
+    }
     
+    
+    // ======施工中=====
+    
+    
+    
+    // ======施工中=====
     
     // ====tool func====
         // internet operate
@@ -277,13 +296,20 @@ class MyTopicTableViewModel{
         }
         else{
             for check_data_s in check_data{
-                if let _ = self.secTopic[topic_id]?.index(where: { (element) -> Bool in
+                if let cell_index = self.secTopic[topic_id]?.index(where: { (element) -> Bool in
                     if check_data_s.clientId_detial == element.clientId_detial{
                         return true
                     }
                     return false
                 }){
-                    //pass
+                    let old_data = self.secTopic[topic_id]![cell_index]
+                    if old_data.lastLine_detial != check_data_s.lastLine_detial{
+                        return true
+                    }
+                    else if old_data.clientOnline_detial != check_data_s.clientOnline_detial{
+                        return true
+                    }
+                    return false
                 }
                 else{return true}
             }
@@ -403,6 +429,22 @@ class MyTopicTableViewModel{
         }
         return true
     }
+    private func check_if_need_update_online_state(client_id:String, new_online_state:Bool) -> Bool{
+        for detail_cell_list_s in secTopic.values{
+            if let detail_cell_index = detail_cell_list_s.index(where: { (element) -> Bool in
+                if element.clientId_detial == client_id{
+                    return true
+                }
+                return false
+            }){
+                if detail_cell_list_s[detail_cell_index].clientOnline_detial != new_online_state{
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
         // ====data type transfer
     private func transferToStandardType_title(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
         // return_dic = topic_id* -- topic_title : String
@@ -586,7 +628,7 @@ class MyTopicTableViewModel{
             secTopic[topic_id] = nil
         }
     }
-    private func remove_singel_detail_fata_from_local(topic_id:String, client_id:String){
+    private func remove_singel_detail_data_from_local(topic_id:String, client_id:String){
         if let data_base = secTopic[topic_id]{
             if let remove_index = data_base.index(where: { (element) -> Bool in
                 if element.clientId_detial == client_id{
@@ -638,13 +680,19 @@ class MyTopicTableViewModel{
         }
         return id_1
     }
-    
-    // ======施工中=====
-    
-    
-    
-    // ======施工中=====
-    
+    private func update_online_state_in_sec_topic(client_id:String, new_online_state:Bool){
+        for detail_cell_list_keys in secTopic.keys{
+            if let detail_cell_index = secTopic[detail_cell_list_keys]?.index(where: { (element) -> Bool in
+                if element.clientId_detial == client_id{
+                    return true
+                }
+                return false
+            }){
+                secTopic[detail_cell_list_keys]?[detail_cell_index].clientOnline_detial = new_online_state
+                delegate?.model_relodata()
+            }
+        }
+    }
     
 }
 
