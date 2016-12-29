@@ -153,11 +153,12 @@ class MyTopicTableViewModel{
                         localData.lastSpeaker_detial = localData.clientName_detial
                     }
                     localData.lastLine_detial = topic_content_data["topic_content"]
-                    // MARK: testing
-                    localData.read_detial = false
-                    print("====chat_view====")
-                    print(chat_view?.setID)
-                    
+                    if chat_view?.setID == topic_content_data["sender"]{
+                        localData.read_detial = true
+                    }
+                    else{
+                        localData.read_detial = false
+                    }
                     secTopic[topic_id]!.remove(at: localData_index!)
                     secTopic[topic_id]!.insert(localData, at: localData_index!)
                     let uiDataIndex = mytopic.index(where: { (MyTopicStandardType) -> Bool in

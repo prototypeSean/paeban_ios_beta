@@ -19,6 +19,7 @@ class Topic {
     var isMe:Bool
     var online:Bool
     var ownerName:String
+    var is_friend:Bool?
     
     // MARK: Initialization
     

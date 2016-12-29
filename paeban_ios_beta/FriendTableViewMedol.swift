@@ -18,6 +18,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             myFriendsList = newValue
         }
     }
+    var chat_view:FriendChatUpViewController?
     var invite_list:Array<FriendStanderType> = []
     var friend_list_database:Array<FriendStanderType> = []
     
@@ -70,6 +71,17 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             }
             cell2.name.text = data.name
             cell2.last_line.text = data.lastLine
+            if data.read_msg == false{
+                if data.last_speaker != userData.name{
+                    cell2.last_line.textColor = UIColor.orange
+                }
+                else{
+                    cell2.last_line.textColor = nil
+                }
+            }
+            else{
+                cell2.last_line.textColor = nil
+            }
             cell2.onlineImg.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             if data.online!{
                 cell2.onlineImg.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
@@ -483,6 +495,20 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                     return false
                 }){
                     friendsList[friend_cell_index].lastLine = last_line
+                    //print(chat_view?.clientId)
+                    //print(client_id)
+                    if chat_view?.clientId == client_id{
+                        if sender_name != userData.name{
+                            friendsList[friend_cell_index].read_msg = true
+                        }
+                        else{
+                            friendsList[friend_cell_index].read_msg = false
+                        }
+                        
+                    }
+                    else{
+                        friendsList[friend_cell_index].read_msg = false
+                    }
                     let index_path = IndexPath(row: friend_cell_index, section: 0)
                     targetVC.tableView.beginUpdates()
                     targetVC.tableView.reloadRows(at: [index_path], with: .none)

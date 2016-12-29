@@ -29,6 +29,8 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         //autoLeap()
         self.tableView.reloadData()
         model?.getFrientList()
+        model?.chat_view?.relace_chat_view_client_id()
+        model?.chat_view = nil
         getInvitwList()
         self.update_badges()
     }
@@ -78,6 +80,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             topicViewCon.clientName = getSegueData["clientName"] as? String
             topicViewCon.clientImg = getSegueData["clientImg"] as? UIImage
             topicViewCon.title = "好友"
+            model?.chat_view = topicViewCon
         }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -121,6 +124,10 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
                 }
             }
             //收
+        }
+        else if model?.friendsList[indexPath.row].cell_type == "friend"{
+            model?.friendsList[indexPath.row].read_msg = true
+            self.tableView.reloadData()
         }
     }
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

@@ -36,7 +36,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     var ownerId:String?
     var contanterView:ChatViewController?
     var msg:Dictionary<String,AnyObject>?
-    
+    var isfriend = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +47,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         topicTitleContent.text = topicTitle
-        
+        check_is_friend()
     }
     override func viewDidDisappear(_ animated: Bool) {
         self.dismiss(animated: false, completion: nil)
@@ -59,13 +59,17 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         
     
     @IBAction func addFriendClick(_ sender: AnyObject) {
-        btnAddFriend.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
-        btnAddFriend.layer.borderWidth = 0
+        if !isfriend{
+            btnAddFriend.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
+            btnAddFriend.layer.borderWidth = 0
+        }
     }
     @IBAction func addFriendRelease(_ sender: AnyObject) {
-        btnAddFriend.layer.backgroundColor = UIColor.white.cgColor
-        btnAddFriend.layer.borderWidth = 1
-        addFriend()
+        if !isfriend{
+            btnAddFriend.layer.backgroundColor = UIColor.white.cgColor
+            btnAddFriend.layer.borderWidth = 1
+            addFriend()
+        }
     }
     @IBAction func btnIgnorClick(_ sender: AnyObject) {
         btnIgnroe.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
@@ -310,9 +314,11 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             "friend_id":setID!
         ]
         socket.write(data: json_dumps(sendDic))
+        
+        let alert = UIAlertController(title: "好友邀請", message: "已送出好友邀請", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
-    
-    
     
     // MARK: delegate -> websocket
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
@@ -375,7 +381,24 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             chatViewCon.historyMsg = self.msg!
         }
     }
-    
-    
+    private func getViewController(indentifier: String) -> UIViewController {
+        return UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewController(withIdentifier: "\(indentifier)")
+    }
+    private func check_is_friend(){
+        if let _ = myFriendsList.index(where: { (element) -> Bool in
+            if element.id == ownerId{
+                return true
+            }
+            return false
+        }){
+            btnAddFriend.backgroundColor = UIColor.gray
+            isfriend = true
+        }
+        else{
+            btnAddFriend.backgroundColor = nil
+            isfriend = false
+        }
+    }
     
 }

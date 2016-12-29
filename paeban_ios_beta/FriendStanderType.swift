@@ -23,6 +23,7 @@ open class FriendStanderType{
     var last_speaker:String?
     var invite_list_count:Int?
     var online_checked = false
+    var read_msg:Bool?
 }
 
 public func turnToFriendStanderType(_ id:String,name:String,sex:String,isRealPhoto:Bool,online:Bool,photoString:String) ->FriendStanderType{
@@ -53,6 +54,7 @@ public func turnToFriendStanderType_v2(friend_dic:Dictionary<String,AnyObject>) 
         temp_cell.online = friend_dic[friend_name]?["online"] as? Bool
         temp_cell.photoHttpStr = friend_dic[friend_name]?["photoHttpStr"] as? String
         temp_cell.sex = friend_dic[friend_name]?["sex"] as? String
+        temp_cell.read_msg = friend_dic[friend_name]?["read"] as? Bool
         let lastLine = friend_dic[friend_name]?["lastLine"] as? String
         let last_speaker = friend_dic[friend_name]?["last_speaker"] as? String
         if last_speaker != "" && lastLine != ""{

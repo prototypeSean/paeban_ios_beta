@@ -73,10 +73,15 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cell.lastLine.text = topicWriteToRow.lastLine_detial
             cell.photo.image = topicWriteToRow.clientPhoto_detial
             cell.sexLogo.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
-            print(topicWriteToRow.clientName_detial)
-            print(topicWriteToRow.clientOnline_detial)
             letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
             letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
+            if topicWriteToRow.read_detial == false{
+                cell.lastLine.textColor = UIColor.orange
+            }
+            else{
+                cell.lastLine.textColor = nil
+            }
+            
             
             // 切子cell照片圓角
             let myPhotoLayer:CALayer = cell.photo.layer

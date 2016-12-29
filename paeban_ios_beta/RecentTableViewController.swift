@@ -1,6 +1,6 @@
 import UIKit
 
-class RecentTableViewController: UITableViewController, webSocketActiveCenterDelegate{
+class RecentTableViewController: UITableViewController, webSocketActiveCenterDelegate, RecentTableViewModelDelegate{
     var rTVModel = RecentTableViewModel()
     
 //    @IBOutlet weak var ownerPhoto: UIImageView!
@@ -8,12 +8,14 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     override func viewDidLoad() {
         super.viewDidLoad()
         rTVModel = RecentTableViewModel()
+        rTVModel.delegate = self
         wsActive.wasd_ForRecentTableViewController = self
 //        print(nowTopicCellList)
     }
     override func viewWillAppear(_ animated: Bool) {
         rTVModel.reCheckDataBase()
         self.update_badges()
+        rTVModel.chat_view = nil
         //autoLeap()
     }
     // MARK: - Table view data source
@@ -61,7 +63,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             topicViewCon.ownerImg = getSegueData["ownerImg"] as? UIImage
             topicViewCon.topicTitle = getSegueData["topicTitle"] as? String
             topicViewCon.title = getSegueData["title"] as? String
-            
+            rTVModel.chat_view = topicViewCon
         }
         
     }
@@ -70,7 +72,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         if let msg_type:String = msg["msg_type"] as? String{
 
             if msg_type == "topic_msg"{
-                self.tableView.reloadData()
+                rTVModel.recive_topic_msg(msg:msg)
             }
             else if msg_type == "new_member"{
                 if rTVModel.clientOnline(msg){
@@ -87,22 +89,18 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
                     self.tableView.reloadData()
                 }
             }
-            else if msg_type == "recentDataCheck"{
-                
-                let data = msg["data"] as! Dictionary<String,AnyObject>
-                for datas in data{
-                    self.rTVModel.transformStaticType(datas.0, inputData: datas.1 as! Dictionary<String,AnyObject>){
-                        DispatchQueue.main.async(execute: {
-                            self.tableView.reloadData()
-                        })
-                        
-                    }
-                }
-                
-            }
             
         }
     }
+    // delegate
+    func model_relodata(){
+        self.tableView.reloadData()
+    }
+    func model_relod_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){}
+    func model_delete_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){}
+    func model_insert_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){}
+    func segue_to_chat_view(detail_cell_obj:MyTopicStandardType){}
+    
     
     // internal func
     func autoLeap(){

@@ -21,13 +21,17 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     @IBOutlet weak var btnIgnroe: UIButton!
     @IBOutlet weak var btnBlock: UIButton!
     @IBAction func addFriendClick(_ sender: AnyObject) {
-        btnAddFriend.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
-        btnAddFriend.layer.borderWidth = 0
+        if !isfriend{
+            btnAddFriend.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
+            btnAddFriend.layer.borderWidth = 0
+        }
     }
     @IBAction func addFriendRelease(_ sender: AnyObject) {
-        btnAddFriend.layer.backgroundColor = UIColor.white.cgColor
-        btnAddFriend.layer.borderWidth = 1
-        addFriend()
+        if !isfriend{
+            btnAddFriend.layer.backgroundColor = UIColor.white.cgColor
+            btnAddFriend.layer.borderWidth = 1
+            addFriend()
+        }
     }
     @IBAction func btnIgnorClick(_ sender: AnyObject) {
         btnIgnroe.layer.backgroundColor = UIColor(red:0.98, green:0.40, blue:0.20, alpha:0.9).cgColor
@@ -60,6 +64,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     var ownerId:String?
     var contanterView:ChatViewController?
     var msg:Dictionary<String,AnyObject>?
+    var isfriend = false
     
     // internal func
     func setImage(){
@@ -266,6 +271,9 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         
     }
     func addFriend(){
+        let alert = UIAlertController(title: "好友邀請", message: "已送出好友邀請", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
         let sendDic:NSDictionary = [
             "msg_type":"add_friend",
             "friend_id":setID!
@@ -284,7 +292,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.check_is_friend()
     }
     override func viewDidLayoutSubviews() {
         setImage()
@@ -349,6 +357,21 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         }
         
         
+    }
+    private func check_is_friend(){
+        if let _ = myFriendsList.index(where: { (element) -> Bool in
+            if element.id == setID{
+                return true
+            }
+            return false
+        }){
+            btnAddFriend.backgroundColor = UIColor.gray
+            isfriend = true
+        }
+        else{
+            btnAddFriend.backgroundColor = nil
+            isfriend = false
+        }
     }
     
 }

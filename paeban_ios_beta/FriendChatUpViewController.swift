@@ -35,6 +35,7 @@ class FriendChatUpViewController: UIViewController {
     var clientName:String?
     var contanterView:FriendChatViewController?
     var msg:Dictionary<String,AnyObject>?
+    var chat_view:FriendChatViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +57,7 @@ class FriendChatUpViewController: UIViewController {
         chatViewCon.setName = userData.name
         chatViewCon.clientId = self.clientId
         chatViewCon.clientName = self.clientName
+        chat_view = chatViewCon
 //        if self.msg == nil {
 //            self.contanterView = chatViewCon
 //        }
@@ -211,5 +213,9 @@ class FriendChatUpViewController: UIViewController {
         blockOutlet.layer.cornerRadius = btn_radius
         blockOutlet.clipsToBounds = true
         }
-
+    
+    func relace_chat_view_client_id(){
+        chat_view?.setID = nil
+        chat_view?.clientId = nil
+    }
 }
