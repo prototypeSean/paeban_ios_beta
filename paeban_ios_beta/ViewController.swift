@@ -388,11 +388,15 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         let msgPack = wsMsgTextToDic(text)
         wsActive.wsOnMsg(msgPack)
         if let msgtype = msgPack["msg_type"] as? String{
-            if msgtype == "topic_msg" || msgtype == "priv_msg"{
-                //pass
-            }
+            //code
         }
     }
+    private func getViewController(indentifier: String) -> UIViewController {
+        return UIStoryboard(name: "Main", bundle: nil) .
+            instantiateViewController(withIdentifier: "\(indentifier)")
+    }
+    
+    
     public func websocketDidReceiveData(socket: WebSocket, data: Data){
         print("data")
     }

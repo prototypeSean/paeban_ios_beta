@@ -245,6 +245,9 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         else if msg["msg_type"] as! String == "new_member"{
             model.socket_client_ON_line_signal(msg: msg)
         }
+        else if msg["msg_type"] as! String == "friend_confirm"{
+            fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: self.parent as! UINavigationController)
+        }
     }
     func wsReconnected(){
         //dic -- title* -- detail* --

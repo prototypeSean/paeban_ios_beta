@@ -416,7 +416,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         }
     }
     func add_singo_invite_cell(msg:Dictionary<String, AnyObject>){
-        print(msg)
         let invite_obj = FriendStanderType()
         invite_obj.cell_type = "invite"
         invite_obj.id = msg["sender_id"] as? String
@@ -478,6 +477,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             }
             else if msg_type == "friend_confirm"{
                 add_singo_invite_cell(msg: msg)
+                fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: targetVC.parent as! UINavigationController)
             }
             else if msg_type == "priv_msg"{
                 let sender_name = msg["sender_name"] as! String

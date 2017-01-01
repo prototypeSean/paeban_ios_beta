@@ -648,9 +648,15 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                     topics += transformToTopicType(msg["return_dic"] as! Dictionary<String,AnyObject>)
                 }
             }
+            else if msg_type == "friend_confirm"{
+                fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: self.parent as! UINavigationController)
+            }
+            
+            
         }
         
     }
+    
     
     
 

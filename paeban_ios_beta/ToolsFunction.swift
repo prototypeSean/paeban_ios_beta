@@ -185,6 +185,28 @@ func check_online(in vc:UIViewController, with original_func:@escaping ()->Void)
 }
 
 
+// 快速通知
+func fast_alter(inviter:String,nav_controller:UINavigationController){
+    let nav = nav_controller
+    let alert = UILabel()
+    alert.backgroundColor = UIColor.gray
+    alert.text = "\(inviter) 邀請你為好友"
+    alert.textColor = UIColor.white
+    alert.textAlignment = NSTextAlignment.center
+    alert.frame = CGRect(x: 0, y: -60, width: nav.view.frame.width, height: 60)
+    nav.view.addSubview(alert)
+    UIView.animateKeyframes(withDuration: TimeInterval(0.5), delay: TimeInterval(0), options: .beginFromCurrentState, animations: {
+        alert.frame = CGRect(x: 0, y: CGFloat(0), width: nav.view.frame.width, height: 60)
+        }, completion: nil)
+    
+    UIView.animateKeyframes(withDuration: 0.5, delay: TimeInterval(1.5), options: .beginFromCurrentState, animations: {
+        alert.alpha = CGFloat(0)
+        }, completion: {(bool) in
+            alert.removeFromSuperview()
+    })
+}
+
+
 func leap(from currentVC:UIViewController, to page:Int){
     var PartentVC:UIViewController?
     PartentVC = currentVC.parent

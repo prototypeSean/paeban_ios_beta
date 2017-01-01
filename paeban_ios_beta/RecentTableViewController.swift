@@ -89,6 +89,9 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
                     self.tableView.reloadData()
                 }
             }
+            else if msg_type == "friend_confirm"{
+                fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: self.parent as! UINavigationController)
+            }
             
         }
     }
