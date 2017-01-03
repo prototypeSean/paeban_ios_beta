@@ -393,13 +393,13 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
     func update_online(){
         
     }
-    func add_friend(id:String, name:String, photoHttpStr:String, isRealPhoto:Bool){
+    func add_friend(id:String, name:String, photoHttpStr:String, isRealPhoto:Bool, online:Bool){
         let friend_obj = FriendStanderType()
         friend_obj.cell_type = "friend"
         friend_obj.id = id
         friend_obj.name = name
         friend_obj.photoHttpStr = photoHttpStr
-        friend_obj.online = false
+        friend_obj.online = online
         friend_obj.isRealPhoto = isRealPhoto
         if let list_index = friendsList.index(where: { (target) -> Bool in
             if target.cell_type == "list"{
@@ -423,12 +423,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         invite_obj.photoHttpStr = msg["sender_pic"] as? String
         invite_obj.isRealPhoto = msg["isRealPhoto"] as? Bool
         invite_obj.online = false
-        invite_list.append(invite_obj)
-        print(invite_obj.id)
-        print(invite_obj.name)
-        print(invite_obj.photoHttpStr)
-        print(invite_obj.isRealPhoto)
-        
+        invite_list.append(invite_obj)        
         updateModel()
         
     }
@@ -471,7 +466,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                     self.add_friend(id: msg["friend_id"] as! String,
                                     name: msg["friend_name"] as! String,
                                     photoHttpStr: msg["friend_pic"] as! String,
-                                    isRealPhoto: msg["isRealPhoto"] as! Bool
+                                    isRealPhoto: msg["isRealPhoto"] as! Bool,
+                                    online: msg["online"] as! Bool
                     )
                 }
             }

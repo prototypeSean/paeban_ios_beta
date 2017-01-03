@@ -366,6 +366,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
             return false
         }){
             btnAddFriend.backgroundColor = UIColor.gray
+            btnAddFriend.setTitleColor(.white, for: .normal)
             isfriend = true
         }
         else{
