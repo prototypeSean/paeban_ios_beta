@@ -484,7 +484,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             else if msg_type == "priv_msg"{
                 let sender_name = msg["sender_name"] as! String
                 let msg_text = msg["msg"] as! String
-                let last_line = "\(sender_name):\(msg_text)"
+                let last_line = "\(sender_name):  \(msg_text)"
 
                 let client_id = self.find_client_id(
                     id_1: msg["sender_id"]! as! String,

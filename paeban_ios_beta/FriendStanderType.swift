@@ -58,7 +58,7 @@ public func turnToFriendStanderType_v2(friend_dic:Dictionary<String,AnyObject>) 
         let lastLine = friend_dic[friend_name]?["lastLine"] as? String
         let last_speaker = friend_dic[friend_name]?["last_speaker"] as? String
         if last_speaker != "" && lastLine != ""{
-            temp_cell.lastLine = "\(last_speaker!):\(lastLine!)"
+            temp_cell.lastLine = "\(last_speaker!):  \(lastLine!)"
         }
         
         return_list.append(temp_cell)
