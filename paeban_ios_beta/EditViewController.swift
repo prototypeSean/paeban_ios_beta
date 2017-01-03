@@ -26,14 +26,38 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
     
     // MARK: internal func
     func clickSubmit(){
-        if 0 < editText.text!.characters.count && editText.text!.characters.count < 100{
-            check_if_has_old_topic()
+        if check_topic_effective(){
+            if 0 < editText.text!.characters.count && editText.text!.characters.count < 100{
+                check_if_has_old_topic()
+            }
+            else{
+                editText.text! = ""
+                collapseInputBox()
+            }
         }
         else{
-            editText.text! = ""
-            collapseInputBox()
+            let alert = UIAlertController(title: "錯誤", message: "標題不可為空白，或只有hashtag", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
         
+    }
+    func check_topic_effective() -> Bool{
+        var temp_text = ""
+        for charte in (editText.text?.characters)!{
+            if charte == "#" || charte == "＃"{
+                break
+            }
+            else if charte != " "{
+                temp_text.append(charte)
+            }
+        }
+        if temp_text == ""{
+            return false
+        }
+        else{
+            return true
+        }
     }
     func send_new_topic_msg_to_server(){
         let sendData = json_dumps(["msg_type":"new_topic","text":editText.text!])

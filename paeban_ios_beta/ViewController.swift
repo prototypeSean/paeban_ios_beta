@@ -300,6 +300,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (target) in
                     self.logInPw.text = ""
                     self.loginId.becomeFirstResponder()
+                    self.show_items()
                 }))
                 self.present(alert, animated: true, completion: {
                     //code

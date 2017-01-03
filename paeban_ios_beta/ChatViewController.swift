@@ -226,7 +226,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                         }
                         
                     }
-                    else if msgData["receiver"] as? String == setID{
+                    else if msgData["receiver"] as? String == setID && msgData["sender"] as? String == clientID{
                         //別人說的話
                         //topic_content_read
                         //topic_content_id
