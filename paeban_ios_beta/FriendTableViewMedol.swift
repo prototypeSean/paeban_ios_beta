@@ -295,22 +295,30 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             return false
         }){
             let list_index_int = list_index as Int
-            if friendsList.count == list_index_int + 1{
-                extend_btn_state = 2
+            if friendsList.count > list_index_int + 1{
+                if friendsList[list_index_int + 1].cell_type == "invite"{
+                    extend_btn_state = 3
+                }
+                else{
+                    extend_btn_state = 2
+                }
             }
-            else{extend_btn_state = 3}
+            else{extend_btn_state = 2}
         }
         else{extend_btn_state = 1}
+        
         return extend_btn_state
     }
     func add_list_extend_btn(){
         let list_extend_btn = FriendStanderType()
         list_extend_btn.cell_type = "list"
         list_extend_btn.invite_list_count = self.invite_list.count
-        friendsList = friendsList + [list_extend_btn]
+        friendsList.insert(list_extend_btn, at: 0)
     }
     func add_invite_list_to_table() {
-        friendsList += invite_list
+        for invite_cell in invite_list{
+            friendsList.insert(invite_cell, at: 1)
+        }
     }
     func remove_list_btn(){
         if friendsList[(friendsList.count - 1)].cell_type == "list"{
@@ -318,27 +326,13 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         }
     }
     func remove_invite_list_to_table(){
-        if let list_btn_index = friendsList.index(where: { (target) -> Bool in
-            if target.cell_type == "list"{
-                return true
+        var new_friendsList:Array<FriendStanderType> = []
+        for cells in friendsList{
+            if cells.cell_type != "invite"{
+                new_friendsList.append(cells)
             }
-            return false
-        }){
-            
-            var new_friendsList = friendsList
-            let list_btn_index_int = list_btn_index as Int
-            for remove_position_rev in 1 ..< friendsList.count{
-                let remove_position = friendsList.count - remove_position_rev
-                if remove_position > list_btn_index_int{
-                    new_friendsList.remove(at: remove_position)
-                }
-                else{
-                    break
-                }
-            }
-            friendsList = new_friendsList
-        
         }
+        friendsList = new_friendsList
     }
     func remove_cell(with id:String){
         if targetVC.delete_alot_switch{
@@ -374,7 +368,12 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         }
         else if extend_btn_state == 2{
             var new_friendsList = friendsList
-            new_friendsList.remove(at: friendsList.count - 1)
+            for cell_index in 0..<new_friendsList.count{
+                if new_friendsList[cell_index].cell_type == "list"{
+                    new_friendsList.remove(at: cell_index)
+                    break
+                }
+            }
             friendsList = new_friendsList
             add_list_extend_btn()
             targetVC.tableView.reloadData()
@@ -383,10 +382,17 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         else if extend_btn_state == 3{
             remove_invite_list_to_table()
             var new_friendsList = friendsList
-            new_friendsList.remove(at: friendsList.count - 1)
+            for cell_index in 0..<new_friendsList.count{
+                if new_friendsList[cell_index].cell_type == "list"{
+                    new_friendsList.remove(at: cell_index)
+                    break
+                }
+            }
             friendsList = new_friendsList
-            add_list_extend_btn()
-            add_invite_list_to_table()
+            if !invite_list.isEmpty{
+                add_list_extend_btn()
+                add_invite_list_to_table()
+            }
             targetVC.tableView.reloadData()
         }
     }

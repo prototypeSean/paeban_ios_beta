@@ -85,20 +85,26 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if model?.friendsList[indexPath.row].cell_type == "list"{
-            if indexPath.row + 1 == model?.friendsList.count{
+            if need_to_extend(index: indexPath.row){
                 //伸
                 let befort_collapse_int = model?.friendsList.count
                 model?.add_invite_list_to_table()
                 let after_collapse_int = model?.friendsList.count
                 if after_collapse_int! > befort_collapse_int!{
+                    
+                    
                     var insert_index_list:Array<IndexPath> = []
-                    for index_s in befort_collapse_int! ..< after_collapse_int!{
-                        let index_path = IndexPath(row: index_s, section: 0)
-                        insert_index_list.append(index_path)
+                    for index_s in 0..<(model?.friendsList.count)!{
+                        if model?.friendsList[index_s].cell_type == "invite"{
+                            let index_path = IndexPath(row: index_s, section: 0)
+                            insert_index_list.append(index_path)
+                        }
+                        
                     }
                     self.tableView.beginUpdates()
                     self.tableView.insertRows(at: insert_index_list, with: UITableViewRowAnimation.automatic)
                     self.tableView.endUpdates()
+                    //self.tableView.reloadData()
                 }
                 else{
                     self.tableView.reloadData()
@@ -110,14 +116,17 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
                 model?.remove_invite_list_to_table()
                 let after_collapse_int = model?.friendsList.count
                 if befort_collapse_int! > after_collapse_int!{
+                    
                     var insert_index_list:Array<IndexPath> = []
-                    for index_s in after_collapse_int! ..< befort_collapse_int!{
-                        let index_path = IndexPath(row: index_s, section: 0)
+                    for index_s in 0..<(befort_collapse_int! - after_collapse_int!){
+                        let index_path = IndexPath(row: index_s + 1, section: 0)
                         insert_index_list.append(index_path)
                     }
                     self.tableView.beginUpdates()
                     self.tableView.deleteRows(at: insert_index_list, with: UITableViewRowAnimation.automatic)
                     self.tableView.endUpdates()
+                    
+                    
                 }
                 else{
                     self.tableView.reloadData()
@@ -235,6 +244,19 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     // MARK: delegate -> cell
     func slide_left(row_id: String) {
         model?.remove_cell(with: row_id)
+    }
+    func need_to_extend(index:Int) -> Bool{
+        if (model?.friendsList.count)! > index + 1{
+            if model?.friendsList[index + 1].cell_type == "friend"{
+                return true
+            }
+            else{
+                return false
+            }
+        }
+        else{
+            return true
+        }
     }
 }
 
