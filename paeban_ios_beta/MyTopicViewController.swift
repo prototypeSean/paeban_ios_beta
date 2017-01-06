@@ -66,6 +66,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     var msg:Dictionary<String,AnyObject>?
     var isfriend = false
     
+    var guestPhotoImg = UIImageView()
     // internal func
     func setImage(){
         // MARK: 為了陰影跟圓角 要作三層圖曾
@@ -86,7 +87,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         guestPhoto.addSubview(guetsborderView)
         
         // add any other subcontent that you want clipped 最上層才放圖片進去
-        let guestPhotoImg = UIImageView()
+        
         guestPhotoImg.image = clientImg
         guestPhotoImg.frame = guetsborderView.bounds
         guetsborderView.addSubview(guestPhotoImg)
@@ -330,11 +331,10 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
                         let msgData = dicKey.1 as! Dictionary<String,AnyObject>
                         let sender = msgData["sender"] as! String
                         if sender == userData.id{
-                            myPhotoSave = tempImg
-                            myPhotoImg.image = myPhotoSave
+                            myPhotoImg.image = tempImg
                         }
                         else{
-                            guestPhoto.image = tempImg
+                            guestPhotoImg.image = tempImg
                         }
                         break
                     }

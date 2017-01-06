@@ -36,7 +36,7 @@ class FriendChatUpViewController: UIViewController {
     var contanterView:FriendChatViewController?
     var msg:Dictionary<String,AnyObject>?
     var chat_view:FriendChatViewController?
-    
+    var guestPhotoImg = UIImageView()
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -88,7 +88,7 @@ class FriendChatUpViewController: UIViewController {
         guestPhoto.addSubview(guetsborderView)
         
         // add any other subcontent that you want clipped 最上層才放圖片進去
-        let guestPhotoImg = UIImageView()
+        
         guestPhotoImg.image = clientImg
         guestPhotoImg.frame = guetsborderView.bounds
         guetsborderView.addSubview(guestPhotoImg)

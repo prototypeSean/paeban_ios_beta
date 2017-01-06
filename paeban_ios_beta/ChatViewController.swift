@@ -77,10 +77,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     
     
+    // MARK: override
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAt indexPath: IndexPath!) -> CGFloat {
         return CGFloat(20)
     }
-    //MARK: 顯示"已讀"
+        // 顯示"已讀"
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         if messages[indexPath.item].isRead == true{
             return NSAttributedString(string:"已讀"+" ")
@@ -89,20 +90,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             return NSAttributedString(string:"")
         }
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
         self.dismiss(animated: false, completion: nil)
         wsActive.wasd_ForChatViewController = nil
     }
-    
-    // MARK: 設定訊息顏色，用JSQ的套件
-    fileprivate func setupBubbles() {
-        let factory = JSQMessagesBubbleImageFactory()
-        outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(
-            with: UIColor(red:0.97, green:0.49, blue:0.31, alpha:1.0))
-        incomingBubbleImageView = factory?.incomingMessagesBubbleImage(
-            with: UIColor.jsq_messageBubbleLightGray())
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "話題"
@@ -121,21 +113,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
 //      self.topContentAdditionalInset = 90
         wsActive.wasd_ForChatViewController = self
     }
-    
-    // 下面兩個負責讀取訊息
-    // JSQ的列表顯示view, 在物件索引位至的訊息
-    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
-                                 messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
+        // 下面兩個負責讀取訊息
+        // JSQ的列表顯示view, 在物件索引位至的訊息
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
         return messages[indexPath.item]
     }
-    // 此部份顯示物件的數量
+        // 此部份顯示物件的數量
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
-    
-    
-    // asks the data source for the message bubble image data that corresponds to the message data item at indexPath in the collectionView. This is exactly where you set the bubble’s image.
-    // 藉由 indexPath 來判定要畫成收到還是送出的信息
+        // 藉由 indexPath 來判定要畫成收到還是送出的信息
     override func collectionView(_ collectionView: JSQMessagesCollectionView!,
                                  messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
@@ -177,6 +164,15 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         messages.append(message!)
     }
     
+    //施工中
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAt indexPath: IndexPath!) -> NSAttributedString!{
+        return NSAttributedString(string:"test========================")
+    }
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) -> NSAttributedString! {
+        return NSAttributedString(string:"test========================")
+    }
+    //施工中
+    
     
     //MARK:送出按鈕按下後
     override func didPressSend(_ button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: Date?) {
@@ -199,7 +195,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         let sendData = json_dumps(dataDic)
         socket.write(data:sendData)
     }
-    //MARK:ws回傳信號
+    // ws回傳信號
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
         if msgType == "topic_msg"{
@@ -303,12 +299,24 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
     }
     
+    
+    // MARK:setting
+        // 設定訊息顏色，用JSQ的套件
+    fileprivate func setupBubbles() {
+        let factory = JSQMessagesBubbleImageFactory()
+        outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(
+            with: UIColor(red:0.97, green:0.49, blue:0.31, alpha:1.0))
+        incomingBubbleImageView = factory?.incomingMessagesBubbleImage(
+            with: UIColor.jsq_messageBubbleLightGray())
+    }
+    
 }
+
+
 class JSQMessage2:JSQMessage{
     var topicContentId:String?  //來自server定義的id
     var topicTempid:String? //臨時自定義id
     var isRead:Bool?
-    //16 118  127
 }
 
 
