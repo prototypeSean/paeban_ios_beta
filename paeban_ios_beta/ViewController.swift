@@ -15,6 +15,7 @@ import FBSDKShareKit
 // MARK:公用變數
 public var ssss:String?
 public var socket:WebSocket!
+public var socket_data:Array<Data> = []
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
 public var firstActiveApp = true
 public var logInState = true    //記錄現在是否為登入狀態
@@ -348,6 +349,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     public func websocketDidConnect(socket: WebSocket){
         socketState = true
+        ws_send_data(data: nil)
         reConnectCount = 0
         //print(NSDate())
         wsTimer?.invalidate()
@@ -389,9 +391,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         //print("msgincome=======")
         let msgPack = wsMsgTextToDic(text)
         wsActive.wsOnMsg(msgPack)
-        if let msgtype = msgPack["msg_type"] as? String{
-            //code
-        }
+//        if let msgtype = msgPack["msg_type"] as? String{
+//            
+//        }
     }
     private func getViewController(indentifier: String) -> UIViewController {
         return UIStoryboard(name: "Main", bundle: nil) .

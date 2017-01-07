@@ -315,7 +315,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             "msg_type":"add_friend",
             "friend_id":setID!
         ]
-        socket.write(data: json_dumps(sendDic))
+        ws_send_data(data:json_dumps(sendDic))
         
         let alert = UIAlertController(title: "好友邀請", message: "已送出好友邀請", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))

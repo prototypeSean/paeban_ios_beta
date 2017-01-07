@@ -61,7 +61,7 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
     }
     func send_new_topic_msg_to_server(){
         let sendData = json_dumps(["msg_type":"new_topic","text":editText.text!])
-        socket.write(data: sendData)
+        ws_send_data(data:sendData)
         jump_tp_my_topic()
     }
     

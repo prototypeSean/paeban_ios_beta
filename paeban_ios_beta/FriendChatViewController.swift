@@ -53,7 +53,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         if let _ = wsSendList.index(of: missionType){
             let sendData = dataDic["data"] as! NSDictionary
             if socketState{
-                socket.write(data:json_dumps(sendData))
+                ws_send_data(data:json_dumps(sendData))
             }
         }
         

@@ -287,7 +287,7 @@ class MyTopicTableViewModel{
             "msg_type": "close_topic",
             "topic_id": topic_id
         ]
-        socket.write(data: json_dumps(send_dic))
+        ws_send_data(data:json_dumps(send_dic))
     }
     
         // ====check func

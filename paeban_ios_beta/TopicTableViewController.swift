@@ -696,7 +696,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                                          "smallest_id":searchKeyAndState["smallest_id"]!!
             ]
             
-            socket.write(data:json_dumps(sendData))
+            ws_send_data(data:json_dumps(sendData))
         }
     }
     func didTapOnCancelButton(_ searchBar: UISearchBar) {

@@ -20,8 +20,20 @@ func ws_connected(_ ws:WebSocket){
         ws.write(data: online_msg)
     }
 }
-
-
+//ws_send_data(data:)
+func ws_send_data(data:Data?){
+    if data != nil{
+        socket_data.append(data!)
+    }
+    print("=======socket.isConnected=======")
+    print(socket.isConnected)
+    if socketState && !socket_data.isEmpty{
+        socket.write(data: socket_data.first!)
+        print("sent")
+        socket_data.remove(at: 0)
+        ws_send_data(data: nil)
+    }
+}
 
 func ws_stay_connect(_ ws:WebSocket) {
     let online_msg = json_dumps(["msg_type":"test"])

@@ -315,7 +315,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     "msg_type": "topic_content_read",
                     "topic_content_id":read_id_list_s
                 ]
-                socket.write(data: json_dumps(send_dic))
+                ws_send_data(data:json_dumps(send_dic))
             }
         }
         
@@ -697,7 +697,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             "msg_type": "close_topic_btn",
             "topic_id":topic_id
         ]
-        socket.write(data: json_dumps(send_dic))
+        ws_send_data(data:json_dumps(send_dic))
     }
     func ignore_topic(topic_id:String, topic_black_id:String){
         let send_dic:NSDictionary = [
@@ -705,7 +705,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             "topic_id": topic_id,
             "topic_black_id":topic_black_id
         ]
-        socket.write(data: json_dumps(send_dic))
+        ws_send_data(data:json_dumps(send_dic))
     }
     func report_client(setID:String, topicId:String){
         let sendDic:NSDictionary = [

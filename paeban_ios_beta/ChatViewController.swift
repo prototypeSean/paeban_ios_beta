@@ -153,7 +153,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         } else {
             cell.textView!.textColor = UIColor.black
         }
-        
+        let demo_img = UIImage(named: "demo")
+        cell.avatarImageView.image = demo_img
         return cell
     }
     
@@ -165,12 +166,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     
     //施工中
-    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAt indexPath: IndexPath!) -> NSAttributedString!{
-        return NSAttributedString(string:"test========================")
-    }
-    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) -> NSAttributedString! {
-        return NSAttributedString(string:"test========================")
-    }
+    
     //施工中
     
     
@@ -193,7 +189,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         self.finishSendingMessage(animated: true)
         self.collectionView?.reloadData()
         let sendData = json_dumps(dataDic)
-        socket.write(data:sendData)
+        socket.disconnect()
+        ws_send_data(data: sendData)
     }
     // ws回傳信號
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
@@ -235,7 +232,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                             "msg_type":"topic_content_read",
                             "topic_content_id":dicKey.0
                         ]
-                        socket.write(data:json_dumps(sendData as NSDictionary))
+                        ws_send_data(data: json_dumps(sendData as NSDictionary))
                         //self.finishSendingMessage(animated: true)
                         self.collectionView?.reloadData()
                         

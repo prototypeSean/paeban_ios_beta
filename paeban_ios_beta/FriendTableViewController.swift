@@ -238,7 +238,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             "friend_id":friend_id,
             "answer":answer
         ]
-        socket.write(data: json_dumps(send_dic))
+        ws_send_data(data:json_dumps(send_dic))
     }
     
     // MARK: delegate -> cell

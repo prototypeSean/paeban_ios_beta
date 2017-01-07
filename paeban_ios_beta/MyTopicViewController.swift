@@ -279,7 +279,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
             "msg_type":"add_friend",
             "friend_id":setID!
         ]
-        socket.write(data: json_dumps(sendDic))
+        ws_send_data(data:json_dumps(sendDic))
     }
     
     
