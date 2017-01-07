@@ -14,6 +14,9 @@ PODS:
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
+  - SQLite.swift (0.11.2):
+    - SQLite.swift/standard (= 0.11.2)
+  - SQLite.swift/standard (0.11.2)
   - Starscream (2.0.0)
 
 DEPENDENCIES:
@@ -21,6 +24,7 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - FBSDKShareKit
   - JSQMessagesViewController
+  - SQLite.swift (~> 0.11.2)
   - Starscream (~> 2.0.0)
 
 SPEC CHECKSUMS:
@@ -30,8 +34,9 @@ SPEC CHECKSUMS:
   FBSDKShareKit: 11cbb5a4d7b5fda8143cc95b76188147e6725736
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
   Starscream: 947c865596f0d6bb3f0203fee23228ed2d471468
 
-PODFILE CHECKSUM: 2283e7c007e551d8f60bc6740552373686df7231
+PODFILE CHECKSUM: 8433e822cdfbb488c9751ef0ecba26eca2c117ac
 
-COCOAPODS: 1.1.0.rc.2
+COCOAPODS: 1.1.1

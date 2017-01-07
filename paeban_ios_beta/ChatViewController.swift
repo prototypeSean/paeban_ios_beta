@@ -100,7 +100,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(
             with: UIColor(red:0.97, green:0.49, blue:0.31, alpha:1.0))
         incomingBubbleImageView = factory?.incomingMessagesBubbleImage(
-            with: UIColor.jsq_messageBubbleLightGray())
+            with: UIColor(red:0.47, green:0.47, blue:0.47, alpha:1.0))
     }
     
     override func viewDidLoad() {
@@ -120,6 +120,21 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
 //      上面要留白多高
 //      self.topContentAdditionalInset = 90
         wsActive.wasd_ForChatViewController = self
+        
+        //MARK: 跟自定義的泡泡關聯
+        self.outgoingCellIdentifier = CustomMessagesCollectionViewCellOutgoing.cellReuseIdentifier()
+        self.outgoingMediaCellIdentifier = CustomMessagesCollectionViewCellOutgoing.mediaCellReuseIdentifier()
+        
+        self.collectionView.register(CustomMessagesCollectionViewCellOutgoing.nib(), forCellWithReuseIdentifier: self.outgoingCellIdentifier)
+        self.collectionView.register(CustomMessagesCollectionViewCellOutgoing.nib(), forCellWithReuseIdentifier: self.outgoingMediaCellIdentifier)
+        
+        self.incomingCellIdentifier = CustomMessagesCollectionViewCellIncoming.cellReuseIdentifier()
+        self.incomingMediaCellIdentifier = CustomMessagesCollectionViewCellIncoming.mediaCellReuseIdentifier()
+        
+        self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingCellIdentifier)
+        self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingMediaCellIdentifier)
+
+        
     }
     
     // 下面兩個負責讀取訊息
@@ -153,23 +168,31 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         return nil
     }
     
-    
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
-            as! JSQMessagesCollectionViewCell
         
         let message = messages[(indexPath as NSIndexPath).item]
         
         if message.senderId == senderId {
+            
+            let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
+                as! CustomMessagesCollectionViewCellOutgoing
+            
             cell.textView!.textColor = UIColor.white
-        } else {
-            cell.textView!.textColor = UIColor.black
+            cell.reloadBTN!.textColor = UIColor.blue
+            
+            return cell
         }
-        
-        return cell
+            
+        else {
+            let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
+                as! CustomMessagesCollectionViewCellIncoming
+            
+            cell.textView!.textColor = UIColor.white
+            
+            return cell
+        }
     }
-    
     
     
     func addMessage(_ id: String, text: String) {

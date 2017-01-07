@@ -19,5 +19,7 @@ pod 'FBSDKLoginKit'
 
 pod 'FBSDKShareKit'
 
+pod 'SQLite.swift', '~> 0.11.2'
+
 end
 
