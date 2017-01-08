@@ -39,6 +39,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SQLite.swift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Starscream.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -47,62 +52,47 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1ED4DFAAD25E1999D0244868457A351E</key>
+		<key>44CAD6CE523055ED339E87154473A254</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2E303C3CE7513908EE880D9CA833AFAE</key>
+		<key>5844E157D1FAFC283F1E964E34705973</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>30D7FCF8072F5D59AE1C98D94F9A6EC9</key>
+		<key>91B90B3C23200B3086C464D3FE797168</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>55FE8D94A018B706357EC3579C40EAE3</key>
+		<key>BC5000D645EEAF961C85907CDC796FE1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>59B095D2085D008F84F6D6FE8CB2929E</key>
+		<key>C7DCF2B547F7871B9BFD74DE93B0E173</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>59CDDB315DD2B098E0CD9ED56B026F4B</key>
+		<key>CB41AF266210965A6BF95465D45FE68F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5D69761C2CD2A1E5C013537B29CAB4CF</key>
+		<key>D0581AF7BF4A6DA140D280B19ECC7BFF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6061B30E25FADAC723D453F6EC0C9578</key>
+		<key>E396A93E4C79B22B7816E9F02F62ECED</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6A932845C7A5BE5374224A90EA874591</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>6EDC37F3FA92533C6AC3562458AA91F1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9D0F2E5EA1B46A5D72FFD42B0B39DBBC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C4C79BF83CAFF1B41690B15751050B34</key>
+		<key>ED2850476F3FDDCCA74BF4A58AD09049</key>
 		<dict>
 			<key>primary</key>
 			<true/>

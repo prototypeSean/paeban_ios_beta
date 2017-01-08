@@ -12,6 +12,7 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 import FBSDKShareKit
 
+
 // MARK:公用變數
 public var ssss:String?
 public var socket:WebSocket!
@@ -47,6 +48,7 @@ public let locale_host = "https://www.paeban.com/"
 public var main_vc:ViewController?
 public var open_app_frist = true
 public var app_instence:UIApplication?
+public var sql_database = SQL_center()
 
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
@@ -73,9 +75,14 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var shiftView: UIView!
     @IBOutlet weak var fb_logo: UIImageView!
     @IBOutlet weak var tutorial: UIButton!
-    
-    
     let login_paeban_obj = login_paeban()
+    
+    // MARK:施工中
+    func testing(){
+        sql_database.connect_sql()
+        sql_database.establish_topic_content_table()
+    }
+    
     // MARK: override
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -109,6 +116,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         super.viewDidLoad()
         //isInternetAvailable
         //self.show_items()
+        testing()
         main_vc = self
         login_paeban_obj.delegate = self
         loginId.delegate = self

@@ -63,6 +63,8 @@
 		CF89A2A61DBFCAC6005FA8AF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF89A2A51DBFCAC6005FA8AF /* StoreKit.framework */; };
 		CF89EF781DD34E1F00876298 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */; };
 		CF89EF7A1DD498C700876298 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF791DD498C700876298 /* TabBarController.swift */; };
+		CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */; };
+		CF9E37301E2229AE0077C7C9 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
 		CFB83DF61DFFA7370029C475 /* MyTopicTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB83DF51DFFA7370029C475 /* MyTopicTableViewModel.swift */; };
 		CFBA00AF1DB4CE5C00400C98 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */; };
@@ -135,6 +137,9 @@
 		CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		CF89EF791DD498C700876298 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = paeban_ios_beta.entitlements; sourceTree = "<group>"; };
+		CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sql_center.swift; sourceTree = "<group>"; };
+		CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		CF9E37311E222A020077C7C9 /* sql_Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sql_Header.h; sourceTree = "<group>"; };
 		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
 		CFB83DF51DFFA7370029C475 /* MyTopicTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopicTableViewModel.swift; sourceTree = "<group>"; };
 		CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -150,6 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF9E37301E2229AE0077C7C9 /* libsqlite3.tbd in Frameworks */,
 				73E59CAE7906529E9934E916 /* Pods_paeban_ios_beta.framework in Frameworks */,
 				CF89A2A61DBFCAC6005FA8AF /* StoreKit.framework in Frameworks */,
 			);
@@ -161,6 +167,7 @@
 		1741F3FC9375CBC3750A7722 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */,
 				CF89A2A51DBFCAC6005FA8AF /* StoreKit.framework */,
 				5DA9AB49DFA16020BF975A80 /* Pods_paeban_ios_beta.framework */,
 			);
@@ -199,16 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */,
-				932A00D01CFEBA460036E1EA /* AppDelegate.swift */,
-				CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */,
-				932A00D11CFEBA460036E1EA /* ToolsFunction.swift */,
-				CF13867D1D98CE0600E70990 /* LoginScrollView.swift */,
-				932A00D31CFEBA460036E1EA /* ＨttpRequestCenter.swift */,
-				CF89EF791DD498C700876298 /* TabBarController.swift */,
-				932A00E01CFEBA460036E1EA /* Login_paeban.swift */,
-				932A00D21CFEBA460036E1EA /* ViewController.swift */,
-				938828321DEDBD8D006E66AC /* RegistAndLoginViewController.swift */,
-				932A00E11CFEBA460036E1EA /* web_socket.swift */,
+				CF9E372C1E21E2F40077C7C9 /* all_filed_work */,
 				CF79265C1DA0E6E500821860 /* sing_in */,
 				93AEF2901D0141FB007FDE51 /* topic */,
 				93AEF28D1D0140DC007FDE51 /* myTopics */,
@@ -216,7 +214,6 @@
 				93AEF28E1D01410A007FDE51 /* friends */,
 				93AEF28F1D01419D007FDE51 /* launchScreen */,
 				CF13867A1D98C43D00E70990 /* setting */,
-				932A00DE1CFEBA460036E1EA /* ChatViewController.swift */,
 				93077EF11E210F28004900FF /* CustomMessagesCollectionViewCell.swift */,
 				93077EE91E20DDB3004900FF /* CustomMessagesCollectionViewCellIncoming.swift */,
 				93077EEB1E20DDCF004900FF /* CustomMessagesCollectionViewCellOutgoing.swift */,
@@ -285,6 +282,7 @@
 				9301F6051D1D1A2800D1F8C0 /* TopicSearchController.swift */,
 				932A00D41CFEBA460036E1EA /* Topic.swift */,
 				930983E71D056971005B8E3B /* HashTagsContorller.swift */,
+				932A00DE1CFEBA460036E1EA /* ChatViewController.swift */,
 			);
 			name = topic;
 			sourceTree = "<group>";
@@ -318,6 +316,25 @@
 				93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */,
 			);
 			name = sing_in;
+			sourceTree = "<group>";
+		};
+		CF9E372C1E21E2F40077C7C9 /* all_filed_work */ = {
+			isa = PBXGroup;
+			children = (
+				932A00D01CFEBA460036E1EA /* AppDelegate.swift */,
+				CF9E37311E222A020077C7C9 /* sql_Header.h */,
+				CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */,
+				932A00D11CFEBA460036E1EA /* ToolsFunction.swift */,
+				CF13867D1D98CE0600E70990 /* LoginScrollView.swift */,
+				932A00D31CFEBA460036E1EA /* ＨttpRequestCenter.swift */,
+				CF89EF791DD498C700876298 /* TabBarController.swift */,
+				932A00E01CFEBA460036E1EA /* Login_paeban.swift */,
+				932A00D21CFEBA460036E1EA /* ViewController.swift */,
+				938828321DEDBD8D006E66AC /* RegistAndLoginViewController.swift */,
+				932A00E11CFEBA460036E1EA /* web_socket.swift */,
+				CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */,
+			);
+			name = all_filed_work;
 			sourceTree = "<group>";
 		};
 		F5E53891315C99A863EB47FB /* Pods */ = {
@@ -502,6 +519,7 @@
 				932A00E61CFEBA460036E1EA /* Topic.swift in Sources */,
 				CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */,
 				930BBCCA1DED626900939C0D /* TPage_1ViewController.swift in Sources */,
+				CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */,
 				93077EEA1E20DDB3004900FF /* CustomMessagesCollectionViewCellIncoming.swift in Sources */,
 				936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */,
 				CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */,
@@ -651,6 +669,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = prototype.sean;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = paeban_ios_beta/sql_Header.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -677,6 +696,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = prototype.sean;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = paeban_ios_beta/sql_Header.h;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
