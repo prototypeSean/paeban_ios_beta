@@ -10,9 +10,12 @@ import UIKit
 
 class CustomMessagesCollectionViewCellOutgoing: CustomMessagesCollectionViewCell {
     
-    @IBOutlet weak var reloadBTN: UILabel!
     
+    @IBOutlet weak var reloadBTN: UIButton!
     
+    @IBOutlet weak var reloadBtnContainer: UIView!
+    
+    @IBOutlet weak var reSending: UIActivityIndicatorView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

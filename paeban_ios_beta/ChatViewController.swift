@@ -175,11 +175,21 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         
         if message.senderId == senderId {
             
+            // 重新傳送的按鈕一定要用 CustomMessagesCollectionViewCellOutgoing
             let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
                 as! CustomMessagesCollectionViewCellOutgoing
             
-            cell.textView!.textColor = UIColor.white
-            cell.reloadBTN!.textColor = UIColor.blue
+            
+            cell.reloadBtnContainer.backgroundColor = UIColor(red:0.99, green:0.38, blue:0.27, alpha:1.0)
+            
+            cell.reloadBtnContainer.isHidden = true
+            
+            // 你他嗎只需要改 hideResendBtn showResendBtn showResending 就有三種顯示模式可以用
+            self.showResending(
+                reSendContainer: cell.reloadBtnContainer,
+                reSendBtn: cell.reloadBTN,
+                reSending: cell.reSending
+            )
             
             return cell
         }
@@ -194,6 +204,27 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
     }
     
+    // MARK: 試著控制失敗重傳按鈕
+    func hideResendBtn(reSendContainer:UIView){
+        reSendContainer.isHidden = true
+    }
+    
+    func showResendBtn(reSendContainer:UIView,reSendBtn:UIButton,reSending:UIActivityIndicatorView){
+        reSendContainer.isHidden = false
+        reSendBtn.isHidden = false
+        reSending.stopAnimating()
+    }
+    
+    func showResending(reSendContainer:UIView,reSendBtn:UIButton,reSending:UIActivityIndicatorView){
+        reSendContainer.isHidden = false
+        reSendBtn.isHidden = true
+        reSending.startAnimating()
+    }
+    
+    
+//    func showResending(reSending:UIActivityIndicatorView) {
+//        reSending.isHidden = false
+//    }
     
     func addMessage(_ id: String, text: String) {
         let message = JSQMessage2(senderId: id, displayName: "", text: text)

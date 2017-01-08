@@ -174,6 +174,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		93077EF31E223800004900FF /* CustomJSQ */ = {
+			isa = PBXGroup;
+			children = (
+				93077EF11E210F28004900FF /* CustomMessagesCollectionViewCell.swift */,
+				93077EE91E20DDB3004900FF /* CustomMessagesCollectionViewCellIncoming.swift */,
+				93077EEB1E20DDCF004900FF /* CustomMessagesCollectionViewCellOutgoing.swift */,
+				93077EEF1E20E035004900FF /* CustomMessagesCollectionViewCellOutgoing.xib */,
+				93077EED1E20DEB1004900FF /* CustomMessagesCollectionViewCellIncoming.xib */,
+			);
+			name = CustomJSQ;
+			sourceTree = "<group>";
+		};
 		930BBCCD1DED628600939C0D /* tPages */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,11 +226,7 @@
 				93AEF28E1D01410A007FDE51 /* friends */,
 				93AEF28F1D01419D007FDE51 /* launchScreen */,
 				CF13867A1D98C43D00E70990 /* setting */,
-				93077EF11E210F28004900FF /* CustomMessagesCollectionViewCell.swift */,
-				93077EE91E20DDB3004900FF /* CustomMessagesCollectionViewCellIncoming.swift */,
-				93077EEB1E20DDCF004900FF /* CustomMessagesCollectionViewCellOutgoing.swift */,
-				93077EEF1E20E035004900FF /* CustomMessagesCollectionViewCellOutgoing.xib */,
-				93077EED1E20DEB1004900FF /* CustomMessagesCollectionViewCellIncoming.xib */,
+				93077EF31E223800004900FF /* CustomJSQ */,
 				932A00D71CFEBA460036E1EA /* Main.storyboard */,
 				930BBCCD1DED628600939C0D /* tPages */,
 				930F90D71DEAC07200346A13 /* EULAViewController.swift */,
