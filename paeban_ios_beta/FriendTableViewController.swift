@@ -24,6 +24,8 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         model = FriendTableViewMedol(with: self)
         //self.tableView.gestureRecognizerShouldBegin(self.tableView.gestureRecognizers) = false
         
+        // 讓整個VIEW往上縮起tabbar的高度
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
         //autoLeap()

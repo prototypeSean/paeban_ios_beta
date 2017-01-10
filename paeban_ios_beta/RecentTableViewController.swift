@@ -11,6 +11,8 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         rTVModel.delegate = self
         wsActive.wasd_ForRecentTableViewController = self
 //        print(nowTopicCellList)
+        // 讓整個VIEW往上縮起tabbar的高度
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
         rTVModel.reCheckDataBase()

@@ -92,7 +92,7 @@ class RecentTableViewModel{
         else{
             lastSpeakerName = topicWriteToRow.clientName_detial
             if topicWriteToRow.read_detial == false{
-                cell.lastLine.textColor = UIColor.orange
+                cell.lastLine.textColor = UIColor(red:0.99, green:0.38, blue:0.27, alpha:1.0)
             }
             else{
                 cell.lastLine.textColor = nil

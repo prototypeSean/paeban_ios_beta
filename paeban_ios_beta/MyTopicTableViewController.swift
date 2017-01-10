@@ -38,6 +38,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         wsActive.wasd_ForMyTopicTableViewController = self
         wsActive.ware_ForMyTopicTableViewController = self
         self.tableView.tableFooterView = UIView()
+        // 讓整個VIEW往上縮起tabbar的高度
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
         model.chat_view = nil
@@ -76,7 +78,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
             letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
             if topicWriteToRow.read_detial == false{
-                cell.lastLine.textColor = UIColor.orange
+                cell.lastLine.textColor = UIColor(red:0.99, green:0.38, blue:0.27, alpha:1.0)
             }
             else{
                 cell.lastLine.textColor = nil

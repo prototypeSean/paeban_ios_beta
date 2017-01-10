@@ -73,7 +73,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             cell2.last_line.text = data.lastLine
             if data.read_msg == false{
                 if data.last_speaker != userData.name{
-                    cell2.last_line.textColor = UIColor.orange
+                    cell2.last_line.textColor = UIColor(red:0.99, green:0.38, blue:0.27, alpha:1.0)
                 }
                 else{
                     cell2.last_line.textColor = nil
