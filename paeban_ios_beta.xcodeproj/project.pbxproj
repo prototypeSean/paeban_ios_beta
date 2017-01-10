@@ -277,11 +277,11 @@
 				932A00D61CFEBA460036E1EA /* TopicCellTableViewCell.swift */,
 				932A00D51CFEBA460036E1EA /* TopicTableViewController.swift */,
 				CFD48D661DCB13FD006C48A2 /* EditViewController.swift */,
-				932A00DA1CFEBA460036E1EA /* TopicViewController.swift */,
 				9301F6031D1D16F900D1F8C0 /* TopicSearchBar.swift */,
 				9301F6051D1D1A2800D1F8C0 /* TopicSearchController.swift */,
 				932A00D41CFEBA460036E1EA /* Topic.swift */,
 				930983E71D056971005B8E3B /* HashTagsContorller.swift */,
+				932A00DA1CFEBA460036E1EA /* TopicViewController.swift */,
 				932A00DE1CFEBA460036E1EA /* ChatViewController.swift */,
 			);
 			name = topic;

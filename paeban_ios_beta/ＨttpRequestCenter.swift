@@ -186,7 +186,6 @@ class HttpRequestCenter{
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
             InViewAct(returnDic)
         }
-        
     }
     
     // MARK:================私有函數===============
