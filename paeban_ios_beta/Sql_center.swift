@@ -71,38 +71,68 @@ public class SQL_center{
             print("表單刪除失敗")
         }
     }
+    func check_topic_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
+        if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
+            if input_dic["sender"]! as! String != userData.id!{
+                return "update_local"
+            }
+            else{
+                return "new_server_msg"
+            }
+        }
+        return "new_local_msg"
+    }
     func inser_date_to_topic_content(input_dic:Dictionary<String,AnyObject>){
         do{
-            var id_server_input:String?
-            var is_read_input = false
-            var is_send_input = false
-            if input_dic["id_server"] != nil{
-                print("id_server")
-                id_server_input = input_dic["id_server"]! as? String
-                is_read_input = true
-                is_send_input = true
-            }
-            var time_input = Date().timeIntervalSince1970
-            if input_dic["time"] != nil{
-                let time_string = input_dic["time"]! as! String
-                time_input = time_transform_to_since1970(time_string:time_string)
-            }
-            let insert = topic_content.insert(
-                topic_id <- input_dic["topic_id"]! as? String,
-                topic_text <- input_dic["topic_content"]! as? String,
-                sender <- input_dic["sender"]! as? String,
-                receiver <- input_dic["receiver"]! as? String,
-                time <- time_input,
-                is_read <- is_read_input,
-                is_send <- is_send_input,
-                id_server <- id_server_input
+            let topic_msg_type = check_topic_msg_type(input_dic: input_dic)
+            if topic_msg_type == "update_local"{
+                let id_local_input = Int64(input_dic["id_local"]! as! String)!
+                let query = topic_content.filter(
+                    topic_id == input_dic["topic_id"]! as? String &&
+                    id == id_local_input
                 )
-            try sql_db!.run(insert)
-//            let query = topic_content.select(id).order(id.desc).limit(1)
-//            for query_s in try sql_db!.prepare(query) {
-//                return Int(query_s[id])
-//            }
-            print("寫入資料成功")
+                let time_string = input_dic["time"]! as! String
+                let time_input = time_transform_to_since1970(time_string:time_string)
+                try sql_db?.run(query.update(
+                    time <- time_input,
+                    is_send <- true,
+                    is_read <- input_dic["is_read"]! as? Bool,
+                    id_server <- input_dic["id_server"]! as? String
+                ))
+            }
+            else{
+                var id_server_input:String?
+                var is_read_input:Bool?
+                var is_send_input:Bool?
+                var time_input:TimeInterval?
+                
+                if topic_msg_type == "new_server_msg"{
+                    id_server_input = input_dic["id_server"]! as? String
+                    is_read_input = input_dic["is_read"]! as? Bool
+                    is_send_input = true
+                    let time_string = input_dic["time"]! as! String
+                    time_input = time_transform_to_since1970(time_string:time_string)
+                }
+                else{
+                    // new_local_msg
+                    is_read_input = false
+                    is_send_input = false
+                    time_input = Date().timeIntervalSince1970
+                    
+                }
+                let insert = topic_content.insert(
+                    topic_id <- input_dic["topic_id"]! as? String,
+                    topic_text <- input_dic["topic_content"]! as? String,
+                    sender <- input_dic["sender"]! as? String,
+                    receiver <- input_dic["receiver"]! as? String,
+                    time <- time_input,
+                    is_read <- is_read_input,
+                    is_send <- is_send_input,
+                    id_server <- id_server_input
+                )
+                try sql_db!.run(insert)
+                print("寫入資料成功")
+            }
         }
         catch{
             print(error)
