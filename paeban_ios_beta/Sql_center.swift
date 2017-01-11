@@ -53,7 +53,7 @@ public class SQL_center{
                 t.column(id_server)
             })
             print("表單建立成功")
-            
+            init_sql = true
         }
         catch{
             print(error)
@@ -74,7 +74,18 @@ public class SQL_center{
     func check_topic_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
         if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
             if input_dic["sender"]! as! String != userData.id!{
-                return "update_local"
+                if input_dic["id_local"] != nil && input_dic["id_local"]! as! String != "0"{
+//                    do{
+//                        let query = topic_content.filter(id == Int64(input_dic["id_local"]! as! String)!)
+//                        let query_count = try sql_db!.scalar(query.count)
+//                        if query_count == 0 {
+//                            
+//                        }
+//                    }
+//                    catch{}
+                    return "update_local"
+                }
+                return "new_server_msg"
             }
             else{
                 return "new_server_msg"
@@ -85,6 +96,7 @@ public class SQL_center{
     func inser_date_to_topic_content(input_dic:Dictionary<String,AnyObject>){
         do{
             let topic_msg_type = check_topic_msg_type(input_dic: input_dic)
+            print(topic_msg_type)
             if topic_msg_type == "update_local"{
                 let id_local_input = Int64(input_dic["id_local"]! as! String)!
                 let query = topic_content.filter(
@@ -131,21 +143,23 @@ public class SQL_center{
                     id_server <- id_server_input
                 )
                 try sql_db!.run(insert)
-                print("寫入資料成功")
+                //print("寫入資料成功")
             }
         }
         catch{
             print(error)
             //return nil
         }
+        self.print_all()
         //return nil
     }
     func print_all(){
         do{
             for topic_c in try sql_db!.prepare(topic_content) {
-                print("id: \(topic_c[id_server]), msg: \(topic_c[topic_text]), re: \(topic_c[receiver]), se:\(topic_c[sender]) , is_s:\(topic_c[is_send])")
+                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read])")
             // id: 1, email: alice@mac.com, name: Optional("Alice")
             }
+            print("========")
         }
         catch{}
         

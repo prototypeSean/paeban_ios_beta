@@ -49,6 +49,7 @@ public var main_vc:ViewController?
 public var open_app_frist = true
 public var app_instence:UIApplication?
 public var sql_database = SQL_center()
+public var init_sql = false
 
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     

@@ -112,11 +112,17 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         dennis_kao_s_fucking_trash()
     }
     override func viewWillAppear(_ animated: Bool) {
-        update_database()
-        if !renew_data().isEmpty{
-            get_history_old()
+        messages = renew_data()
+        self.collectionView.reloadData()
+        DispatchQueue.global(qos: .background).async {
+            usleep(50)
+            DispatchQueue.main.async {
+                self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
+                self.get_history_new()
+            }
         }
-        get_history_new()
+        
+        
         
     }
     
@@ -311,6 +317,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             //let topicContentId = msg["topic_content_id"] as! String
             
             // 施工中
+            //self.get_history_new()
+            
             let id_local_input = msg["id_local"] as! String
             sql_database.update_topic_content_read(id_local: id_local_input)
             let data = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!)
@@ -364,10 +372,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     func get_history_new(){
         let last_id_server:String = sql_database.get_topic_content_last_id_server(topic_id_input: topicId!, client_id_input: clientID!)
+        var init_sql_state = "0"
+        if init_sql{
+            init_sql_state = "1"
+            init_sql = false
+        }
         let request_dic:Dictionary<String,String> = [
             "last_id_server":last_id_server,
             "client_id":clientID!,
-            "topic_id":topicId!
+            "topic_id":topicId!,
+            "init_sql":init_sql_state
         ]
         HttpRequestCenter().request_user_data("history_topic_msg_new", send_dic: request_dic) { (return_dic) in
             if return_dic["result"] as! String == "not_exist"{
