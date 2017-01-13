@@ -298,11 +298,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
 //                        msgToJSQ?.topicContentId = dicKey.0
 //                        messages += [msgToJSQ!]
 //                        
-//                        let sendData = [
-//                            "msg_type":"topic_content_read",
-//                            "topic_content_id":dicKey.0
-//                        ]
-//                        socket.write(data:json_dumps(sendData as NSDictionary))
+                        let sendData = [
+                            "msg_type":"topic_content_read",
+                            "topic_content_id":dicKey.0
+                        ]
+                        socket.write(data:json_dumps(sendData as NSDictionary))
 //                        //self.finishSendingMessage(animated: true)
 //                        self.collectionView?.reloadData()
 //                        
@@ -321,14 +321,15 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             
             let id_local_input = msg["id_local"] as! String
             sql_database.update_topic_content_read(id_local: id_local_input)
-            let data = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!)
-            var new_list:Array<JSQMessage2> = []
-            for data_s in data{
-                new_list.append(make_JSQMessage2(input_dic: data_s))
-            }
-            messages = new_list
-            self.collectionView.reloadData()
-            self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
+            update_database()
+//            let data = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!)
+//            var new_list:Array<JSQMessage2> = []
+//            for data_s in data{
+//                new_list.append(make_JSQMessage2(input_dic: data_s))
+//            }
+//            messages = new_list
+//            self.collectionView.reloadData()
+//            self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
             // 施工中
 //            let topicContentPosition = messages.index(where: { (target) -> Bool in
 //                let targetId = target.topicContentId
@@ -385,7 +386,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         ]
         HttpRequestCenter().request_user_data("history_topic_msg_new", send_dic: request_dic) { (return_dic) in
             if return_dic["result"] as! String == "not_exist"{
-                
+                //close topic
             }
             else if return_dic["result"] as! String == "no_new_data"{
                 DispatchQueue.main.async {
@@ -397,6 +398,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 
                 for data in data_list{
                     sql_database.inser_date_to_topic_content(input_dic: data)
+                    //sql_database.print_all()
                 }
                 DispatchQueue.main.async {
                     self.update_database()

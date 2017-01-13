@@ -88,9 +88,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     func testing(){
         sql_database.connect_sql()
         // MARK:"重置資料庫開關"
-        //sql_database.remove_topic_content_table()
+        sql_database.remove_topic_content_table()
+        sql_database.establish_private_msg_table()
         sql_database.establish_topic_content_table()
-        sql_database.print_all()
+        sql_database.print_all2()
         
     }
     
