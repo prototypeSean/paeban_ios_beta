@@ -37,6 +37,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     var contanterView:ChatViewController?
     var msg:Dictionary<String,AnyObject>?
     var isfriend = false
+    var myPhotoSave:UIImage?
+    let myPhotoImg = UIImageView()
+    var guestPhotoImg = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,8 +93,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         block()
     }
     
-    var myPhotoSave:UIImage?
-    let myPhotoImg = UIImageView()
+    
     // MARK: internal func
     func getHttpData() {
         DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
@@ -163,7 +165,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         guestPhoto.addSubview(guetsborderView)
         
         // add any other subcontent that you want clipped 最上層才放圖片進去
-        let guestPhotoImg = UIImageView()
+        //let guestPhotoImg = UIImageView()
         guestPhotoImg.image = ownerImg
         guestPhotoImg.frame = guetsborderView.bounds
         guetsborderView.addSubview(guestPhotoImg)
@@ -330,16 +332,16 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                 let tempImg = updateImg(imgStr)
                 if tempImg != nil{
                     //print("updateImg")
+                    
                     for dicKey in resultDic{
                         let msgData = dicKey.1 as! Dictionary<String,AnyObject>
                         let sender = msgData["sender"] as! String
                         if sender == userData.id{
-                            myPhotoSave = tempImg
-                            myPhotoImg.image = myPhotoSave
-//                            print("refresh")
+                            myPhotoImg.image = tempImg
+                            
                         }
                         else{
-                            guestPhoto.image = tempImg
+                            guestPhotoImg.image = tempImg
                         }
                         break
                     }

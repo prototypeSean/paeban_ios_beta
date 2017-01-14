@@ -16,7 +16,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     var setID:String? = "anonymous"
     var setName:String? = "anonymous"
-    var topicId:String?
     var clientId:String?
     var clientName:String?
     var loadHistorySwitch = false
@@ -142,12 +141,22 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         //wsActive.wasd_ForChatViewController = self
     }
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        let sendDic:NSDictionary = ["msg_type":"request_history_priv_msg",
-                                    "receiver_id":clientId!,
-                                    "last_id_of_msg":"0"]
+        messages = new_data()
+        self.collectionView.reloadData()
+        self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
+        DispatchQueue.global(qos: .background).async {
+            usleep(50)
+            DispatchQueue.main.async {
+                self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
+                self.get_history_new_from_server()
+            }
+        }
+//        super.viewWillAppear(animated)
+//        let sendDic:NSDictionary = ["msg_type":"request_history_priv_msg",
+//                                    "receiver_id":clientId!,
+//                                    "last_id_of_msg":"0"]
         wsActive.wasd_ForFriendChatViewController = self
-        addRequestMission("request_history_priv_msg",data: sendDic)
+//        addRequestMission("request_history_priv_msg",data: sendDic)
     }
     // 下面兩個負責讀取訊息
     // JSQ的列表顯示view, 在物件索引位至的訊息
@@ -221,67 +230,98 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     //MARK:送出按鈕按下後
     override func didPressSend(_ button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: Date?) {
         //送出WS訊息
+        self.finishSendingMessage(animated: true)
         let timeNow = Int(Date().timeIntervalSince1970)
         let tempTopicMsgId = String(timeNow)
-        let dataDic:NSDictionary = [
-            "msg_type":"priv_msg",
-            "msg":text!,
-            "receiver":clientId!,
-            "safe_code":"",
-            "temp_priv_msg_id":tempTopicMsgId,
+        let dataDic:Dictionary<String,AnyObject> = [
+            "msg_type":"priv_msg" as AnyObject,
+            "private_text":text! as AnyObject,
+            "receiver":clientId! as AnyObject,
+            "temp_priv_msg_id":tempTopicMsgId as AnyObject,
+            "sender":userData.id! as AnyObject,
+            "is_read":false as AnyObject,
+            "is_send":false as AnyObject
         ]
-        let appendMsg = JSQMessage3(senderId: senderId, displayName: senderDisplayName, text: text)
-        appendMsg?.topicTempid = tempTopicMsgId
-        self.messages.append(appendMsg!)
+        sql_database.inser_date_to_private_msg(input_dic: dataDic)
+        sql_database.print_all2()
+        self.update_database()
+        if let send_list = sql_database.get_unsend_private_data(client_id: clientId!){
+            for send_data in send_list{
+                socket.write(data: json_dumps(send_data))
+            }
+        }
         
-        self.finishSendingMessage(animated: true)
-        self.collectionView?.reloadData()
-        addRequestMission("priv_msg", data: dataDic)
+        
+        
+//        let appendMsg = JSQMessage3(senderId: senderId, displayName: senderDisplayName, text: text)
+//        appendMsg?.topicTempid = tempTopicMsgId
+//        self.messages.append(appendMsg!)
+//        
+//        self.finishSendingMessage(animated: true)
+//        self.collectionView?.reloadData()
+//        addRequestMission("priv_msg", data: dataDic)
     }
     // MARK:ws回傳信號
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
+        
         if msgType == "priv_msg"{
-            if (msg["sender_id"] as? String)! == userData.id!
-                && (msg["receiver_id"] as? String)! == clientId{
-                if let _ = messages.index(where: { (msgTarget) -> Bool in
-                    if msgTarget.topicTempid! == msg["temp_priv_msg_id"] as? String{
-                        return true
-                    }
-                    else{return false}
-                }){
-                    if let msgIndex = messages.index(where: { (target) -> Bool in
-                        if target.topicTempid == msg["temp_priv_msg_id"] as? String{
-                            return true
-                        }
-                        else{return false}
-                    }){
-                        messages[msgIndex].topicId = msg["msg_id"] as? String
-                    }
+            print("x1")
+            let resultDic_msg_id:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary<String,AnyObject>
+            print(resultDic_msg_id)
+            for resultDic in resultDic_msg_id.values{
+                print(resultDic)
+                if (resultDic["sender_id"] as? String)! == userData.id!
+                    && (resultDic["receiver_id"] as? String)! == clientId{
                     
-                    removeWorkList("priv_msg", data: msg as AnyObject?)
+                    
+                    let id_local = resultDic["id_local"] as! String
+                    let time_input = resultDic["time"] as! String
+                    let id_server_input = resultDic["id_server"] as! String
+                    sql_database.update_private_msg_time(id_local: id_local, time_input: time_input, id_server_input: id_server_input)
+                    //                if let _ = messages.index(where: { (msgTarget) -> Bool in
+                    //                    if msgTarget.topicTempid! == msg["temp_priv_msg_id"] as? String{
+                    //                        return true
+                    //                    }
+                    //                    else{return false}
+                    //                }){
+                    //                    if let msgIndex = messages.index(where: { (target) -> Bool in
+                    //                        if target.topicTempid == msg["temp_priv_msg_id"] as? String{
+                    //                            return true
+                    //                        }
+                    //                        else{return false}
+                    //                    }){
+                    //                        messages[msgIndex].topicId = msg["msg_id"] as? String
+                    //                    }
+                    //
+                    //                    removeWorkList("priv_msg", data: msg as AnyObject?)
+                    //                }
+                    
+                }
+                else if (resultDic["sender_id"] as? String)! == clientId
+                    && (resultDic["receiver_id"] as? String)! == userData.id!{
+                    self.get_history_new_from_server()
+                    
+                    // 別人說的
+                    //                let msgObj = JSQMessage3(senderId: msg["sender_id"] as! String,
+                    //                                         displayName: msg["sender_name"] as! String,
+                    //                                         text: msg["msg"] as! String)
+                    //                msgObj?.isRead = false
+                    //                msgObj?.topicId = msg["msg_id"] as? String
+                    //                msgObj?.topicTempid = ""
+                    //                self.messages += [msgObj!]
+                    //                self.collectionView.reloadData()
+                    //                scrollToBottom()
+                    //跟server說 已讀
+                    let sendData = ["msg_type":"priv_msg_been_read",
+                                    "msg_id":resultDic["id_server"] as! String]
+                    var addDic:Dictionary<String,AnyObject> = [:]
+                    addDic["missionType"] = "priv_msg_been_read" as AnyObject?
+                    addDic["data"] = sendData as AnyObject?
+                    executeWork(addDic)
                 }
             }
-            else if (msg["sender_id"] as? String)! == clientId
-                && (msg["receiver_id"] as? String)! == userData.id!{
-                // 別人說的
-                let msgObj = JSQMessage3(senderId: msg["sender_id"] as! String,
-                                         displayName: msg["sender_name"] as! String,
-                                         text: msg["msg"] as! String)
-                msgObj?.isRead = false
-                msgObj?.topicId = msg["msg_id"] as? String
-                msgObj?.topicTempid = ""
-                self.messages += [msgObj!]
-                self.collectionView.reloadData()
-                scrollToBottom()
-                //跟server說 已讀
-                let sendData = ["msg_type":"priv_msg_been_read",
-                                "msg_id":msg["msg_id"] as! String]
-                var addDic:Dictionary<String,AnyObject> = [:]
-                addDic["missionType"] = "priv_msg_been_read" as AnyObject?
-                addDic["data"] = sendData as AnyObject?
-                executeWork(addDic)
-            }
+            
         }
         else if msgType == "history_priv_msg"{
             func turnToMessage3(_ inputDic:Dictionary<String,AnyObject>) -> JSQMessage3{
@@ -340,16 +380,21 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             
         }
         else if msgType == "priv_msg_been_read"{
-            let msgId = String(msg["msg_id"] as! Int)
-            if let msgIndex = messages.index(where: { (target) -> Bool in
-                if target.topicId == msgId{
-                    return true
-                }
-                else{return false}
-            }){
-                messages[msgIndex].isRead = true
-                self.collectionView.reloadData()
-            }
+            //let msgId = String(msg["msg_id"] as! Int)
+            let id_loacal = msg["id_local"] as! String
+            sql_database.update_private_msg_read(id_local: id_loacal)
+            update_database()
+            
+            
+//            if let msgIndex = messages.index(where: { (target) -> Bool in
+//                if target.topicId == msgId{
+//                    return true
+//                }
+//                else{return false}
+//            }){
+//                messages[msgIndex].isRead = true
+//                self.collectionView.reloadData()
+//            }
             
         }
         else if msgType == "has_been_read_many"{
@@ -373,7 +418,41 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
     }
-    
+    func get_history_new_from_server(){
+        let last_id_server:String = sql_database.get_private_msg_last_id_server(client_id_input:clientId!)
+        
+        var init_sql_state = "0"
+        if init_sql{
+            init_sql_state = "1"
+            init_sql = false
+        }
+        let request_dic:Dictionary<String,String> = [
+            "last_id_server":last_id_server,
+            "client_id":clientId!,
+            "init_sql":init_sql_state
+        ]
+        HttpRequestCenter().request_user_data("history_private_msg_new", send_dic: request_dic) { (return_dic) in
+            if return_dic["result"] as! String == "not_exist"{
+                //close window
+            }
+            else if return_dic["result"] as! String == "no_new_data"{
+                DispatchQueue.main.async {
+                    self.update_database()
+                }
+            }
+            else if return_dic["result"] as! String == "success"{
+                let data_list:Array<Dictionary<String,AnyObject>> = return_dic["data_list"]! as! Array<Dictionary<String, AnyObject>>
+                
+                for data in data_list{
+                    sql_database.inser_date_to_private_msg(input_dic: data)
+                }
+                DispatchQueue.main.async {
+                    self.update_database()
+                }
+            }
+            
+        }
+    }
     
     func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
         
@@ -391,6 +470,24 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
         
+    }
+    func update_database(){
+        messages = new_data()
+        self.collectionView.reloadData()
+        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
+    }
+    func new_data() -> Array<JSQMessage3>{
+        var new_message_list:Array<JSQMessage3> = []
+        let data_dic = sql_database.get_private_histopry_msg(client_id: clientId!)
+        for data_s in data_dic{
+            new_message_list.append(make_JSQMessage3(input_dic: data_s))
+        }
+        return new_message_list
+    }
+    func make_JSQMessage3(input_dic:Dictionary<String,AnyObject>) -> JSQMessage3{
+        let msgToJSQ = JSQMessage3(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["private_text"] as? String)
+        msgToJSQ?.isRead = input_dic["is_read"] as? Bool
+        return msgToJSQ!
     }
     func scrollToBottom(){
         if self.messages.count > 0 {

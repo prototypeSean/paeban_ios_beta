@@ -255,7 +255,21 @@ func simpoAlert2(view:UIViewController , reason:String){
     })
 }
 
-
+func time_transform_to_since1970(time_string:String) -> TimeInterval!{
+    let time_transform = DateFormatter()
+    
+    let dot_index = time_string.characters.index(of: ".")
+    
+    if dot_index == nil{
+        time_transform.dateFormat = "Y-MM-dd HH:mm:ssxxx"
+    }
+    else{
+        time_transform.dateFormat = "Y-MM-dd HH:mm:ss.Sxxx"
+    }
+    
+    let time_input = (time_transform.date(from: time_string)?.timeIntervalSince1970)!
+    return time_input
+}
 
 
 

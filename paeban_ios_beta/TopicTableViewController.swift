@@ -39,6 +39,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         //loadSampleTopics()
         // 具體要怎麼作 由這個class自己來決定
         httpOBJ.delegate = self
@@ -68,6 +69,11 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         if let path = topicList.indexPathForSelectedRow {
             topicList.deselectRow(at: path, animated: true)
         }
+//        DispatchQueue.global(qos: .background).async {
+//            sleep(3)
+//            print(sql_database.get_unsend_topic_data(topic_id_input: "703", client_id: "aaasss"))
+//        }
+        
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //print(segue.identifier)

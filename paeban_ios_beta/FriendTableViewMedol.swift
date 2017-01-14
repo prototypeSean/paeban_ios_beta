@@ -407,19 +407,12 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         friend_obj.photoHttpStr = photoHttpStr
         friend_obj.online = online
         friend_obj.isRealPhoto = isRealPhoto
-        if let list_index = friendsList.index(where: { (target) -> Bool in
-            if target.cell_type == "list"{
-                return true
-            }
-            return false
-        }){
-            let list_index_int = list_index as Int
-            let list_index_path = IndexPath(row: list_index_int, section: 0)
-            friendsList.insert(friend_obj, at: list_index_int)
-            targetVC.tableView.beginUpdates()
-            targetVC.tableView.insertRows(at: [list_index_path], with: UITableViewRowAnimation.automatic)
-            targetVC.tableView.endUpdates()
-        }
+        
+        let index_path = IndexPath(row: friendsList.count, section: 0)
+        friendsList.append(friend_obj)
+        targetVC.tableView.beginUpdates()
+        targetVC.tableView.insertRows(at: [index_path], with: .left)
+        targetVC.tableView.endUpdates()
     }
     func add_singo_invite_cell(msg:Dictionary<String, AnyObject>){
         let invite_obj = FriendStanderType()
@@ -482,40 +475,44 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: targetVC.parent as! UINavigationController)
             }
             else if msg_type == "priv_msg"{
-                let sender_name = msg["sender_name"] as! String
-                let msg_text = msg["msg"] as! String
-                let last_line = "\(sender_name):  \(msg_text)"
-
-                let client_id = self.find_client_id(
-                    id_1: msg["sender_id"]! as! String,
-                    id_2: msg["receiver_id"]! as! String
-                )
-                if let friend_cell_index = friendsList.index(where: { (element) -> Bool in
-                    if element.id == client_id{
-                        return true
-                    }
-                    return false
-                }){
-                    friendsList[friend_cell_index].lastLine = last_line
-                    //print(chat_view?.clientId)
-                    //print(client_id)
-                    if chat_view?.clientId == client_id{
-                        if sender_name != userData.name{
-                            friendsList[friend_cell_index].read_msg = true
+                let resultDic_msg_id:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary<String,AnyObject>
+                for resultDic in resultDic_msg_id.values{
+                    let sender_name = resultDic["sender_name"] as! String
+                    let msg_text = resultDic["private_text"] as! String
+                    let last_line = "\(sender_name):  \(msg_text)"
+                    
+                    let client_id = self.find_client_id(
+                        id_1: resultDic["sender_id"]! as! String,
+                        id_2: resultDic["receiver_id"]! as! String
+                    )
+                    if let friend_cell_index = friendsList.index(where: { (element) -> Bool in
+                        if element.id == client_id{
+                            return true
+                        }
+                        return false
+                    }){
+                        friendsList[friend_cell_index].lastLine = last_line
+                        //print(chat_view?.clientId)
+                        //print(client_id)
+                        if chat_view?.clientId == client_id{
+                            if sender_name != userData.name{
+                                friendsList[friend_cell_index].read_msg = true
+                            }
+                            else{
+                                friendsList[friend_cell_index].read_msg = false
+                            }
+                            
                         }
                         else{
                             friendsList[friend_cell_index].read_msg = false
                         }
-                        
+                        let index_path = IndexPath(row: friend_cell_index, section: 0)
+                        targetVC.tableView.beginUpdates()
+                        targetVC.tableView.reloadRows(at: [index_path], with: .none)
+                        targetVC.tableView.endUpdates()
                     }
-                    else{
-                        friendsList[friend_cell_index].read_msg = false
-                    }
-                    let index_path = IndexPath(row: friend_cell_index, section: 0)
-                    targetVC.tableView.beginUpdates()
-                    targetVC.tableView.reloadRows(at: [index_path], with: .none)
-                    targetVC.tableView.endUpdates()
                 }
+                
                 
             }
             

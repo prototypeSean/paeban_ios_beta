@@ -17,7 +17,7 @@ import FBSDKShareKit
 public var ssss:String?
 public var socket:WebSocket!
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
-public var firstActiveApp = true
+public var firstActiveApp = true // MARK:打包前改為 true****************************
 public var logInState = true    //記錄現在是否為登入狀態
 public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
 public var cookie:String?       //全域紀錄的餅乾
@@ -49,10 +49,13 @@ public var main_vc:ViewController?
 public var open_app_frist = true
 public var app_instence:UIApplication?
 public var sql_database = SQL_center()
+public var init_sql = false
 
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
     @IBAction func loninBottom(_ sender: AnyObject) {
+        self.hide_items()
+        self.state_loging()
         check_online(in: self, with: fbLogIn)
     }
     @IBOutlet weak var loginbottom_outlet: UIButton!
@@ -75,12 +78,21 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var shiftView: UIView!
     @IBOutlet weak var fb_logo: UIImageView!
     @IBOutlet weak var tutorial: UIButton!
+    @IBOutlet weak var state_lable: UILabel!
+    
+    
     let login_paeban_obj = login_paeban()
+    var state_switch = true
     
     // MARK:施工中
     func testing(){
         sql_database.connect_sql()
+        // MARK:"重置資料庫開關"
+        //sql_database.remove_topic_content_table()
+        sql_database.establish_private_msg_table()
         sql_database.establish_topic_content_table()
+        //sql_database.print_all2()
+        
     }
     
     // MARK: override
@@ -89,12 +101,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         // 把註冊前的NAV隱藏
         self.navigationController?.isNavigationBarHidden = true
         print("--viewWillAppear--")
-        if !firstActiveApp{
-            DispatchQueue.main.async {
-                self.show_items()
-            }
-        }
-        
+        state_lable.text = nil
         check_online(in: self, with: autoLogin)
     }
     override public func viewDidAppear(_ animated: Bool) {
@@ -114,8 +121,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     override public func viewDidLoad() {
         super.viewDidLoad()
-        //isInternetAvailable
-        //self.show_items()
         testing()
         main_vc = self
         login_paeban_obj.delegate = self
@@ -123,10 +128,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         logInPw.delegate = self
         find_user_kb_height()
         BtnOutlet()
-        //testdata
-        //notificationSegueInf = ["type":"priv_msg","user_id":"aaasss","topic_id":"nano"]
-        //testdata
-        
     }
     
     // MARK: 內部函數
@@ -182,7 +183,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         logInPw.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
     }
     func fbLogIn() {
-        hide_items()
         fbLoginManager.logIn(withReadPermissions: ["email"],from: self.parent, handler: { (result, error) -> Void in
             if (error == nil){
                 let fbloginresult : FBSDKLoginManagerLoginResult = result!
@@ -245,7 +245,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     func get_cookie_login_report(state:String) {
         if state != "login_no"{
             print("登入成功!!!")
-            firstActiveApp = false
             cookie = state
             socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
             socket.headers["Cookie"] = cookie
@@ -256,6 +255,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
 //            }
         }
         else{
+            self.show_items()
             print("登入失敗!!!")
         }
     }
@@ -318,13 +318,15 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
     }
     func hide_items(){
-        self.loginbottom_outlet.isHidden = true
-        self.loginId.isHidden = true
-        self.logInPw.isHidden = true
-        self.logIn_outlet.isHidden = true
-        self.singIn_outlet.isHidden  = true
-        self.fb_logo.isHidden = true
-        self.tutorial.isHidden = true
+        DispatchQueue.main.async {
+            self.loginbottom_outlet.isHidden = true
+            self.loginId.isHidden = true
+            self.logInPw.isHidden = true
+            self.logIn_outlet.isHidden = true
+            self.singIn_outlet.isHidden  = true
+            self.fb_logo.isHidden = true
+            self.tutorial.isHidden = true
+        }
     }
     func show_items(){
         DispatchQueue.main.async {
@@ -337,7 +339,15 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             self.tutorial.isHidden = false
         }
     }
-    
+    func state_loging(){
+        self.state_lable.text = "登入中"
+    }
+    func state_init(){
+        self.state_lable.text = nil
+    }
+    func state_download_history_msg(){
+        self.state_lable.text = "下載歷史訊息"
+    }
     
     // MARK: webSocket
     var wsTimer:Timer?
@@ -354,6 +364,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
     }
     public func websocketDidConnect(socket: WebSocket){
+        
         socketState = true
         reConnectCount = 0
         //print(NSDate())
@@ -363,16 +374,21 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             ws_connected(socket)
             print("connected")
             firstConnect = false
+            firstActiveApp = false
             self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             DispatchQueue.global(qos: .background).async {
+                let time_init = Date()
                 while myFriendsList.isEmpty{
                     usleep(100)
+                    let time_pass = Date().timeIntervalSince(time_init) as Double
+                    if time_pass > 5{
+                        break
+                    }
                 }
                 if !notificationSegueInf.isEmpty{
                     DispatchQueue.main.async {
                         notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
                     }
-                    
                 }
             }
             
@@ -396,9 +412,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         //print("msgincome=======")
         let msgPack = wsMsgTextToDic(text)
         wsActive.wsOnMsg(msgPack)
-        if let msgtype = msgPack["msg_type"] as? String{
-            //code
-        }
+//        if let msgtype = msgPack["msg_type"] as? String{
+//            //code
+//        }
     }
     private func getViewController(indentifier: String) -> UIViewController {
         return UIStoryboard(name: "Main", bundle: nil) .
