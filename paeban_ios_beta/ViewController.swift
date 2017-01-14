@@ -255,6 +255,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
 //            }
         }
         else{
+            self.show_items()
             print("登入失敗!!!")
         }
     }

@@ -73,10 +73,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     
     
+    // MARK: override
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAt indexPath: IndexPath!) -> CGFloat {
         return CGFloat(20)
     }
-    //MARK: 顯示"已讀"
+        // 顯示"已讀"
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         if messages[indexPath.item].isRead == true{
             return NSAttributedString(string:"已讀"+" ")
@@ -85,6 +86,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             return NSAttributedString(string:"")
         }
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
         self.dismiss(animated: false, completion: nil)
         wsActive.wasd_ForChatViewController = nil
@@ -125,21 +127,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         
         
     }
-    
-    // 下面兩個負責讀取訊息
-    // JSQ的列表顯示view, 在物件索引位至的訊息
-    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
-                                 messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
+        // 下面兩個負責讀取訊息
+        // JSQ的列表顯示view, 在物件索引位至的訊息
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
         return messages[indexPath.item]
     }
-    // 此部份顯示物件的數量
+        // 此部份顯示物件的數量
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
-    
-    
-    // asks the data source for the message bubble image data that corresponds to the message data item at indexPath in the collectionView. This is exactly where you set the bubble’s image.
-    // 藉由 indexPath 來判定要畫成收到還是送出的信息
+        // 藉由 indexPath 來判定要畫成收到還是送出的信息
     override func collectionView(_ collectionView: JSQMessagesCollectionView!,
                                  messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
@@ -240,7 +237,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
 //        let sendData = json_dumps(dataDic)
 //        socket.write(data:sendData)
     }
-    //MARK:ws回傳信號
+    // ws回傳信號
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
         if msgType == "topic_msg"{
@@ -479,7 +476,6 @@ class JSQMessage2:JSQMessage{
     var topicContentId:String?  //來自server定義的id
     var topicTempid:String? //臨時自定義id
     var isRead:Bool?
-    //16 118  127
 }
 
 

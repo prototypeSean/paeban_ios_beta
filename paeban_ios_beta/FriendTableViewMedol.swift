@@ -407,19 +407,12 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         friend_obj.photoHttpStr = photoHttpStr
         friend_obj.online = online
         friend_obj.isRealPhoto = isRealPhoto
-        if let list_index = friendsList.index(where: { (target) -> Bool in
-            if target.cell_type == "list"{
-                return true
-            }
-            return false
-        }){
-            let list_index_int = list_index as Int
-            let list_index_path = IndexPath(row: list_index_int, section: 0)
-            friendsList.insert(friend_obj, at: list_index_int)
-            targetVC.tableView.beginUpdates()
-            targetVC.tableView.insertRows(at: [list_index_path], with: UITableViewRowAnimation.automatic)
-            targetVC.tableView.endUpdates()
-        }
+        
+        let index_path = IndexPath(row: friendsList.count, section: 0)
+        friendsList.append(friend_obj)
+        targetVC.tableView.beginUpdates()
+        targetVC.tableView.insertRows(at: [index_path], with: .left)
+        targetVC.tableView.endUpdates()
     }
     func add_singo_invite_cell(msg:Dictionary<String, AnyObject>){
         let invite_obj = FriendStanderType()
