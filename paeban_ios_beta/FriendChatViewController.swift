@@ -444,7 +444,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 let data_list:Array<Dictionary<String,AnyObject>> = return_dic["data_list"]! as! Array<Dictionary<String, AnyObject>>
                 
                 for data in data_list{
-                    print("s2")
                     sql_database.inser_date_to_private_msg(input_dic: data)
                 }
                 DispatchQueue.main.async {

@@ -78,12 +78,37 @@ public class SQL_center{
     func check_private_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
         if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
             if input_dic["id_local"] != nil && input_dic["id_local"]! as! String != "0"{
+                let query = private_table.filter(
+                    id == Int64(input_dic["id_local"]! as! String)! &&
+                    sender == userData.id
+                )
+                do{
+                    let count = try sql_db!.scalar(query.count)
+                    if count > 0{
+                        return "old_data"
+                    }
+                }
+                catch{
+                    // pass
+                }
                 if input_dic["sender"]! as! String == userData.id!{
                     return "update_local"
                 }
                 return "new_server_msg"
             }
             else{
+                let query = private_table.filter(
+                    id_server == input_dic["id_server"]! as? String
+                )
+                do{
+                    let count = try sql_db!.scalar(query.count)
+                    if count > 0{
+                        return "old_data"
+                    }
+                }
+                catch{
+                    // pass
+                }
                 return "new_server_msg"
             }
         }
@@ -107,6 +132,9 @@ public class SQL_center{
                     is_read <- input_dic["is_read"]! as? Bool,
                     id_server <- input_dic["id_server"]! as? String
                 ))
+            }
+            else if topic_msg_type == "old_data"{
+                //pass
             }
             else{
                 var id_server_input:String?
@@ -276,12 +304,37 @@ public class SQL_center{
     func check_topic_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
         if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
             if input_dic["id_local"] != nil && input_dic["id_local"]! as! String != "0"{
+                let query = topic_content.filter(
+                    id == Int64(input_dic["id_local"]! as! String)! &&
+                        sender == userData.id
+                )
+                do{
+                    let count = try sql_db!.scalar(query.count)
+                    if count > 0{
+                        return "old_data"
+                    }
+                }
+                catch{
+                    // pass
+                }
                 if input_dic["sender"]! as! String == userData.id!{
                     return "update_local"
                 }
                 return "new_server_msg"
             }
             else{
+                let query = topic_content.filter(
+                    id_server == input_dic["id_server"]! as? String
+                )
+                do{
+                    let count = try sql_db!.scalar(query.count)
+                    if count > 0{
+                        return "old_data"
+                    }
+                }
+                catch{
+                    // pass
+                }
                 return "new_server_msg"
             }
         }
@@ -307,6 +360,9 @@ public class SQL_center{
                     is_read <- input_dic["is_read"]! as? Bool,
                     id_server <- input_dic["id_server"]! as? String
                 ))
+            }
+            else if topic_msg_type == "old_data"{
+                //pass
             }
             else{
                 var id_server_input:String?

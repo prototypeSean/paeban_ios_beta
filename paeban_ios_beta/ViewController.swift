@@ -17,7 +17,7 @@ import FBSDKShareKit
 public var ssss:String?
 public var socket:WebSocket!
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
-public var firstActiveApp = false // MARK:打包前改為 true****************************
+public var firstActiveApp = true // MARK:打包前改為 true****************************
 public var logInState = true    //記錄現在是否為登入狀態
 public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
 public var cookie:String?       //全域紀錄的餅乾
@@ -88,10 +88,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     func testing(){
         sql_database.connect_sql()
         // MARK:"重置資料庫開關"
-        sql_database.remove_topic_content_table()
+        //sql_database.remove_topic_content_table()
         sql_database.establish_private_msg_table()
         sql_database.establish_topic_content_table()
-        sql_database.print_all2()
+        //sql_database.print_all2()
         
     }
     
