@@ -193,6 +193,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         return new_message_list
     }
     
+    //施工中
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAt indexPath: IndexPath!) -> NSAttributedString!{
+        return NSAttributedString(string:"test========================")
+    }
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) -> NSAttributedString! {
+        return NSAttributedString(string:"test========================")
+    }
+    //施工中
+    
+    
     //MARK:送出按鈕按下後
     override func didPressSend(_ button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: Date?) {
         //送出WS訊息
@@ -465,12 +475,14 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingCellIdentifier)
         self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingMediaCellIdentifier)
     }
+    
 }
 func make_JSQMessage2(input_dic:Dictionary<String,AnyObject>) -> JSQMessage2{
     let msgToJSQ = JSQMessage2(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["topic_content"] as? String)
     msgToJSQ?.isRead = input_dic["is_read"] as? Bool
     return msgToJSQ!
 }
+
 
 class JSQMessage2:JSQMessage{
     var topicContentId:String?  //來自server定義的id

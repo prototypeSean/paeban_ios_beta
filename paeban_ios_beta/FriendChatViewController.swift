@@ -16,7 +16,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     var setID:String? = "anonymous"
     var setName:String? = "anonymous"
-    var topicId:String?
     var clientId:String?
     var clientName:String?
     var loadHistorySwitch = false
@@ -144,6 +143,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     override func viewWillAppear(_ animated: Bool) {
         messages = new_data()
         self.collectionView.reloadData()
+        self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
         DispatchQueue.global(qos: .background).async {
             usleep(50)
             DispatchQueue.main.async {
