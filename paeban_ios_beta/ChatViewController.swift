@@ -79,7 +79,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
         // 顯示"已讀"
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAt indexPath: IndexPath!) -> NSAttributedString! {
-        if messages[indexPath.item].isRead == true{
+        if messages[indexPath.item].isRead == true && messages[indexPath.item].senderId == userData.id{
             return NSAttributedString(string:"已讀"+" ")
         }
         else{
@@ -127,6 +127,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         
         
     }
+
         // 下面兩個負責讀取訊息
         // JSQ的列表顯示view, 在物件索引位至的訊息
     override func collectionView(_ collectionView: JSQMessagesCollectionView!,messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
@@ -165,17 +166,27 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
                 as! CustomMessagesCollectionViewCellOutgoing
             
-            
             cell.reloadBtnContainer.backgroundColor = UIColor(red:0.99, green:0.38, blue:0.27, alpha:1.0)
-            
             cell.reloadBtnContainer.isHidden = true
+            func hideResendBtn_ins(){
+                self.hideResendBtn(reSendContainer: cell.reloadBtnContainer)
+            }
+            func showResendBtn_ins(){
+                self.showResendBtn(
+                    reSendContainer: cell.reloadBtnContainer,
+                    reSendBtn: cell.reloadBTN,
+                    reSending: cell.reSending
+                )
+            }
+            func showResending_ins(){
+                self.showResending(
+                    reSendContainer: cell.reloadBtnContainer,
+                    reSendBtn: cell.reloadBTN,
+                    reSending: cell.reSending
+                )
+            }
             
             // 你他嗎只需要改 hideResendBtn showResendBtn showResending 就有三種顯示模式可以用
-            self.showResending(
-                reSendContainer: cell.reloadBtnContainer,
-                reSendBtn: cell.reloadBTN,
-                reSending: cell.reSending
-            )
             
             
             return cell
@@ -192,6 +203,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     
     // MARK: 試著控制失敗重傳按鈕
+//    self.showResending(
+//    reSendContainer: cell.reloadBtnContainer,
+//    reSendBtn: cell.reloadBTN,
+//    reSending: cell.reSending
+//    )
     func hideResendBtn(reSendContainer:UIView){
         reSendContainer.isHidden = true
     }
@@ -256,8 +272,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         
         let unsend_list = sql_database.get_unsend_topic_data(topic_id_input: topicId!, client_id: ownerId!)
         for unsend_list_s in unsend_list!{
-            //print(unsend_list_s)
-            //let yyy = json_dumps(unsend_list_s)
             socket.write(data: json_dumps(unsend_list_s))
         }
         
@@ -271,14 +285,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         self.collectionView?.reloadData()
         
         self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
-//        let appendMsg = JSQMessage2(senderId: senderId, displayName: senderDisplayName, text: text)
-//        appendMsg?.topicTempid = tempTopicMsgId
-//        self.messages.append(appendMsg!)
-//
-//        self.finishSendingMessage(animated: true)
-//        self.collectionView?.reloadData()
-//        let sendData = json_dumps(dataDic)
-//        socket.write(data:sendData)
+
     }
     // ws回傳信號
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
@@ -300,53 +307,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                         let id_server_input = msgData["id_server"] as! String
                         sql_database.update_topic_content_time(id_local: id_local, time_input: time_input, id_server_input:id_server_input)
                         // 施工中
-                        
-//                        let temp_topic_msg_id = msgData["temp_topic_msg_id"] as! String
-//                        let findElement = messages.index(where: { (target) -> Bool in
-//                            if target.topicTempid == temp_topic_msg_id{
-//                                return true
-//                            }
-//                            else{return false}
-//                        })
-//                        if let targetPosition = findElement{
-//                            messages[targetPosition].topicContentId = dicKey.0
-//                        }
-                        
                     }
                     else if msgData["receiver"] as? String == setID && msgData["sender"] as? String == clientID{
                         //別人說的話
-                        //topic_content_read
-                        //topic_content_id
-                        
-                        // 施工中
                         get_history_new()
-//                        sql_database.inser_date_to_topic_content(input_dic: msgData)
-//                        messages = renew_data()
-//                        
-//                        let sendData2 = [
-//                            "msg_type":"topic_content_read",
-//                            "topic_content_id":dicKey.0
-//                        ]
-//                        socket.write(data:json_dumps(sendData2 as NSDictionary))
-//                        
-//                        self.collectionView?.reloadData()
-//                        
-//                        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
-                        // 施工中
                         
-//                        let msgToJSQ = JSQMessage2(senderId: msgData["sender"] as? String, displayName: "non", text: msgData["topic_content"] as? String)
-//                        msgToJSQ?.topicContentId = dicKey.0
-//                        messages += [msgToJSQ!]
-//                        
                         let sendData = [
                             "msg_type":"topic_content_read",
                             "topic_content_id":dicKey.0
                         ]
                         socket.write(data:json_dumps(sendData as NSDictionary))
-//                        //self.finishSendingMessage(animated: true)
-//                        self.collectionView?.reloadData()
-//                        
-//                        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
                     }
                 }
                 
@@ -354,43 +324,13 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             
         }
         else if msgType == "topic_content_been_read"{
-            //let topicContentId = msg["topic_content_id"] as! String
-            
-            // 施工中
-            //self.get_history_new()
-            
             let id_local_input = msg["id_local"] as! String
             sql_database.update_topic_content_read(id_local: id_local_input)
             update_database()
-//            let data = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!)
-//            var new_list:Array<JSQMessage2> = []
-//            for data_s in data{
-//                new_list.append(make_JSQMessage2(input_dic: data_s))
-//            }
-//            messages = new_list
-//            self.collectionView.reloadData()
-//            self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
-            // 施工中
-//            let topicContentPosition = messages.index(where: { (target) -> Bool in
-//                let targetId = target.topicContentId
-//                if targetId == topicContentId{
-//                    return true
-//                }
-//                else{
-//                    return false
-//                }
-//            })
-//            if topicContentPosition != nil{
-//                messages[topicContentPosition!].isRead = true
-//                //print("xxx")
-//                self.collectionView?.reloadData()
-//            }
-            
         }
     
     }
     func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
-        
         for resultDicData in resultDic{
             let resultDicDataVal = resultDicData.1 as! Dictionary<String,AnyObject>
             let topicId = resultDicDataVal["topic_id"] as! String
@@ -508,7 +448,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingCellIdentifier)
         self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingMediaCellIdentifier)
     }
-    
 }
 func make_JSQMessage2(input_dic:Dictionary<String,AnyObject>) -> JSQMessage2{
     let msgToJSQ = JSQMessage2(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["topic_content"] as? String)

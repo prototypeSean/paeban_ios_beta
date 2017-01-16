@@ -48,6 +48,11 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         save_data_to_server()
     }
     // internal func
+    override func viewWillAppear(_ animated: Bool) {
+        if userData.is_real_photo == true{
+            isTruePhotoSwitch.isOn = true
+        }
+    }
     func logOut(){
         cookie = nil
         myFriendsList = []

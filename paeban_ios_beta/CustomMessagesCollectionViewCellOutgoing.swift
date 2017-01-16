@@ -30,5 +30,33 @@ class CustomMessagesCollectionViewCellOutgoing: CustomMessagesCollectionViewCell
     override class func cellReuseIdentifier() -> String {
         return "CustomMessagesCollectionViewCellOutgoing"
     }
+    
+    
+    func hideResendBtn(){
+        reloadBtnContainer.isHidden = true
+        reloadBTN.isHidden = true
+    }
+    
+    func showResendBtn(){
+        reloadBtnContainer.isHidden = false
+        reloadBTN.isHidden = false
+        reSending.stopAnimating()
+    }
+    
+    func showResending(){
+        reloadBtnContainer.isHidden = false
+        reloadBTN.isHidden = true
+        reSending.startAnimating()
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
