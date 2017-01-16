@@ -69,7 +69,7 @@ public class SQL_center{
     func print_all2(){
         do{
             for topic_c in try sql_db!.prepare(private_table) {
-                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read])")
+                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]) ms: \(topic_c[private_text])")
                 // id: 1, email: alice@mac.com, name: Optional("Alice")
             }
             print("========")
@@ -123,9 +123,41 @@ public class SQL_center{
             return "new_local_msg"
         }
     }
+    
+    // old_data
+    // new_server_msg*
+    // update_local
+    // new_local_msg*
+    
+    
+    func check_private_msg_type2(input_dic:Dictionary<String,AnyObject>) -> String{
+        if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
+            let query_id_server = private_table.filter(id_server == input_dic["id_server"]! as? String)
+            let query_id_local = private_table.filter(id == Int64(input_dic["id_local"]! as! String)! && sender == userData.id)
+            do{
+                let count_id_server = try sql_db!.scalar(query_id_server.count)
+                let count_id_local = try sql_db!.scalar(query_id_local.count)
+                if count_id_server == 0 {
+                    return "new_server_msg"
+                }
+                else{
+                    if (count_id_local != 0 && input_dic["sender"] as! String == userData.id!){
+                        return "old_data"
+                    }
+                    return "update_local"
+                }
+            }
+            catch{
+                return "old_data"
+            }
+        }
+        else{
+            return "new_local_msg"
+        }
+    }
     func inser_date_to_private_msg(input_dic:Dictionary<String,AnyObject>){
         do{
-            let topic_msg_type = check_private_msg_type(input_dic: input_dic)
+            let topic_msg_type = check_private_msg_type2(input_dic: input_dic)
             print("==============")
             print(topic_msg_type)
             if topic_msg_type == "update_local"{

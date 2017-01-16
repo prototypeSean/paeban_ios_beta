@@ -80,7 +80,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var tutorial: UIButton!
     @IBOutlet weak var state_lable: UILabel!
     
-    let version = "1.0.2.8"
+    let version = "1.0.2.9"
     let login_paeban_obj = login_paeban()
     var state_switch = true
     
