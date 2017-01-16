@@ -31,7 +31,6 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         //autoLeap()
         self.tableView.reloadData()
         model?.getFrientList()
-        model?.chat_view?.relace_chat_view_client_id()
         model?.chat_view = nil
         getInvitwList()
         self.update_badges()

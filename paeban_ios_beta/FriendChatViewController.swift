@@ -103,7 +103,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     //MARK:顯示"已讀"
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAt indexPath: IndexPath!) -> NSAttributedString! {
-        if messages[indexPath.item].isRead == true{
+        if messages[indexPath.item].isRead == true && messages[indexPath.item].senderId == userData.id{
             return NSAttributedString(string:"已讀")
         }
         else{
@@ -151,12 +151,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 self.get_history_new_from_server()
             }
         }
-//        super.viewWillAppear(animated)
-//        let sendDic:NSDictionary = ["msg_type":"request_history_priv_msg",
-//                                    "receiver_id":clientId!,
-//                                    "last_id_of_msg":"0"]
+
         wsActive.wasd_ForFriendChatViewController = self
-//        addRequestMission("request_history_priv_msg",data: sendDic)
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        self.dismiss(animated: false, completion: nil)
+        wsActive.wasd_ForFriendChatViewController = nil
     }
     // 下面兩個負責讀取訊息
     // JSQ的列表顯示view, 在物件索引位至的訊息
@@ -266,19 +266,16 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         let msgType =  msg["msg_type"] as! String
         
         if msgType == "priv_msg"{
-            print("x1")
             let resultDic_msg_id:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary<String,AnyObject>
-            print(resultDic_msg_id)
             for resultDic in resultDic_msg_id.values{
-                print(resultDic)
                 if (resultDic["sender_id"] as? String)! == userData.id!
                     && (resultDic["receiver_id"] as? String)! == clientId{
-                    
-                    
+
                     let id_local = resultDic["id_local"] as! String
                     let time_input = resultDic["time"] as! String
                     let id_server_input = resultDic["id_server"] as! String
                     sql_database.update_private_msg_time(id_local: id_local, time_input: time_input, id_server_input: id_server_input)
+                    //update_database()
                     //                if let _ = messages.index(where: { (msgTarget) -> Bool in
                     //                    if msgTarget.topicTempid! == msg["temp_priv_msg_id"] as? String{
                     //                        return true

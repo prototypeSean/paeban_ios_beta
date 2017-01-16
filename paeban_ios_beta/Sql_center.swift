@@ -220,6 +220,7 @@ public class SQL_center{
         do{
             
             for query_s in try sql_db!.prepare(query){
+                print(query_s[time])
                 var is_resd_input = false
                 if query_s[is_read] != nil{
                     is_resd_input = query_s[is_read]!
@@ -231,6 +232,7 @@ public class SQL_center{
                     ]
                 return_list.append(return_dic)
             }
+            print("====")
             return return_list
         }
         catch{
