@@ -182,7 +182,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 self.showResending(
                     reSendContainer: cell.reloadBtnContainer,
                     reSendBtn: cell.reloadBTN,
-                    reSending: cell.reSending
+                    reSending: cell.reSending,
+                    reSendingText: cell.resendingText
                 )
             }
             
