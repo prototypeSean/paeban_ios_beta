@@ -103,8 +103,12 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         var is_true_photo:String
         if is_true_photo_switch.isOn{
             is_true_photo = "true"
+            userData.is_real_photo = true
         }
-        else{is_true_photo = "false"}
+        else{
+            is_true_photo = "false"
+            userData.is_real_photo = false
+        }
         
         var send_dic:Dictionary<String,String> = [
             "is_myself": is_true_photo,

@@ -207,6 +207,7 @@ class HttpRequestCenter{
                 let dataKey_val = ouput_json[dataKey as NSObject]
                 let encodedImageData = dataKey_val!["img"] as! String
                 
+                
                 let decodedimage = base64ToImage(encodedImageData)
                 
                 var finalimg:UIImage

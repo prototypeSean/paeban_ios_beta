@@ -77,7 +77,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cell.sexLogo.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
             letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
             letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
-            if topicWriteToRow.read_detial == false{
+            if topicWriteToRow.read_detial == false && topicWriteToRow.lastSpeaker_detial != userData.name{
                 cell.lastLine.textColor = UIColor(red:0.99, green:0.38, blue:0.27, alpha:1.0)
             }
             else{
