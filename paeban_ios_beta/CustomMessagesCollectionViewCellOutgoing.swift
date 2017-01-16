@@ -15,6 +15,8 @@ class CustomMessagesCollectionViewCellOutgoing: CustomMessagesCollectionViewCell
     
     @IBOutlet weak var reloadBtnContainer: UIView!
     
+    @IBOutlet weak var resendingText: UILabel!
+
     @IBOutlet weak var reSending: UIActivityIndicatorView!
     
     override func awakeFromNib() {

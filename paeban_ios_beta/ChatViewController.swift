@@ -182,11 +182,18 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 self.showResending(
                     reSendContainer: cell.reloadBtnContainer,
                     reSendBtn: cell.reloadBTN,
-                    reSending: cell.reSending
+                    reSending: cell.reSending,
+                    reSendingText: cell.resendingText
                 )
             }
             
-            // 你他嗎只需要改 hideResendBtn showResendBtn showResending 就有三種顯示模式可以用
+            // 你他媽只需要改 hideResendBtn showResendBtn showResending 就有三種顯示模式可以用
+            self.showResending(
+                reSendContainer: cell.reloadBtnContainer,
+                reSendBtn: cell.reloadBTN,
+                reSending: cell.reSending,
+                reSendingText: cell.resendingText
+            )
             
             
             return cell
@@ -202,12 +209,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
     }
     
-    // MARK: 試著控制失敗重傳按鈕
-//    self.showResending(
-//    reSendContainer: cell.reloadBtnContainer,
-//    reSendBtn: cell.reloadBTN,
-//    reSending: cell.reSending
-//    )
+    // MARK: 控制失敗重傳按鈕
     func hideResendBtn(reSendContainer:UIView){
         reSendContainer.isHidden = true
     }
@@ -218,10 +220,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         reSending.stopAnimating()
     }
     
-    func showResending(reSendContainer:UIView,reSendBtn:UIButton,reSending:UIActivityIndicatorView){
-        reSendContainer.isHidden = false
+    func showResending(reSendContainer:UIView,reSendBtn:UIButton,reSending:UIActivityIndicatorView,reSendingText:UILabel){
+        reSendContainer.isHidden = true
         reSendBtn.isHidden = true
-        reSending.startAnimating()
+        reSending.stopAnimating()
+        reSendingText.isHidden = true
     }
     
     
