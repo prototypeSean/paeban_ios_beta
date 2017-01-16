@@ -47,6 +47,40 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     @IBAction func save_btn(_ sender: AnyObject) {
         save_data_to_server()
     }
+    var initFearm:CGRect?
+    var initCenter:CGPoint?
+    var selectedField:UIButton?
+    
+    override func viewDidAppear(_ animated: Bool) {
+        initFearm = self.view.frame
+        initCenter = self.view.center
+    }
+    
+    func find_user_kb_height(){
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SettingViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let Center_1 = (((initFearm?.height)! - keyboardSize.height))/2
+            let delta_x = ((name_btn_obj!.center.y)) - Center_1
+            var newCenter_y = (initCenter?.y)! - delta_x
+            if delta_x > keyboardSize.height{
+                newCenter_y = (initCenter?.y)! - keyboardSize.height
+            }
+            self.view.center = CGPoint(x: self.view.center.x, y: newCenter_y)
+        }
+    }
+    var kb_h:CGFloat = 64
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
+            self.view.center = self.initCenter!
+        }
+    }
     // internal func
     override func viewWillAppear(_ animated: Bool) {
         if userData.is_real_photo == true{
@@ -199,8 +233,10 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         name_text.isHidden  = true
         name_text.delegate = self
         name_btn_obj.setTitle(userData.name!, for: UIControlState.normal)
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingViewController.dismissKeyboard))
-        view.addGestureRecognizer(tap)
+//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingViewController.dismissKeyboard))
+//        view.addGestureRecognizer(tap)
+        
+        find_user_kb_height()
     }
     
     // delegate -> textFiled
