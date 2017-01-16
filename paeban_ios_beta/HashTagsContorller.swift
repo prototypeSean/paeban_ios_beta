@@ -40,7 +40,7 @@ class HashTagsContorller: UIView {
                     // 先用一次魔法 讓按鈕的長寬都長出來
                     button.sizeToFit()
                     
-                    var buttonFrame = CGRect(x: 0, y: -14, width:button.frame.width + 4, height:button.frame.height - 4)
+                    var buttonFrame = CGRect(x: 0, y: -8, width:button.frame.width + 4, height:button.frame.height - 4)
                     
                     // 我也不知道位啥上下顛倒
                     button.contentVerticalAlignment = UIControlContentVerticalAlignment.top

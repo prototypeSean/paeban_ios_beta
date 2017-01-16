@@ -169,6 +169,9 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         //開新話題
     func switchEditTopicArea(){
 //        self.editArea.isHidden = false
+        let editController = childViewControllers[0] as! EditViewController
+        editController.editText.becomeFirstResponder()
+        
         // 不能用清單寬度因為被我動過，要用最外層VIEW
         let parent_width = self.view.frame.size.width
         func editArea_position_init(){
@@ -186,6 +189,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                 //sss()
             }
         }
+        
         else{
             self.editArea.isHidden = true
             dismissKeyboard()
