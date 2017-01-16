@@ -218,9 +218,8 @@ public class SQL_center{
             ).order(time.asc)
         var return_list:Array<Dictionary<String,AnyObject>> = []
         do{
-            
-            for query_s in try sql_db!.prepare(query){
-                print(query_s[time])
+            let query_server = query.filter(id_server != nil)
+            for query_s in try sql_db!.prepare(query_server){
                 var is_resd_input = false
                 if query_s[is_read] != nil{
                     is_resd_input = query_s[is_read]!
@@ -232,7 +231,19 @@ public class SQL_center{
                     ]
                 return_list.append(return_dic)
             }
-            print("====")
+            let query_local = query.filter(id_server == nil)
+            for query_s in try sql_db!.prepare(query_local){
+                var is_resd_input = false
+                if query_s[is_read] != nil{
+                    is_resd_input = query_s[is_read]!
+                }
+                let return_dic:Dictionary<String,AnyObject> = [
+                    "sender":query_s[sender]! as AnyObject,
+                    "private_text":query_s[private_text]! as AnyObject,
+                    "is_read":is_resd_input as AnyObject,
+                    ]
+                return_list.append(return_dic)
+            }
             return return_list
         }
         catch{
@@ -450,8 +461,8 @@ public class SQL_center{
             ).order(time.asc)
         var return_list:Array<Dictionary<String,AnyObject>> = []
         do{
-            
-            for query_s in try sql_db!.prepare(query){
+            let query_server = query.filter(id_server != nil)
+            for query_s in try sql_db!.prepare(query_server){
                 var is_resd_input = false
                 if query_s[is_read] != nil{
                     is_resd_input = query_s[is_read]!
@@ -461,6 +472,19 @@ public class SQL_center{
                     "topic_content":query_s[topic_text]! as AnyObject,
                     "is_read":is_resd_input as AnyObject,
                 ]
+                return_list.append(return_dic)
+            }
+            let query_local = query.filter(id_server == nil)
+            for query_s in try sql_db!.prepare(query_local){
+                var is_resd_input = false
+                if query_s[is_read] != nil{
+                    is_resd_input = query_s[is_read]!
+                }
+                let return_dic:Dictionary<String,AnyObject> = [
+                    "sender":query_s[sender]! as AnyObject,
+                    "topic_content":query_s[topic_text]! as AnyObject,
+                    "is_read":is_resd_input as AnyObject,
+                    ]
                 return_list.append(return_dic)
             }
             return return_list
