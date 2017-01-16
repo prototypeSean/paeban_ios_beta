@@ -101,7 +101,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         // 把註冊前的NAV隱藏
         self.navigationController?.isNavigationBarHidden = true
         print("--viewWillAppear--")
-        state_lable.text = nil
+        
         check_online(in: self, with: autoLogin)
     }
     override public func viewDidAppear(_ animated: Bool) {
