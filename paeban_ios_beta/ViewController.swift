@@ -341,7 +341,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
     }
     func state_loging(){
-        self.state_lable.text = "登入中"
+//        self.state_lable.text = "登入中"
     }
     func state_init(){
         self.state_lable.text = nil
