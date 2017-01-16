@@ -420,6 +420,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
     }
     func get_history_new_from_server(){
+        print("get_history_new_from_server")
         let last_id_server:String = sql_database.get_private_msg_last_id_server(client_id_input:clientId!)
         
         var init_sql_state = "0"
@@ -427,12 +428,14 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             init_sql_state = "1"
             init_sql = false
         }
+        print(last_id_server)
         let request_dic:Dictionary<String,String> = [
             "last_id_server":last_id_server,
             "client_id":clientId!,
             "init_sql":init_sql_state
         ]
         HttpRequestCenter().request_user_data("history_private_msg_new", send_dic: request_dic) { (return_dic) in
+            print(return_dic)
             if return_dic["result"] as! String == "not_exist"{
                 //close window
             }

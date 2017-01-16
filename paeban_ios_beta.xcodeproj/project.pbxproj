@@ -259,12 +259,12 @@
 				932D0D721DA0F65700ACA795 /* FriendNavViewController.swift */,
 				CF2E9D611D7BDF9E00F485BB /* FriendTableViewController.swift */,
 				CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */,
-				CF2E9D691D7C76D600F485BB /* FriendChatViewController.swift */,
 				CF2E9D651D7BDFE300F485BB /* FriendTableViewMedol.swift */,
 				CF2E9D631D7BDFC000F485BB /* FriendTableViewCell.swift */,
 				CF2E9D671D7BE33C00F485BB /* FriendStanderType.swift */,
 				9390D06E1DE82F8C00FEC14A /* FriendInvitedCellTableViewCell.swift */,
 				9390D06C1DE82EE400FEC14A /* FriendInvitedListTableViewCell.swift */,
+				CF2E9D691D7C76D600F485BB /* FriendChatViewController.swift */,
 			);
 			name = friends;
 			sourceTree = "<group>";

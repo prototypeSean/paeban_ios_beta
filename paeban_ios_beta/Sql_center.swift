@@ -85,9 +85,13 @@ public class SQL_center{
                     id == Int64(input_dic["id_local"]! as! String)! &&
                     sender == userData.id
                 )
+                let query_server_id = private_table.filter(
+                    id_server == input_dic["id_server"]! as? String
+                )
                 do{
+                    let count_server = try sql_db!.scalar(query_server_id.count)
                     let count = try sql_db!.scalar(query.count)
-                    if count > 0{
+                    if (count > 0 && input_dic["sender"] as? String == userData.id) || count_server > 0{
                         return "old_data"
                     }
                 }
@@ -122,6 +126,8 @@ public class SQL_center{
     func inser_date_to_private_msg(input_dic:Dictionary<String,AnyObject>){
         do{
             let topic_msg_type = check_private_msg_type(input_dic: input_dic)
+            print("==============")
+            print(topic_msg_type)
             if topic_msg_type == "update_local"{
                 let id_local_input = Int64(input_dic["id_local"]! as! String)!
                 let query = private_table.filter(
@@ -324,9 +330,13 @@ public class SQL_center{
                     id == Int64(input_dic["id_local"]! as! String)! &&
                         sender == userData.id
                 )
+                let query_server_id = topic_content.filter(
+                    id_server == input_dic["id_local"]! as? String
+                )
                 do{
+                    let count_server = try sql_db!.scalar(query_server_id.count)
                     let count = try sql_db!.scalar(query.count)
-                    if count > 0{
+                    if (count > 0 && input_dic["sender"] as? String == userData.id) || count_server > 0{
                         return "old_data"
                     }
                 }

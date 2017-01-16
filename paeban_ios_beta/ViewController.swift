@@ -91,7 +91,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         //sql_database.remove_topic_content_table()
         sql_database.establish_private_msg_table()
         sql_database.establish_topic_content_table()
-        //sql_database.print_all2()
+        sql_database.print_all2()
         
     }
     
