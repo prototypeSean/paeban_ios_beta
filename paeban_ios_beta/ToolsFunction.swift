@@ -271,6 +271,10 @@ func time_transform_to_since1970(time_string:String) -> TimeInterval!{
     return time_input
 }
 
+func time_diff(time_input:Double){
+    
+}
+
 
 
 
