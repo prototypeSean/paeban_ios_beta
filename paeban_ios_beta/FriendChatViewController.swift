@@ -118,7 +118,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(
             with: UIColor.init(red:0.98, green:0.49, blue:0.29, alpha:1.0))
         incomingBubbleImageView = factory?.incomingMessagesBubbleImage(
-            with: UIColor.jsq_messageBubbleLightGray())
+            with: UIColor(red:0.47, green:0.47, blue:0.47, alpha:1.0))
     }
     
     override func viewDidLoad() {
@@ -200,7 +200,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         if message.senderId == senderId {
             cell.textView!.textColor = UIColor.white
         } else {
-            cell.textView!.textColor = UIColor.black
+            cell.textView!.textColor = UIColor.white
         }
         
         let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
