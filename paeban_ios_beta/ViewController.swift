@@ -81,7 +81,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var tutorial: UIButton!
     @IBOutlet weak var state_lable: UILabel!
     
-    
+    let version = "1.0.2.7"
     let login_paeban_obj = login_paeban()
     var state_switch = true
     
@@ -374,6 +374,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if firstConnect && logInState{
             ws_connected(socket)
             print("connected")
+            socket.write(data: json_dumps([
+                "msg_type": "check_version",
+                "version":version
+            ]))
             firstConnect = false
             firstActiveApp = false
             self.performSegue(withIdentifier: "segueToMainUI", sender: self)
@@ -413,9 +417,15 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         //print("msgincome=======")
         let msgPack = wsMsgTextToDic(text)
         wsActive.wsOnMsg(msgPack)
-//        if let msgtype = msgPack["msg_type"] as? String{
-//            //code
-//        }
+        if let msgtype = msgPack["msg_type"] as? String{
+            if msgtype == "update_version"{
+                let version_server = msgPack["version"]
+                let alert = UIAlertController(title: "更新通知", message: "版本 \(version_server!) 已發布，請盡快更新，您現在的版本是\(version)", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
     }
     private func getViewController(indentifier: String) -> UIViewController {
         return UIStoryboard(name: "Main", bundle: nil) .

@@ -19,7 +19,6 @@ class HttpRequestCenter{
     var topic_list = [Topic]()
     
     func getTopic(_ topicData:@escaping ([Topic]) -> Void){
-        print("func getTopic")
         let url = "https://www.paeban.com/topic_update/"
         let sendData = "mode=new"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) -> Void in
@@ -227,8 +226,6 @@ class HttpRequestCenter{
                 if dataKey_val!["online"] as! Bool == true{
                     online = true
                 }
-                
-                
                 let topic_temp = Topic(
                     owner: dataKey_val!["topic_publisher"] as! String,
                     photo: finalimg,

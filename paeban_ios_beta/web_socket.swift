@@ -55,7 +55,7 @@ public protocol webSocketActiveCenterDelegate_re{
 //MARK:webSocket 資料接收中心
 open class webSocketActiveCenter{
     
-    let mainWorkList = ["online","off_line","new_member"]
+    let mainWorkList = ["online","off_line","new_member","update_version"]
 
     var test_List = [""]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
