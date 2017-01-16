@@ -86,7 +86,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     var state_switch = true
     
     // MARK:施工中
-    func testing(){
+    func create_data_base(){
         sql_database.connect_sql()
         // MARK:"重置資料庫開關"
         //sql_database.remove_topic_content_table()
@@ -122,7 +122,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     override public func viewDidLoad() {
         super.viewDidLoad()
-        testing()
+        create_data_base()
         main_vc = self
         login_paeban_obj.delegate = self
         loginId.delegate = self
@@ -380,7 +380,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             ]))
             firstConnect = false
             firstActiveApp = false
-            self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+            //self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             DispatchQueue.global(qos: .background).async {
                 let time_init = Date()
                 while myFriendsList.isEmpty{
@@ -389,6 +389,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     if time_pass > 5{
                         break
                     }
+                }
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "segueToMainUI", sender: self)
                 }
                 if !notificationSegueInf.isEmpty{
                     DispatchQueue.main.async {

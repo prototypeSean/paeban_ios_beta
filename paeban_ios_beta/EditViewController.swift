@@ -19,8 +19,6 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         editText.delegate = self
-//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(EditViewController.dismissKeyboard))
-//        view.addGestureRecognizer(tap)
     }
     
     
