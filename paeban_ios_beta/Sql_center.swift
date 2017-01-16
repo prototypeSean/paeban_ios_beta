@@ -27,6 +27,9 @@ public class SQL_center{
     let is_read = Expression<Bool?>("is_read")
     let is_send = Expression<Bool?>("is_send")
     let id_server = Expression<String?>("id_server")
+    // user data
+    let user_data_table = Table("user_data_table")
+    let user_id_table = Expression<String?>("user_id_table")
     
     func connect_sql(){
         let urls = FileManager.default
@@ -554,6 +557,23 @@ public class SQL_center{
             return "0"
         }
         catch{return "0"}
+    }
+    
+    // user_data
+    func establish_userdata(){
+        do{
+            try sql_db?.run(topic_content.create { t in
+                t.column(id, primaryKey: true)
+                t.column(user_id_table)
+            })
+            print("表單建立成功")
+        }
+        catch{
+            print(error)
+        }
+    }
+    func insert_user_name(){
+        //pass
     }
     
 }

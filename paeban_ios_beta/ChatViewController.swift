@@ -114,6 +114,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         dennis_kao_s_fucking_trash()
     }
     override func viewWillAppear(_ animated: Bool) {
+        add_tap()
         messages = renew_data()
         self.collectionView.reloadData()
         DispatchQueue.global(qos: .background).async {
@@ -195,7 +196,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 reSendingText: cell.resendingText
             )
             
-            
+            let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
+            cell.addGestureRecognizer(tap_event)
             return cell
         }
             
@@ -204,7 +206,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 as! CustomMessagesCollectionViewCellIncoming
             
             cell.textView!.textColor = UIColor.white
-            
+            let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
+            cell.addGestureRecognizer(tap_event)
             return cell
         }
     }
@@ -231,7 +234,13 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
 //    func showResending(reSending:UIActivityIndicatorView) {
 //        reSending.isHidden = false
 //    }
-    
+    func dissmis_leybroad(){
+        self.view.endEditing(true)
+    }
+    func add_tap(){
+        let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
+        self.view.addGestureRecognizer(tap_event)
+    }
     func addMessage(_ id: String, text: String) {
         let message = JSQMessage2(senderId: id, displayName: "", text: text)
         messages.append(message!)

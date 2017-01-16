@@ -141,6 +141,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         //wsActive.wasd_ForChatViewController = self
     }
     override func viewWillAppear(_ animated: Bool) {
+        self.add_tap()
         messages = new_data()
         self.collectionView.reloadData()
         self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
@@ -201,6 +202,9 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         } else {
             cell.textView!.textColor = UIColor.black
         }
+        
+        let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
+        cell.addGestureRecognizer(tap_event)
         
         return cell
     }
@@ -494,7 +498,14 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
         
     }
-    
+    func dissmis_leybroad(){
+        self.view.endEditing(true)
+    }
+    func add_tap(){
+        let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
+        self.view.addGestureRecognizer(tap_event)
+        
+    }
     var aspectRatioConstraint: NSLayoutConstraint? {
         willSet {
             if let existingConstraint = aspectRatioConstraint {
