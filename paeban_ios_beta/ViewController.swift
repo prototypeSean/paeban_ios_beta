@@ -83,7 +83,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     let version = "1.0.2.9"
     let login_paeban_obj = login_paeban()
     var state_switch = true
-    
     // MARK:施工中
     let reset_database = false
     func create_data_base(){
