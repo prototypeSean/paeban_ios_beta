@@ -247,7 +247,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             "is_send":false as AnyObject
         ]
         sql_database.inser_date_to_private_msg(input_dic: dataDic)
-        sql_database.print_all2()
         self.update_database()
         if let send_list = sql_database.get_unsend_private_data(client_id: clientId!){
             for send_data in send_list{
