@@ -542,7 +542,7 @@ public class SQL_center{
         catch{}
         
     }
-    func get_topic_content_last_id_server(topic_id:String, topic_id_input:String,client_id_input:String) -> String{
+    func get_topic_content_last_id_server(topic_id_input:String,client_id_input:String) -> String{
         let query = topic_content.filter(
             topic_id == topic_id_input &&
             id_server != nil &&
