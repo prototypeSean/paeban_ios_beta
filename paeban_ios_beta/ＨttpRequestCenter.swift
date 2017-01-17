@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 protocol HttpRequestCenterDelegate {
     func new_topic_did_load(_ http_obj:HttpRequestCenter)
 }
