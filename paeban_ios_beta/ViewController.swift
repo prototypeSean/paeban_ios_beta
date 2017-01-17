@@ -85,12 +85,19 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     var state_switch = true
     
     // MARK:施工中
+    let reset_database = false
     func create_data_base(){
         sql_database.connect_sql()
+        let version_in_db = sql_database.load_version()
+        if version_in_db != version || reset_database{
+            print("資料庫重置")
+            sql_database.remove_topic_content_table()
+            sql_database.establish_version(version: version)
+            sql_database.establish_private_msg_table()
+            sql_database.establish_topic_content_table()
+        }
         // MARK:"重置資料庫開關"
-        //sql_database.remove_topic_content_table()
-        sql_database.establish_private_msg_table()
-        sql_database.establish_topic_content_table()
+        
         sql_database.print_all2()
         
     }

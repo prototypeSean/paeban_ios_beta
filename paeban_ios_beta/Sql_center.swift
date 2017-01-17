@@ -30,6 +30,9 @@ public class SQL_center{
     // user data
     let user_data_table = Table("user_data_table")
     let user_id_table = Expression<String?>("user_id_table")
+    // version
+    var version_table = Table("version_table")
+    let version_number = Expression<String?>("version_number")
     
     func connect_sql(){
         let urls = FileManager.default
@@ -344,6 +347,7 @@ public class SQL_center{
         do{
             try sql_db?.run(topic_content.drop())
             try sql_db?.run(private_table.drop())
+            try sql_db?.run(version_table.drop())
         }
         catch{
             print(error)
@@ -588,6 +592,36 @@ public class SQL_center{
         //pass
     }
     
+    
+    // establish_userdata
+    func establish_version(version:String){
+        do{
+            try sql_db?.run(version_table.create { t in
+                t.column(id, primaryKey: true)
+                t.column(version_number)
+            })
+            let insert = version_table.insert(
+                version_number <- version
+            )
+            try sql_db!.run(insert)
+        }
+        catch{
+            print(error)
+        }
+    }
+    
+    func load_version() -> String?{
+        let query = version_table.filter(id == 1)
+        do{
+            for query_s in try sql_db!.prepare(query){
+                return query_s[version_number]
+            }
+        }
+        catch{
+            return nil
+        }
+        return nil
+    }
 }
 
 
