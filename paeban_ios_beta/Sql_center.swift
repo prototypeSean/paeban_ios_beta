@@ -239,7 +239,6 @@ public class SQL_center{
     func get_private_msg_last_id_server(client_id_input:String) -> String{
         let query = private_table.filter(
                 id_server != nil &&
-                (sender == userData.id! && receiver == client_id_input) ||
                 (receiver == userData.id! && sender == client_id_input)
             ).order(time.desc).limit(1)
         do{
@@ -439,8 +438,7 @@ public class SQL_center{
     func print_all(){
         do{
             for topic_c in try sql_db!.prepare(topic_content) {
-                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read])")
-            // id: 1, email: alice@mac.com, name: Optional("Alice")
+                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]), text: \(topic_c[topic_text])")
             }
             print("========")
         }
@@ -544,11 +542,10 @@ public class SQL_center{
         catch{}
         
     }
-    func get_topic_content_last_id_server(topic_id_input:String,client_id_input:String) -> String{
+    func get_topic_content_last_id_server(topic_id:String, topic_id_input:String,client_id_input:String) -> String{
         let query = topic_content.filter(
             topic_id == topic_id_input &&
             id_server != nil &&
-            (sender == userData.id! && receiver == client_id_input) ||
             (receiver == userData.id! && sender == client_id_input)
         ).order(time.desc).limit(1)
         do{
