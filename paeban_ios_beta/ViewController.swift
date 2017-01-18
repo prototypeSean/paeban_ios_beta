@@ -80,11 +80,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var tutorial: UIButton!
     @IBOutlet weak var state_lable: UILabel!
     
-    let version = "1.0.2.9"
+    let version = "1.0.2.11"
     let login_paeban_obj = login_paeban()
     var state_switch = true
     // MARK:施工中
-    let reset_database = false
+    let reset_database = true
     func create_data_base(){
         sql_database.connect_sql()
         let version_in_db = sql_database.load_version()
@@ -97,7 +97,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         // MARK:"重置資料庫開關"
         
-        sql_database.print_all2()
+        sql_database.print_all()
         
     }
     
@@ -429,7 +429,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             if msgtype == "update_version"{
                 let version_server = msgPack["version"]
                 let alert = UIAlertController(title: "更新通知", message: "版本 \(version_server!) 已發布，請盡快更新，您現在的版本是\(version)", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: { (action) in
+                    //pass
+                }))
                 self.present(alert, animated: true, completion: nil)
             }
         }

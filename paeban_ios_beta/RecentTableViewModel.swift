@@ -87,8 +87,6 @@ class RecentTableViewModel{
         }
         // 發話人標籤
         var lastSpeakerName:String?
-        print(topicWriteToRow.lastSpeaker_detial)
-        print(topicWriteToRow.read_detial)
         if topicWriteToRow.lastSpeaker_detial! == userData.name{
             lastSpeakerName = userData.name
             
@@ -104,8 +102,6 @@ class RecentTableViewModel{
             
         }
         cell.lastSpeaker.text = "\(lastSpeakerName!):"
-        print(cell.lastSpeaker.text )
-        print("=====")
         // 話題owner
         cell.ownerName.text = topicWriteToRow.clientName_detial
         // 最新一句對話
@@ -232,10 +228,39 @@ class RecentTableViewModel{
     private func get_recent_data(){
         HttpRequestCenter().request_user_data("recent_data", send_dic: [:]) { (retuen_dic) in
             let data = retuen_dic["data"] as! Dictionary<String,AnyObject>
+            self.remove_out_off_data(data: data)
             for datas in data{
                 self.transformStaticType(datas.0, inputData: datas.1 as! Dictionary<String,AnyObject>)
             }
         }
+    }
+    private func remove_out_off_data(data:Dictionary<String,AnyObject>){
+        var check_topic_id_list:Array<String> = []
+        for topic_id in data{
+            check_topic_id_list.append(topic_id.0)
+        }
+        print(check_topic_id_list)
+        var remove_list:Array<Int> = []
+        var count_index = 0
+        for cell_s in recentDataBase{
+            print(cell_s.topicId_title)
+            if let _ = check_topic_id_list.index(of: cell_s.topicId_title!){
+                //pass
+            }
+            else{
+                remove_list.append(count_index)
+            }
+            count_index += 1
+        }
+        remove_list.reverse()
+        for remove_index in remove_list{
+            recentDataBase.remove(at: remove_index)
+        }
+        DispatchQueue.main.async {
+            self.delegate?.model_relodata()
+        }
+        
+        
     }
     // transform
     func transformStaticType(_ inputKey:String,inputData:Dictionary<String,AnyObject>){
@@ -256,8 +281,6 @@ class RecentTableViewModel{
             DispatchQueue.main.async {
                 self.delegate?.model_relodata()
             }
-            
-            
         }
         else{
             let ouputObj = MyTopicStandardType(dataType: "detail")

@@ -15,6 +15,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
+        print("recent viewWillAppear")
         rTVModel.reCheckDataBase()
         self.update_badges()
         rTVModel.chat_view = nil

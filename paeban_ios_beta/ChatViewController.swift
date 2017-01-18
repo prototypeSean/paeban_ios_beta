@@ -36,35 +36,12 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     
     //collectionView(_:attributedTextForMessageBubbleTopLabelAtIndexPath:)
     //MARK:讀入歷史訊息
-    var historyMsg:Dictionary<String,AnyObject>{
-        get{return [:]}
-        set{
-//            var tempMsgList = [JSQMessage2]()
-//            for msg_s in newValue{
-//                let sender = msg_s.1["sender"] as! String
-//                let text = msg_s.1["text"] as! String
-//                let tempMsg_s = JSQMessage2(senderId: sender, displayName: "anonymous", text: text)
-//                tempMsg_s?.topicContentId = msg_s.0
-//                if sender == setID && msg_s.1["read"] as! Bool == true{
-//                    tempMsg_s?.isRead = true
-//                }
-//                tempMsgList += [tempMsg_s!]
-//            }
-//            let retureList = tempMsgList.sorted { (msg0, msg1) -> Bool in
-//                let msg0Int = Int(msg0.topicContentId!)
-//                let msg1Int = Int(msg1.topicContentId!)
-//                return msg0Int < msg1Int
-//            }
-//            if self.messages.isEmpty{
-//                self.messages = retureList
-//            }
-//            else{
-//                self.messages = retureList + self.messages
-//            }
-//            self.finishSendingMessage(animated: true)
-//            self.collectionView?.reloadData()
-        }
-    }
+//    var historyMsg:Dictionary<String,AnyObject>{
+//        get{return [:]}
+//        set{
+//
+//        }
+//    }
     var topicNotExist:String?{
         get{return ""}
         set{

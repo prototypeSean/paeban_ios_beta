@@ -84,17 +84,17 @@ public class SQL_center{
     func check_private_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
         if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
             if input_dic["id_local"] != nil && input_dic["id_local"]! as! String != "0"{
-                let query = private_table.filter(
-                    id == Int64(input_dic["id_local"]! as! String)! &&
-                    sender == userData.id
-                )
+//                let query = private_table.filter(
+//                    id == Int64(input_dic["id_local"]! as! String)! &&
+//                    sender == userData.id
+//                )
                 let query_server_id = private_table.filter(
                     id_server == input_dic["id_server"]! as? String
                 )
                 do{
                     let count_server = try sql_db!.scalar(query_server_id.count)
-                    let count = try sql_db!.scalar(query.count)
-                    if (count > 0 && input_dic["sender"] as? String == userData.id) || count_server > 0{
+                    //let count = try sql_db!.scalar(query.count)
+                    if count_server > 0{
                         return "old_data"
                     }
                 }
@@ -356,11 +356,11 @@ public class SQL_center{
     func check_topic_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
         if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
             let query_id_server = topic_content.filter(id_server == input_dic["id_server"]! as? String)
-            let query_id_local = topic_content.filter(id == Int64(input_dic["id_local"]! as! String)! && sender == userData.id)
+            //let query_id_local = topic_content.filter(id == Int64(input_dic["id_local"]! as! String)! && sender == userData.id)
             do{
                 let count_id_server = try sql_db!.scalar(query_id_server.count)
-                let count_id_local = try sql_db!.scalar(query_id_local.count)
-                if (count_id_local != 0 && input_dic["sender"] as! String == userData.id!) && count_id_server != 0{
+                //let count_id_local = try sql_db!.scalar(query_id_local.count)
+                if count_id_server != 0{
                     return "old_data"
                 }
                 return "new_server_msg"

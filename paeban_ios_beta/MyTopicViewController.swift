@@ -177,8 +177,8 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
                     DispatchQueue.main.async(execute: {
                         self.myPhotoSave = myImg
                         self.myPhotoImg.image = self.myPhotoSave
-                        let chatViewCon = self.contanterView
-                        chatViewCon?.historyMsg = msg
+                        //let chatViewCon = self.contanterView
+                        //chatViewCon?.historyMsg = msg
                         self.msg = msg
                     })
                 }
@@ -312,7 +312,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
             self.contanterView = chatViewCon
         }
         else{
-            chatViewCon.historyMsg = self.msg!
+            //chatViewCon.historyMsg = self.msg!
         }
     }
     
@@ -332,9 +332,11 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
                         let sender = msgData["sender"] as! String
                         if sender == userData.id{
                             myPhotoImg.image = tempImg
+                            myPhotoSave = tempImg
                         }
                         else{
                             guestPhotoImg.image = tempImg
+                            clientImg = tempImg
                         }
                         break
                     }

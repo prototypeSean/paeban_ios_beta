@@ -122,8 +122,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                     DispatchQueue.main.async(execute: {
                         self.myPhotoSave = myImg
                         self.myPhotoImg.image = self.myPhotoSave
-                        let chatViewCon = self.contanterView
-                        chatViewCon?.historyMsg = msg
+                        //let chatViewCon = self.contanterView
+                        
                         self.msg = msg
                     })
                 }
@@ -139,7 +139,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.alert)
         
         refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
-            //self.navigationController?.popViewController(animated: true)
+            let nav_vc = self.parent as! UINavigationController
+            nav_vc.popToRootViewController(animated: true)
         }))
         
         self.delegate?.reLoadTopic(self.topicId!)
@@ -338,7 +339,6 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                         let sender = msgData["sender"] as! String
                         if sender == userData.id{
                             myPhotoImg.image = tempImg
-                            
                         }
                         else{
                             guestPhotoImg.image = tempImg
@@ -379,9 +379,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         if self.msg == nil {
             self.contanterView = chatViewCon
         }
-        else{
-            chatViewCon.historyMsg = self.msg!
-        }
+        
     }
     private func getViewController(indentifier: String) -> UIViewController {
         return UIStoryboard(name: "Main", bundle: nil) .
