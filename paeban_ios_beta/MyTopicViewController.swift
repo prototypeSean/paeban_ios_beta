@@ -330,11 +330,12 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
                     for dicKey in resultDic{
                         let msgData = dicKey.1 as! Dictionary<String,AnyObject>
                         let sender = msgData["sender"] as! String
-                        if sender == userData.id{
+                        let reveiver = msgData["reveiver"] as! String
+                        if sender == userData.id && reveiver == setID{
                             myPhotoImg.image = tempImg
                             myPhotoSave = tempImg
                         }
-                        else{
+                        else if reveiver == userData.id && sender == setID{
                             guestPhotoImg.image = tempImg
                             clientImg = tempImg
                         }
