@@ -80,11 +80,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var tutorial: UIButton!
     @IBOutlet weak var state_lable: UILabel!
     
-    let version = "1.0.2.11"
+    let version = "1.0.2.12"
     let login_paeban_obj = login_paeban()
     var state_switch = true
     // MARK:施工中
-    let reset_database = true
+    let reset_database = false
     func create_data_base(){
         sql_database.connect_sql()
         let version_in_db = sql_database.load_version()
