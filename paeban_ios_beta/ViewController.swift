@@ -64,12 +64,14 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBAction func singIn(_ sender: AnyObject) {
     }
     @IBAction func logIn(_ sender: AnyObject) {
-        self.hide_items()
-        loginId.resignFirstResponder()
-        logInPw.resignFirstResponder()
-        check_online(in: self) {
-            self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
-            self.logInPw.text = ""
+        if self.loginId.text! != "" && self.logInPw.text! != ""{
+            self.hide_items()
+            loginId.resignFirstResponder()
+            logInPw.resignFirstResponder()
+            check_online(in: self) {
+                self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
+                self.logInPw.text = ""
+            }
         }
     }
     @IBOutlet weak var singIn_outlet: UIButton!
