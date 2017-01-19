@@ -46,6 +46,7 @@ func ws_connect_fun(_ ws:WebSocket){
 
 public protocol webSocketActiveCenterDelegate{
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>)
+    func wsReconnected()
 }
 
 public protocol webSocketActiveCenterDelegate_re{
@@ -116,8 +117,6 @@ open class webSocketActiveCenter{
                             myFriendsList.append(insertObj)
                         }
                     }
-                    
-                    
                 }
             }
             
@@ -159,13 +158,9 @@ open class webSocketActiveCenter{
         }
     }
     
-    
-    var ware_ForMyTopicTableViewController:webSocketActiveCenterDelegate_re?
-    let ware_ForMyTopicTableViewControllerList = ["topic_msg"]
-    
-    
     func wsReConnect(){
-        ware_ForMyTopicTableViewController?.wsReconnected()
+        wsad_ForTopicTableViewController?.wsReconnected()
+        wasd_ForRecentTableViewController?.wsReconnected()
     }
 }
 
