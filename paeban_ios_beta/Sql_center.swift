@@ -132,7 +132,6 @@ public class SQL_center{
     // update_local
     // new_local_msg*
     
-    
     func check_private_msg_type2(input_dic:Dictionary<String,AnyObject>) -> String{
         if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
             let query_id_server = private_table.filter(id_server == input_dic["id_server"]! as? String)
