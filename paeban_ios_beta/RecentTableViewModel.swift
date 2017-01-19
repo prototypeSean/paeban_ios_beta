@@ -108,8 +108,13 @@ class RecentTableViewModel{
         cell.lastLine.text = topicWriteToRow.lastLine_detial
         
         
-        
+        cell.online.layoutIfNeeded()
         cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let cr = (cell.online.frame.size.width)/2
+        cell.online.layer.borderWidth = 1
+        cell.online.layer.borderColor = UIColor.white.cgColor
+        cell.online.layer.cornerRadius = cr
+        cell.online.clipsToBounds = true
         if topicWriteToRow.clientOnline_detial!{
             cell.online.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
         }

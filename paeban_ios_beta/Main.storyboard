@@ -1534,6 +1534,11 @@
                                                 <constraint firstAttribute="width" secondItem="emj-9P-mzy" secondAttribute="height" multiplier="1:1" id="tAh-qb-RbN"/>
                                                 <constraint firstAttribute="width" secondItem="emj-9P-mzy" secondAttribute="height" multiplier="1:1" id="xfD-Ml-1IL"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="0.0"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="2kM-aq-gwV"/>
@@ -1981,6 +1986,11 @@
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="v0d-vG-ran" secondAttribute="height" multiplier="1:1" id="AkT-5k-RxM"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="0.0"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nVL-zD-wk6">
                                             <rect key="frame" x="94.5" y="12.5" width="25" height="25"/>
@@ -2956,9 +2966,9 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lxg-Ec-9Hp"/>
         <segue reference="nCN-DR-xXv"/>
         <segue reference="9Et-Zw-Bc4"/>
-        <segue reference="XH3-qg-Ahu"/>
+        <segue reference="wc9-Me-EI3"/>
+        <segue reference="wZO-VC-xmQ"/>
     </inferredMetricsTieBreakers>
 </document>

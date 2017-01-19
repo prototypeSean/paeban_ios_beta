@@ -82,6 +82,13 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             else{
                 cell2.last_line.textColor = nil
             }
+            cell2.onlineImg.layoutIfNeeded()
+            cell2.onlineImg.layer.borderWidth = 1
+            cell2.onlineImg.layer.borderColor = UIColor.white.cgColor
+            let cr = (cell2.onlineImg.frame.size.width)/2
+            cell2.onlineImg.layer.cornerRadius = cr
+            cell2.onlineImg.clipsToBounds = true
+
             cell2.onlineImg.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             if data.online!{
                 cell2.onlineImg.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)

@@ -854,6 +854,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     func letoutIsTruePhoto(_ isTruePhoto:Bool,isMeImg:UIImageView){
         isMeImg.image = UIImage(named:"True_photo")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        isMeImg.layoutIfNeeded()
+        let cr = (isMeImg.frame.size.width)/2
+        isMeImg.layer.borderWidth = 1
+        isMeImg.layer.borderColor = UIColor.white.cgColor
+        isMeImg.layer.cornerRadius = cr
+        isMeImg.clipsToBounds = true
         if isTruePhoto{
             isMeImg.tintColor = UIColor.white
         }
@@ -862,9 +868,13 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
     }
     func letoutOnlineLogo(_ isOnline:Bool,cellOnlineLogo:UIImageView){
-        
+        cellOnlineLogo.layoutIfNeeded()
         cellOnlineLogo.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-        
+        let cr = (cellOnlineLogo.frame.size.width)/2
+        cellOnlineLogo.layer.borderWidth = 1
+        cellOnlineLogo.layer.borderColor = UIColor.white.cgColor
+        cellOnlineLogo.layer.cornerRadius = cr
+        cellOnlineLogo.clipsToBounds = true
         if isOnline{
             cellOnlineLogo.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
         }
