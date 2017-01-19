@@ -15,6 +15,7 @@ import FBSDKShareKit
 
 // MARK:公用變數
 public var ssss:String?
+public var back_ground_state = false
 public var socket:WebSocket!
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
 public var firstActiveApp = true // MARK:打包前改為 true****************************
@@ -416,7 +417,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         socketState = false
         print("disConnect")
-        if logInState{
+        if logInState && !back_ground_state{
             wsTimer?.invalidate()
             wsTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(ViewController.reConnect), userInfo: nil, repeats: true)
         }

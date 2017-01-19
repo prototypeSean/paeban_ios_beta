@@ -95,6 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         }
         notificationSegueInf = [:]
         socketState = false
+        back_ground_state = true
         recive_apns_switch = true
         update_badges(app: application)
         print("====applicationDidEnterBackground======")
@@ -112,6 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         print("====applicationDidBecomeActive====")
         app_instence = application
         FBSDKAppEvents.activateApp()
+        back_ground_state = false
         
         if (socket != nil){
             socket.connect()
