@@ -73,7 +73,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cell.speaker.text = topicWriteToRow.lastSpeaker_detial
             cell.lastLine.text = topicWriteToRow.lastLine_detial
             cell.photo.image = topicWriteToRow.clientPhoto_detial
-            cell.sexLogo.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
+            cell.sexLogo = letoutSexLogo(sexImg:cell.sexLogo, sex: topicWriteToRow.clientSex_detial!)
             letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
             letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
             if topicWriteToRow.read_detial == false && topicWriteToRow.lastSpeaker_detial != userData.name{
@@ -832,8 +832,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         battery.image = UIImage(named:"battery-low")
 //        battery.tintColor = UIColor.red
     }
-    func letoutSexLogo(_ sex:String) -> UIImage {
-        var sexImg = UIImageView()
+    func letoutSexLogo(sexImg:UIImageView, sex:String) -> UIImageView {
         switch sex {
         case "男":
             sexImg.image = UIImage(named: "male")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
@@ -851,7 +850,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             sexImg.image = UIImage(named: "male")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             print("性別圖示分類失敗")
         }
-        return sexImg.image!
+        return sexImg
     }
     func letoutIsTruePhoto(_ isTruePhoto:Bool,isMeImg:UIImageView){
         isMeImg.image = UIImage(named:"True_photo")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
