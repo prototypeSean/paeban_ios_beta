@@ -833,21 +833,25 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
 //        battery.tintColor = UIColor.red
     }
     func letoutSexLogo(_ sex:String) -> UIImage {
-        var sexImg:UIImage
+        var sexImg = UIImageView()
         switch sex {
         case "男":
-            sexImg = UIImage(named: "male")!
+            sexImg.image = UIImage(named: "male")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            sexImg.tintColor = UIColor(red:0.27, green:0.71, blue:0.88, alpha:1.0)
         case "女":
-            sexImg = UIImage(named:"gay")!
+            sexImg.image = UIImage(named:"female")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            sexImg.tintColor = UIColor(red:1.00, green:0.49, blue:0.42, alpha:1.0)
         case "男同":
-            sexImg = UIImage(named:"gay")!
+            sexImg.image = UIImage(named:"gay")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            sexImg.tintColor = UIColor(red:0.27, green:0.71, blue:0.88, alpha:1.0)
         case "女同":
-            sexImg = UIImage(named:"lesbain")!
+            sexImg.image = UIImage(named:"lesbain")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            sexImg.tintColor = UIColor(red:1.00, green:0.49, blue:0.42, alpha:1.0)
         default:
-            sexImg = UIImage(named: "male")!
+            sexImg.image = UIImage(named: "male")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             print("性別圖示分類失敗")
         }
-        return sexImg
+        return sexImg.image!
     }
     func letoutIsTruePhoto(_ isTruePhoto:Bool,isMeImg:UIImageView){
         isMeImg.image = UIImage(named:"True_photo")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
