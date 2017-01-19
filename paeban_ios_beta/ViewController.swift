@@ -83,6 +83,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var tutorial: UIButton!
     @IBOutlet weak var state_lable: UILabel!
     
+    
     let version = "1.0.2.12"
     let login_paeban_obj = login_paeban()
     var state_switch = true
@@ -103,6 +104,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         sql_database.print_all()
         
     }
+    
     
     // MARK: override
     override public func viewWillAppear(_ animated: Bool) {
