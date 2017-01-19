@@ -59,7 +59,8 @@ class MyTopicTableViewModel{
     }
     func update_detail_cell(topic_id:String,aftre_update:@escaping(_ detail_cell_list:Array<MyTopicStandardType>)->Void){
         self.get_my_topic_detail(topic_id, after_get_detail: { (detail_cell_list) in
-            if self.check_detail_cell_is_need_update(topic_id: topic_id, check_data: detail_cell_list){
+            if self.check_detail_cell_is_need_update(topic_id: topic_id, check_data: detail_cell_list) || true{
+                // 先全通過
                 self.secTopic[topic_id] = detail_cell_list
                 // MARK: 插入總檢查更新
                 if self.check_if_detail_cell_is_extended(topic_id:topic_id){
