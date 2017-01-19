@@ -124,17 +124,13 @@ class RecentTableViewModel{
     func clientOnline(_ msg:Dictionary<String,AnyObject>) -> Bool{
         var dataChange = false
         let onLineUser = msg["user_id"] as! String
-        if let _ = recentDataBase.index(where: { (target) -> Bool in
+        if let data_index = recentDataBase.index(where: { (target) -> Bool in
             if target.clientId_detial == onLineUser{
                 return true
             }
             else{return false}
         }){
-            //            for recentDataBaseIndex in 0..<recentDataBase.count{
-            //                if onLineUser == recentDataBase[recentDataBaseIndex].clientId_detial{
-            //                    recentDataBase[recentDataBaseIndex].clientOnline_detial = true
-            //                }
-            //            }
+            recentDataBase[data_index].clientOnline_detial = true
             dataChange = true
         }
         return dataChange
@@ -142,40 +138,29 @@ class RecentTableViewModel{
     func clientOffline(_ msg:Dictionary<String,AnyObject>) -> Bool{
         let offLineUser = msg["user_id"] as! String
         var dataChange = false
-        if let _ = recentDataBase.index(where: { (target) -> Bool in
+        if let data_index = recentDataBase.index(where: { (target) -> Bool in
             if target.clientId_detial == offLineUser{
                 return true
             }
             else{return false}
         }){
-            //            for recentDataBaseIndex in 0..<recentDataBase.count{
-            //                if offLineUser == recentDataBase[recentDataBaseIndex].clientId_detial{
-            //                    recentDataBase[recentDataBaseIndex].clientOnline_detial = false
-            //                }
-            //            }
+            recentDataBase[data_index].clientOnline_detial = false
             dataChange = true
         }
         return dataChange
     }
     func topicClosed(_ msg:Dictionary<String,AnyObject>) -> Bool{
         var dataChanged = false
-        if let _ = msg["topic_id"] as? Array<String>{
-            //            var removeTopicIndexList:Array<Int> = []
-            //            for closeTopicId in topicIdList{
-            //                let closeTopicIndex = recentDataBase.indexOf({ (target) -> Bool in
-            //                    if target.topicId_title == closeTopicId{
-            //                        return true
-            //                    }
-            //                    else{return false}
-            //                })
-            //                if closeTopicIndex != nil{
-            //                    removeTopicIndexList.append(closeTopicIndex! as Int)
-            //                }
-            //            }
-            //            removeTopicIndexList = removeTopicIndexList.sort(>)
-            //            for removeTopicIndex in removeTopicIndexList{
-            //                recentDataBase.removeAtIndex(removeTopicIndex)
-            //            }
+        if let topic_id = msg["topic_id"] as? Array<String>{
+            if let data_index = recentDataBase.index(where: { (target) -> Bool in
+                if target.topicId_title == topic_id[0]{
+                    return true
+                }
+                else{return false}
+            }){
+                recentDataBase.remove(at: data_index)
+                dataChanged = true
+            }
             dataChanged = true
         }
         return dataChanged
