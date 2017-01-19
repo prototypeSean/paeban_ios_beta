@@ -62,6 +62,10 @@ class MyTopicTableViewModel{
             if self.check_detail_cell_is_need_update(topic_id: topic_id, check_data: detail_cell_list){
                 self.secTopic[topic_id] = detail_cell_list
                 // MARK: 插入總檢查更新
+                if self.check_if_detail_cell_is_extended(topic_id:topic_id){
+                    self.remove_detail_cell_from_tableView()
+                    self.add_detail_cell_to_tableview(topic_id:topic_id)
+                }
                 aftre_update(detail_cell_list)
             }
         })
@@ -292,6 +296,7 @@ class MyTopicTableViewModel{
     
         // ====check func
     private func check_detail_cell_is_need_update(topic_id:String, check_data:Array<MyTopicStandardType>) -> Bool{
+        var return_state = false
         if self.secTopic[topic_id] == nil{
             return true
         }
@@ -299,23 +304,24 @@ class MyTopicTableViewModel{
             for check_data_s in check_data{
                 if let cell_index = self.secTopic[topic_id]?.index(where: { (element) -> Bool in
                     if check_data_s.clientId_detial == element.clientId_detial{
-                        return true
+                        return_state = true
                     }
                     return false
                 }){
                     let old_data = self.secTopic[topic_id]![cell_index]
                     if old_data.lastLine_detial != check_data_s.lastLine_detial{
-                        return true
+                        return_state = true
                     }
                     else if old_data.clientOnline_detial != check_data_s.clientOnline_detial{
-                        return true
+                        return_state = true
                     }
-                    return false
                 }
-                else{return true}
+                else{
+                    return_state = true
+                }
             }
-            return false
         }
+        return return_state
     }
     private func check_title_cell_is_need_update(check_data:Array<MyTopicStandardType>) -> Bool{
         for check_data_s in check_data{

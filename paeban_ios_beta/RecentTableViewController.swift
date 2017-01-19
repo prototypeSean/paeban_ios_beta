@@ -99,6 +99,8 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         }
     }
     func wsReconnected(){
+        rTVModel.reCheckDataBase()
+        self.update_badges()
     }
     // delegate
     func model_relodata(){

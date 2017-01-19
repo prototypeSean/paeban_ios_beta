@@ -36,7 +36,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         super.viewDidLoad()
         model.delegate = self
         wsActive.wasd_ForMyTopicTableViewController = self
-        wsActive.ware_ForMyTopicTableViewController = self
         self.tableView.tableFooterView = UIView()
         // 讓整個VIEW往上縮起tabbar的高度
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
@@ -252,8 +251,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
     }
     func wsReconnected(){
-        //dic -- title* -- detail* --
-        checkData()
+        model.main_loading()
+        update_badges()
     }
     func brake(){
         let table_list = model.mytopic

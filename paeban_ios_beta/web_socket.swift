@@ -161,6 +161,7 @@ open class webSocketActiveCenter{
     func wsReConnect(){
         wsad_ForTopicTableViewController?.wsReconnected()
         wasd_ForRecentTableViewController?.wsReconnected()
+        wasd_ForMyTopicTableViewController?.wsReconnected()
     }
 }
 
