@@ -518,6 +518,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             
         }
     }
+    func wsReconnected(){
+    }
     func find_client_id(id_1:String, id_2:String) -> String{
         if id_1 == userData.id{
             return id_2

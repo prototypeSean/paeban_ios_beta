@@ -368,7 +368,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         
         
     }
-    
+    func wsReconnected(){
+    }
     // MARK: override function
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let chatViewCon = segue.destination as! ChatViewController

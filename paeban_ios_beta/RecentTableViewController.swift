@@ -98,6 +98,8 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             
         }
     }
+    func wsReconnected(){
+    }
     // delegate
     func model_relodata(){
         self.tableView.reloadData()

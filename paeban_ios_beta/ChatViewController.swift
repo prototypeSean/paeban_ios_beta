@@ -319,6 +319,10 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
     
     }
+    
+    func wsReconnected(){
+    }
+    
     func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
         for resultDicData in resultDic{
             let resultDicDataVal = resultDicData.1 as! Dictionary<String,AnyObject>

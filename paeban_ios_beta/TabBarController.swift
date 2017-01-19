@@ -111,6 +111,8 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
     func wsOnMsg(_ msg: Dictionary<String, AnyObject>) {
         self.update_badges()
     }
+    func wsReconnected(){
+    }
 }
 
 

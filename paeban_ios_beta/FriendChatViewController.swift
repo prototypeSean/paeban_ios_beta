@@ -418,6 +418,8 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
     }
+    func wsReconnected(){
+    }
     func get_history_new_from_server(){
         print("get_history_new_from_server")
         let last_id_server:String = sql_database.get_private_msg_last_id_server(client_id_input:clientId!)

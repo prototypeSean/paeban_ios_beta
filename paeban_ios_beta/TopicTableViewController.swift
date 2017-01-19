@@ -666,7 +666,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
         
     }
-    
+    func wsReconnected(){
+    }
     
     
 

@@ -361,6 +361,8 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         
         
     }
+    func wsReconnected(){
+    }
     private func check_is_friend(){
         if let _ = myFriendsList.index(where: { (element) -> Bool in
             if element.id == setID{
