@@ -847,7 +847,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             sexImg.image = UIImage(named:"lesbain")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             sexImg.tintColor = UIColor(red:1.00, green:0.49, blue:0.42, alpha:1.0)
         default:
-            sexImg.image = UIImage(named: "male")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            sexImg.image = nil
             print("性別圖示分類失敗")
         }
         return sexImg
