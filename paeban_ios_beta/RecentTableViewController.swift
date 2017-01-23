@@ -68,7 +68,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            //self.rTVModel.send_leave_topic(index: indexPath.row)
+            self.rTVModel.send_leave_topic(index: indexPath.row)
             self.rTVModel.remove_cell(index: indexPath.row)
         }
         
