@@ -49,6 +49,7 @@ open class MyTopicStandardType {
     var topicContentId_detial:String?
     var read_detial:Bool?
     var tag_detial:Array<String>?
+    var time:TimeInterval?
     // === detail類型資料變數 ===
 
     init(dataType:String){

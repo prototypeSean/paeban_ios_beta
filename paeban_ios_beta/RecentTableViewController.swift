@@ -3,8 +3,7 @@ import UIKit
 class RecentTableViewController: UITableViewController, webSocketActiveCenterDelegate, RecentTableViewModelDelegate{
     var rTVModel = RecentTableViewModel()
     
-//    @IBOutlet weak var ownerPhoto: UIImageView!
-    
+    // data source
     override func viewDidLoad() {
         super.viewDidLoad()
         rTVModel = RecentTableViewModel()
@@ -21,20 +20,15 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         rTVModel.chat_view = nil
         //autoLeap()
     }
-    // MARK: - Table view data source
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rTVModel.lenCount()
     }
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "nowTopicListCell", for: indexPath) as! RecentTableViewCell
         let cell2 = rTVModel.getCell((indexPath as NSIndexPath).row,cell: cell)
@@ -46,7 +40,6 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         
         return cell2
     }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "clientModeSegue3"{
             let topicViewCon = segue.destination as! TopicViewController
@@ -70,10 +63,27 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         }
         
     }
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let data = rTVModel.recentDataBase[indexPath.row]
+        let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+            //delete func
+        }
+        
+        delete.backgroundColor = UIColor.gray
+        
+        
+        
+        return [delete]
+        
+    }
     
+    // delegate
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if let msg_type:String = msg["msg_type"] as? String{
-
+            
             if msg_type == "topic_msg"{
                 rTVModel.recive_topic_msg(msg:msg)
             }
@@ -102,7 +112,6 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         rTVModel.reCheckDataBase()
         self.update_badges()
     }
-    // delegate
     func model_relodata(){
         self.tableView.reloadData()
     }

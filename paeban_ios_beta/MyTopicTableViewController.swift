@@ -294,7 +294,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
 
     
     // ===施工中===
-    // 查詢線上問題待解決 鮮血入 false
     func update_badges(){
         let tab_bar = self.parent?.parent as! TabBarController
         tab_bar.update_badges()

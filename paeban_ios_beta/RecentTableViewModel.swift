@@ -170,8 +170,35 @@ class RecentTableViewModel{
         }
         return dataChanged
     }
+    func remove_cell(index:Int){
+        recentDataBase.remove(at: index)
+        delegate?.model_relodata()
+    }
+    
     
     // 施工中
+    
+    
+    
+    // internet
+    private func find_target_cell_index(topic_id:String,client_id:String) -> Int?{
+        if let index = recentDataBase.index(where: { (element) -> Bool in
+            if element.topicId_title == topic_id &&
+                element.clientId_detial == client_id{
+                return true
+            }
+            return false
+        }){
+            return index as Int
+        }
+        return nil
+    }
+    private func find_client_id(id1:String,id2:String) -> String{
+        if id1 == userData.id{
+            return id2
+        }
+        return id1
+    }
     private func update_last_line(msg:Dictionary<String,AnyObject>){
         if let result_dic = msg["result_dic"] as? Dictionary<String,Dictionary<String,String>>{
             for topic_content_id in result_dic{
@@ -195,26 +222,6 @@ class RecentTableViewModel{
             //let img = base64ToImage(msg["img"] as! String)
         }
     }
-    func find_target_cell_index(topic_id:String,client_id:String) -> Int?{
-        if let index = recentDataBase.index(where: { (element) -> Bool in
-            if element.topicId_title == topic_id &&
-                element.clientId_detial == client_id{
-                return true
-            }
-            return false
-        }){
-            return index as Int
-        }
-        return nil
-    }
-    func find_client_id(id1:String,id2:String) -> String{
-        if id1 == userData.id{
-            return id2
-        }
-        return id1
-    }
-    
-    // internet
     private func get_recent_data(){
         HttpRequestCenter().request_user_data("recent_data", send_dic: [:]) { (retuen_dic) in
             let data = retuen_dic["data"] as! Dictionary<String,AnyObject>
@@ -252,6 +259,7 @@ class RecentTableViewModel{
         
         
     }
+    
     // transform
     func transformStaticType(_ inputKey:String,inputData:Dictionary<String,AnyObject>){
         if let recentDataBaseIndex = recentDataBase.index(where: { (target) -> Bool in
@@ -267,8 +275,10 @@ class RecentTableViewModel{
             operatingObj.lastSpeaker_detial = inputData["last_speaker"] as? String
             operatingObj.topicContentId_detial = inputData["topic_content_id"] as? String
             operatingObj.read_detial = inputData["is_read"] as? Bool
+            operatingObj.time = time_transform_to_since1970(time_string: inputData["time"] as! String)
             recentDataBase[recentDataBaseIndex] = operatingObj
             DispatchQueue.main.async {
+                self.sort_recent_db_by_time()
                 self.delegate?.model_relodata()
             }
         }
@@ -286,14 +296,17 @@ class RecentTableViewModel{
             ouputObj.clientIsRealPhoto_detial = inputData["owner_is_real_img"] as?Bool
             ouputObj.clientOnline_detial = inputData["owner_online"] as? Bool
             ouputObj.tag_detial = inputData["tag_list"] as? Array<String>
+            ouputObj.time = time_transform_to_since1970(time_string: inputData["time"] as! String)
             let httpSendDic = ["client_id":inputData["owner"] as! String,
                                "topic_id":inputKey]
             DispatchQueue.main.async {
+                self.sort_recent_db_by_time()
                 self.delegate?.model_relodata()
             }
             HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
                 ouputObj.clientPhoto_detial = base64ToImage(returnData["data"] as! String)
                 DispatchQueue.main.async {
+                    self.sort_recent_db_by_time()
                     self.delegate?.model_relodata()
                 }
             })
@@ -302,7 +315,17 @@ class RecentTableViewModel{
         }
         
     }
-    
+    func sort_recent_db_by_time(){
+        recentDataBase.sort(by: { (obj1, obj2) -> Bool in
+            if obj1.time != nil && obj2.time != nil{
+                if obj1.time! > obj2.time!{
+                    return true
+                }
+                return false
+            }
+            return false
+        })
+    }
     
     
     // 未分類
