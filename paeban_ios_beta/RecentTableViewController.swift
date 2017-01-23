@@ -67,9 +67,9 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         return true
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let data = rTVModel.recentDataBase[indexPath.row]
         let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            //delete func
+            //self.rTVModel.send_leave_topic(index: indexPath.row)
+            self.rTVModel.remove_cell(index: indexPath.row)
         }
         
         delete.backgroundColor = UIColor.gray
@@ -116,7 +116,11 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         self.tableView.reloadData()
     }
     func model_relod_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){}
-    func model_delete_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){}
+    func model_delete_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){
+        self.tableView.beginUpdates()
+        self.tableView.deleteRows(at: index_path_list, with: option)
+        self.tableView.endUpdates()
+    }
     func model_insert_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){}
     func segue_to_chat_view(detail_cell_obj:MyTopicStandardType){}
     

@@ -170,9 +170,21 @@ class RecentTableViewModel{
         }
         return dataChanged
     }
+    func send_leave_topic(index:Int){
+        let topic_id = recentDataBase[index].topicId_title!
+        let msg_dic:NSDictionary = [
+            "topic_id": topic_id
+        ]
+        let send_dic:NSDictionary = [
+            "msg_type": "leave_topic",
+            "msg": msg_dic
+        ]
+        socket.write(data: json_dumps(send_dic))
+    }
     func remove_cell(index:Int){
         recentDataBase.remove(at: index)
-        delegate?.model_relodata()
+        let index_path = IndexPath(row: index, section: 0)
+        delegate?.model_delete_row(index_path_list: [index_path], option: .left)
     }
     
     

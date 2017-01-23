@@ -249,6 +249,10 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         else if msg["msg_type"] as! String == "friend_confirm"{
             fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: self.parent as! UINavigationController)
         }
+        else if msg["msg_type"] as! String == "close_topic_owner"{
+            model.main_loading()
+            update_badges()
+        }
     }
     func wsReconnected(){
         model.main_loading()

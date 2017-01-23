@@ -49,6 +49,11 @@ public class SQL_center{
             print("資料庫連線失敗")
         }
     }
+    // leave_topic
+    func establish_leave_topic_table(){
+    
+    }
+    
     
     // private func
     func establish_private_msg_table(){
