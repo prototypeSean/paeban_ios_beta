@@ -235,7 +235,16 @@ class MyTopicTableViewModel{
             self.update_online_state_in_sec_topic(client_id: offLineUser, new_online_state: false)
         }
     }
-    
+    func remove_detail_cell(by client_id:String){
+        if let index = mytopic.index(where: { (element) -> Bool in
+            if element.clientId_detial == client_id{
+                return true
+            }
+            return false
+        }){
+            remove_single_cell(at: index)
+        }
+    }
     
     // ======施工中=====
     

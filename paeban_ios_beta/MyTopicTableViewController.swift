@@ -197,10 +197,17 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             self.model.delete_detail_cell(index: IndexPath_parameter.row)
         }
         let report = UITableViewRowAction(style: .default, title: "舉報") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            //code
+            let block_id = data.clientId_detial!
+            let topic_id = data.topicId_title!
+            let client_name = data.clientName_detial!
+            self.reportAbuse(topic_id: topic_id, client_id: block_id, client_name: client_name)
         }
         let block = UITableViewRowAction(style: .default, title: "封鎖") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            //code
+            let block_id = data.clientId_detial!
+            let topic_id = data.topicId_title!
+            let client_name = data.clientName_detial!
+            self.block(topic_id: topic_id, block_id: block_id, client_name: client_name)
+            
         }
         block.backgroundColor = UIColor.red
         close_topic_btn.backgroundColor = UIColor.black
@@ -462,7 +469,69 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         return tempMytopicList
     }
     
-    
+    func block(topic_id:String, block_id:String, client_name:String){
+        let data:NSDictionary = [
+            "block_id":block_id,
+            "topic_id":topic_id
+        ]
+        let confirm = UIAlertController(title: "封鎖", message: "封鎖  \(client_name) ? 本話題不會再出現此用戶", preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+            self.model.remove_detail_cell(by: block_id)
+            HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
+                if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
+                    if key == "msgtype"{
+                        return true
+                    }
+                    else{return false}
+                }){
+                    if Dictionary["msgtype"] as! String == "block_success"{
+                        //code
+                    }
+                }
+            }
+        }))
+        self.present(confirm, animated: true, completion: nil)
+        
+    }
+    func reportAbuse(topic_id:String, client_id:String, client_name:String){
+        let sendDic:NSDictionary = [
+            "report_id":client_id,
+            "topic_id":topic_id
+        ]
+        let confirm = UIAlertController(title: "舉報", message: "向管理員反應收到  \(client_name) 的騷擾內容", preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction_void) in
+            HttpRequestCenter().privacy_function(msg_type: "report_topic", send_dic: sendDic, inViewAct: { (Dictionary) in
+                let msg_type = Dictionary["msg_type"] as! String
+                let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+                if msg_type == "success"{
+                    alert.title = "舉報"
+                    alert.message = "感謝您的回報，我們將儘速處理"
+                    
+                }
+                else if msg_type == "user_not_exist"{
+                    alert.title = "錯誤"
+                    alert.message = "用戶不存在"
+                }
+                else if msg_type == "topic_not_exist"{
+                    alert.title = "錯誤"
+                    alert.message = "話題不存在"
+                }
+                else if msg_type == "unknown_error"{
+                    alert.title = "錯誤"
+                    alert.message = "未知的錯誤"
+                }
+                DispatchQueue.main.async {
+                    self.present(alert, animated: true, completion: nil)
+                    
+                }
+            })
+        }))
+        self.present(confirm, animated: true, completion: nil)
+        
+    }
     func updateSelectIndex(_ topicId:String, anyFunction: () -> Void){
         anyFunction()
         let newCellIndex = mytopic.index(where: { (MyTopicStandardTypeObj) -> Bool in
