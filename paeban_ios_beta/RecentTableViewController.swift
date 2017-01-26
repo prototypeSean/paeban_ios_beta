@@ -105,6 +105,11 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             else if msg_type == "friend_confirm"{
                 fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: self.parent as! UINavigationController)
             }
+            else if msg_type == "leave_topic_client"{
+                if let topic_id = msg["topic_id"] as? String{
+                    sql_database.remove_topic_from_topic_table(topic_id_input: topic_id)
+                }
+            }
             
         }
     }

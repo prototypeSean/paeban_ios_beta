@@ -172,14 +172,9 @@ class RecentTableViewModel{
     }
     func send_leave_topic(index:Int){
         let topic_id = recentDataBase[index].topicId_title!
-        let msg_dic:NSDictionary = [
-            "topic_id": topic_id
-        ]
-        let send_dic:NSDictionary = [
-            "msg_type": "leave_topic",
-            "msg": msg_dic
-        ]
-        socket.write(data: json_dumps(send_dic))
+        sql_database.add_topic_to_topic_table(topic_id_input:topic_id)
+        let send_list = sql_database.get_topic_table_list()
+        self.send_leave_topic_to_ws(data_s: send_list)
     }
     func remove_cell(index:Int){
         recentDataBase.remove(at: index)
@@ -193,6 +188,19 @@ class RecentTableViewModel{
     
     
     // internet
+    private func send_leave_topic_to_ws(data_s:Array<String>){
+        for topic_id in data_s{
+            let msg_dic:NSDictionary = [
+                "topic_id": topic_id
+            ]
+            let send_dic:NSDictionary = [
+                "msg_type": "leave_topic",
+                "msg": msg_dic
+            ]
+            socket.write(data: json_dumps(send_dic))
+        }
+    }
+    
     private func find_target_cell_index(topic_id:String,client_id:String) -> Int?{
         if let index = recentDataBase.index(where: { (element) -> Bool in
             if element.topicId_title == topic_id &&
@@ -237,9 +245,11 @@ class RecentTableViewModel{
     private func get_recent_data(){
         HttpRequestCenter().request_user_data("recent_data", send_dic: [:]) { (retuen_dic) in
             let data = retuen_dic["data"] as! Dictionary<String,AnyObject>
-            self.remove_out_off_data(data: data)
-            for datas in data{
-                self.transformStaticType(datas.0, inputData: datas.1 as! Dictionary<String,AnyObject>)
+            DispatchQueue.main.async {
+                self.remove_out_off_data(data: data)
+                for datas in data{
+                    self.transformStaticType(datas.0, inputData: datas.1 as! Dictionary<String,AnyObject>)
+                }
             }
         }
     }
@@ -265,11 +275,7 @@ class RecentTableViewModel{
         for remove_index in remove_list{
             recentDataBase.remove(at: remove_index)
         }
-        DispatchQueue.main.async {
-            self.delegate?.model_relodata()
-        }
-        
-        
+        self.delegate?.model_relodata()
     }
     
     // transform

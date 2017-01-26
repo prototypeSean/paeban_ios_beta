@@ -16,7 +16,6 @@ public class SQL_center{
     var private_table = Table("private_msg")
     
     // topic var
-    
     var topic_content = Table("topic_content")
     let id = Expression<Int64>("id")
     let topic_id = Expression<String?>("topic_id")
@@ -33,6 +32,8 @@ public class SQL_center{
     // version
     var version_table = Table("version_table")
     let version_number = Expression<String?>("version_number")
+    // leave_topic var
+    var leave_topic = Table("leave_topic")
     
     func connect_sql(){
         let urls = FileManager.default
@@ -51,7 +52,54 @@ public class SQL_center{
     }
     // leave_topic
     func establish_leave_topic_table(){
-    
+        do{
+            try sql_db?.run(leave_topic.create { t in
+                t.column(id, primaryKey: true)
+                t.column(topic_id)
+            })
+            print("表單建立成功")
+        }
+        catch{
+            print(error)
+        }
+    }
+    func add_topic_to_topic_table(topic_id_input:String){
+        let insert = leave_topic.insert(
+            topic_id <- topic_id_input
+        )
+        do{
+            try sql_db!.run(insert)
+        }
+        catch{}
+    }
+    func remove_topic_from_topic_table(topic_id_input:String){
+        let query = leave_topic.filter(topic_id == topic_id_input)
+        
+        do{
+            try sql_db!.run(query.delete())
+        }
+        catch{}
+    }
+    func get_topic_table_list() -> Array<String>{
+        var return_list:Array<String> = []
+        do{
+            for topic_c in try sql_db!.prepare(leave_topic) {
+                return_list.append(topic_c[topic_id]!)
+            }
+        }
+        catch{}
+        return return_list
+    }
+    func print_topic_table(){
+        print("print_topic_table=====op")
+        do{
+            for topic_c in try sql_db!.prepare(leave_topic) {
+                print("topic_id: \(topic_c[topic_id])")
+                // id: 1, email: alice@mac.com, name: Optional("Alice")
+            }
+            print("print_topic_table=====ed")
+        }
+        catch{}
     }
     
     
