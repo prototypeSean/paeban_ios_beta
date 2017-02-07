@@ -121,7 +121,7 @@ public class SQL_center{
             print(error)
         }
     }
-    func add_topic_to_leave_topic_master_topic_table(topic_id_input:String, client_id_input:String){
+    func add_topic_to_leave_topic_master_table(topic_id_input:String, client_id_input:String){
         let insert = leave_topic_master.insert(
             topic_id <- topic_id_input,
             client_id <- client_id_input
@@ -131,6 +131,29 @@ public class SQL_center{
         }
         catch{}
     }
+    func remove_topic_from_leave_topic_master_table(topic_id_input:String, client_id_input:String){
+        let query = leave_topic_master.filter(topic_id == topic_id_input && client_id == client_id_input)
+        
+        do{
+            try sql_db!.run(query.delete())
+        }
+        catch{}
+    }
+    func get_leave_topic_master_table_list() -> Array<Dictionary<String,String>>{
+        var return_list:Array<Dictionary<String,String>> = []
+        do{
+            for topic_c in try sql_db!.prepare(leave_topic_master) {
+                let temp_dic:Dictionary<String,String> = [
+                    "topic_id":topic_c[topic_id]!,
+                    "client_id":topic_c[client_id]!
+                ]
+                return_list.append(temp_dic)
+            }
+        }
+        catch{}
+        return return_list
+    }
+    
     
     // private func
     func establish_private_msg_table(){
