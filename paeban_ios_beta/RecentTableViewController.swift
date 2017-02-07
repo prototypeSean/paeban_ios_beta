@@ -15,10 +15,13 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     }
     override func viewWillAppear(_ animated: Bool) {
         print("recent viewWillAppear")
+        self.rTVModel.send_leave_topic()
         rTVModel.reCheckDataBase()
         self.update_badges()
-        rTVModel.chat_view = nil
         //autoLeap()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        rTVModel.chat_view = nil
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -68,7 +71,8 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            self.rTVModel.send_leave_topic(index: indexPath.row)
+            self.rTVModel.add_leave_topic_table(index: indexPath.row)
+            self.rTVModel.send_leave_topic()
             self.rTVModel.remove_cell(index: indexPath.row)
         }
         
@@ -114,7 +118,8 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         }
     }
     func wsReconnected(){
-        rTVModel.reCheckDataBase()
+        self.rTVModel.reCheckDataBase()
+        self.rTVModel.send_leave_topic()
         self.update_badges()
     }
     func model_relodata(){

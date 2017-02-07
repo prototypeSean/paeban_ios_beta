@@ -34,6 +34,10 @@ public class SQL_center{
     let version_number = Expression<String?>("version_number")
     // leave_topic var
     var leave_topic = Table("leave_topic")
+    // leave_topic_master
+    var leave_topic_master = Table("leave_topic_master")
+    let client_id = Expression<String?>("client_id")
+    
     
     func connect_sql(){
         let urls = FileManager.default
@@ -100,6 +104,21 @@ public class SQL_center{
             print("print_topic_table=====ed")
         }
         catch{}
+    }
+    
+    
+    // leave_topic_master
+    func establish_leave_topic_master_table(){
+        do{
+            try sql_db?.run(leave_topic_master.create { t in
+                t.column(id, primaryKey: true)
+                t.column(topic_id)
+            })
+            print("表單建立成功")
+        }
+        catch{
+            print(error)
+        }
     }
     
     

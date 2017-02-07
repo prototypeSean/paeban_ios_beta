@@ -60,7 +60,6 @@
 		CF337E051DACEFEC003A133C /* SinInFramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF337E041DACEFEC003A133C /* SinInFramViewController.swift */; };
 		CF79265E1DA0E71D00821860 /* SingInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265D1DA0E71D00821860 /* SingInViewController.swift */; };
 		CF7926601DA0E74200821860 /* SingInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265F1DA0E74200821860 /* SingInModel.swift */; };
-		CF89A2A61DBFCAC6005FA8AF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF89A2A51DBFCAC6005FA8AF /* StoreKit.framework */; };
 		CF89EF781DD34E1F00876298 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */; };
 		CF89EF7A1DD498C700876298 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF791DD498C700876298 /* TabBarController.swift */; };
 		CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */; };
@@ -72,6 +71,7 @@
 		CFCC8A891D78329C00D5EDF6 /* RecentTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */; };
 		CFCC8A8B1D78336500D5EDF6 /* RecentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */; };
 		CFD48D671DCB13FD006C48A2 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD48D661DCB13FD006C48A2 /* EditViewController.swift */; };
+		CFDD861E1E4861540018EC7C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDD861D1E4861540018EC7C /* StoreKit.framework */; };
 		CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -133,7 +133,6 @@
 		CF337E041DACEFEC003A133C /* SinInFramViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinInFramViewController.swift; sourceTree = "<group>"; };
 		CF79265D1DA0E71D00821860 /* SingInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInViewController.swift; sourceTree = "<group>"; };
 		CF79265F1DA0E74200821860 /* SingInModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInModel.swift; sourceTree = "<group>"; };
-		CF89A2A51DBFCAC6005FA8AF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		CF89EF791DD498C700876298 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = paeban_ios_beta.entitlements; sourceTree = "<group>"; };
@@ -147,6 +146,7 @@
 		CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewModel.swift; sourceTree = "<group>"; };
 		CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewController.swift; sourceTree = "<group>"; };
 		CFD48D661DCB13FD006C48A2 /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
+		CFDD861D1E4861540018EC7C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewLoadingCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,9 +155,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFDD861E1E4861540018EC7C /* StoreKit.framework in Frameworks */,
 				CF9E37301E2229AE0077C7C9 /* libsqlite3.tbd in Frameworks */,
 				73E59CAE7906529E9934E916 /* Pods_paeban_ios_beta.framework in Frameworks */,
-				CF89A2A61DBFCAC6005FA8AF /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,8 +167,8 @@
 		1741F3FC9375CBC3750A7722 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CFDD861D1E4861540018EC7C /* StoreKit.framework */,
 				CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */,
-				CF89A2A51DBFCAC6005FA8AF /* StoreKit.framework */,
 				5DA9AB49DFA16020BF975A80 /* Pods_paeban_ios_beta.framework */,
 			);
 			name = Frameworks;

@@ -41,9 +41,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
-        model.chat_view = nil
         model.main_loading()
         update_badges()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        model.chat_view = nil
+        self.show_leave_topic_alert()
     }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     }
@@ -257,6 +260,10 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: self.parent as! UINavigationController)
         }
         else if msg["msg_type"] as! String == "leave_topic_owner"{
+            let topic_id = msg["topic_id"] as! String
+            let client_name = msg["client_name"] as! String
+            self.model.add_topic_closed_list(topic_id: topic_id, client_name: client_name)
+            self.show_leave_topic_alert()
             model.main_loading()
             update_badges()
         }
@@ -301,7 +308,16 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     // MARK: 內部函數
     // MARK: ===施工中===
-    
+    func show_leave_topic_alert(){
+        if self.model.chat_view == nil{
+            for alert_data in self.model.topic_leave_list{
+                let alert = UIAlertController(title: "通知", message: "用戶 \(alert_data["client_name"]!) 已離開您的話題 \(alert_data["topic_title"]!)", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            self.model.topic_leave_list = []
+        }
+    }
 
     
     // ===施工中===

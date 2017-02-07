@@ -170,9 +170,11 @@ class RecentTableViewModel{
         }
         return dataChanged
     }
-    func send_leave_topic(index:Int){
+    func add_leave_topic_table(index:Int){
         let topic_id = recentDataBase[index].topicId_title!
         sql_database.add_topic_to_topic_table(topic_id_input:topic_id)
+    }
+    func send_leave_topic(){
         let send_list = sql_database.get_topic_table_list()
         self.send_leave_topic_to_ws(data_s: send_list)
     }

@@ -25,6 +25,8 @@ class MyTopicTableViewModel{
     var topic_id_wait_to_extend_detail_cell:String?
     var auto_leap_data_dic:Dictionary<String,String> = [:]
     var chat_view:MyTopicViewController?
+    var topic_leave_list:Array<Dictionary<String,String>> = []
+    
     
     
     
@@ -247,7 +249,22 @@ class MyTopicTableViewModel{
     }
     
     // ======施工中=====
-    
+    func add_topic_closed_list(topic_id:String, client_name:String){
+        if let topic_index = mytopic.index(where: { (element) -> Bool in
+            if element.topicId_title == topic_id{
+                return true
+            }
+            return false
+        }){
+            if let topic_title = mytopic[topic_index].topicTitle_title{
+                self.topic_leave_list.append([
+                        "topic_title":topic_title,
+                        "client_name":client_name
+                    ])
+            }
+            
+        }
+    }
     
     
     // ======施工中=====
