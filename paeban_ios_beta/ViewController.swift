@@ -98,6 +98,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             sql_database.establish_version(version: version)
             sql_database.establish_private_msg_table()
             sql_database.establish_topic_content_table()
+            sql_database.establish_leave_topic_master_table()
         }
         // MARK:"重置資料庫開關"
         

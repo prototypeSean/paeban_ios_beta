@@ -113,6 +113,7 @@ public class SQL_center{
             try sql_db?.run(leave_topic_master.create { t in
                 t.column(id, primaryKey: true)
                 t.column(topic_id)
+                t.column(client_id)
             })
             print("表單建立成功")
         }
@@ -120,7 +121,16 @@ public class SQL_center{
             print(error)
         }
     }
-    
+    func add_topic_to_leave_topic_master_topic_table(topic_id_input:String, client_id_input:String){
+        let insert = leave_topic_master.insert(
+            topic_id <- topic_id_input,
+            client_id <- client_id_input
+        )
+        do{
+            try sql_db!.run(insert)
+        }
+        catch{}
+    }
     
     // private func
     func establish_private_msg_table(){
