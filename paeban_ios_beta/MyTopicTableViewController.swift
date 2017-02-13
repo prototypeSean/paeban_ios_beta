@@ -55,14 +55,18 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         if topicWriteToRow.dataType == "title"{
             // 父cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_1", for: indexPath) as! MyTopicTableViewCell
+            let unredMsg = Float(topicWriteToRow.unReadMsg_title)
+            let allMsg = Float(topicWriteToRow.allMsg_title)
+            let readRate = (1-(unredMsg/allMsg))*100
             cell.topicTitle.text = topicWriteToRow.topicTitle_title
-            cell.unReadM.text = "/"+String(topicWriteToRow.allMsg_title)
-            cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
+            cell.unReadM.text = String(readRate)+"%"
+//            cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
             cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
             cell.myTopicHashtag.drawButton()
             
             // 給ET：之後要加入電池的選項CASE對應參數
             letoutBattery(battery: cell.myTopicbattery)
+            if readRate >= 90 {}
             
             return cell
         }
