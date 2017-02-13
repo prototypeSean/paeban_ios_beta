@@ -22,6 +22,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     }
     override func viewDidAppear(_ animated: Bool) {
         rTVModel.chat_view = nil
+        self.show_leave_topic_master_alert()
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -114,6 +115,15 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
                     sql_database.remove_topic_from_topic_table(topic_id_input: topic_id)
                 }
             }
+            else if msg["msg_type"] as! String == "leave_topic_master_client"{
+                let topic_id = msg["topic_id"] as! String
+                let owner_name = msg["owner_name"] as! String
+                self.rTVModel.add_leave_topic_master_list(topic_id_input: topic_id, owner_name_input: owner_name)
+                self.show_leave_topic_master_alert()
+                self.rTVModel.remove_cell(by: topic_id)
+                self.update_badges()
+                
+            }
             
         }
     }
@@ -179,4 +189,18 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         let tab_bar = self.parent?.parent as! TabBarController
         tab_bar.update_badges()
     }
+    func show_leave_topic_master_alert(){
+        if self.rTVModel.chat_view == nil{
+            for alert_data in self.rTVModel.leave_topic_master_list{
+                let alert = UIAlertController(title: "通知", message: "用戶 \(alert_data["owner_name"]!) 已將您移出話題 \(alert_data["topic_title"]!)", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            self.rTVModel.leave_topic_master_list = []
+        }
+    }
 }
+
+
+
+

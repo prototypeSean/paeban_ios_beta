@@ -37,7 +37,13 @@ public class SQL_center{
     // leave_topic_master
     var leave_topic_master = Table("leave_topic_master")
     let client_id = Expression<String?>("client_id")
-    
+    func establish_all_table(version:String){
+        self.establish_version(version: version)
+        self.establish_private_msg_table()
+        self.establish_topic_content_table()
+        self.establish_leave_topic_table()
+        self.establish_leave_topic_master_table()
+    }
     
     func connect_sql(){
         let urls = FileManager.default
@@ -74,7 +80,9 @@ public class SQL_center{
         do{
             try sql_db!.run(insert)
         }
-        catch{}
+        catch{
+            print(error)
+        }
     }
     func remove_topic_from_topic_table(topic_id_input:String){
         let query = leave_topic.filter(topic_id == topic_id_input)
@@ -91,7 +99,9 @@ public class SQL_center{
                 return_list.append(topic_c[topic_id]!)
             }
         }
-        catch{}
+        catch{
+            print(error)
+        }
         return return_list
     }
     func print_topic_table(){
@@ -445,12 +455,14 @@ public class SQL_center{
         }
         
     }
-    func remove_topic_content_table(){
+    func remove_all_table(){
         
         do{
             try sql_db?.run(topic_content.drop())
             try sql_db?.run(private_table.drop())
             try sql_db?.run(version_table.drop())
+            try sql_db?.run(leave_topic.drop())
+            try sql_db?.run(leave_topic_master.drop())
         }
         catch{
             print(error)

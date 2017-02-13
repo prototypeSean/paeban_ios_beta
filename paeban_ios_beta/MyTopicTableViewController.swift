@@ -197,7 +197,11 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             self.model.close_topic(index: IndexPath_parameter.row)
         }
         let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+            let data = self.model.mytopic[IndexPath_parameter.row]
+            sql_database.add_topic_to_leave_topic_master_table(topic_id_input: data.topicId_title!, client_id_input: data.clientId_detial!)
+            self.model.send_leave_topic_master()
             self.model.delete_detail_cell(index: IndexPath_parameter.row)
+            self.update_badges()
         }
         let report = UITableViewRowAction(style: .default, title: "舉報") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
@@ -267,8 +271,15 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             model.main_loading()
             update_badges()
         }
+        else if msg["msg_type"] as! String == "leave_topic_master"{
+            let topic_id = msg["topic_id"] as! String
+            let client_id = msg["client_id"] as! String
+            sql_database.remove_topic_from_leave_topic_master_table(topic_id_input: topic_id, client_id_input: client_id)
+            
+        }
     }
     func wsReconnected(){
+        self.model.send_leave_topic_master()
         model.main_loading()
         update_badges()
     }
@@ -318,7 +329,17 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             self.model.topic_leave_list = []
         }
     }
-
+    func send_leave_topic_master(){
+        let send_list = sql_database.get_leave_topic_master_table_list()
+        for send_data in send_list{
+            let send_dic:NSDictionary = [
+                "msg_type": "leave_topic_master",
+                "topic_id": send_data["topic_id"]!,
+                "client_id": send_data["client_id"]!
+            ]
+            socket.write(data: json_dumps(send_dic))
+        }
+    }
     
     // ===施工中===
     func update_badges(){

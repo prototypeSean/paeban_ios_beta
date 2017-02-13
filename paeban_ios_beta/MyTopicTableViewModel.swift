@@ -265,7 +265,20 @@ class MyTopicTableViewModel{
             
         }
     }
-    
+    func send_leave_topic_master(){
+        let data_list = sql_database.get_leave_topic_master_table_list()
+        for send_data in data_list{
+            let temp_dic:NSDictionary = [
+                "topic_id": send_data["topic_id"]!,
+                "client_id": send_data["client_id"]!
+            ]
+            let temp_dic2:NSDictionary = [
+                "msg_type": "leave_topic_master",
+                "msg": temp_dic
+            ]
+            socket.write(data: json_dumps(temp_dic2))
+        }
+    }
     
     // ======施工中=====
     

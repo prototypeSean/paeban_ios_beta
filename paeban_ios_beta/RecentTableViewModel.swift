@@ -22,6 +22,7 @@ class RecentTableViewModel{
     var segueDataIndex:Int?
     var delegate:RecentTableViewModelDelegate?
     var chat_view:TopicViewController?
+    var leave_topic_master_list:Array<Dictionary<String,String>> = []
     // controller func
     func reCheckDataBase() {
         get_recent_data()
@@ -176,12 +177,40 @@ class RecentTableViewModel{
     }
     func send_leave_topic(){
         let send_list = sql_database.get_topic_table_list()
+        //print(send_list)
         self.send_leave_topic_to_ws(data_s: send_list)
     }
     func remove_cell(index:Int){
         recentDataBase.remove(at: index)
         let index_path = IndexPath(row: index, section: 0)
         delegate?.model_delete_row(index_path_list: [index_path], option: .left)
+    }
+    func remove_cell(by topic_id:String){
+        if let cell_index = recentDataBase.index(where: { (element) -> Bool in
+            if element.topicId_title == topic_id{
+                return true
+            }
+            return false
+        }){
+            self.remove_cell(index:cell_index)
+        }
+    }
+    func add_leave_topic_master_list(topic_id_input:String, owner_name_input:String){
+        if let data_index = recentDataBase.index(where: { (element) -> Bool in
+            if element.topicId_title == topic_id_input{
+                return true
+            }
+            return false
+        }){
+            let topic_title = recentDataBase[data_index].topicTitle_title!
+            let temp_dic = [
+                "owner_name":owner_name_input,
+                "topic_title":topic_title
+            ]
+            leave_topic_master_list.append(temp_dic)
+            
+        }
+        
     }
     
     
