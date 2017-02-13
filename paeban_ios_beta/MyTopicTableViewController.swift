@@ -57,7 +57,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_1", for: indexPath) as! MyTopicTableViewCell
             let unredMsg = Float(topicWriteToRow.unReadMsg_title)
             let allMsg = Float(topicWriteToRow.allMsg_title)
-            let readRate = (1-(unredMsg/allMsg))*100
+            let readRate = Int((1-(unredMsg/allMsg))*100)
             cell.topicTitle.text = topicWriteToRow.topicTitle_title
             cell.unReadM.text = String(readRate)+"%"
 //            cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
@@ -65,8 +65,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cell.myTopicHashtag.drawButton()
             
             // 給ET：之後要加入電池的選項CASE對應參數
-            letoutBattery(battery: cell.myTopicbattery)
-            if readRate >= 90 {}
+            
+            letoutBattery(battery: cell.myTopicbattery, batteryLeft: readRate)
             
             return cell
         }
@@ -904,9 +904,19 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     //設定cell 裡面的圖示
 
     //之後要加入電池的選項CASE
-    func letoutBattery(battery:UIImageView){
-        battery.image = UIImage(named:"battery-low")
-//        battery.tintColor = UIColor.red
+    func letoutBattery(battery:UIImageView, batteryLeft:Int){
+        if batteryLeft <= 30{
+            battery.image = UIImage(named:"battery-low")
+        }
+        else if batteryLeft <= 50{
+            battery.image = UIImage(named:"battery-half")
+        }
+        else if batteryLeft <= 80{
+            battery.image = UIImage(named:"battery-good")
+        }
+        else if batteryLeft <= 100{
+            battery.image = UIImage(named:"battery-full")
+        }
     }
     func letoutSexLogo(sexImg:UIImageView, sex:String) -> UIImageView {
         switch sex {
