@@ -62,7 +62,7 @@ open class webSocketActiveCenter{
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
     let wsad_ForTopicTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed","search_topic", "friend_confirm"]
     var wasd_ForTopicViewController:webSocketActiveCenterDelegate?
-    let wasd_ForTopicViewControllerList = ["topic_msg","topic_closed","has_been_friend","has_been_block"]
+    let wasd_ForTopicViewControllerList = ["topic_msg","topic_closed","has_been_friend","has_been_block","leave_topic_master_client"]
     var wasd_ForChatViewController:webSocketActiveCenterDelegate?
     let wasd_ForChatViewControllerList = ["topic_msg","topic_content_been_read"]
     var wasd_ForMyTopicTableViewController:webSocketActiveCenterDelegate?
@@ -72,7 +72,7 @@ open class webSocketActiveCenter{
     var wasd_ForFriendChatViewController:webSocketActiveCenterDelegate?
     let wasd_ForFriendChatViewControllerList = ["history_priv_msg","priv_msg_been_read","priv_msg","has_been_read_many","online"]
     var wasd_ForMyTopicViewController:webSocketActiveCenterDelegate?
-    let wasd_ForMyTopicViewControllerList = ["topic_msg","topic_closed"]
+    let wasd_ForMyTopicViewControllerList = ["topic_msg","topic_closed","leave_topic_owner"]
     var wasd_FriendTableViewMedol:webSocketActiveCenterDelegate?
     let wasd_FriendTableViewMedol_list = ["check_online","off_line","new_member", "friend_confirm_success", "friend_confirm", "priv_msg"]
     var wasd_ForTabBarController:webSocketActiveCenterDelegate?

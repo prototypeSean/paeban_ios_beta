@@ -365,7 +365,27 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             self.present(alert, animated: true, completion: nil)
         }
         else if msgType == "has_been_block"{}
-        
+        else if msgType == "leave_topic_master_client"{
+            let nav = self.parent! as! UINavigationController
+            let nav_name = getClassName(classFullName:String(describing: nav))
+            let owner_name = msg["owner_name"] as! String
+            let topic_id = msg["topic_id"] as! String
+            if topicId == topic_id{
+                if nav_name == "TopicNavViewController"{
+                    let alert = UIAlertController(title: "通知", message: "用戶 \(owner_name) 已將您移出話題 \(topicTitle!)", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "確認", style: .default, handler: { (act) in
+                        nav.popToRootViewController(animated: true)
+                    }))
+                    self.present(alert, animated: true, completion: nil)
+                }
+                else{
+                    nav.popToRootViewController(animated: true)
+                }
+            }
+            
+            
+            
+        }
         
     }
     func wsReconnected(){

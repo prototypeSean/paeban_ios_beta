@@ -274,7 +274,22 @@ func time_transform_to_since1970(time_string:String) -> TimeInterval!{
 func time_diff(time_input:Double){
     
 }
-
+func getClassName(classFullName:String) -> String{
+    var className = ""
+    var start_switch = false
+    for name_s in classFullName.characters{
+        if name_s == "."{
+            start_switch = true
+        }
+        else if name_s == ":"{
+            break
+        }
+        else if start_switch{
+            className += String(name_s)
+        }
+    }
+    return className
+}
 
 
 

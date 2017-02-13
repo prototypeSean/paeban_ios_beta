@@ -358,6 +358,14 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
             alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
+        else if msgType == "leave_topic_owner"{
+            let topic_id = msg["topic_id"] as! String
+            if topic_id == topicId{
+                if let nav = self.parent as? UINavigationController{
+                    nav.popToRootViewController(animated: true)
+                }
+            }
+        }
         
         
     }
