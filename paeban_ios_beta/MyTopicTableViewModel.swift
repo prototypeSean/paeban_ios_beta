@@ -158,7 +158,7 @@ class MyTopicTableViewModel{
                         localData.lastSpeaker_detial = localData.clientName_detial
                     }
                     localData.lastLine_detial = topic_content_data["topic_content"]
-                    if chat_view?.setID == topic_content_data["sender"]{
+                    if userData.id == topic_content_data["sender"]{
                         localData.read_detial = true
                     }
                     else{
@@ -511,6 +511,10 @@ class MyTopicTableViewModel{
             topicTitleData.lastLine_detial = topicWithWhoId.1["topic_content"] as? String
             topicTitleData.lastSpeaker_detial = topicWithWhoId.1["last_speaker_name"] as? String
             topicTitleData.read_detial = topicWithWhoId.1["read"] as? Bool
+            let last_speaker_id = topicWithWhoId.1["last_speaker_id"] as! String
+            if last_speaker_id == userData.id{
+                topicTitleData.read_detial = true
+            }
             topicTitleData.topicContentId_detial = String(topicWithWhoId.1["topic_content_id"] as! Int)
             
             tempMytopicList += [topicTitleData]
