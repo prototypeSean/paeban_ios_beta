@@ -33,7 +33,7 @@ open class MyTopicStandardType {
     var allMsg_title:Int{
         get{return topicWithWhoDic_title!.count}
     }
-    
+    var battery:Int?
     // === title類型資料變數 ===
     
     

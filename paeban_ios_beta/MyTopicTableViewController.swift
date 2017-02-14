@@ -129,6 +129,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             nextView.clientImg = data.clientPhoto_detial
             nextView.topicTitle = data.topicTitle_title
             nextView.title = data.clientName_detial
+            nextView.battery = data.battery
             model.chat_view = nextView
             self.segueData = nil
         }

@@ -65,6 +65,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     var contanterView:ChatViewController?
     var msg:Dictionary<String,AnyObject>?
     var isfriend = false
+    var battery:Int?
     
     var guestPhotoImg = UIImageView()
     // internal func

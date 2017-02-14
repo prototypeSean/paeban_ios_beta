@@ -236,7 +236,8 @@ class HttpRequestCenter{
                     sex:dataKey_val!["sex"] as! String,
                     isMe:isMe,
                     online:online,
-                    ownerName:dataKey_val!["name"] as! String
+                    ownerName:dataKey_val!["name"] as! String,
+                    battery:dataKey_val!["battery"] as! Int
                     )!
                 topic_list_temp.append(topic_temp)
             }

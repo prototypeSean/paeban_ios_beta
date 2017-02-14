@@ -270,8 +270,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
         cell.sex.image = sexImg
         // 電池圖示設定
-        cell.battery.image = UIImage(named:"battery-full")
-//        cell.battery.tintColor = UIColor(red:0.18, green:0.80, blue:0.44, alpha:1.0)
+        letoutBattery(battery: cell.battery, batteryLeft: topic.battery!)
+//        cell.battery.image = UIImage(named:"battery-full")
         // 在線上燈號
         cell.online.layoutIfNeeded()
         cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
@@ -294,6 +294,20 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
         
         return cell
+    }
+    func letoutBattery(battery:UIImageView, batteryLeft:Int){
+        if batteryLeft <= 30{
+            battery.image = UIImage(named:"battery-low")
+        }
+        else if batteryLeft <= 50{
+            battery.image = UIImage(named:"battery-half")
+        }
+        else if batteryLeft <= 80{
+            battery.image = UIImage(named:"battery-good")
+        }
+        else if batteryLeft <= 100{
+            battery.image = UIImage(named:"battery-full")
+        }
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         hideKeybroad()
@@ -620,7 +634,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                             sex:inputDic[String(tempTopicId)]!["sex"] as! String,
                             isMe:isMe,
                             online:online,
-                            ownerName:inputDic[String(tempTopicId)]!["name"] as! String
+                            ownerName:inputDic[String(tempTopicId)]!["name"] as! String,
+                            battery:inputDic[String(tempTopicId)]!["battery"] as! Int
                             )!
                         topic_list_temp.append(topic_temp)
                     }
