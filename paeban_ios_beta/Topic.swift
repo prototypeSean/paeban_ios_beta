@@ -20,10 +20,11 @@ class Topic {
     var online:Bool
     var ownerName:String
     var is_friend:Bool?
+    var battery: Int?
     
     // MARK: Initialization
     
-    init?(owner: String, photo: UIImage, title: String, hashtags:[String], lastline: String, topicID:String, sex:String, isMe:Bool, online:Bool, ownerName:String){
+    init?(owner: String, photo: UIImage, title: String, hashtags:[String], lastline: String, topicID:String, sex:String, isMe:Bool, online:Bool, ownerName:String, battery: Int){
         self.owner = owner
         self.photo = photo
         self.title = title
@@ -34,6 +35,7 @@ class Topic {
         self.online = online
         self.topicID = topicID
         self.ownerName = ownerName
+        self.battery = battery
         
         if owner.isEmpty || title.isEmpty {
             return nil

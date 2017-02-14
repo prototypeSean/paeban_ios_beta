@@ -26,6 +26,7 @@ public class SQL_center{
     let is_read = Expression<Bool?>("is_read")
     let is_send = Expression<Bool?>("is_send")
     let id_server = Expression<String?>("id_server")
+    let battery = Expression<String?>("battery")
     // user data
     let user_data_table = Table("user_data_table")
     let user_id_table = Expression<String?>("user_id_table")
@@ -446,6 +447,7 @@ public class SQL_center{
                 t.column(is_read)
                 t.column(is_send)
                 t.column(id_server)
+                t.column(battery)
             })
             print("表單建立成功")
             init_sql = true
@@ -539,7 +541,8 @@ public class SQL_center{
                     time <- time_input,
                     is_read <- is_read_input,
                     is_send <- is_send_input,
-                    id_server <- id_server_input
+                    id_server <- id_server_input,
+                    battery <- input_dic["battery"] as? String
                 )
                 try sql_db!.run(insert)
                 //print("寫入資料成功")
@@ -578,6 +581,7 @@ public class SQL_center{
                     "receiver": query_s[receiver]!,
                     "topic_id": query_s[topic_id]!,
                     "id_local": String(query_s[id]),
+                    "battery_val": query_s[battery]!
                 ]
                 return_list.append(dict_unit)
             }
