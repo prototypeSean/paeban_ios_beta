@@ -266,7 +266,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         if self.get_battery() != nil{
             battery_val = self.get_battery()!
         }
-        print(battery_val)
         let dataDic:Dictionary<String, AnyObject> = [
             "msg_type":"topic_msg" as AnyObject,
             "topic_content":text! as AnyObject,
