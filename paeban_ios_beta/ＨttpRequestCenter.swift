@@ -226,6 +226,7 @@ class HttpRequestCenter{
                 if dataKey_val!["online"] as! Bool == true{
                     online = true
                 }
+                
                 let topic_temp = Topic(
                     owner: dataKey_val!["topic_publisher"] as! String,
                     photo: finalimg,
@@ -237,7 +238,7 @@ class HttpRequestCenter{
                     isMe:isMe,
                     online:online,
                     ownerName:dataKey_val!["name"] as! String,
-                    battery:dataKey_val!["battery"] as! Int
+                    battery:Int(dataKey_val!["battery"] as! String)!
                     )!
                 topic_list_temp.append(topic_temp)
             }

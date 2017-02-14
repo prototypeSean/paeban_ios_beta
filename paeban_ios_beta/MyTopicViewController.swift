@@ -65,7 +65,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     var contanterView:ChatViewController?
     var msg:Dictionary<String,AnyObject>?
     var isfriend = false
-    var battery:Int?
+    var model:MyTopicTableViewModel?
     
     var guestPhotoImg = UIImageView()
     // internal func
@@ -284,6 +284,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     }
     
     
+    
     // override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -307,7 +308,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         chatViewCon.ownerId = self.setID
         chatViewCon.clientID = self.setID
         chatViewCon.clientName = self.setName
-        
+        chatViewCon.model = self.model
         
         if self.msg == nil {
             self.contanterView = chatViewCon

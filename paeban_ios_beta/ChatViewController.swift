@@ -33,6 +33,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     var clientName:String?
     var topicId:String?
     var ownerId:String?
+    var model:MyTopicTableViewModel?
     
     //collectionView(_:attributedTextForMessageBubbleTopLabelAtIndexPath:)
     //MARK:讀入歷史訊息
@@ -238,6 +239,20 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         return NSAttributedString(string:"test========================")
     }
+    func get_battery() -> Int?{
+        if model != nil{
+            for cells in model!.mytopic{
+                if cells.dataType == "title" && cells.topicId_title == topicId{
+                    let unredMsg = Float(cells.unReadMsg_title)
+                    let allMsg = Float(cells.allMsg_title)
+                    let readRate = Int((1-(unredMsg/allMsg))*100)
+                    return readRate
+                }
+                break
+            }
+        }
+        return nil
+    }
     //施工中
     
     
@@ -247,6 +262,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         self.finishSendingMessage(animated: true)
         let timeNow = Int(Date().timeIntervalSince1970)
         let tempTopicMsgId = String(timeNow)
+        var battery_val = -1
+        if self.get_battery() != nil{
+            battery_val = self.get_battery()!
+        }
+        print(battery_val)
         let dataDic:Dictionary<String, AnyObject> = [
             "msg_type":"topic_msg" as AnyObject,
             "topic_content":text! as AnyObject,
@@ -255,7 +275,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             "topic_id":topicId! as AnyObject,
             "sender":userData.id! as AnyObject,
             "is_read":false as AnyObject,
-            "is_send":false as AnyObject
+            "is_send":false as AnyObject,
+            "battery": String(battery_val) as AnyObject
         ]
         sql_database.inser_date_to_topic_content(input_dic: dataDic)
         
