@@ -59,7 +59,7 @@ public func turnToFriendStanderType_v2(friend_dic:Dictionary<String,AnyObject>) 
         let lastLine = friend_dic[friend_name]?["lastLine"] as? String
         let last_speaker = friend_dic[friend_name]?["last_speaker"] as? String
         if last_speaker != "" && lastLine != ""{
-            temp_cell.lastLine = "\(last_speaker!):  \(lastLine!)"
+            temp_cell.lastLine = "\(lastLine!)"
             temp_cell.last_speaker = last_speaker
             temp_cell.time = time_transform_to_since1970(time_string: friend_dic[friend_name]!["speak_time"] as! String)
         }

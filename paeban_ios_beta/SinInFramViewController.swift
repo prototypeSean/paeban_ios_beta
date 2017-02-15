@@ -17,7 +17,20 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     @IBOutlet weak var firstname: UITextField!
     @IBOutlet weak var submitBtn: UIButton!
     @IBOutlet weak var stackView: UIStackView!
-    
+    @IBOutlet weak var isTruePhotoSwitch: UISwitch!
+    @IBOutlet weak var isTruePhoto: UIImageView!
+    // 本人照片開關控制勾勾圖示出現與否
+    @IBAction func switchChanged(_ sender: AnyObject) {
+        if isTruePhotoSwitch.isOn {
+            print("on")
+            
+            isTruePhoto.tintColor = UIColor(red:0.00, green:0.73, blue:0.62, alpha:1.0)
+        }
+        else {
+            print("off")
+            isTruePhoto.tintColor = UIColor.clear
+        }
+    }
     // MARK: 送出按鈕按下放開行為＆外觀
     @IBAction func submitBtnDown(_ sender: AnyObject) {
         submitBtn.layer.backgroundColor = UIColor(red:0.98, green:0.49, blue:0.29, alpha:1.0).cgColor
@@ -252,6 +265,8 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         selectGenderText.layer.borderWidth = 1
         firstname.layer.borderColor = UIColor.lightGray.cgColor
         firstname.layer.borderWidth = 1
+        
+        isTruePhoto.image = UIImage(named:"True_photo")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
     }
     
     // override

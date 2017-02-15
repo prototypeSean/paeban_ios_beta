@@ -61,6 +61,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
 
                 
             }
+            cell2.lastspeaker.text = data.last_speaker
             cell2.photo.image = data.photo
             cell2.truePhoto.image = UIImage(named:"True_photo")!.withRenderingMode(.alwaysTemplate)
             if data.isRealPhoto!{

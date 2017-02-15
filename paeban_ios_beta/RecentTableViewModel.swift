@@ -126,10 +126,28 @@ class RecentTableViewModel{
             
             cell.online.tintColor = UIColor.lightGray
         }
-        cell.battery.image = UIImage(named:"battery-half")
-        //        cell.battery.tintColor = UIColor(red:1.00, green:0.77, blue:0.18, alpha:1.0)
+        
+        letoutBattery(battery: cell.battery, batteryLeft: topicWriteToRow.battery!)
+        
         return cell
     }
+    
+    
+    func letoutBattery(battery:UIImageView, batteryLeft:Int){
+        if batteryLeft <= 30{
+            battery.image = UIImage(named:"battery-low")
+        }
+        else if batteryLeft <= 50{
+            battery.image = UIImage(named:"battery-half")
+        }
+        else if batteryLeft <= 80{
+            battery.image = UIImage(named:"battery-good")
+        }
+        else if batteryLeft <= 100{
+            battery.image = UIImage(named:"battery-full")
+        }
+    }
+    
     func clientOnline(_ msg:Dictionary<String,AnyObject>) -> Bool{
         var dataChange = false
         let onLineUser = msg["user_id"] as! String
@@ -144,6 +162,7 @@ class RecentTableViewModel{
         }
         return dataChange
     }
+    
     func clientOffline(_ msg:Dictionary<String,AnyObject>) -> Bool{
         let offLineUser = msg["user_id"] as! String
         var dataChange = false
