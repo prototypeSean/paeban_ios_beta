@@ -192,12 +192,15 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             DispatchQueue.main.async {
                 print("get_friend_list")
                 let return_list = turnToFriendStanderType_v2(friend_dic: return_dic)
-                for cell_s in return_list{
-                    if self.check_if_list_need_to_update_or_add(new_obj: cell_s){
-                        self.replace_singel_cell_or_add(new_obj: cell_s)
-                    }
-                }
+//                for cell_s in return_list{
+//                    if self.check_if_list_need_to_update_or_add(new_obj: cell_s) || true{
+//                        self.replace_singel_cell_or_add(new_obj: cell_s)
+//                    }
+//                }
+                self.friendsList = return_list
+                self.targetVC.tableView.reloadData()
             }
+            
         }
     }
     func check_if_list_need_to_update_or_add(new_obj:FriendStanderType) -> Bool{
@@ -514,10 +517,10 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                         else{
                             friendsList[friend_cell_index].read_msg = false
                         }
-                        let index_path = IndexPath(row: friend_cell_index, section: 0)
-                        targetVC.tableView.beginUpdates()
-                        targetVC.tableView.reloadRows(at: [index_path], with: .none)
-                        targetVC.tableView.endUpdates()
+                        let temp_cell_obj = friendsList[friend_cell_index]
+                        friendsList.remove(at: friend_cell_index)
+                        friendsList.insert(temp_cell_obj, at: 0)
+                        self.targetVC.tableView.reloadData()
                     }
                 }
                 
