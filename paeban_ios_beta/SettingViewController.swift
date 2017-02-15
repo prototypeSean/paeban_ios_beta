@@ -88,6 +88,9 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         }
     }
     func logOut(){
+        HttpRequestCenter().request_user_data("log_out", send_dic: [:]) { (element) in
+            //nil
+        }
         cookie = nil
         myFriendsList = []
         logInState = false
