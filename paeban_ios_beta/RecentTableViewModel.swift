@@ -90,7 +90,8 @@ class RecentTableViewModel{
         var lastSpeakerName:String?
         if topicWriteToRow.lastSpeaker_detial! == userData.name{
             lastSpeakerName = userData.name
-            
+            cell.lastLine.textColor = UIColor(red:0.30, green:0.30, blue:0.30, alpha:1.0)
+            cell.lastLine.font = UIFont.systemFont(ofSize: 16)
         }
         else{
             lastSpeakerName = topicWriteToRow.clientName_detial
@@ -256,11 +257,13 @@ class RecentTableViewModel{
         if let result_dic = msg["result_dic"] as? Dictionary<String,Dictionary<String,String>>{
             for topic_content_id in result_dic{
                 let topic_content_data = topic_content_id.1
+                let sender = topic_content_data["sender"]! as String
                 let client_id = find_client_id(id1: topic_content_data["sender"]!, id2: topic_content_data["receiver"]!)
                 if let target_cell_index = find_target_cell_index(topic_id: topic_content_data["topic_id"]!, client_id: client_id){
                     let target_cell = recentDataBase[target_cell_index]
                     target_cell.lastLine_detial = topic_content_data["topic_content"]!
-                    if chat_view?.ownerId == client_id{
+                    target_cell.lastSpeaker_detial = topic_content_data["sender_name"]!
+                    if userData.id == sender{
                         target_cell.read_detial = true
                     }
                     else{
