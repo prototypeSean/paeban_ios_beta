@@ -173,6 +173,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     }
     
     
+    
     // MARk: internal func
     func autoLeap(){
         if notificationSegueInf != [:] && recive_apns_switch{
