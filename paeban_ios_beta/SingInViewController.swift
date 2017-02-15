@@ -19,7 +19,7 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     @IBOutlet var addPhotoBG: UIView!
     @IBOutlet weak var addPhotoBtn: UIButton!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
