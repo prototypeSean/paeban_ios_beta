@@ -21,6 +21,7 @@ open class FriendStanderType{
     var photo:UIImage?
     var lastLine:String?
     var last_speaker:String?
+    var time:TimeInterval?
     var invite_list_count:Int?
     var online_checked = false
     var read_msg:Bool?
@@ -60,9 +61,23 @@ public func turnToFriendStanderType_v2(friend_dic:Dictionary<String,AnyObject>) 
         if last_speaker != "" && lastLine != ""{
             temp_cell.lastLine = "\(last_speaker!):  \(lastLine!)"
             temp_cell.last_speaker = last_speaker
+            temp_cell.time = time_transform_to_since1970(time_string: friend_dic[friend_name]!["speak_time"] as! String)
         }
         
+        
         return_list.append(temp_cell)
+    }
+    return_list.sort { (fs1, fs2) -> Bool in
+        if fs1.time != nil && fs2.time != nil{
+            if fs1.time! > fs2.time!{
+                return true
+            }
+            return false
+        }
+        else if fs1.time != nil && fs2.time == nil{
+            return true
+        }
+        return false
     }
     return return_list
 }

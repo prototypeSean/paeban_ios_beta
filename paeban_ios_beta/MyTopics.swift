@@ -51,7 +51,8 @@ open class MyTopicStandardType {
     var tag_detial:Array<String>?
     var time:TimeInterval?
     // === detail類型資料變數 ===
-
+    
+    var speak_time:timeval?
     init(dataType:String){
         // title  or  detial
         self.dataType = dataType

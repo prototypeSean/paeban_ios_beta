@@ -167,7 +167,8 @@ class MyTopicTableViewModel{
                         localData.read_detial = false
                     }
                     secTopic[topic_id]!.remove(at: localData_index!)
-                    secTopic[topic_id]!.insert(localData, at: localData_index!)
+                    secTopic[topic_id]!.insert(localData, at: 0)
+
                     let uiDataIndex = mytopic.index(where: { (MyTopicStandardType) -> Bool in
                         if MyTopicStandardType.topicId_title == topic_id
                             && MyTopicStandardType.clientId_detial == topicWithWho{
@@ -177,7 +178,9 @@ class MyTopicTableViewModel{
                     })
                     if uiDataIndex != nil{
                         mytopic.remove(at: Int(uiDataIndex!))
-                        mytopic.insert(localData, at: uiDataIndex!)
+                        let index_path = IndexPath(row: uiDataIndex!, section: 0)
+                        self.delegate?.model_delete_row(index_path_list: [index_path], option: .left)
+                        add_new_detail_cell_to_table(detail_cell: localData)
                     }
                     self.update_title_unread(topic_id: localData.topicId_title!)
                     self.delegate?.model_relodata()
@@ -193,7 +196,7 @@ class MyTopicTableViewModel{
                         }
                         
                         cell_obj.lastLine_detial = topic_content_data["topic_content"]
-                        self.secTopic[topic_id]?.append(cell_obj)
+                        self.secTopic[topic_id]?.insert(cell_obj, at: 0)
                         
                         DispatchQueue.main.async {
                             self.update_title_unread(topic_id: topic_id)
@@ -541,6 +544,7 @@ class MyTopicTableViewModel{
             topicTitleData.lastLine_detial = topicWithWhoId.1["topic_content"] as? String
             topicTitleData.lastSpeaker_detial = topicWithWhoId.1["last_speaker_name"] as? String
             topicTitleData.read_detial = topicWithWhoId.1["read"] as? Bool
+            topicTitleData.time = time_transform_to_since1970(time_string: (topicWithWhoId.1["speak_time"] as! String))
             let last_speaker_id = topicWithWhoId.1["last_speaker_id"] as! String
             if last_speaker_id == userData.id{
                 topicTitleData.read_detial = true
@@ -548,6 +552,12 @@ class MyTopicTableViewModel{
             topicTitleData.topicContentId_detial = String(topicWithWhoId.1["topic_content_id"] as! Int)
             
             tempMytopicList += [topicTitleData]
+        }
+        tempMytopicList.sort { (ta1, ta2) -> Bool in
+            if ta1.time! > ta2.time!{
+                return true
+            }
+            return false
         }
         return tempMytopicList
     }
@@ -585,6 +595,7 @@ class MyTopicTableViewModel{
         for cells_index in 0 ..< mytopic.count{
             if mytopic[cells_index].topicId_title! == detail_cell.topicId_title{
                 last_cell_famile_index = cells_index
+                break
             }
         }
         if last_cell_famile_index != nil{
@@ -593,6 +604,7 @@ class MyTopicTableViewModel{
             delegate?.model_insert_row(index_path_list: [index_path], option: .top)
         }
     }
+    
     private func remove_loading_cell() {
         var remove_loading_cell_index_list:Array<Int> = []
         var remove_loading_cell_index_path_list:Array<IndexPath> = []
