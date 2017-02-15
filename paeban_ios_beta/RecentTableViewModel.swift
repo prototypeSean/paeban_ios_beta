@@ -69,7 +69,7 @@ class RecentTableViewModel{
         
         // 麻煩的東西這邊才開始畫外觀
         let topicWriteToRow = recentDataBase[index]
-        //print(topicWriteToRow.topicTitle_title)
+        
         
         // Hashtag
         cell.hashtag.tagListInContorller = topicWriteToRow.tag_detial
@@ -325,6 +325,7 @@ class RecentTableViewModel{
             operatingObj.topicContentId_detial = inputData["topic_content_id"] as? String
             operatingObj.read_detial = inputData["is_read"] as? Bool
             operatingObj.time = time_transform_to_since1970(time_string: inputData["time"] as! String)
+            operatingObj.battery = Int((inputData["battery"] as? String)!)
             recentDataBase[recentDataBaseIndex] = operatingObj
             DispatchQueue.main.async {
                 self.sort_recent_db_by_time()
@@ -346,6 +347,7 @@ class RecentTableViewModel{
             ouputObj.clientOnline_detial = inputData["owner_online"] as? Bool
             ouputObj.tag_detial = inputData["tag_list"] as? Array<String>
             ouputObj.time = time_transform_to_since1970(time_string: inputData["time"] as! String)
+            ouputObj.battery = Int((inputData["battery"] as? String)!)
             let httpSendDic = ["client_id":inputData["owner"] as! String,
                                "topic_id":inputKey]
             DispatchQueue.main.async {
