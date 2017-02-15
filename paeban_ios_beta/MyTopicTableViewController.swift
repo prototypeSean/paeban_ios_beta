@@ -84,7 +84,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
             letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
             if topicWriteToRow.read_detial == false && topicWriteToRow.lastSpeaker_detial != userData.name{
-                cell.lastLine.textColor = UIColor(red:0.99, green:0.38, blue:0.27, alpha:1.0)
+                cell.lastLine.textColor = UIColor(red:0.97, green:0.49, blue:0.31, alpha:1.0)
+                cell.lastLine.font = UIFont.boldSystemFont(ofSize: 16)
             }
             else{
                 cell.lastLine.textColor = nil
