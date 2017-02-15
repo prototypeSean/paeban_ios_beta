@@ -88,7 +88,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 cell.lastLine.font = UIFont.boldSystemFont(ofSize: 16)
             }
             else{
-                cell.lastLine.textColor = nil
+                cell.lastLine.textColor = UIColor(red:0.30, green:0.30, blue:0.30, alpha:1.0)
+                cell.lastLine.font = UIFont.systemFont(ofSize: 16)
             }
             
             
@@ -981,8 +982,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         isMeImg.image = UIImage(named:"True_photo")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         isMeImg.layoutIfNeeded()
         let cr = (isMeImg.frame.size.width)/2
-        isMeImg.layer.borderWidth = 1
-        isMeImg.layer.borderColor = UIColor.white.cgColor
+//        isMeImg.layer.borderWidth = 1
+//        isMeImg.layer.borderColor = UIColor.white.cgColor
         isMeImg.layer.cornerRadius = cr
         isMeImg.clipsToBounds = true
         if isTruePhoto{
