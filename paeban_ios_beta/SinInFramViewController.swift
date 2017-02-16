@@ -181,6 +181,17 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
 //        passWord_2.resignFirstResponder()
 //        firstname.resignFirstResponder()
         
+        
+        let nav_vc = self.parent
+        let loading_vc = UIView()
+        let load_simbo = UIActivityIndicatorView()
+        loading_vc.frame = (nav_vc?.view.frame)!
+        load_simbo.center = loading_vc.center
+        loading_vc.backgroundColor = UIColor(colorLiteralRed: 0.3, green: 0.3, blue: 0.3, alpha: 0.5)
+        nav_vc?.view.addSubview(loading_vc)
+        loading_vc.addSubview(load_simbo)
+        load_simbo.startAnimating()
+        
         if checkAll(){
             let base64String = imageToBase64(image: photoView!.imageViewTemp!.image!, optional: "")
             let true_photo_state = self.isTruePhotoSwitch.isOn
@@ -209,11 +220,12 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
                     else{
                         self.simpoAlert(reason: "email已被註冊")
                     }
+                    loading_vc.removeFromSuperview()
                 })
                 
             })
         }
-       //let nav_vc = self.parent
+       
         
     }
     func find_user_kb_height(){
