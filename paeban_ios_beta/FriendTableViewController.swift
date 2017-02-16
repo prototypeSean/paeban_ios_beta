@@ -141,29 +141,37 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         }
     }
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if model?.friendsList[indexPath.row].cell_type == "invite"{
-            return true
-        }
-        return false
+        return true
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-
-        let ok_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "\u{2713}\n確認") { (UITableViewRowAction, IndexPath) in
-            self.friend_confirm(answer: "yes", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
-            self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
+        if model?.friendsList[indexPath.row].cell_type == "invite"{
+            let ok_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "\u{2713}\n確認") { (UITableViewRowAction, IndexPath) in
+                self.friend_confirm(answer: "yes", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
+                self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
+                
+            }
+            //let img2 = UIImage(named: "check")
+            ok_btn.backgroundColor = UIColor(red:0.00, green:0.67, blue:0.52, alpha:1.0)
             
+            let del_btn = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "\u{2715}\n刪除") { (UITableViewRowAction, IndexPath) in
+                print("no")
+                self.friend_confirm(answer: "no", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
+                self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
+            }
+            
+            return [del_btn, ok_btn]
         }
-        //let img2 = UIImage(named: "check")
-        ok_btn.backgroundColor = UIColor(red:0.00, green:0.67, blue:0.52, alpha:1.0)
-        
-        let del_btn = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "\u{2715}\n刪除") { (UITableViewRowAction, IndexPath) in
-            print("no")
-            self.friend_confirm(answer: "no", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
-            self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
+        else{
+            
+            let delete_btn = UITableViewRowAction(style: .default, title: "刪除", handler: { (action, index_path) in
+                let friend_id = self.model?.friendsList[indexPath.row].id
+                self.send_server_delete_friend(friend_id: friend_id!)
+                self.model?.remove_friend(id: friend_id!)
+            })
+            return [delete_btn]
         }
-        
-        return [del_btn, ok_btn]
     }
+    
     
     
     // MARk: internal func
@@ -228,6 +236,15 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         let tab_bar = self.parent?.parent as! TabBarController
         tab_bar.update_badges()
     }
+    func send_server_delete_friend(friend_id:String){
+        let send_data:NSDictionary = [
+            "friend_id": friend_id
+        ]
+        HttpRequestCenter().friend_function(msg_type: "delete_friend", send_dic: send_data) { (return_dic) in
+            //cdoe
+        }
+    }
+    
     
     // MARK: event for cell button
     func ok_btn_click(click_row:Int){

@@ -363,6 +363,19 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         
         updateModel()
     }
+    func remove_friend(id:String){
+        if let remove_id_index = friendsList.index(where: { (target) -> Bool in
+            if target.id == id{
+                return true
+            }
+            return false
+        }){
+            print(remove_id_index)
+            let remove_id_index_int = remove_id_index as Int
+            friendsList.remove(at: remove_id_index_int)
+        }
+        targetVC.tableView.reloadData()
+    }
     
     func updateModel() {
         
