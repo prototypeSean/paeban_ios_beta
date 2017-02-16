@@ -183,12 +183,14 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         
         if checkAll(){
             let base64String = imageToBase64(image: photoView!.imageViewTemp!.image!, optional: "")
+            let true_photo_state = self.isTruePhotoSwitch.isOn
             let sendDic:NSDictionary = [
                 "email":emailText.text!,
                 "password":passWord_1.text!,
                 "first_name":firstname.text!,
                 "sex":selectGenderText.text!,
-                "img":base64String
+                "img":base64String,
+                "is_true_photo": true_photo_state
             ]
             
             HttpRequestCenter().sendSingData(send_dic: sendDic, inViewAct: { (returnDic:Dictionary<String, AnyObject>) in
@@ -211,7 +213,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
                 
             })
         }
-        
+       //let nav_vc = self.parent
         
     }
     func find_user_kb_height(){
