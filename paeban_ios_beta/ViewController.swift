@@ -18,7 +18,7 @@ public var ssss:String?
 public var back_ground_state = false
 public var socket:WebSocket!
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
-public var firstActiveApp = false // MARK:打包前改為 true****************************
+public var firstActiveApp = true // MARK:打包前改為 true****************************
 public var logInState = true    //記錄現在是否為登入狀態
 public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
 public var cookie:String?       //全域紀錄的餅乾
@@ -84,11 +84,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var state_lable: UILabel!
     
     
-    let version = "1.0.2.12"
+    let version = "1.0.2.14"
     let login_paeban_obj = login_paeban()
     var state_switch = true
     // MARK:施工中
-    let reset_database = true
+    let reset_database = false
     func create_data_base(){
         sql_database.connect_sql()
         let version_in_db = sql_database.load_version()
