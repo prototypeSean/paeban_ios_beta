@@ -45,6 +45,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         super.viewDidLoad()
         wsActive.wasd_ForTopicViewController = self
         getHttpData()
+        get_client_img(owner: ownerId!, topic_id: topicId!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -134,6 +135,15 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                 }
             })
         }
+    }
+    func get_client_img(owner:String,topic_id:String){
+        let httpSendDic = ["client_id":owner,
+                           "topic_id":topic_id]
+        HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
+            DispatchQueue.main.async {
+                self.ownerImg = base64ToImage(returnData["data"] as! String)
+            }
+        })
     }
     func alertTopicClosed(){
         let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.alert)

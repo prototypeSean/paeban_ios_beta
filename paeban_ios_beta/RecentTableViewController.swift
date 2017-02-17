@@ -60,7 +60,6 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             topicViewCon.setName = getSegueData["ownerName"] as? String
             
             topicViewCon.ownerId = getSegueData["ownerId"] as? String
-            topicViewCon.ownerImg = getSegueData["ownerImg"] as? UIImage
             topicViewCon.topicTitle = getSegueData["topicTitle"] as? String
             topicViewCon.title = getSegueData["title"] as? String
             rTVModel.chat_view = topicViewCon
