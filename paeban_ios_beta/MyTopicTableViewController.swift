@@ -60,7 +60,13 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             let cell = tableView.dequeueReusableCell(withIdentifier: "myTopicCell_1", for: indexPath) as! MyTopicTableViewCell
             let unredMsg = Float(topicWriteToRow.unReadMsg_title)
             let allMsg = Float(topicWriteToRow.allMsg_title)
-            let readRate = Int((1-(unredMsg/allMsg))*100)
+            var readRate:Int
+            if topicWriteToRow.allMsg_title == 0{
+                readRate = 100
+            }
+            else{
+                readRate = Int((1-(unredMsg/allMsg))*100)
+            }
             cell.topicTitle.text = topicWriteToRow.topicTitle_title
             cell.unReadM.text = String(readRate)+"%"
 //            cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
