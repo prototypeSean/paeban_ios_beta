@@ -58,6 +58,8 @@ public class SQL_center{
             print("資料庫連線成功")
         }
         catch{
+            print("資料庫錯誤")
+            print(error)
             print("資料庫連線失敗")
         }
     }
@@ -71,6 +73,7 @@ public class SQL_center{
             print("表單建立成功")
         }
         catch{
+            print("資料庫錯誤")
             print(error)
         }
     }
@@ -82,6 +85,7 @@ public class SQL_center{
             try sql_db!.run(insert)
         }
         catch{
+            print("資料庫錯誤")
             print(error)
         }
     }
@@ -91,7 +95,10 @@ public class SQL_center{
         do{
             try sql_db!.run(query.delete())
         }
-        catch{}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
     }
     func get_topic_table_list() -> Array<String>{
         var return_list:Array<String> = []
@@ -101,6 +108,7 @@ public class SQL_center{
             }
         }
         catch{
+            print("資料庫錯誤")
             print(error)
         }
         return return_list
@@ -114,7 +122,10 @@ public class SQL_center{
             }
             print("print_topic_table=====ed")
         }
-        catch{}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
     }
     
     
@@ -129,6 +140,7 @@ public class SQL_center{
             print("表單建立成功")
         }
         catch{
+            print("資料庫錯誤")
             print(error)
         }
     }
@@ -140,7 +152,10 @@ public class SQL_center{
         do{
             try sql_db!.run(insert)
         }
-        catch{}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
     }
     func remove_topic_from_leave_topic_master_table(topic_id_input:String, client_id_input:String){
         let query = leave_topic_master.filter(topic_id == topic_id_input && client_id == client_id_input)
@@ -148,7 +163,10 @@ public class SQL_center{
         do{
             try sql_db!.run(query.delete())
         }
-        catch{}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
     }
     func get_leave_topic_master_table_list() -> Array<Dictionary<String,String>>{
         var return_list:Array<Dictionary<String,String>> = []
@@ -161,7 +179,10 @@ public class SQL_center{
                 return_list.append(temp_dic)
             }
         }
-        catch{}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
         return return_list
     }
     
@@ -182,6 +203,7 @@ public class SQL_center{
             print("表單建立成功")
         }
         catch{
+            print("資料庫錯誤")
             print(error)
         }
     }
@@ -193,7 +215,11 @@ public class SQL_center{
             }
             print("========")
         }
-        catch{}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        
+        }
     }
     
     // ***working
@@ -215,7 +241,8 @@ public class SQL_center{
                     }
                 }
                 catch{
-                    // pass
+                    print("資料庫錯誤")
+                    print(error)
                 }
                 if input_dic["sender"]! as! String == userData.id!{
                     return "update_local"
@@ -233,7 +260,8 @@ public class SQL_center{
                     }
                 }
                 catch{
-                    // pass
+                    print("資料庫錯誤")
+                    print(error)
                 }
                 return "new_server_msg"
             }
@@ -262,6 +290,8 @@ public class SQL_center{
             }
             catch{
                 return "old_data"
+                print("資料庫錯誤")
+                print(error)
             }
         }
         else{
@@ -324,8 +354,8 @@ public class SQL_center{
             }
         }
         catch{
+            print("資料庫錯誤")
             print(error)
-            //return nil
         }
         //self.print_all()
     }
@@ -348,6 +378,8 @@ public class SQL_center{
             return return_list
         }
         catch{
+            print("資料庫錯誤")
+            print(error)
             return nil
         }
     }
@@ -362,7 +394,11 @@ public class SQL_center{
             }
             return "0"
         }
-        catch{return "0"}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+            return "0"
+        }
     }
     func get_private_histopry_msg(client_id:String) -> Array<Dictionary<String,AnyObject>>{
         let query = private_table.filter(
@@ -400,6 +436,8 @@ public class SQL_center{
             return return_list
         }
         catch{
+            print("資料庫錯誤")
+            print(error)
             return []
         }
         
@@ -411,7 +449,10 @@ public class SQL_center{
             let query = private_table.filter(id == id_local_int!)
             try sql_db?.run(query.update(time <- date, is_send <- true, id_server <- id_server_input))
         }
-        catch{}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
     }
     func update_private_msg_read(id_local:String){
         do{
@@ -428,7 +469,10 @@ public class SQL_center{
             )
             try sql_db?.run(query2.update(is_read <- true, is_send <- true))
         }
-        catch{}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
         
     }
     // ***working
@@ -453,6 +497,7 @@ public class SQL_center{
             init_sql = true
         }
         catch{
+            print("資料庫錯誤")
             print(error)
         }
         
@@ -467,8 +512,8 @@ public class SQL_center{
             try sql_db?.run(leave_topic_master.drop())
         }
         catch{
+            print("資料庫錯誤")
             print(error)
-            print("表單刪除失敗")
         }
     }
     func check_topic_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
@@ -484,6 +529,8 @@ public class SQL_center{
                 return "new_server_msg"
             }
             catch{
+                print("資料庫錯誤")
+                print(error)
                 return "old_data"
             }
         }
@@ -549,8 +596,8 @@ public class SQL_center{
             }
         }
         catch{
+            print("資料庫錯誤")
             print(error)
-            //return nil
         }
         //self.print_all()
     }
@@ -562,6 +609,7 @@ public class SQL_center{
             print("========")
         }
         catch{
+            print("資料庫錯誤")
             print(error)
         }
         
@@ -588,6 +636,8 @@ public class SQL_center{
             return return_list
         }
         catch{
+            print("資料庫錯誤")
+            print(error)
             return nil
         }
     }
@@ -627,6 +677,8 @@ public class SQL_center{
             return return_list
         }
         catch{
+            print("資料庫錯誤")
+            print(error)
             return []
         }
         
@@ -638,7 +690,10 @@ public class SQL_center{
             let query = topic_content.filter(id == id_local_int!)
             try sql_db?.run(query.update(time <- date, is_send <- true, id_server <- id_server_input))
         }
-        catch{}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
     }
     func update_topic_content_read(id_local:String){
         do{
@@ -659,7 +714,10 @@ public class SQL_center{
 //                receiver_input =
 //            }
         }
-        catch{}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
         
     }
     func get_topic_content_last_id_server(topic_id_input:String,client_id_input:String) -> String{
@@ -674,7 +732,11 @@ public class SQL_center{
             }
             return "0"
         }
-        catch{return "0"}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+            return "0"
+        }
     }
     func get_topic_content_first_id_server(topic_id_input:String,client_id_input:String) -> String{
         let query = topic_content.filter(
@@ -689,7 +751,11 @@ public class SQL_center{
             }
             return "0"
         }
-        catch{return "0"}
+        catch{
+            print("資料庫錯誤")
+            print(error)
+            return "0"
+        }
     }
     
     // user_data
@@ -702,6 +768,7 @@ public class SQL_center{
             print("表單建立成功")
         }
         catch{
+            print("資料庫錯誤")
             print(error)
         }
     }
@@ -723,6 +790,7 @@ public class SQL_center{
             try sql_db!.run(insert)
         }
         catch{
+            print("資料庫錯誤")
             print(error)
         }
     }
@@ -735,6 +803,8 @@ public class SQL_center{
             }
         }
         catch{
+            print("資料庫錯誤")
+            print(error)
             return nil
         }
         return nil
