@@ -71,7 +71,9 @@ class HttpRequestCenter{
         let url = "https://www.paeban.com/topic_update/"
         let sendData = "mode=request_my_topic"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            InViewAct(returnDic)
+            if !returnDic.isEmpty{
+                InViewAct(returnDic)
+            }
         }
     }
     
@@ -79,14 +81,18 @@ class HttpRequestCenter{
         let url = "https://www.paeban.com/topic_update/"
         let sendData = "mode=get_my_topic_title"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            InViewAct(returnDic)
+            if !returnDic.isEmpty{
+                InViewAct(returnDic)
+            }
         }
     }
     func get_my_topic_detail(_ topicId:String,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void) {
         let url = "https://www.paeban.com/topic_update/"
         let sendData = "mode=get_my_topic_detail;topic_id=\(topicId)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            InViewAct(returnDic)
+            if !returnDic.isEmpty{
+                InViewAct(returnDic)
+            }
         }
     }
     func request_topic_msg_config(_ topic_id:String, client_id:String,topic_content_id:String , InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void) {
@@ -99,7 +105,9 @@ class HttpRequestCenter{
         let url = "https://www.paeban.com/topic_update/"
         let sendData = "mode=request_topic_msg_config;topic_id=\(topic_id);client_id=\(client_id);topic_content_id=\(topic_content_id)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            InViewAct(returnDic)
+            if !returnDic.isEmpty{
+                InViewAct(returnDic)
+            }
         }
         
     }
@@ -109,7 +117,9 @@ class HttpRequestCenter{
         let jsonData = json_dumps2(send_dic)
         let sendData = "mode=check_my_table_view;msg=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            InViewAct(returnDic)
+            if !returnDic.isEmpty{
+                InViewAct(returnDic)
+            }
         }
     }
     
@@ -118,7 +128,9 @@ class HttpRequestCenter{
         let jsonData = json_dumps2(send_dic)
         let sendData = "mode=update_new_user_data;msg=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            InViewAct(returnDic)
+            if !returnDic.isEmpty{
+                InViewAct(returnDic)
+            }
         }
     }
     
@@ -127,7 +139,9 @@ class HttpRequestCenter{
         let jsonData = json_dumps2(send_dic as NSDictionary)
         let sendData = "mode=get_blur_image;msg=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            InViewAct(returnDic)
+            if !returnDic.isEmpty{
+                InViewAct(returnDic)
+            }
         }
         
     }
@@ -136,7 +150,9 @@ class HttpRequestCenter{
         let jsonData = json_dumps2(send_dic)
         let sendData = "mode=final_check;data=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            inViewAct(returnDic)
+            if !returnDic.isEmpty{
+                inViewAct(returnDic)
+            }
         }
     }
     func privacy_function(msg_type:String, send_dic:NSDictionary,inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
@@ -144,7 +160,9 @@ class HttpRequestCenter{
         let jsonData = json_dumps2(send_dic)
         let sendData = "msg_type=\(msg_type);data=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            inViewAct(returnDic)
+            if !returnDic.isEmpty{
+                inViewAct(returnDic)
+            }
         }
     }
     func friend_function(msg_type:String, send_dic:NSDictionary,inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
@@ -152,7 +170,9 @@ class HttpRequestCenter{
         let jsonData = json_dumps2(send_dic)
         let sendData = "msg_type=\(msg_type);data=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            inViewAct(returnDic)
+            if !returnDic.isEmpty{
+                inViewAct(returnDic)
+            }
         }
     }
     
@@ -173,7 +193,9 @@ class HttpRequestCenter{
         let jsonData = json_dumps2(send_dic)
         let sendData = "msg_type=\(msg_type);data=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            inViewAct(returnDic)
+            if !returnDic.isEmpty{
+                inViewAct(returnDic)
+            }
         }
     }
     
