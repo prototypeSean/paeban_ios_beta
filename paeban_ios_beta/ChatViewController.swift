@@ -280,6 +280,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         sql_database.inser_date_to_topic_content(input_dic: dataDic)
         
         let unsend_list = sql_database.get_unsend_topic_data(topic_id_input: topicId!, client_id: ownerId!)
+        print("未送出！！！！",unsend_list)
         for unsend_list_s in unsend_list!{
             socket.write(data: json_dumps(unsend_list_s))
         }
@@ -305,7 +306,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             for dicKey in resultDic{
                 let msgData = dicKey.1 as! Dictionary<String,AnyObject>
                 if setID != nil && topicId != nil && clientID != nil{
-                    
+                    print("msgData",msgData)
                     if msgData["sender"] as? String == setID && msgData["topic_id"] as? String == topicId{
                         //自己說的話
                         //可插入“移除送出中的符號”的code

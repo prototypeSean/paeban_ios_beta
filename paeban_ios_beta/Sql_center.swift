@@ -557,7 +557,7 @@ public class SQL_center{
     func print_all(){
         do{
             for topic_c in try sql_db!.prepare(topic_content) {
-                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]), text: \(topic_c[topic_text])")
+                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]), text: \(topic_c[topic_text]), time:\(topic_c[time])")
             }
             print("========")
         }
