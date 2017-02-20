@@ -702,10 +702,12 @@ public class SQL_center{
                 return true
             })
             let receiver_input = topic_content_obj![receiver]!
+            let topic_id_obj = topic_content_obj![topic_id]!
             let query2 = topic_content.filter(
                 sender == userData.id! &&
                 receiver == receiver_input &&
-                is_read == false
+                is_read == false &&
+                topic_id == topic_id_obj
             )
             try sql_db?.run(query2.update(is_read <- true))
 //            var receiver_input:String
