@@ -133,8 +133,8 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="117.66666666666667" placeholderIntrinsicHeight="20.333333333333371" text="漸漸的 , 認識你" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KaX-dN-TuG">
-                                <rect key="frame" x="20" y="413" width="374" height="20.333333333333314"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <rect key="frame" x="20" y="424" width="374" height="20.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -175,7 +175,7 @@
                             <constraint firstItem="fYI-m1-mw8" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="FT1-pk-lpi"/>
                             <constraint firstItem="tAR-u1-Ad2" firstAttribute="leading" secondItem="vTK-am-ezn" secondAttribute="leading" id="LEY-Mu-lvQ"/>
                             <constraint firstItem="8BY-go-BQQ" firstAttribute="width" secondItem="ZcH-yC-Ffy" secondAttribute="width" id="Lgq-3d-e6A"/>
-                            <constraint firstItem="KaX-dN-TuG" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.15" id="OZB-rG-ObN"/>
+                            <constraint firstItem="KaX-dN-TuG" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.18" id="OZB-rG-ObN"/>
                             <constraint firstItem="M6n-vc-KN0" firstAttribute="height" secondItem="tAR-u1-Ad2" secondAttribute="height" id="Ocf-hc-wND"/>
                             <constraint firstItem="4Qt-oe-Dwj" firstAttribute="top" relation="greaterThanOrEqual" secondItem="KaX-dN-TuG" secondAttribute="bottom" constant="4" id="QKw-LX-IGp"/>
                             <constraint firstItem="8BY-go-BQQ" firstAttribute="centerX" secondItem="4Qt-oe-Dwj" secondAttribute="centerX" id="Xsi-n7-wnJ"/>
@@ -188,6 +188,7 @@
                             <constraint firstItem="vTK-am-ezn" firstAttribute="bottom" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" id="jfQ-pn-EO9"/>
                             <constraint firstItem="q66-HI-hUr" firstAttribute="top" secondItem="8BY-go-BQQ" secondAttribute="bottom" constant="8" id="lY1-eu-9FA"/>
                             <constraint firstItem="8BY-go-BQQ" firstAttribute="height" secondItem="ZcH-yC-Ffy" secondAttribute="height" id="lea-Hc-SGg"/>
+                            <constraint firstItem="M6n-vc-KN0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8BY-go-BQQ" secondAttribute="trailing" constant="8" symbolic="YES" id="ls4-KH-7vC"/>
                             <constraint firstItem="vTK-am-ezn" firstAttribute="height" secondItem="4Qt-oe-Dwj" secondAttribute="height" id="nBY-Bq-THL"/>
                             <constraint firstItem="ZcH-yC-Ffy" firstAttribute="top" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" constant="8" symbolic="YES" id="rVD-6I-2Tn"/>
                             <constraint firstItem="uRB-xh-cEB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sWk-cW-0Xb"/>
@@ -3020,9 +3021,9 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Vlh-Kf-y40"/>
-        <segue reference="l0w-d5-79K"/>
-        <segue reference="wZO-VC-xmQ"/>
         <segue reference="9Et-Zw-Bc4"/>
+        <segue reference="nCN-DR-xXv"/>
+        <segue reference="wZO-VC-xmQ"/>
+        <segue reference="l0w-d5-79K"/>
     </inferredMetricsTieBreakers>
 </document>
