@@ -467,7 +467,7 @@ public class SQL_center{
                     receiver == receiver_input &&
                     is_read == false
             )
-            try sql_db?.run(query2.update(is_read <- true, is_send <- true))
+            try sql_db?.run(query2.update(is_read <- true))
         }
         catch{
             print("資料庫錯誤")
@@ -707,7 +707,7 @@ public class SQL_center{
                 receiver == receiver_input &&
                 is_read == false
             )
-            try sql_db?.run(query2.update(is_read <- true, is_send <- true))
+            try sql_db?.run(query2.update(is_read <- true))
 //            var receiver_input:String
 //            for query_s in try sql_db!.prepare(query){
 //                receiver_input =
