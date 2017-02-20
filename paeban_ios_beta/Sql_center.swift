@@ -612,7 +612,6 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
-        
     }
     
     func get_unsend_topic_data(topic_id_input:String,client_id:String) -> Array<NSDictionary>?{
