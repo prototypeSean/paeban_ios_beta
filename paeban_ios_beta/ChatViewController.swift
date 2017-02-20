@@ -307,7 +307,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 let msgData = dicKey.1 as! Dictionary<String,AnyObject>
                 if setID != nil && topicId != nil && clientID != nil{
                     print("msgData",msgData)
-                    if msgData["sender"] as? String == setID && msgData["topic_id"] as? String == topicId{
+                    if msgData["sender"] as? String == setID && msgData["receiver"] as? String == clientID && msgData["topic_id"] as? String == topicId{
                         //自己說的話
                         //可插入“移除送出中的符號”的code
                         //print(msg)
@@ -318,7 +318,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                         sql_database.update_topic_content_time(id_local: id_local, time_input: time_input, id_server_input:id_server_input)
                         // 施工中
                     }
-                    else if msgData["receiver"] as? String == setID && msgData["sender"] as? String == clientID{
+                    else if msgData["receiver"] as? String == setID && msgData["sender"] as? String == clientID && msgData["topic_id"] as? String == topicId{
                         //別人說的話
                         get_history_new()
                         
