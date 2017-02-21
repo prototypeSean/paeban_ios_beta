@@ -545,6 +545,7 @@ class MyTopicTableViewModel{
             topicTitleData.lastSpeaker_detial = topicWithWhoId.1["last_speaker_name"] as? String
             topicTitleData.read_detial = topicWithWhoId.1["read"] as? Bool
             topicTitleData.time = time_transform_to_since1970(time_string: (topicWithWhoId.1["speak_time"] as! String))
+            topicTitleData.topicTitle_title = topicWithWhoId.1["topic_title"] as? String
             let last_speaker_id = topicWithWhoId.1["last_speaker_id"] as! String
             if last_speaker_id == userData.id{
                 topicTitleData.read_detial = true
