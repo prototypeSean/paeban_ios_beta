@@ -44,8 +44,10 @@ class HttpRequestCenter{
         let sendData = "mode=old;min_topic_id=\(topicIdToString)"
         let url = "https://www.paeban.com/topic_update/"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) -> Void in
-            let turnToType = self.topic_type(returnData as Dictionary<NSObject, AnyObject>)
-            topicData(turnToType)
+            if !returnData.isEmpty {
+                let turnToType = self.topic_type(returnData as Dictionary<NSObject, AnyObject>)
+                topicData(turnToType)
+            }
         }
         
     }
@@ -54,7 +56,9 @@ class HttpRequestCenter{
         let url = "https://www.paeban.com/topic_user_mode/"
         let sendData = "mode=check_user_mode;topic_id=\(topicId)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) in
-            InViewAct(returnData as Dictionary)
+            if !returnData.isEmpty {
+                InViewAct(returnData as Dictionary)
+            }
             
         }
     }
@@ -63,7 +67,9 @@ class HttpRequestCenter{
         let url = "https://www.paeban.com/topic_user_mode/"
         let sendData = "mode=get_topic_content_history;topic_receiver_id=\(topicReceiverId);topic_id=\(topicId)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) in
-            InViewAct(returnData as Dictionary)
+            if !returnData.isEmpty {
+                InViewAct(returnData as Dictionary)
+            }
         }
     }
     

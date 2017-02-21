@@ -707,7 +707,8 @@ public class SQL_center{
                 sender == userData.id! &&
                 receiver == receiver_input &&
                 is_read == false &&
-                topic_id == topic_id_obj
+                topic_id == topic_id_obj &&
+                id <= id_local_int!
             )
             try sql_db?.run(query2.update(is_read <- true))
 //            var receiver_input:String

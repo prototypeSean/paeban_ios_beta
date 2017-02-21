@@ -446,6 +446,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         ]
         HttpRequestCenter().request_user_data("get_last_read_id", send_dic: send_dic) { (return_dic) in
             let last_local_id = return_dic["last_read_id"]! as! String
+            print(last_local_id)
             if last_local_id != "0"{
                 sql_database.update_topic_content_read(id_local: last_local_id)
                 DispatchQueue.main.async {
