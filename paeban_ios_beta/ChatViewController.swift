@@ -100,6 +100,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             DispatchQueue.main.async {
                 self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
                 self.get_history_new()
+                self.get_last_read_id(topic_id_input: self.topicId!, client_id_input: self.clientID!)
             }
         }
         
@@ -338,6 +339,13 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             sql_database.update_topic_content_read(id_local: id_local_input)
             update_database()
         }
+        else if msgType == "enter_topic"{
+            let topic_id_input = msg["topic_id"] as! String
+            let client_id_input = msg["client_id"] as! String
+            if topic_id_input == topicId && client_id_input == clientID{
+                self.get_last_read_id(topic_id_input: topicId!, client_id_input: clientID!)
+            }
+        }
     
     }
     
@@ -385,6 +393,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             else if return_dic["result"] as! String == "no_new_data"{
                 DispatchQueue.main.async {
                     self.update_database()
+                    self.enter_topic_signal()
                 }
             }
             else if return_dic["result"] as! String == "success"{
@@ -396,6 +405,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 }
                 DispatchQueue.main.async {
                     self.update_database()
+                    self.enter_topic_signal()
                 }
             }
             
@@ -428,6 +438,31 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             }
             
         }
+    }
+    func get_last_read_id(topic_id_input:String, client_id_input:String){
+        let send_dic:Dictionary<String,String> = [
+            "topic_id":topic_id_input,
+            "client_id":client_id_input
+        ]
+        HttpRequestCenter().request_user_data("get_last_read_id", send_dic: send_dic) { (return_dic) in
+            let last_local_id = return_dic["last_read_id"]! as! String
+            if last_local_id != "0"{
+                sql_database.update_topic_content_read(id_local: last_local_id)
+                DispatchQueue.main.async {
+                    self.update_database()
+                }
+            }
+            
+        }
+        
+    }
+    func enter_topic_signal(){
+        let sen_dic:NSDictionary = [
+            "msg_type":"enter_topic",
+            "topic_id":topicId!,
+            "client_id":clientID!
+        ]
+        socket.write(data: json_dumps(sen_dic))
     }
     var aspectRatioConstraint: NSLayoutConstraint? {
         willSet {

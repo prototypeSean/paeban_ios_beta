@@ -64,7 +64,7 @@ open class webSocketActiveCenter{
     var wasd_ForTopicViewController:webSocketActiveCenterDelegate?
     let wasd_ForTopicViewControllerList = ["topic_msg","topic_closed","has_been_friend","has_been_block","leave_topic_master_client"]
     var wasd_ForChatViewController:webSocketActiveCenterDelegate?
-    let wasd_ForChatViewControllerList = ["topic_msg","topic_content_been_read"]
+    let wasd_ForChatViewControllerList = ["topic_msg","topic_content_been_read","enter_topic"]
     var wasd_ForMyTopicTableViewController:webSocketActiveCenterDelegate?
     let wasd_ForMyTopicTableViewControllerList = ["topic_msg","new_topic","has_been_friend", "topic_closed","off_line","new_member","friend_confirm","leave_topic_owner","leave_topic_master"]
     var wasd_ForRecentTableViewController:webSocketActiveCenterDelegate?
