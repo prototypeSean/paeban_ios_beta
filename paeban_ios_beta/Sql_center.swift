@@ -561,17 +561,19 @@ public class SQL_center{
                 //pass
             }
             else{
+                //new
                 var id_server_input:String?
                 var is_read_input:Bool?
                 var is_send_input:Bool?
                 var time_input:TimeInterval?
-                
+                var insert_switch = true
                 if topic_msg_type == "new_server_msg"{
                     id_server_input = input_dic["id_server"]! as? String
                     is_read_input = input_dic["is_read"]! as? Bool
                     is_send_input = true
                     let time_string = input_dic["time"]! as! String
                     time_input = time_transform_to_since1970(time_string:time_string)
+                    insert_switch = check_id_server(id_server_input: id_server_input!)
                 }
                 else{
                     // new_local_msg
@@ -580,18 +582,21 @@ public class SQL_center{
                     time_input = Date().timeIntervalSince1970
                     
                 }
-                let insert = topic_content.insert(
-                    topic_id <- input_dic["topic_id"]! as? String,
-                    topic_text <- input_dic["topic_content"]! as? String,
-                    sender <- input_dic["sender"]! as? String,
-                    receiver <- input_dic["receiver"]! as? String,
-                    time <- time_input,
-                    is_read <- is_read_input,
-                    is_send <- is_send_input,
-                    id_server <- id_server_input,
-                    battery <- input_dic["battery"] as? String
-                )
-                try sql_db!.run(insert)
+                if insert_switch{
+                    let insert = topic_content.insert(
+                        topic_id <- input_dic["topic_id"]! as? String,
+                        topic_text <- input_dic["topic_content"]! as? String,
+                        sender <- input_dic["sender"]! as? String,
+                        receiver <- input_dic["receiver"]! as? String,
+                        time <- time_input,
+                        is_read <- is_read_input,
+                        is_send <- is_send_input,
+                        id_server <- id_server_input,
+                        battery <- input_dic["battery"] as? String
+                    )
+                    try sql_db!.run(insert)
+                }
+                
                 //print("寫入資料成功")
             }
         }
@@ -600,6 +605,20 @@ public class SQL_center{
             print(error)
         }
         //self.print_all()
+    }
+    func check_id_server(id_server_input:String) -> Bool{
+        let query = topic_content.filter(id_server == id_server_input)
+        do{
+            let query_count = try sql_db?.scalar(query.count)
+            if query_count! > 0{
+                return false
+            }
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        return true
     }
     func print_all(){
         do{
@@ -683,6 +702,7 @@ public class SQL_center{
         
     }
     func update_topic_content_time(id_local:String,time_input:String,id_server_input:String){
+        print(id_local)
         do{
             let date = time_transform_to_since1970(time_string: time_input)
             let id_local_int = Int64(id_local)

@@ -721,7 +721,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                                          "string":searchBar.text!,
                                          "smallest_id":searchKeyAndState["smallest_id"]!!
             ]
-            
             socket.write(data:json_dumps(sendData))
         }
     }
