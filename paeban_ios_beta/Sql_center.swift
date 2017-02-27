@@ -704,6 +704,8 @@ public class SQL_center{
     func update_topic_content_time(id_local:String,time_input:String,id_server_input:String){
         print(id_local)
         do{
+            //let check_id_server = self.check_id_server(id_server_input: id_server_input)
+            
             let date = time_transform_to_since1970(time_string: time_input)
             let id_local_int = Int64(id_local)
             let query = topic_content.filter(id == id_local_int!)
@@ -730,7 +732,11 @@ public class SQL_center{
                 topic_id == topic_id_obj &&
                 id <= id_local_int!
             )
-            try sql_db?.run(query2.update(is_read <- true))
+            let query_count = try sql_db?.scalar(query2.count)
+            if query_count! > 0 {
+                try sql_db?.run(query2.update(is_read <- true))
+            }
+            
 //            var receiver_input:String
 //            for query_s in try sql_db!.prepare(query){
 //                receiver_input =

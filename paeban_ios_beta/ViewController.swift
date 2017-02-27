@@ -87,6 +87,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     let version = "1.0.2.14"
     let login_paeban_obj = login_paeban()
     var state_switch = true
+    var cookie_for_ws:String?
     // MARK:施工中
     let reset_database = false
     func create_data_base(){
@@ -163,6 +164,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             logInState = true
             cookie = setcookie
             socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            cookie_for_ws = cookie
             socket.headers["Cookie"] = cookie
             socket.delegate = self
             ws_connect_fun(socket)
@@ -256,6 +258,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             print("登入成功!!!")
             cookie = state
             socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            cookie_for_ws = cookie
             socket.headers["Cookie"] = cookie
             socket.delegate = self
             ws_connect_fun(socket)
@@ -305,6 +308,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             logInState = true
             cookie = setcookie
             socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            cookie_for_ws = cookie
             socket.headers["Cookie"] = cookie
             socket.delegate = self
             ws_connect_fun(socket)
@@ -366,12 +370,27 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         ws_stay_connect(socket)
     }
     func reConnect(){
-        print("reContenting...")
-        ws_connect_fun(socket)
-        if reConnectCount < 100{
-            wsTimer?.invalidate()
+        if socket.isConnected{
+            socket.disconnect()
         }
+        
+        print("reContenting...")
+        socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+        socket.headers["Cookie"] = cookie_for_ws
+        socket.delegate = self
+        ws_connect_fun(socket)
+//        if reConnectCount < 10000000{
+//            wsTimer?.invalidate()
+//        }
+        wsTimer?.invalidate()
     }
+//    func check_sql_state(){
+//        let send_dic = [
+//            "last_topic_local_id":"",
+//            "last_private_local_id":"",
+//        ]
+//        
+//    }
     public func websocketDidConnect(socket: WebSocket){
         
         socketState = true
@@ -381,6 +400,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         wsTimer = Timer.scheduledTimer(timeInterval: 45, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
         if firstConnect && logInState{
             ws_connected(socket)
+            //self.check_sql_state()
             print("connected")
             socket.write(data: json_dumps([
                 "msg_type": "check_version",

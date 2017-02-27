@@ -440,9 +440,15 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
     }
     func get_last_read_id(topic_id_input:String, client_id_input:String){
+        var init_sql_state = "0"
+        if init_sql{
+            init_sql_state = "1"
+            init_sql = false
+        }
         let send_dic:Dictionary<String,String> = [
             "topic_id":topic_id_input,
-            "client_id":client_id_input
+            "client_id":client_id_input,
+            "init_sql":init_sql_state
         ]
         HttpRequestCenter().request_user_data("get_last_read_id", send_dic: send_dic) { (return_dic) in
             let last_local_id = return_dic["last_read_id"]! as! String
