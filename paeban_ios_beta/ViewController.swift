@@ -374,7 +374,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             socket.disconnect()
         }
         
-        print("reContenting...")
+        print("reConnecting...")
         socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
         socket.headers["Cookie"] = cookie_for_ws
         socket.delegate = self
