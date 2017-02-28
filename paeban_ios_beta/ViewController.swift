@@ -184,7 +184,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             print(state)
         }
     }
-    func BtnOutlet()  {
+    func BtnOutlet(){
         fbButtonOutlet.layer.borderWidth = 1.2
         fbButtonOutlet.layer.cornerRadius = 2
         fbButtonOutlet.layer.borderColor = UIColor(red:0.24, green:0.35, blue:0.61, alpha:1.0).cgColor

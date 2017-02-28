@@ -506,9 +506,34 @@ public class SQL_center{
         
         do{
             try sql_db?.run(topic_content.drop())
+            
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
             try sql_db?.run(private_table.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
             try sql_db?.run(version_table.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
             try sql_db?.run(leave_topic.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
             try sql_db?.run(leave_topic_master.drop())
         }
         catch{
