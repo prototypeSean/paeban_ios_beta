@@ -40,6 +40,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     var myPhotoSave:UIImage?
     let myPhotoImg = UIImageView()
     var guestPhotoImg = UIImageView()
+    var get_client_img_timer:Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,13 +139,22 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         }
     }
     func get_client_img(owner:String,topic_id:String){
+        print("get_client_img")
         let httpSendDic = ["client_id":owner,
                            "topic_id":topic_id]
         HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
             DispatchQueue.main.async {
-                self.ownerImg = base64ToImage(returnData["data"] as! String)
+                let gttp_return_img = base64ToImage(returnData["data"] as! String)
+                self.ownerImg = gttp_return_img
+                self.guestPhotoImg.image = gttp_return_img
             }
         })
+        get_client_img_timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.check_client_img), userInfo: nil, repeats: false)
+    }
+    func check_client_img(){
+        if self.guestPhotoImg.image == nil{
+            get_client_img(owner: ownerId!, topic_id: topicId!)
+        }
     }
     func alertTopicClosed(){
         let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.alert)
