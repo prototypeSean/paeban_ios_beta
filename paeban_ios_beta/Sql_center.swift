@@ -551,7 +551,7 @@ public class SQL_center{
                 if count_id_server != 0{
                     return "old_data"
                 }
-                else if (count_id_local != 0 && input_dic["sender"] != nil && input_dic["sender"]! as! String != userData.id!){
+                else if (count_id_local != 0 && input_dic["sender"] != nil && input_dic["sender"]! as! String == userData.id!){
                     return "old_data"
                 }
                 return "new_server_msg"
