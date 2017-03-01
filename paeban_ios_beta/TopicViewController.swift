@@ -45,13 +45,14 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         super.viewDidLoad()
         wsActive.wasd_ForTopicViewController = self
         getHttpData()
-        get_client_img(owner: ownerId!, topic_id: topicId!)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         topicTitleContent.text = topicTitle
         check_is_friend()
+        get_client_img(owner: ownerId!, topic_id: topicId!)
     }
     override func viewDidDisappear(_ animated: Bool) {
         self.dismiss(animated: false, completion: nil)

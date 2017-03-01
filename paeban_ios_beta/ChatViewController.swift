@@ -312,12 +312,12 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                         //自己說的話
                         //可插入“移除送出中的符號”的code
                         //print(msg)
-                        // 施工中
+                        
                         let id_local = msgData["id_local"] as! String
                         let time_input = msgData["time"] as! String
                         let id_server_input = msgData["id_server"] as! String
                         sql_database.update_topic_content_time(id_local: id_local, time_input: time_input, id_server_input:id_server_input)
-                        // 施工中
+                        
                     }
                     else if msgData["receiver"] as? String == setID && msgData["sender"] as? String == clientID && msgData["topic_id"] as? String == topicId{
                         //別人說的話
