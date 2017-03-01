@@ -105,6 +105,11 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
                 else{
                     self.tabBar.items?[3].badgeValue = return_dic["friend_badge"] as? String
                 }
+                var tatal_badge = 0
+                tatal_badge += Int(return_dic["my_topic_badge"] as! String)!
+                tatal_badge += Int(return_dic["recent_badge"] as! String)!
+                tatal_badge += Int(return_dic["friend_badge"] as! String)!
+                app_instence?.applicationIconBadgeNumber = tatal_badge
             }
         }
     }
