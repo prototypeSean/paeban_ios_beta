@@ -9,66 +9,103 @@
 import UIKit
 import StoreKit
 
-class IAPurchaseViewController: UIViewController, SKProductsRequestDelegate {
-    var productIDs: Array<String> = []
-    var productsArray: Array<SKProduct> = []
+class IAPurchaseViewController: UIViewController ,SKProductsRequestDelegate, SKPaymentTransactionObserver{
+    let VERIFY_RECEIPT_URL = "https://buy.itunes.apple.com/verifyReceipt"
+    let ITMS_SANDBOX_VERIFY_RECEIPT_URL = "https://sandbox.itunes.apple.com/verifyReceipt"
     
+    let product_ids = ["vip_1_month","vip_3_month"]
+    var tableView = UITableView()
+    let productIdentifiers = Set(["vip_1_month","vip_3_month"])
+
+    var product: SKProduct?
+    var productsArray = Array<SKProduct>()
+    var productDict:NSMutableDictionary!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        productIDs.append("baeban_point_100")
-        requestProductInfo()
-        // Do any additional setup after loading the view.
+        SKPaymentQueue.default().add(self)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return productsArray.count
-    }
-    
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
-    
-    
-    
-    
-    
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        if response.products.count != 0 {
-            for product in response.products {
-                productsArray.append(product)
+    override func viewDidAppear(_ animated: Bool) {
+        DispatchQueue.global(qos: .background).async {
+            sleep(1)
+            DispatchQueue.main.async {
+                self.stt()
             }
-            print(productsArray)
-            //tblProducts.reloadData()
-        }
-        else {
-            print("There are no products.")
         }
     }
-    
-    func requestProductInfo() {
-        if SKPaymentQueue.canMakePayments() {
-            let productIdentifiers = NSSet(array: productIDs)
-            let productRequest = SKProductsRequest(productIdentifiers: productIdentifiers as! Set<String>)
-            
-            productRequest.delegate = self
-            productRequest.start()
+    func onSelectRechargePackages(productId: String){
+        //先判断是否支持内购
+        if(SKPaymentQueue.canMakePayments()){
+            buyProduct(product: productDict[productId] as! SKProduct)
         }
-        else {
-            print("Cannot perform In App Purchases.")
+        else{
+            print("============不支持内购功能")
         }
+        
     }
+    func buyProduct(product: SKProduct){
+        
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
+    }
+    func stt(){
+//        let productID:NSSet = NSSet(object: "vip_1_month")
+//        let productsRequest:SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>)
+//        productsRequest.delegate = self
+//        productsRequest.start()
+        print(SKPaymentQueue.canMakePayments())
+        let request = SKProductsRequest(productIdentifiers:
+            self.productIdentifiers)
+        request.delegate = self
+        request.start()
+        
+    }
+    func productsRequest (_ request: SKProductsRequest, didReceive response: SKProductsResponse){
+        for c in response.products{
+            print(c.productIdentifier)
+        }
+        if !response.invalidProductIdentifiers.isEmpty{
+            print("fail")
+            print(response.invalidProductIdentifiers)
+        }
+        print("===fin===")
+        print(request.debugDescription)
+        print(response.invalidProductIdentifiers)
+    }
+    func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!){
+    
+    }
+    func verifyPruchase(){}
+    func restorePurchase(){
+        SKPaymentQueue.default().restoreCompletedTransactions()
+    }
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]){}
     
     
-
+    func paymentQueue(_ queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]){}
+    
+    
+    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error){}
+    
+    
+    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue){}
+    
+    
+    
+    func paymentQueue(_ queue: SKPaymentQueue, updatedDownloads downloads: [SKDownload]){}
+    
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
