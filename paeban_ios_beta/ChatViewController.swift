@@ -156,7 +156,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 self.showResendBtn(
                     reSendContainer: cell.reloadBtnContainer,
                     reSendBtn: cell.reloadBTN,
-                    reSending: cell.reSending
+                    reSending: cell.reSending,
+                    reSendingText: cell.resendingText
                 )
             }
             func showResending_ins(){
@@ -203,10 +204,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         reSendingText.isHidden = true
     }
     
-    func showResendBtn(reSendContainer:UIView,reSendBtn:UIButton,reSending:UIActivityIndicatorView){
+    func showResendBtn(reSendContainer:UIView,reSendBtn:UIButton,reSending:UIActivityIndicatorView,reSendingText:UILabel){
         reSendContainer.isHidden = false
         reSendBtn.isHidden = false
         reSending.stopAnimating()
+        reSendingText.isHidden = true
     }
     
     func showResending(reSendContainer:UIView,reSendBtn:UIButton,reSending:UIActivityIndicatorView,reSendingText:UILabel){
