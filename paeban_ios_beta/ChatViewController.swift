@@ -216,8 +216,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     
     func showResending(reSendContainer:UIView,reSendBtn:UIButton,reSending:UIActivityIndicatorView,reSendingText:UILabel){
         reSendContainer.isHidden = false
-        reSendBtn.isHidden = false
-        //reSending.stopAnimating()
+        reSendBtn.isHidden = true
+        reSending.startAnimating()
         reSendingText.isHidden = false
     }
     
@@ -317,7 +317,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                         let id_local = msgData["id_local"] as! String
                         let time_input = msgData["time"] as! String
                         let id_server_input = msgData["id_server"] as! String
-                        //sql_database.update_topic_content_time(id_local: id_local, time_input: time_input, id_server_input:id_server_input)
+                        sql_database.update_topic_content_time(id_local: id_local, time_input: time_input, id_server_input:id_server_input)
                         sending_dic.removeValue(forKey: id_local)
                         
                     }
