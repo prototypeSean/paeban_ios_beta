@@ -314,7 +314,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                         let id_server_input = msgData["id_server"] as! String
                         sql_database.update_topic_content_time(id_local: id_local, time_input: time_input, id_server_input:id_server_input)
                         sending_dic.removeValue(forKey: id_local)
-                        
+                        self.update_database()
                     }
                     else if msgData["receiver"] as? String == setID && msgData["sender"] as? String == clientID && msgData["topic_id"] as? String == topicId{
                         //別人說的話
