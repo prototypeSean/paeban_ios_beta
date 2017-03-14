@@ -175,7 +175,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 reSendingText: cell.resendingText
             )
             //showResendBtn_ins()
-            let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
+            let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dismiss_keybroad))
             cell.addGestureRecognizer(tap_event)
             if message.show_resend_btn == true {
                 if message.is_resending == true {
@@ -196,7 +196,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 as! CustomMessagesCollectionViewCellIncoming
             
             cell.textView!.textColor = UIColor.white
-            let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
+            let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dismiss_keybroad))
             cell.addGestureRecognizer(tap_event)
             return cell
         }
@@ -224,11 +224,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
 //    func showResending(reSending:UIActivityIndicatorView) {
 //        reSending.isHidden = false
 //    }
-    func dissmis_leybroad(){
+    func dismiss_keybroad(){
         self.view.endEditing(true)
     }
     func add_tap(){
-        let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
+        let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dismiss_keybroad))
         self.view.addGestureRecognizer(tap_event)
     }
     func addMessage(_ id: String, text: String) {
