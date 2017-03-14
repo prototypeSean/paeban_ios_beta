@@ -150,7 +150,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             cell.reloadBtnContainer.backgroundColor = UIColor(red:0.99, green:0.38, blue:0.27, alpha:1.0)
             cell.reloadBtnContainer.isHidden = true
             func hideResendBtn_ins(){
-                self.hideResendBtn(reSendContainer: cell.reloadBtnContainer)
+                self.hideResendBtn(reSendContainer: cell.reloadBtnContainer, reSendingText: cell.resendingText)
             }
             func showResendBtn_ins(){
                 self.showResendBtn(
@@ -168,13 +168,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 )
             }
             
-//            self.showResending(
-//                reSendContainer: cell.reloadBtnContainer,
-//                reSendBtn: cell.reloadBTN,
-//                reSending: cell.reSending,
-//                reSendingText: cell.resendingText
-//            )
-            //showResendBtn_ins()
+
             let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dismiss_keybroad))
             cell.addGestureRecognizer(tap_event)
             if message.show_resend_btn == true {
@@ -204,8 +198,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     
     // MARK: 控制失敗重傳按鈕
-    func hideResendBtn(reSendContainer:UIView){
+    func hideResendBtn(reSendContainer:UIView,reSendingText:UILabel){
         reSendContainer.isHidden = true
+        reSendingText.isHidden = true
     }
     
     func showResendBtn(reSendContainer:UIView,reSendBtn:UIButton,reSending:UIActivityIndicatorView){
