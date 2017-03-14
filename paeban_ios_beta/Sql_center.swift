@@ -704,6 +704,9 @@ public class SQL_center{
                     "sender":query_s[sender]! as AnyObject,
                     "topic_content":query_s[topic_text]! as AnyObject,
                     "is_read":is_resd_input as AnyObject,
+                    "write_time":query_s[time] as AnyObject,
+                    "is_send":query_s[is_send] as AnyObject,
+                    "id_local":query_s[id] as AnyObject
                 ]
                 return_list.append(return_dic)
             }
@@ -717,6 +720,9 @@ public class SQL_center{
                     "sender":query_s[sender]! as AnyObject,
                     "topic_content":query_s[topic_text]! as AnyObject,
                     "is_read":is_resd_input as AnyObject,
+                    "write_time":query_s[time] as AnyObject,
+                    "is_send":query_s[is_send] as AnyObject,
+                    "id_local":query_s[id] as AnyObject
                     ]
                 return_list.append(return_dic)
             }

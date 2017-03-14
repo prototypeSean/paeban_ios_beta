@@ -9,29 +9,30 @@
 import UIKit
 import StoreKit
 
-class IAPurchaseViewController: UIViewController ,SKProductsRequestDelegate, SKPaymentTransactionObserver{
+class IAPurchaseViewController: UIViewController, UITableViewDataSource,UITableViewDelegate ,SKProductsRequestDelegate, SKPaymentTransactionObserver{
     let VERIFY_RECEIPT_URL = "https://buy.itunes.apple.com/verifyReceipt"
     let ITMS_SANDBOX_VERIFY_RECEIPT_URL = "https://sandbox.itunes.apple.com/verifyReceipt"
     
-    let product_ids = ["vip_1_month","vip_3_month"]
+    let product_ids:Array<String> = ["vip_1_month","vip_3_month"]
     var tableView = UITableView()
-    let productIdentifiers = Set(["vip_1_month","vip_3_month"])
+    
 
     var product: SKProduct?
     var productsArray = Array<SKProduct>()
     var productDict:NSMutableDictionary!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.bounds = self.view.bounds
+        tableView.center = self.view.center
+        tableView.backgroundColor = UIColor.blue
+        self.view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
         SKPaymentQueue.default().add(self)
     }
     override func viewDidAppear(_ animated: Bool) {
-        DispatchQueue.global(qos: .background).async {
-            sleep(1)
-            DispatchQueue.main.async {
-                self.stt()
-            }
-        }
+        self.request_product_list()
     }
     func onSelectRechargePackages(productId: String){
         //先判断是否支持内购
@@ -48,51 +49,108 @@ class IAPurchaseViewController: UIViewController ,SKProductsRequestDelegate, SKP
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)
     }
-    func stt(){
-//        let productID:NSSet = NSSet(object: "vip_1_month")
-//        let productsRequest:SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>)
-//        productsRequest.delegate = self
-//        productsRequest.start()
+    func request_product_list(){
         print(SKPaymentQueue.canMakePayments())
-        let request = SKProductsRequest(productIdentifiers:
-            self.productIdentifiers)
+        let productIdentifiers = Set(product_ids)
+        let request = SKProductsRequest(productIdentifiers: productIdentifiers)
         request.delegate = self
         request.start()
         
     }
-    func productsRequest (_ request: SKProductsRequest, didReceive response: SKProductsResponse){
-        for c in response.products{
-            print(c.productIdentifier)
+    func buyActions(selectedProduct:SKProduct) {
+        
+        let actionSheetController = UIAlertController(title: "確認購買", message: "購買\(selectedProduct.localizedTitle) ?", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        let buyAction = UIAlertAction(title: "Buy", style: UIAlertActionStyle.default) { (action) -> Void in
+            let payment = SKPayment(product: selectedProduct)
+            SKPaymentQueue.default().add(payment)
         }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { (action) -> Void in
+            
+        }
+        
+        actionSheetController.addAction(buyAction)
+        actionSheetController.addAction(cancelAction)
+        
+        present(actionSheetController, animated: true, completion: nil)
+    }
+    //delegate table view
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return productsArray.count
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80.0
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        
+        let product = productsArray[indexPath.row]
+        cell.textLabel?.text = product.localizedTitle
+        cell.detailTextLabel?.text = String(describing: product.price)
+        cell.backgroundColor = UIColor.red
+        return cell
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        buyActions(selectedProduct: productsArray[indexPath.row])
+    }
+    
+    //delegate in purchase
+    func productsRequest (_ request: SKProductsRequest, didReceive response: SKProductsResponse){
+        if !response.products.isEmpty{
+            print("請求產品成功")
+            for products_data in response.products{
+                productsArray.append(products_data)
+            }
+        }
+        
         if !response.invalidProductIdentifiers.isEmpty{
-            print("fail")
+            print("無效產品序號")
             print(response.invalidProductIdentifiers)
         }
-        print("===fin===")
-        print(request.debugDescription)
-        print(response.invalidProductIdentifiers)
+        self.tableView.reloadData()
     }
-    func paymentQueue(queue: SKPaymentQueue!, updatedTransactions transactions: [AnyObject]!){
     
-    }
     func verifyPruchase(){}
     func restorePurchase(){
         SKPaymentQueue.default().restoreCompletedTransactions()
     }
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]){}
-    
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]){
+        for transaction in transactions {
+            print("==========paymentQueue============")
+            switch transaction.transactionState {
+            case SKPaymentTransactionState.purchased:
+                print("Transaction completed successfully.")
+                SKPaymentQueue.default().finishTransaction(transaction)
+                
+                
+            case SKPaymentTransactionState.failed:
+                print("Transaction Failed");
+                SKPaymentQueue.default().finishTransaction(transaction)
+                
+            default:
+                print("==========paymentQueue============ffffff")
+            }
+            
+        }
+    }
     
     func paymentQueue(_ queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]){}
     
+    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error){
+        print("=========================================2")
+    }
     
-    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error){}
+    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue){
+        print("=========================================3")
+    }
     
-    
-    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue){}
-    
-    
-    
-    func paymentQueue(_ queue: SKPaymentQueue, updatedDownloads downloads: [SKDownload]){}
+    func paymentQueue(_ queue: SKPaymentQueue, updatedDownloads downloads: [SKDownload]){
+        print("=========================================4")
+    }
     
     
 }

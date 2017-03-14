@@ -34,6 +34,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     var topicId:String?
     var ownerId:String?
     var model:MyTopicTableViewModel?
+    var sending_dic:Dictionary<String,Int> = [:]
     
     //collectionView(_:attributedTextForMessageBubbleTopLabelAtIndexPath:)
     //MARK:讀入歷史訊息
@@ -167,16 +168,26 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 )
             }
             
-            // 你他媽只需要改 hideResendBtn showResendBtn showResending 就有三種顯示模式可以用
             self.showResending(
                 reSendContainer: cell.reloadBtnContainer,
                 reSendBtn: cell.reloadBTN,
                 reSending: cell.reSending,
                 reSendingText: cell.resendingText
             )
-            
+            //showResendBtn_ins()
             let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
             cell.addGestureRecognizer(tap_event)
+            if message.show_resend_btn == true {
+                if message.is_resending == true {
+                    showResending_ins()
+                }
+                else{
+                    showResendBtn_ins()
+                }
+            }
+            else{
+                hideResendBtn_ins()
+            }
             return cell
         }
             
@@ -203,10 +214,10 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     
     func showResending(reSendContainer:UIView,reSendBtn:UIButton,reSending:UIActivityIndicatorView,reSendingText:UILabel){
-        reSendContainer.isHidden = true
-        reSendBtn.isHidden = true
-        reSending.stopAnimating()
-        reSendingText.isHidden = true
+        reSendContainer.isHidden = false
+        reSendBtn.isHidden = false
+        //reSending.stopAnimating()
+        reSendingText.isHidden = false
     }
     
     
@@ -233,7 +244,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         return new_message_list
     }
     
-    //施工中
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAt indexPath: IndexPath!) -> NSAttributedString!{
         return NSAttributedString(string:"test========================")
     }
@@ -254,7 +264,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
         return nil
     }
-    //施工中
     
     
     //MARK:送出按鈕按下後
@@ -283,17 +292,20 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         let unsend_list = sql_database.get_unsend_topic_data(topic_id_input: topicId!, client_id: ownerId!)
         print("未送出！！！！",unsend_list)
         for unsend_list_s in unsend_list!{
+            sending_dic[unsend_list_s["id_local"] as! String] = Int(Date().timeIntervalSince1970)
+            reset_sending_dic_after_5_sec()
             socket.write(data: json_dumps(unsend_list_s))
+            reload_after_5_sec()
         }
-        
-        let data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!)
-        var new_message_list:Array<JSQMessage2> = []
-        for data_s in data_dic{
-            new_message_list.append(make_JSQMessage2(input_dic: data_s))
-        }
-        messages = new_message_list
-        
-        self.collectionView?.reloadData()
+        update_database()
+//        let data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!)
+//        var new_message_list:Array<JSQMessage2> = []
+//        for data_s in data_dic{
+//            new_message_list.append(make_JSQMessage2(input_dic: data_s))
+//        }
+//        messages = new_message_list
+//        
+//        self.collectionView?.reloadData()
         
         self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
 
@@ -316,7 +328,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                         let id_local = msgData["id_local"] as! String
                         let time_input = msgData["time"] as! String
                         let id_server_input = msgData["id_server"] as! String
-                        sql_database.update_topic_content_time(id_local: id_local, time_input: time_input, id_server_input:id_server_input)
+                        //sql_database.update_topic_content_time(id_local: id_local, time_input: time_input, id_server_input:id_server_input)
+                        sending_dic.removeValue(forKey: id_local)
                         
                     }
                     else if msgData["receiver"] as? String == setID && msgData["sender"] as? String == clientID && msgData["topic_id"] as? String == topicId{
@@ -504,18 +517,50 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingCellIdentifier)
         self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingMediaCellIdentifier)
     }
+    func reload_after_5_sec(){
+        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.update_database), userInfo: nil, repeats: false)
+    }
+    func reset_sending_dic_after_5_sec(){
+        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reset_sending_dic), userInfo: nil, repeats: false)
+    }
+    func reset_sending_dic(){
+        let time_now = Int(Date().timeIntervalSince1970)
+        for sending_dic_datas in sending_dic{
+            if sending_dic_datas.value - time_now >= 5 {
+                sending_dic.removeValue(forKey: sending_dic_datas.key)
+            }
+        }
+    }
+    func make_JSQMessage2(input_dic:Dictionary<String,AnyObject>) -> JSQMessage2{
+        let msgToJSQ = JSQMessage2(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["topic_content"] as? String)
+        msgToJSQ?.isRead = input_dic["is_read"] as? Bool
+        let is_send = input_dic["is_send"] as? Bool
+        let write_time = Int(input_dic["write_time"] as! Double)
+        let time_now = Int(Date().timeIntervalSince1970)
+        let id_local = String(describing: input_dic["id_local"] as! Int64)
+        if is_send == false && time_now - write_time >= 4 {
+            msgToJSQ?.show_resend_btn = true
+            if let _ = sending_dic.index(where: { (element) -> Bool in
+                if element.key == String(id_local) {
+                    return true
+                }
+                return false
+            }){
+                msgToJSQ?.is_resending = true
+            }
+        }
+        return msgToJSQ!
+    }
 }
-func make_JSQMessage2(input_dic:Dictionary<String,AnyObject>) -> JSQMessage2{
-    let msgToJSQ = JSQMessage2(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["topic_content"] as? String)
-    msgToJSQ?.isRead = input_dic["is_read"] as? Bool
-    return msgToJSQ!
-}
+
 
 
 class JSQMessage2:JSQMessage{
     var topicContentId:String?  //來自server定義的id
     var topicTempid:String? //臨時自定義id
     var isRead:Bool?
+    var show_resend_btn = false
+    var is_resending = false
 }
 
 
