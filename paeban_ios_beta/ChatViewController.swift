@@ -168,12 +168,12 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 )
             }
             
-            self.showResending(
-                reSendContainer: cell.reloadBtnContainer,
-                reSendBtn: cell.reloadBTN,
-                reSending: cell.reSending,
-                reSendingText: cell.resendingText
-            )
+//            self.showResending(
+//                reSendContainer: cell.reloadBtnContainer,
+//                reSendBtn: cell.reloadBTN,
+//                reSending: cell.reSending,
+//                reSendingText: cell.resendingText
+//            )
             //showResendBtn_ins()
             let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dismiss_keybroad))
             cell.addGestureRecognizer(tap_event)
@@ -188,6 +188,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             else{
                 hideResendBtn_ins()
             }
+            cell.chat_view_controller = self
             return cell
         }
             
@@ -288,16 +289,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             "battery": String(battery_val) as AnyObject
         ]
         sql_database.inser_date_to_topic_content(input_dic: dataDic)
-        
-        let unsend_list = sql_database.get_unsend_topic_data(topic_id_input: topicId!, client_id: ownerId!)
-        print("未送出！！！！",unsend_list)
-        for unsend_list_s in unsend_list!{
-            sending_dic[unsend_list_s["id_local"] as! String] = Int(Date().timeIntervalSince1970)
-            reset_sending_dic_after_5_sec()
-            socket.write(data: json_dumps(unsend_list_s))
-            reload_after_5_sec()
-        }
-        update_database()
+        send_all_msg()
 //        let data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!)
 //        var new_message_list:Array<JSQMessage2> = []
 //        for data_s in data_dic{
@@ -306,9 +298,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
 //        messages = new_message_list
 //        
 //        self.collectionView?.reloadData()
-        
-        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
-
     }
     // ws回傳信號
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
@@ -364,7 +353,17 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     
     func wsReconnected(){
     }
-    
+    func send_all_msg(){
+        let unsend_list = sql_database.get_unsend_topic_data(topic_id_input: topicId!, client_id: ownerId!)
+        for unsend_list_s in unsend_list!{
+            sending_dic[unsend_list_s["id_local"] as! String] = Int(Date().timeIntervalSince1970)
+            socket.write(data: json_dumps(unsend_list_s))
+        }
+        reset_sending_dic_after_5_sec()
+        reload_after_5_sec()
+        update_database()
+        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
+    }
     func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
         for resultDicData in resultDic{
             let resultDicDataVal = resultDicData.1 as! Dictionary<String,AnyObject>

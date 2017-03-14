@@ -115,6 +115,9 @@
                                         <real key="value" value="0.0"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="resend_action:" destination="23f-xH-rkY" eventType="touchUpInside" id="2zr-9m-4Mg"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.98823529409999999" green="0.37647058820000001" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>

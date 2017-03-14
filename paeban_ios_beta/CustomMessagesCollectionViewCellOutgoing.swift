@@ -10,6 +10,7 @@ import UIKit
 
 class CustomMessagesCollectionViewCellOutgoing: CustomMessagesCollectionViewCell {
     
+    var chat_view_controller:ChatViewController?
     
     @IBOutlet weak var reloadBTN: UIButton!
     
@@ -18,6 +19,13 @@ class CustomMessagesCollectionViewCellOutgoing: CustomMessagesCollectionViewCell
     @IBOutlet weak var resendingText: UILabel!
 
     @IBOutlet weak var reSending: UIActivityIndicatorView!
+
+    @IBAction func resend_action(_ sender: Any) {
+        if chat_view_controller != nil{
+            chat_view_controller?.send_all_msg()
+        }
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
