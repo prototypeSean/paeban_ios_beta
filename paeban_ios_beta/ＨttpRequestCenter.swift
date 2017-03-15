@@ -87,9 +87,7 @@ class HttpRequestCenter{
         let url = "https://www.paeban.com/topic_update/"
         let sendData = "mode=get_my_topic_title"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
-            if !returnDic.isEmpty{
-                InViewAct(returnDic)
-            }
+            InViewAct(returnDic)
         }
     }
     func get_my_topic_detail(_ topicId:String,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void) {
