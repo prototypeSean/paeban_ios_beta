@@ -522,7 +522,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     func reset_sending_dic(){
         let time_now = Int(Date().timeIntervalSince1970)
         for sending_dic_datas in sending_dic{
-            if sending_dic_datas.value - time_now >= 5 {
+            print(sending_dic_datas.value - time_now)
+            if time_now - sending_dic_datas.value >= 4 {
                 sending_dic.removeValue(forKey: sending_dic_datas.key)
             }
         }
