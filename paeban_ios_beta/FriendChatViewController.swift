@@ -20,7 +20,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     var clientName:String?
     var loadHistorySwitch = false
     var workList:Array<Dictionary<String,AnyObject>> = []
-    
+    var sending_dic:Dictionary<String,Int> = [:]
     
     
     //collectionView(_:attributedTextForMessageBubbleTopLabelAtIndexPath:)
@@ -123,6 +123,9 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //collectionView.register(UINib(nibName:"132"), forCellWithReuseIdentifier: "CustomMessagesCollectionViewCellOutgoing")
+        //tableView.register(UINib(nibName: "NameInput", bundle: nil), forCellReuseIdentifier: "Cell")
+        
         title = "好友"
         setupBubbles()
         //移除迴紋針按鈕
@@ -132,13 +135,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         senderId = setID
         senderDisplayName = setName
         
-        // No avatars
-        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
-        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
-        //      上面要留白多高
-        //      self.topContentAdditionalInset = 90
-        
-        //wsActive.wasd_ForChatViewController = self
+        dennis_kao_s_fucking_trash()
     }
     override func viewWillAppear(_ animated: Bool) {
         self.add_tap()
@@ -192,25 +189,68 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
-            as! JSQMessagesCollectionViewCell
-        
+
         let message = messages[(indexPath as NSIndexPath).item]
         
-        if message.senderId == senderId {
+        if message.senderId == senderId{
+            let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! CustomMessagesCollectionViewCellOutgoing
+            
+            func hideResendBtn(cell:CustomMessagesCollectionViewCellOutgoing){
+                cell.reloadBtnContainer.isHidden = true
+                cell.resendingText.isHidden = true
+            }
+            func showResendBtn(cell:CustomMessagesCollectionViewCellOutgoing){
+                cell.reloadBtnContainer.isHidden = false
+                cell.reloadBTN.isHidden = false
+                cell.reSending.stopAnimating()
+                cell.resendingText.isHidden = true
+            }
+            func showResending(cell:CustomMessagesCollectionViewCellOutgoing){
+                cell.reloadBtnContainer.isHidden = false
+                cell.reloadBTN.isHidden = true
+                cell.reSending.startAnimating()
+                cell.resendingText.isHidden = false
+            }
+
             cell.textView!.textColor = UIColor.white
-        } else {
+            if message.show_resend_btn == true {
+                if message.is_resending == true {
+                    showResending(cell: cell)
+                }
+                else{
+                    showResendBtn(cell: cell)
+                }
+            }
+            else{
+                hideResendBtn(cell: cell)
+            }
+            cell.frient_chat_view_controller = self
+            
+            let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
+            cell.addGestureRecognizer(tap_event)
+            
+            
+            
+            return cell
+        }
+        else{
+            let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
+                as! CustomMessagesCollectionViewCellIncoming
+            
             cell.textView!.textColor = UIColor.white
+            let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dismiss_keybroad))
+            cell.addGestureRecognizer(tap_event)
+            return cell
         }
         
-        let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
-        cell.addGestureRecognizer(tap_event)
         
-        return cell
+        
     }
     
     
-    
+    func dismiss_keybroad(){
+        self.view.endEditing(true)
+    }
     func addMessage(_ id: String, text: String) {
         let message = JSQMessage3(senderId: id, displayName: "", text: text)
         messages.append(message!)
@@ -229,7 +269,27 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
     }
-    
+    func dennis_kao_s_fucking_trash(){
+        // No avatars
+        self.collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
+        self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
+        //      上面要留白多高
+        //      self.topContentAdditionalInset = 90
+        wsActive.wasd_ForChatViewController = self
+        
+        //MARK: 跟自定義的泡泡關聯
+        self.outgoingCellIdentifier = CustomMessagesCollectionViewCellOutgoing.cellReuseIdentifier()
+        self.outgoingMediaCellIdentifier = CustomMessagesCollectionViewCellOutgoing.mediaCellReuseIdentifier()
+        
+        self.collectionView.register(CustomMessagesCollectionViewCellOutgoing.nib(), forCellWithReuseIdentifier: self.outgoingCellIdentifier)
+        self.collectionView.register(CustomMessagesCollectionViewCellOutgoing.nib(), forCellWithReuseIdentifier: self.outgoingMediaCellIdentifier)
+        
+        self.incomingCellIdentifier = CustomMessagesCollectionViewCellIncoming.cellReuseIdentifier()
+        self.incomingMediaCellIdentifier = CustomMessagesCollectionViewCellIncoming.mediaCellReuseIdentifier()
+        
+        self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingCellIdentifier)
+        self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingMediaCellIdentifier)
+    }
     
     //MARK:送出按鈕按下後
     override func didPressSend(_ button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: Date?) {
@@ -248,11 +308,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         ]
         sql_database.inser_date_to_private_msg(input_dic: dataDic)
         self.update_database()
-        if let send_list = sql_database.get_unsend_private_data(client_id: clientId!){
-            for send_data in send_list{
-                socket.write(data: json_dumps(send_data))
-            }
-        }
+        self.send_all_msg()
         
         
         
@@ -273,11 +329,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             for resultDic in resultDic_msg_id.values{
                 if (resultDic["sender_id"] as? String)! == userData.id!
                     && (resultDic["receiver_id"] as? String)! == clientId{
-
                     let id_local = resultDic["id_local"] as! String
                     let time_input = resultDic["time"] as! String
                     let id_server_input = resultDic["id_server"] as! String
                     sql_database.update_private_msg_time(id_local: id_local, time_input: time_input, id_server_input: id_server_input)
+                    sending_dic.removeValue(forKey: id_local)
+                    self.update_database()
                     //update_database()
                     //                if let _ = messages.index(where: { (msgTarget) -> Bool in
                     //                    if msgTarget.topicTempid! == msg["temp_priv_msg_id"] as? String{
@@ -489,9 +546,47 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
         return new_message_list
     }
+    func make_JSQMessage2(input_dic:Dictionary<String,AnyObject>) -> JSQMessage2{
+        let msgToJSQ = JSQMessage2(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["topic_content"] as? String)
+        msgToJSQ?.isRead = input_dic["is_read"] as? Bool
+        let is_send = input_dic["is_send"] as? Bool
+        let write_time = Int(input_dic["write_time"] as! Double)
+        let time_now = Int(Date().timeIntervalSince1970)
+        let id_local = String(describing: input_dic["id_local"] as! Int64)
+        if is_send == false && time_now - write_time >= 4 {
+            msgToJSQ?.show_resend_btn = true
+            if let _ = sending_dic.index(where: { (element) -> Bool in
+                if element.key == String(id_local) {
+                    return true
+                }
+                return false
+            }){
+                msgToJSQ?.is_resending = true
+            }
+        }
+        return msgToJSQ!
+    }
     func make_JSQMessage3(input_dic:Dictionary<String,AnyObject>) -> JSQMessage3{
         let msgToJSQ = JSQMessage3(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["private_text"] as? String)
         msgToJSQ?.isRead = input_dic["is_read"] as? Bool
+        let is_send = input_dic["is_send"] as? Bool
+        let write_time_db = input_dic["write_time"]!
+        let write_time_db2:Double = write_time_db as! Double
+        let write_time = Int(write_time_db2)
+        let time_now = Int(Date().timeIntervalSince1970)
+        let id_local_db = input_dic["id_local"]! as! Int64
+        let id_local = String(describing: id_local_db)
+        if is_send == false && time_now - write_time >= 4 {
+            msgToJSQ?.show_resend_btn = true
+            if let _ = sending_dic.index(where: { (element) -> Bool in
+                if element.key == String(id_local) {
+                    return true
+                }
+                return false
+            }){
+                msgToJSQ?.is_resending = true
+            }
+        }
         return msgToJSQ!
     }
     func scrollToBottom(){
@@ -522,6 +617,34 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
     }
+    func reload_after_5_sec(){
+        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.update_database), userInfo: nil, repeats: false)
+    }
+    func reset_sending_dic_after_5_sec(){
+        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reset_sending_dic), userInfo: nil, repeats: false)
+    }
+    func reset_sending_dic(){
+        let time_now = Int(Date().timeIntervalSince1970)
+        for sending_dic_datas in sending_dic{
+            if time_now - sending_dic_datas.value >= 4 {
+                sending_dic.removeValue(forKey: sending_dic_datas.key)
+            }
+        }
+    }
+    func send_all_msg(){
+        if let send_list = sql_database.get_unsend_private_data(client_id: clientId!){
+            for send_data in send_list{
+                sending_dic[send_data["id_local"] as! String] = Int(Date().timeIntervalSince1970)
+                print(send_data)
+                print("=====")
+                socket.write(data: json_dumps(send_data))
+            }
+        }
+        reset_sending_dic_after_5_sec()
+        reload_after_5_sec()
+        update_database()
+        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
+    }
     
 }
 
@@ -529,6 +652,8 @@ class JSQMessage3:JSQMessage{
     var topicId:String?  //來自server定義的id
     var topicTempid:String? //臨時自定義id
     var isRead:Bool?
+    var show_resend_btn = false
+    var is_resending = false
 }
 
 

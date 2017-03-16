@@ -413,10 +413,15 @@ public class SQL_center{
                 if query_s[is_read] != nil{
                     is_resd_input = query_s[is_read]!
                 }
+                let id_local:Int64 = query_s[id]
+                let write_time:Double = query_s[time]!
                 let return_dic:Dictionary<String,AnyObject> = [
                     "sender":query_s[sender]! as AnyObject,
                     "private_text":query_s[private_text]! as AnyObject,
                     "is_read":is_resd_input as AnyObject,
+                    "is_send":query_s[is_send] as AnyObject,
+                    "write_time":write_time as AnyObject,
+                    "id_local":id_local as AnyObject
                     ]
                 return_list.append(return_dic)
             }
@@ -426,10 +431,15 @@ public class SQL_center{
                 if query_s[is_read] != nil{
                     is_resd_input = query_s[is_read]!
                 }
+                let id_local:Int64 = query_s[id]
+                let write_time:Double = query_s[time]!
                 let return_dic:Dictionary<String,AnyObject> = [
                     "sender":query_s[sender]! as AnyObject,
                     "private_text":query_s[private_text]! as AnyObject,
                     "is_read":is_resd_input as AnyObject,
+                    "is_send":query_s[is_send] as AnyObject,
+                    "write_time":write_time as AnyObject,
+                    "id_local":id_local as AnyObject
                     ]
                 return_list.append(return_dic)
             }

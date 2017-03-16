@@ -100,7 +100,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         // MARK:"重置資料庫開關"
         
-        sql_database.print_all()
+        sql_database.print_all2()
         
     }
     
