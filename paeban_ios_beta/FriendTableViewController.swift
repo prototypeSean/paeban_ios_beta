@@ -141,9 +141,13 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         }
     }
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if model?.friendsList[indexPath.row].cell_type == "list"{
+            return false
+        }
         return true
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
         if model?.friendsList[indexPath.row].cell_type == "invite"{
             let ok_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "\u{2713}\n確認") { (UITableViewRowAction, IndexPath) in
                 self.friend_confirm(answer: "yes", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
@@ -161,14 +165,16 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             
             return [del_btn, ok_btn]
         }
-        else{
-            
+        else if model?.friendsList[indexPath.row].cell_type == "friend"{
             let delete_btn = UITableViewRowAction(style: .default, title: "刪除", handler: { (action, index_path) in
                 let friend_id = self.model?.friendsList[indexPath.row].id
                 self.send_server_delete_friend(friend_id: friend_id!)
                 self.model?.remove_friend(id: friend_id!)
             })
             return [delete_btn]
+        }
+        else{
+            return []
         }
     }
     

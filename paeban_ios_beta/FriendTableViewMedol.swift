@@ -16,10 +16,24 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         }
         set{
             myFriendsList = newValue
+//            var list:Array<String> = []
+//            for sss in newValue{
+//                if sss.name != nil{
+//                    list.append(sss.name!)
+//                }
+//                else{
+//                    list.append("title")
+//                }
+//                
+//            }
+//            print(list)
+//            print(invite_list)
+//            print("=====")
         }
     }
     var chat_view:FriendChatUpViewController?
     var invite_list:Array<FriendStanderType> = []
+    
     var friend_list_database:Array<FriendStanderType> = []
     
     func getDataCount() -> Int{
@@ -197,8 +211,9 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
 //                        self.replace_singel_cell_or_add(new_obj: cell_s)
 //                    }
 //                }
-                self.friendsList = return_list
-                self.targetVC.tableView.reloadData()
+                self.friend_list_database = return_list
+                self.updateModel()
+                //self.targetVC.tableView.reloadData()
             }
             
         }
