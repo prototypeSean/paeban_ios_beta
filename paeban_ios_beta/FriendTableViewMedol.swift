@@ -402,8 +402,9 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         if extend_btn_state == 1{
             if !self.invite_list.isEmpty{
                 add_list_extend_btn()
-                targetVC.tableView.reloadData()
             }
+            replace_friend_cell()
+            targetVC.tableView.reloadData()
         }
         else if extend_btn_state == 2{
             var new_friendsList = friendsList
