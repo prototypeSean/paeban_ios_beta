@@ -327,7 +327,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                         let topicIdS = Int(topicS.topicID)
                         minTopicId = min(minTopicId, topicIdS!)
                     }
-                    //print("最小ＩＤ\(String(minTopicId))")
+                    print("最小ＩＤ\(String(minTopicId))")
                     var temp_topic:[Topic]{
                         get{return []}
                         set{
@@ -339,6 +339,11 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                         }
                     }
                     self.httpOBJ.getOldTopic(minTopicId, topicData: { (temp_topic2) in
+                        var llll:Array<String> = []
+                        for c in temp_topic2{
+                            llll.append(c.topicID)
+                        }
+                        print(llll)
                         temp_topic = temp_topic2
                     })
                 }

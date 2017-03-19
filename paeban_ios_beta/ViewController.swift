@@ -11,7 +11,7 @@ import Starscream
 import FBSDKLoginKit
 import FBSDKCoreKit
 import FBSDKShareKit
-
+import CoreLocation
 
 // MARK:公用變數
 public var ssss:String?
@@ -84,12 +84,13 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var state_lable: UILabel!
     
     
-    let version = "1.1.3.1"
+    let version = "1.1.3.9"
     let login_paeban_obj = login_paeban()
     var state_switch = true
     var cookie_for_ws:String?
+    var location_manager:CLLocationManager?
     // MARK:施工中
-    let reset_database = false
+    let reset_database = true
     func create_data_base(){
         sql_database.connect_sql()
         let version_in_db = sql_database.load_version()
@@ -451,11 +452,40 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if let msgtype = msgPack["msg_type"] as? String{
             if msgtype == "update_version"{
                 let version_server = msgPack["version"]
-                let alert = UIAlertController(title: "更新通知", message: "版本 \(version_server!) 已發布，請盡快更新，您現在的版本是\(version)", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: { (action) in
-                    //pass
-                }))
-                self.present(alert, animated: true, completion: nil)
+                func turn_ver_to_list(ver:String)->Array<Int>{
+                    var result_list:Array<Int> = []
+                    var temp_chs:String = ""
+                    for chs in ver.characters{
+                        if chs != "."{
+                            temp_chs = "\(temp_chs)\(chs)"
+                        }
+                        else{
+                            result_list.append(Int(temp_chs)!)
+                            temp_chs = ""
+                        }
+                    }
+                    if temp_chs != ""{
+                        result_list.append(Int(temp_chs)!)
+                    }
+                    return result_list
+                }
+                func check_version(ver_local:String,ver_server:String){
+                    let ver_local_list = turn_ver_to_list(ver: ver_local)
+                    let ver_server_list = turn_ver_to_list(ver: ver_server)
+                    let list_len = ver_local_list.count
+                    for ver_list_index in 0..<list_len{
+                        if ver_server_list[ver_list_index] > ver_local_list[ver_list_index]{
+                            let alert = UIAlertController(title: "更新通知", message: "版本 \(version_server!) 已發布，請盡快更新，您現在的版本是\(version)", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "確認", style: .default, handler: { (action) in
+                                //pass
+                            }))
+                            self.present(alert, animated: true, completion: nil)
+                            break
+                        }
+                    }
+                }
+                check_version(ver_local:self.version , ver_server: version_server as! String)
+                
             }
         }
         

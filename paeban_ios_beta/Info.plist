@@ -6,6 +6,8 @@
 	<string>zh_TW</string>
 	<key>CFBundleDisplayName</key>
 	<string>漸漸</string>
+	<key>CFBundleDocumentTypes</key>
+	<array/>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
