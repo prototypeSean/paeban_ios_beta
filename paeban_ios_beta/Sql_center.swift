@@ -38,14 +38,76 @@ public class SQL_center{
     // leave_topic_master
     var leave_topic_master = Table("leave_topic_master")
     let client_id = Expression<String?>("client_id")
+    // black_list
+    let black_list_table = Table("black_list")
+    let username = Expression<String>("username")
+    // friend_list
+    let friend_list_table = Table("friend_list")
+    let friend_image = Expression<String?>("username")
+    let friend_image_file_name = Expression<String?>("username")
+    
     func establish_all_table(version:String){
         self.establish_version(version: version)
         self.establish_private_msg_table()
         self.establish_topic_content_table()
         self.establish_leave_topic_table()
         self.establish_leave_topic_master_table()
+        self.establish_black_list()
+        self.establish_friend_list()
     }
-    
+    func remove_all_table(){
+        
+        do{
+            try sql_db?.run(topic_content.drop())
+            
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
+            try sql_db?.run(private_table.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
+            try sql_db?.run(version_table.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
+            try sql_db?.run(leave_topic.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
+            try sql_db?.run(leave_topic_master.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
+            try sql_db?.run(friend_list_table.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
+            try sql_db?.run(black_list_table.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
     func connect_sql(){
         let urls = FileManager.default
             .urls(
@@ -63,6 +125,118 @@ public class SQL_center{
             print("資料庫連線失敗")
         }
     }
+    
+    // friend_list
+    func establish_friend_list(){
+        do{
+            try sql_db?.run(friend_list_table.create { t in
+                t.column(id, primaryKey: true)
+                t.column(username)
+                t.column(friend_image)
+                t.column(friend_image_file_name)
+            })
+            print("表單建立成功")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func insert_friend(username_in:String,img:String,img_name:String){
+        do{
+            let insert = friend_list_table.insert(
+                username <- username_in,
+                friend_image <- img,
+                friend_image_file_name <- img_name
+            )
+            try sql_db!.run(insert)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        
+    }
+    func check_friend_name(username_in:String) -> Bool{
+        do{
+            let query = friend_list_table.filter(
+                username == username_in
+            )
+            if (try sql_db?.scalar(query.count)) != nil{
+                return true
+            }
+            return false
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+            return false
+        }
+    }
+    func check_friend_image_name(username_in:String,img_name:String) -> Bool{
+        do{
+            let query = friend_list_table.filter(
+                username == username_in
+            )
+            let data = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            })
+            if data != nil{
+                let img_name_db = data?[friend_image_file_name]
+                if img_name_db == img_name{
+                    return true
+                }
+            }
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        return false
+    }
+    
+    // black_list
+    func establish_black_list(){
+        do{
+            try sql_db?.run(black_list_table.create { t in
+                t.column(id, primaryKey: true)
+                t.column(username)
+            })
+            print("表單建立成功")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func insert_black_list(username_in:String){
+        do{
+            let insert = black_list_table.insert(
+                username <- username_in
+            )
+            try sql_db!.run(insert)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func get_black_list() -> Array<String>{
+        var return_list:Array<String> = []
+        do{
+            for names in try sql_db!.prepare(black_list_table) {
+                return_list.append(names[username])
+            }
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        return return_list
+    }
+    
+    
+    
     // leave_topic
     func establish_leave_topic_table(){
         do{
@@ -207,29 +381,13 @@ public class SQL_center{
             print(error)
         }
     }
-    func print_all2(){
-        do{
-            for topic_c in try sql_db!.prepare(private_table) {
-                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]) ms: \(topic_c[private_text])")
-                // id: 1, email: alice@mac.com, name: Optional("Alice")
-            }
-            print("========")
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        
-        }
-    }
-    
-    // ***working
     func check_private_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
         if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
             if input_dic["id_local"] != nil && input_dic["id_local"]! as! String != "0"{
-//                let query = private_table.filter(
-//                    id == Int64(input_dic["id_local"]! as! String)! &&
-//                    sender == userData.id
-//                )
+                //                let query = private_table.filter(
+                //                    id == Int64(input_dic["id_local"]! as! String)! &&
+                //                    sender == userData.id
+                //                )
                 let query_server_id = private_table.filter(
                     id_server == input_dic["id_server"]! as? String
                 )
@@ -270,6 +428,23 @@ public class SQL_center{
             return "new_local_msg"
         }
     }
+    func print_all2(){
+        do{
+            for topic_c in try sql_db!.prepare(private_table) {
+                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]) ms: \(topic_c[private_text])")
+                // id: 1, email: alice@mac.com, name: Optional("Alice")
+            }
+            print("========")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        
+        }
+    }
+    
+    // ***working
+    
     
     // old_data
     // new_server_msg*
@@ -511,45 +686,6 @@ public class SQL_center{
             print(error)
         }
         
-    }
-    func remove_all_table(){
-        
-        do{
-            try sql_db?.run(topic_content.drop())
-            
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(private_table.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(version_table.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(leave_topic.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(leave_topic_master.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
     }
     func check_topic_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
         if (input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"){
@@ -867,7 +1003,6 @@ public class SQL_center{
             print(error)
         }
     }
-    
     func load_version() -> String?{
         let query = version_table.filter(id == 1)
         do{
@@ -882,6 +1017,7 @@ public class SQL_center{
         }
         return nil
     }
+    
 }
 
 
