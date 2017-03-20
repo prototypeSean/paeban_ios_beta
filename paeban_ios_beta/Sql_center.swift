@@ -44,7 +44,10 @@ public class SQL_center{
     // friend_list
     let friend_list_table = Table("friend_list")
     let friend_image = Expression<String?>("username")
-    let friend_image_file_name = Expression<String?>("username")
+    let friend_image_file_name = Expression<String?>("friend_image_file_name")
+    // mytopic
+    let my_topic = Table("my_topic")
+    let topic_title = Expression<String?>("topic_title")
     
     func establish_all_table(version:String){
         self.establish_version(version: version)
@@ -54,6 +57,7 @@ public class SQL_center{
         self.establish_leave_topic_master_table()
         self.establish_black_list()
         self.establish_friend_list()
+        self.establish_my_topic()
     }
     func remove_all_table(){
         
@@ -102,6 +106,13 @@ public class SQL_center{
         }
         do{
             try sql_db?.run(black_list_table.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        do{
+            try sql_db?.run(my_topic.drop())
         }
         catch{
             print("資料庫錯誤")
@@ -194,6 +205,17 @@ public class SQL_center{
         }
         return false
     }
+    func remove_friend(username_in:String){
+        do{
+            let query = friend_list_table.filter(username == username_in)
+            try sql_db!.run(query.delete())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        
+    }
     
     // black_list
     func establish_black_list(){
@@ -234,7 +256,32 @@ public class SQL_center{
         }
         return return_list
     }
+    func remove_black(username_in:String){
+        do{
+            let query = black_list_table.filter(username == username_in)
+            try sql_db!.run(query.delete())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
     
+    // mytopic
+    func establish_my_topic(){
+        do{
+            try sql_db?.run(my_topic.create { t in
+                t.column(id, primaryKey: true)
+                t.column(topic_title)
+                t.column(topic_id)
+            })
+            print("表單建立成功")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
     
     
     // leave_topic
