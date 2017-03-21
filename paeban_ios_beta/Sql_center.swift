@@ -410,14 +410,17 @@ public class SQL_center{
         let black_list:Array<String> = get_black_list()
         do{
             // 抓所有的MyTopic的topic_id
+            if userData.id != nil{
             for myTopId in myTopicIds{
                 let query = topic_content.filter(
                     topic_id == myTopId &&
+                    sender != userData.id &&
                     is_read == false &&
                     black_list.contains(username) == false
                 )
                 let query_count = try sql_db?.scalar(query.select(username.distinct).count)
                 return query_count!
+            }
             }
         }
         catch{
@@ -1182,15 +1185,18 @@ public class SQL_center{
         let myTopicIds:Array<String> = get_my_topics_server_id()
         let black_list:Array<String> = get_black_list()
         do{
+            if userData.id != nil{
             // 抓所有的recentTopic的topic_id  只是我的話題的反向布林操作
             for myTopId in myTopicIds{
                 let query = topic_content.filter(
                     topic_id != myTopId &&
-                        is_read == false &&
-                        black_list.contains(username) == false
+                    sender != userData.id &&
+                    is_read == false &&
+                    black_list.contains(username) == false
                 )
-                let query_count = try sql_db?.scalar(query.count)
+                let query_count = try sql_db?.scalar(query.select(username.distinct).count)
                 return query_count!
+            }
             }
         }
         catch{
