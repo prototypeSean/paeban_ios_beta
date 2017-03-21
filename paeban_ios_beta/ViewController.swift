@@ -52,6 +52,7 @@ public var open_app_frist = true
 public var app_instence:UIApplication?
 public var sql_database = SQL_center()
 public var init_sql = false
+public let image_url_host = "https://www.paeban.com/media/"
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
     @IBAction func loninBottom(_ sender: AnyObject) {
@@ -486,6 +487,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 }
                 check_version(ver_local:self.version , ver_server: version_server as! String)
                 
+            }
+            else if msgtype == "announcement"{
+                let text = msgPack["announcement"] as! String
+                let alert = UIAlertController(title: "公告", message: text, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
         }
         

@@ -199,24 +199,42 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         return returnDic
     }
     func getFrientList(){
-        let send_dic:NSDictionary = [
-            "none": "none"
-        ]
-        HttpRequestCenter().friend_function(msg_type: "get_friend_list", send_dic: send_dic) { (return_dic) in
-            DispatchQueue.main.async {
-                print("get_friend_list")
-                let return_list = turnToFriendStanderType_v2(friend_dic: return_dic)
-//                for cell_s in return_list{
-//                    if self.check_if_list_need_to_update_or_add(new_obj: cell_s) || true{
-//                        self.replace_singel_cell_or_add(new_obj: cell_s)
-//                    }
-//                }
-                self.friend_list_database = return_list
-                self.updateModel()
-                //self.targetVC.tableView.reloadData()
+        HttpRequestCenter().request_user_data("get_friend_list_v2", send_dic: [:], InViewAct: { (return_dic) in
+            var request_friend_detail_list:Array<String> = []
+            for friend_data in return_dic{
+                let value = friend_data.value as! Dictionary<String,String>
+                if sql_database.check_friend_id(username_in: friend_data.key){
+                    if !sql_database.check_friend_name(username_in: friend_data.key, user_full_name_in: value["user_full_name"]!){
+                        //update_user_full_name
+                    }
+                    if !sql_database.check_friend_image_name(username_in: friend_data.key, img_name: value["image_name"]!){
+                        self.updata_friend_img(username_in: friend_data.key, url: value["image_name"]!)
+                    }
+                    
+                }
+                else{
+                    request_friend_detail_list.append(friend_data.key)
+                }
+                //ask friend detail
             }
-            
+        })
+//        (msg_type: "get_friend_list", send_dic: [:]) { (return_dic) in
+//            DispatchQueue.main.async {
+//                let return_list = turnToFriendStanderType_v2(friend_dic: return_dic)
+//                self.friend_list_database = return_list
+//                self.updateModel()
+//                //self.targetVC.tableView.reloadData()
+//            }
+//            
+//        }
+    }
+    
+    func updata_friend_img(username_in:String,url:String){
+        HttpRequestCenter().getHttpImg("\(image_url_host)\(url)") { (img) in
+            let img_base64 = imageToBase64(image: img, optional: "withHeader")
+            sql_database.update_friend_img(username_in: username_in, img: img_base64, img_name: url)
         }
+        updateModel()
     }
     func check_if_list_need_to_update_or_add(new_obj:FriendStanderType) -> Bool{
         if let friend_cell_index = myFriendsList.index(where: {(element) -> Bool in

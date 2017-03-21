@@ -42,6 +42,7 @@ public class SQL_center{
     let black_list_table = Table("black_list")
     let username = Expression<String>("username")
     // friend_list
+    let user_full_name = Expression<String>("user_full_name")
     let friend_list_table = Table("friend_list")
     let friend_image = Expression<String?>("username")
     let friend_image_file_name = Expression<String?>("friend_image_file_name")
@@ -133,7 +134,6 @@ public class SQL_center{
         catch{
             print("資料庫錯誤")
             print(error)
-            print("資料庫連線失敗")
         }
     }
     
@@ -168,7 +168,32 @@ public class SQL_center{
         }
         
     }
-    func check_friend_name(username_in:String) -> Bool{
+    func update_friend_img(username_in:String,img:String,img_name:String){
+        do{
+            let query = friend_list_table.filter(username == username_in)
+            let update = query.update(
+                friend_image <- img,
+                friend_image_file_name <- img_name
+            )
+            try sql_db?.run(update)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func update_friend_full_name(username_in:String, user_full_name_in:String){
+        do{
+            let query = friend_list_table.filter(username == username_in)
+            let update = query.update(user_full_name <- user_full_name_in)
+            try sql_db?.run(update)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func check_friend_id(username_in:String) -> Bool{
         do{
             let query = friend_list_table.filter(
                 username == username_in
@@ -183,6 +208,25 @@ public class SQL_center{
             print(error)
             return false
         }
+    }
+    func check_friend_name(username_in:String, user_full_name_in:String) -> Bool{
+        do{
+            let query = friend_list_table.filter(
+                username == username_in
+            )
+            if let user_data = try sql_db?.prepare(query).first(where: { (roe) -> Bool in
+                return true
+            }){
+                if user_data[user_full_name] == user_full_name_in{
+                    return true
+                }
+            }
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        return false
     }
     func check_friend_image_name(username_in:String,img_name:String) -> Bool{
         do{
@@ -276,6 +320,46 @@ public class SQL_center{
                 t.column(topic_id)
             })
             print("表單建立成功")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func insert_my_topic(topic_title_in:String){
+        do{
+            let insert = my_topic.insert(topic_title <- topic_title_in)
+            try sql_db?.run(insert)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        
+    }
+    func update_my_topic(local_topic_id_in:String,topic_id_in:String){
+        do{
+            let query = my_topic.filter(id == Int64(Int(local_topic_id_in)!))
+            let update = query.update(topic_id <- topic_id_in)
+            try sql_db?.run(update)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func delete_my_topic(local_id:String?,topic_id_in:String?){
+        do{
+            if local_id != nil{
+                let query = my_topic.filter(id == Int64(Int(local_id!)!))
+                let del = query.delete()
+                try sql_db?.run(del)
+            }
+            else if topic_id_in != nil{
+                let query = my_topic.filter(topic_id == topic_id_in!)
+                let del = query.delete()
+                try sql_db?.run(del)
+            }
         }
         catch{
             print("資料庫錯誤")
@@ -1063,6 +1147,27 @@ public class SQL_center{
             return nil
         }
         return nil
+    }
+    
+    
+    func get_myTopic_badges(){
+        let sss:Array<String> = []
+        var return_list:Array<String> = []
+        do{
+            // 抓所有的MyTopic的topic_id
+            for myTopId in sss{
+                let query = topic_content.filter(
+                    topic_id == myTopId &&
+                    is_read == false
+                )
+                let query_count = try sql_db?.scalar(query.count)
+                
+                
+            }
+        }
+        catch{
+        
+        }
     }
     
 }
