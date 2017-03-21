@@ -332,7 +332,7 @@ public class SQL_center{
                     is_read == false &&
                     black_list.contains(username) == false
                 )
-                let query_count = try sql_db?.scalar(query.count)
+                let query_count = try sql_db?.scalar(query.select(username.distinct).count)
                 return query_count!
             }
         }
@@ -559,7 +559,7 @@ public class SQL_center{
                 is_read == false &&
                 black_list.contains(username) == false
                 )
-                let query_count = try sql_db?.scalar(query.count)
+                let query_count = try sql_db?.scalar(query.select(username.distinct).count)
                 return query_count!
             
                 }
@@ -827,7 +827,7 @@ public class SQL_center{
                     is_read == false &&
                     black_list.contains(username) == false
                 )
-                let query_count = try sql_db?.scalar(query.count)
+                let query_count = try sql_db?.scalar(query.select(username.distinct).count)
                 return query_count!
             }
         }
