@@ -960,7 +960,7 @@ public class SQL_center{
             print(error)
         }
     }
-    
+    // 檢查有沒有未送出的訊息然後一併送出
     func get_unsend_topic_data(topic_id_input:String,client_id:String) -> Array<NSDictionary>?{
         do{
             let query = topic_content.filter(topic_id == topic_id_input).filter(
