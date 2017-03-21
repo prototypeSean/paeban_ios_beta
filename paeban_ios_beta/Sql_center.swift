@@ -44,7 +44,7 @@ public class SQL_center{
     // friend_list
     let user_full_name = Expression<String>("user_full_name")
     let friend_list_table = Table("friend_list")
-    let friend_image = Expression<String?>("username")
+    let friend_image = Expression<String?>("friend_image")
     let friend_image_file_name = Expression<String?>("friend_image_file_name")
     // mytopic
     let my_topic = Table("my_topic")
@@ -146,7 +146,7 @@ public class SQL_center{
                 t.column(friend_image)
                 t.column(friend_image_file_name)
             })
-            print("表單建立成功")
+            print("表單建立成功friend_list_table")
         }
         catch{
             print("資料庫錯誤")
@@ -328,9 +328,9 @@ public class SQL_center{
             print(error)
         }
     }
-    func insert_my_topic(topic_title_in:String){
+    func insert_my_topic(topic_id_in:String){
         do{
-            let insert = my_topic.insert(topic_title <- topic_title_in)
+            let insert = my_topic.insert(topic_id <- topic_id_in)
             try sql_db?.run(insert)
         }
         catch{
@@ -689,8 +689,6 @@ public class SQL_center{
     func inser_date_to_private_msg(input_dic:Dictionary<String,AnyObject>){
         do{
             let topic_msg_type = check_private_msg_type2(input_dic: input_dic)
-            print("==============")
-            print(topic_msg_type)
             if topic_msg_type == "update_local"{
                 let id_local_input = Int64(input_dic["id_local"]! as! String)!
                 let query = private_table.filter(
@@ -1233,6 +1231,7 @@ public class SQL_center{
                 version_number <- version
             )
             try sql_db!.run(insert)
+            print("建立成功 version_table")
         }
         catch{
             print("資料庫錯誤")
@@ -1254,25 +1253,5 @@ public class SQL_center{
         return nil
     }
     
-    
-    func get_myTopic_badges(){
-        let sss:Array<String> = []
-        var return_list:Array<String> = []
-        do{
-            // 抓所有的MyTopic的topic_id
-            for myTopId in sss{
-                let query = topic_content.filter(
-                    topic_id == myTopId &&
-                    is_read == false
-                )
-                let query_count = try sql_db?.scalar(query.count)
-                
-                
-            }
-        }
-        catch{
-        
-        }
-    }
     
 }
