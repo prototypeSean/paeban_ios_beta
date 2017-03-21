@@ -42,8 +42,9 @@ public class SQL_center{
     let black_list_table = Table("black_list")
     let username = Expression<String>("username")
     // friend_list
+    let user_full_name = Expression<String>("user_full_name")
     let friend_list_table = Table("friend_list")
-    let friend_image = Expression<String?>("username")
+    let friend_image = Expression<String?>("friend_image")
     let friend_image_file_name = Expression<String?>("friend_image_file_name")
     // mytopic
     let my_topic = Table("my_topic")
@@ -133,7 +134,6 @@ public class SQL_center{
         catch{
             print("資料庫錯誤")
             print(error)
-            print("資料庫連線失敗")
         }
     }
     
@@ -146,18 +146,18 @@ public class SQL_center{
                 t.column(friend_image)
                 t.column(friend_image_file_name)
             })
-            print("表單建立成功")
+            print("表單建立成功friend_list_table")
         }
         catch{
             print("資料庫錯誤")
             print(error)
         }
     }
-    func insert_friend(username_in:String,img:String,img_name:String){
+    func insert_friend(username_in:String,user_full_name_in:String,img_name:String){
         do{
             let insert = friend_list_table.insert(
                 username <- username_in,
-                friend_image <- img,
+                user_full_name <- user_full_name_in,
                 friend_image_file_name <- img_name
             )
             try sql_db!.run(insert)
@@ -168,7 +168,32 @@ public class SQL_center{
         }
         
     }
-    func check_friend_name(username_in:String) -> Bool{
+    func update_friend_img(username_in:String,img:String,img_name:String){
+        do{
+            let query = friend_list_table.filter(username == username_in)
+            let update = query.update(
+                friend_image <- img,
+                friend_image_file_name <- img_name
+            )
+            try sql_db?.run(update)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func update_friend_full_name(username_in:String, user_full_name_in:String){
+        do{
+            let query = friend_list_table.filter(username == username_in)
+            let update = query.update(user_full_name <- user_full_name_in)
+            try sql_db?.run(update)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func check_friend_id(username_in:String) -> Bool{
         do{
             let query = friend_list_table.filter(
                 username == username_in
@@ -183,6 +208,25 @@ public class SQL_center{
             print(error)
             return false
         }
+    }
+    func check_friend_name(username_in:String, user_full_name_in:String) -> Bool{
+        do{
+            let query = friend_list_table.filter(
+                username == username_in
+            )
+            if let user_data = try sql_db?.prepare(query).first(where: { (roe) -> Bool in
+                return true
+            }){
+                if user_data[user_full_name] == user_full_name_in{
+                    return true
+                }
+            }
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        return false
     }
     func check_friend_image_name(username_in:String,img_name:String) -> Bool{
         do{
@@ -284,13 +328,53 @@ public class SQL_center{
             print(error)
         }
     }
+    func insert_my_topic(topic_id_in:String){
+        do{
+            let insert = my_topic.insert(topic_id <- topic_id_in)
+            try sql_db?.run(insert)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        
+    }
+    func update_my_topic(local_topic_id_in:String,topic_id_in:String){
+        do{
+            let query = my_topic.filter(id == Int64(Int(local_topic_id_in)!))
+            let update = query.update(topic_id <- topic_id_in)
+            try sql_db?.run(update)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func delete_my_topic(local_id:String?,topic_id_in:String?){
+        do{
+            if local_id != nil{
+                let query = my_topic.filter(id == Int64(Int(local_id!)!))
+                let del = query.delete()
+                try sql_db?.run(del)
+            }
+            else if topic_id_in != nil{
+                let query = my_topic.filter(topic_id == topic_id_in!)
+                let del = query.delete()
+                try sql_db?.run(del)
+            }
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
     
     // 取的所有的 BADGE 由三個分開的 func 整理成純文字
     func get_all_badges() -> Dictionary<String,String>{
         let friendBagdes = String(get_friend_badges())
         let myTopicBadges = String(get_myTopic_badges())
         let recentBadge = String(get_recent_badges())
-        var return_dic:Dictionary<String,String> = [
+        let return_dic:Dictionary<String,String> = [
             "my_topic_badge":myTopicBadges,
             "recent_badge":recentBadge,
             "friend_badge":friendBagdes
@@ -605,8 +689,6 @@ public class SQL_center{
     func inser_date_to_private_msg(input_dic:Dictionary<String,AnyObject>){
         do{
             let topic_msg_type = check_private_msg_type2(input_dic: input_dic)
-            print("==============")
-            print(topic_msg_type)
             if topic_msg_type == "update_local"{
                 let id_local_input = Int64(input_dic["id_local"]! as! String)!
                 let query = private_table.filter(
@@ -815,32 +897,6 @@ public class SQL_center{
             print(error)
         }
     }
-    // 取得進行中的badge
-    func get_recent_badges() -> Int{
-        let myTopicIds:Array<String> = get_my_topics_server_id()
-        let black_list:Array<String> = get_black_list()
-        do{
-            // 抓所有的recentTopic的topic_id  只是我的話題的反向布林操作
-            for myTopId in myTopicIds{
-                let query = topic_content.filter(
-                    topic_id != myTopId &&
-                    is_read == false &&
-                    black_list.contains(username) == false
-                )
-                let query_count = try sql_db?.scalar(query.select(username.distinct).count)
-                return query_count!
-            }
-        }
-        catch{
-            print("get_myTopic_badges錯誤")
-            print(error)
-            
-        }
-        return 0
-    }
-
-    
-    
     func check_topic_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
         if (input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"){
             let query_id_server = topic_content.filter(id_server == input_dic["id_server"]! as? String)
@@ -1121,6 +1177,30 @@ public class SQL_center{
         }
     }
     
+    // 取得進行中的badge
+    func get_recent_badges() -> Int{
+        let myTopicIds:Array<String> = get_my_topics_server_id()
+        let black_list:Array<String> = get_black_list()
+        do{
+            // 抓所有的recentTopic的topic_id  只是我的話題的反向布林操作
+            for myTopId in myTopicIds{
+                let query = topic_content.filter(
+                    topic_id != myTopId &&
+                        is_read == false &&
+                        black_list.contains(username) == false
+                )
+                let query_count = try sql_db?.scalar(query.count)
+                return query_count!
+            }
+        }
+        catch{
+            print("get_myTopic_badges錯誤")
+            print(error)
+            
+        }
+        return 0
+    }
+    
     // user_data
     func establish_userdata(){
         do{
@@ -1151,6 +1231,7 @@ public class SQL_center{
                 version_number <- version
             )
             try sql_db!.run(insert)
+            print("建立成功 version_table")
         }
         catch{
             print("資料庫錯誤")
@@ -1171,5 +1252,6 @@ public class SQL_center{
         }
         return nil
     }
+    
     
 }

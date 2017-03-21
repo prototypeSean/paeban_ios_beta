@@ -52,6 +52,7 @@ public var open_app_frist = true
 public var app_instence:UIApplication?
 public var sql_database = SQL_center()
 public var init_sql = false
+public let image_url_host = "https://www.paeban.com/media/"
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
     
     @IBAction func loninBottom(_ sender: AnyObject) {
@@ -84,7 +85,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var state_lable: UILabel!
     
     
-    let version = "1.1.3.2"
+    let version = "1.1.4.2"
     let login_paeban_obj = login_paeban()
     var state_switch = true
     var cookie_for_ws:String?
@@ -411,6 +412,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             firstActiveApp = false
             //self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             DispatchQueue.global(qos: .background).async {
+                self.update_database()
                 let time_init = Date()
                 while myFriendsList.isEmpty{
                     usleep(100)
@@ -487,6 +489,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 check_version(ver_local:self.version , ver_server: version_server as! String)
                 
             }
+            else if msgtype == "announcement"{
+                let text = msgPack["announcement"] as! String
+                let alert = UIAlertController(title: "公告", message: text, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
         
     }
@@ -547,7 +555,44 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         firstActiveApp = false
     }
-    
+    func update_database(){
+        var reset_db = "0"
+        if init_sql{
+            reset_db = "1"
+        }
+        let send_dic:Dictionary<String,String> = [
+            "init_sql":reset_db,
+            "last_topic_content_id":"0",
+            "last_private_id":"0"
+        ]
+        HttpRequestCenter().request_user_data("update_database", send_dic: send_dic) { (return_dic) in
+            init_sql = false
+            let topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
+            let private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
+            let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
+            let black_list_data = return_dic["black_list"] as! Array<String>
+            let my_topic_list = return_dic["my_topic_list"] as! Array<String>
+            for topic_content_data_s in topic_content_data{
+                sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
+            }
+            for private_msg_data_s in private_msg_data{
+                sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
+            }
+            for friends in friend_list_data{
+                sql_database.insert_friend(username_in: friends["user_id"]!, user_full_name_in: friends["user_full_name"]!, img_name: friends["img"]!)
+            }
+            for blacks in black_list_data{
+                sql_database.insert_black_list(username_in: blacks)
+            }
+            for my_topic_id_s in my_topic_list{
+                sql_database.insert_my_topic(topic_id_in: my_topic_id_s)
+            }
+            print("update_database  成功")
+            sql_database.print_all()
+            print("====================================")
+            sql_database.print_all2()
+        }
+    }
 }
 
 
