@@ -200,22 +200,28 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
     }
     func getFrientList(){
         HttpRequestCenter().request_user_data("get_friend_list_v2", send_dic: [:], InViewAct: { (return_dic) in
-            var request_friend_detail_list:Array<String> = []
+            var request_friend_detail_dic:Dictionary<String,String> = [:]
+            var update_seitch = false
             for friend_data in return_dic{
                 let value = friend_data.value as! Dictionary<String,String>
                 if sql_database.check_friend_id(username_in: friend_data.key){
                     if !sql_database.check_friend_name(username_in: friend_data.key, user_full_name_in: value["user_full_name"]!){
-                        //update_user_full_name
+                        sql_database.update_friend_full_name(username_in: friend_data.key, user_full_name_in: value["user_full_name"]!)
+                        update_seitch = true
                     }
                     if !sql_database.check_friend_image_name(username_in: friend_data.key, img_name: value["image_name"]!){
                         self.updata_friend_img(username_in: friend_data.key, url: value["image_name"]!)
                     }
-                    
                 }
                 else{
-                    request_friend_detail_list.append(friend_data.key)
+                    sql_database.insert_friend(username_in: friend_data.key, user_full_name_in: value["user_full_name"]!, img_name: value["image_name"]!)
+                    request_friend_detail_dic[friend_data.key] = value["image_name"]!
+                    self.updata_friend_img(username_in: friend_data.key, url: value["image_name"]!)
                 }
-                //ask friend detail
+                self.get_friend_detail(send_dic: request_friend_detail_dic)
+            }
+            if update_seitch{
+                self.updateModel()
             }
         })
 //        (msg_type: "get_friend_list", send_dic: [:]) { (return_dic) in
@@ -224,17 +230,24 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
 //                self.friend_list_database = return_list
 //                self.updateModel()
 //                //self.targetVC.tableView.reloadData()
-//            }
-//            
+//            }           
 //        }
     }
-    
+    func get_friend_detail(send_dic:Dictionary<String,String>){
+        HttpRequestCenter().request_user_data("get_friend_detail", send_dic: send_dic) { (return_dic) in
+            //code
+        }
+    }
     func updata_friend_img(username_in:String,url:String){
         HttpRequestCenter().getHttpImg("\(image_url_host)\(url)") { (img) in
             let img_base64 = imageToBase64(image: img, optional: "withHeader")
             sql_database.update_friend_img(username_in: username_in, img: img_base64, img_name: url)
+            DispatchQueue.main.async {
+                self.updateModel()
+            }
         }
-        updateModel()
+        
+        
     }
     func check_if_list_need_to_update_or_add(new_obj:FriendStanderType) -> Bool{
         if let friend_cell_index = myFriendsList.index(where: {(element) -> Bool in

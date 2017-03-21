@@ -153,11 +153,11 @@ public class SQL_center{
             print(error)
         }
     }
-    func insert_friend(username_in:String,img:String,img_name:String){
+    func insert_friend(username_in:String,user_full_name_in:String,img_name:String){
         do{
             let insert = friend_list_table.insert(
                 username <- username_in,
-                friend_image <- img,
+                user_full_name <- user_full_name_in,
                 friend_image_file_name <- img_name
             )
             try sql_db!.run(insert)
@@ -374,7 +374,7 @@ public class SQL_center{
         let friendBagdes = String(get_friend_badges())
         let myTopicBadges = String(get_myTopic_badges())
         let recentBadge = String(get_recent_badges())
-        var return_dic:Dictionary<String,String> = [
+        let return_dic:Dictionary<String,String> = [
             "my_topic_badge":myTopicBadges,
             "recent_badge":recentBadge,
             "friend_badge":friendBagdes
@@ -899,32 +899,6 @@ public class SQL_center{
             print(error)
         }
     }
-    // 取得進行中的badge
-    func get_recent_badges() -> Int{
-        let myTopicIds:Array<String> = get_my_topics_server_id()
-        let black_list:Array<String> = get_black_list()
-        do{
-            // 抓所有的recentTopic的topic_id  只是我的話題的反向布林操作
-            for myTopId in myTopicIds{
-                let query = topic_content.filter(
-                    topic_id != myTopId &&
-                    is_read == false &&
-                    black_list.contains(username) == false
-                )
-                let query_count = try sql_db?.scalar(query.count)
-                return query_count!
-            }
-        }
-        catch{
-            print("get_myTopic_badges錯誤")
-            print(error)
-            
-        }
-        return 0
-    }
-
-    
-    
     func check_topic_msg_type(input_dic:Dictionary<String,AnyObject>) -> String{
         if (input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"){
             let query_id_server = topic_content.filter(id_server == input_dic["id_server"]! as? String)
@@ -1203,6 +1177,30 @@ public class SQL_center{
             print(error)
             return "0"
         }
+    }
+    
+    // 取得進行中的badge
+    func get_recent_badges() -> Int{
+        let myTopicIds:Array<String> = get_my_topics_server_id()
+        let black_list:Array<String> = get_black_list()
+        do{
+            // 抓所有的recentTopic的topic_id  只是我的話題的反向布林操作
+            for myTopId in myTopicIds{
+                let query = topic_content.filter(
+                    topic_id != myTopId &&
+                        is_read == false &&
+                        black_list.contains(username) == false
+                )
+                let query_count = try sql_db?.scalar(query.count)
+                return query_count!
+            }
+        }
+        catch{
+            print("get_myTopic_badges錯誤")
+            print(error)
+            
+        }
+        return 0
     }
     
     // user_data
