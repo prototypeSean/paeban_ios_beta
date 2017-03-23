@@ -333,6 +333,47 @@ class RecentTableViewModel{
         self.delegate?.model_relodata()
     }
     
+    // 取得本機的最新資料用來更新「進行中」cell
+    func update_topic_content_id() ->Dictionary<String,AnyObject>{
+        let returnDic:Dictionary<String,AnyObject> = [:]
+        
+        return returnDic
+    }
+    func update_lastLine() ->Dictionary<String,AnyObject>{
+        let returnDic:Dictionary<String,AnyObject> = [:]
+        
+        return returnDic
+    }
+    func update_lastLine_speaker() ->Dictionary<String,AnyObject>{
+        let returnDic:Dictionary<String,AnyObject> = [:]
+        
+        return returnDic
+    }
+    func update_is_read() ->Dictionary<String,AnyObject>{
+        let returnDic:Dictionary<String,AnyObject> = [:]
+        
+        return returnDic
+    }
+    func update_time() ->Dictionary<String,AnyObject>{
+        let returnDic:Dictionary<String,AnyObject> = [:]
+        
+        return returnDic
+    }
+    func update_owner() ->Dictionary<String,AnyObject>{
+        let returnDic:Dictionary<String,AnyObject> = [:]
+        
+        return returnDic
+    }
+    func update_topicId_title() ->Dictionary<String,AnyObject>{
+        let returnDic:Dictionary<String,AnyObject> = [:]
+        
+        return returnDic
+    }
+
+    
+    
+    
+    
     // transform
     
     func transformStaticType(_ inputKey:String,inputData:Dictionary<String,AnyObject>){
