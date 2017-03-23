@@ -49,6 +49,7 @@ public class SQL_center{
     // mytopic
     let my_topic = Table("my_topic")
     let topic_title = Expression<String?>("topic_title")
+    let tags = Expression<String?>("tags")
     
     func establish_all_table(version:String){
         self.establish_version(version: version)
@@ -143,6 +144,7 @@ public class SQL_center{
             try sql_db?.run(friend_list_table.create { t in
                 t.column(id, primaryKey: true)
                 t.column(username)
+                t.column(user_full_name)
                 t.column(friend_image)
                 t.column(friend_image_file_name)
             })
@@ -269,6 +271,7 @@ public class SQL_center{
             try sql_db?.run(black_list_table.create { t in
                 t.column(id, primaryKey: true)
                 t.column(username)
+                t.column(is_send)
             })
             print("表單建立成功")
         }
@@ -288,6 +291,9 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
+    }
+    func insert_black_list_from_server(username_in:String){
+        
     }
     func get_black_list() -> Array<String>{
         var return_list:Array<String> = []
@@ -320,6 +326,8 @@ public class SQL_center{
                 t.column(id, primaryKey: true)
                 t.column(topic_title)
                 t.column(topic_id)
+                t.column(is_send)
+                t.column(tags)
             })
             print("表單建立成功")
         }
@@ -328,9 +336,13 @@ public class SQL_center{
             print(error)
         }
     }
-    func insert_my_topic(topic_id_in:String){
+    func insert_my_topic_from_server(topic_id_in:String,topic_title_in:String){
         do{
-            let insert = my_topic.insert(topic_id <- topic_id_in)
+            let insert = my_topic.insert(
+                topic_id <- topic_id_in,
+                topic_title <- topic_title_in,
+                is_send <- true
+            )
             try sql_db?.run(insert)
         }
         catch{
@@ -338,6 +350,40 @@ public class SQL_center{
             print(error)
         }
         
+    }
+    func insert_my_topic_from_local(topic_title_in:String,topic_tag_string_in:String) -> String?{
+        do{
+            let insert = my_topic.insert(
+                topic_title <- topic_title_in,
+                is_send <- false,
+                tags <- topic_tag_string_in
+            )
+            try sql_db!.run(insert)
+            let query = my_topic.order(id.desc).limit(1)
+            if let query_s = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            }){
+                return String(describing: query_s[id])
+            }
+            
+        }
+        catch{
+            print("sql error")
+            print(error)
+        }
+        return nil
+    }
+    func updata_my_topic_id(topic_id_in:String,id_local:String){
+        do{
+            let id_local_int = Int64(id_local)!
+            let query = my_topic.filter(id == id_local_int)
+            let update = query.update(topic_id <- topic_id_in)
+            try sql_db!.run(update)
+        }
+        catch{
+            print("sql error")
+            print(error)
+        }
     }
     func update_my_topic(local_topic_id_in:String,topic_id_in:String){
         do{
@@ -347,6 +393,15 @@ public class SQL_center{
         }
         catch{
             print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func delete_all_my_topic(){
+        do{
+            try sql_db!.run(my_topic.delete())
+        }
+        catch{
+            print("sql error")
             print(error)
         }
     }
@@ -367,6 +422,16 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
+    }
+    func check_old_topic_count() -> Int{
+        do{
+            return try sql_db!.scalar(my_topic.count)
+        }
+        catch{
+            print("database error")
+            print(error)
+        }
+        return 0
     }
     
     // 取的所有的 BADGE 由三個分開的 func 整理成純文字

@@ -85,7 +85,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var state_lable: UILabel!
     
     
-    let version = "1.1.4.2"
+    let version = "1.1.4.3"
     let login_paeban_obj = login_paeban()
     var state_switch = true
     var cookie_for_ws:String?
@@ -101,9 +101,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             sql_database.establish_all_table(version: version)
         }
         // MARK:"重置資料庫開關"
-        
-        sql_database.print_all2()
-        
     }
     
     
@@ -571,7 +568,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             let private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
             let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
             let black_list_data = return_dic["black_list"] as! Array<String>
-            let my_topic_list = return_dic["my_topic_list"] as! Array<String>
+            let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
             for topic_content_data_s in topic_content_data{
                 sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
             }
@@ -585,12 +582,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 sql_database.insert_black_list(username_in: blacks)
             }
             for my_topic_id_s in my_topic_list{
-                sql_database.insert_my_topic(topic_id_in: my_topic_id_s)
+                sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
+                
             }
-            print("update_database  成功")
-            sql_database.print_all()
-            print("====================================")
-            sql_database.print_all2()
         }
     }
 }

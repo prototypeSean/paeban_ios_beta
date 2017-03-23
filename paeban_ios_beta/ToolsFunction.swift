@@ -148,6 +148,43 @@ func regMatches(for regex: String, in text: String) -> [String] {
     }
 }
 
+// 提取話題標題
+func turn_full_title_to_title(input_full_title:String) -> String?{
+    let reg_tag = "#[a-zA-Z0-9\\u4e00-\\u9fa5Ａ-Ｚａ-ｚ０-９]+"
+    let tag_list = regMatches(for: reg_tag, in: input_full_title)
+    var result = input_full_title
+    for tags in tag_list{
+        result = result.replacingOccurrences(of: tags, with: "")
+    }
+    let resule_test = result.replacingOccurrences(of: " ", with: "")
+    if resule_test == ""{
+        return nil
+    }
+    return result
+}
+
+// 提取tag  以字串方式儲存到資料庫
+func turn_full_title_to_tag_save_type(input_full_title:String) -> String{
+    let reg_tag = "#[a-zA-Z0-9\\u4e00-\\u9fa5Ａ-Ｚａ-ｚ０-９]+"
+    let tag_list = regMatches(for: reg_tag, in: input_full_title)
+    var tag_save_string:String = ""
+    for tags in tag_list{
+        tag_save_string = "\(tag_save_string)\(tags)"
+    }
+    return tag_save_string
+}
+
+// 解析資料庫裡的tag
+func turn_tag_string_to_tag_list(tag_string:String) -> Array<String>{
+    let reg_tag = "#[a-zA-Z0-9\\u4e00-\\u9fa5Ａ-Ｚａ-ｚ０-９]+"
+    let tag_list = regMatches(for: reg_tag, in: tag_string)
+    var new_tag_list:Array<String> = []
+    for tags in tag_list{
+        new_tag_list.append(tags.replacingOccurrences(of: "#", with: ""))
+    }
+    return new_tag_list
+}
+
 //確認網路連線
 func isInternetAvailable() -> Bool{
     var zeroAddress = sockaddr_in()
