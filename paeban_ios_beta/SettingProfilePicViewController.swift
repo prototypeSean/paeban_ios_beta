@@ -8,20 +8,92 @@
 
 import UIKit
 
-class SettingProfilePicViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SettingProfilePicViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, UIAlertViewDelegate{
     var imageViewTemp:UIImageView?
 //    var imgView:UIImageView?
     
     let profilePicImg = UIImageView()
     
+    var picker:UIImagePickerController?=UIImagePickerController()
+    var popover:UIPopoverController?=nil
+    
     @IBOutlet weak var profilePicBtn: UIButton!
     @IBOutlet weak var profilePicShadow: UIView!
     @IBAction func change_btn(_ sender: AnyObject) {
-        addImgBtn()
+//        addImgBtn()
+        let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+//        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default)
+//        {
+//            UIAlertAction in
+//            self.openCamera()
+//            
+//        }
+        let gallaryAction = UIAlertAction(title: "Gallary", style: UIAlertActionStyle.default)
+        {
+            UIAlertAction in
+            self.openGallary()
+        }
+        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default)
+        {
+            UIAlertAction in
+            self.openCamera()
+            
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
+        {
+            UIAlertAction in
+            
+        }
+        
+        // Add the actions
+        picker?.delegate = self
+        picker!.allowsEditing = true
+        alert.addAction(cameraAction)
+        alert.addAction(gallaryAction)
+        alert.addAction(cancelAction)
+        // Present the controller
+        if UIDevice.current.userInterfaceIdiom == .phone
+        {
+            self.present(alert, animated: true, completion: nil)
+        }
+        else
+        {
+            
+            popover=UIPopoverController(contentViewController: alert)
+            popover!.present(from: self.view.frame, in: self.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
+        }
     }
+    func openGallary()
+    {
+        picker!.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        if UIDevice.current.userInterfaceIdiom == .phone
+        {
+            self.present(picker!, animated: true, completion: nil)
+        }
+        else
+        {
+            popover=UIPopoverController(contentViewController: picker!)
+            popover!.present(from: self.view.frame, in: self.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
+        }
+    }
+    func openCamera()
+    {
+        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.camera))
+        {
+            picker!.sourceType = UIImagePickerControllerSourceType.camera
+            self .present(picker!, animated: true, completion: nil)
+        }
+        else
+        {
+            openGallary()
+        }
+    }
+
     // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
+        picker!.delegate=self
     }
     override func viewDidLayoutSubviews() {
         setMyOldImg()
@@ -30,16 +102,21 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
     // MARK:internal func
     func addImgBtn(){
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+            
             //初始化图片控制器
             let picker = UIImagePickerController()
             //设置代理
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                picker.allowsEditing = false
+            } else {
+                picker.allowsEditing = true
+            }
             picker.delegate = self
             //设置媒体类型
             picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: UIImagePickerControllerSourceType.photoLibrary)!
             //指定图片控制器类型
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-            //设置是否允许编辑
-            picker.allowsEditing = true
+
             //弹出控制器，显示界面
             self.present(picker, animated: true, completion: {
                 () -> Void in
