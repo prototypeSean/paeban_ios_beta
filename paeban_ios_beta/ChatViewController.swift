@@ -293,7 +293,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     // websocket delegate
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
-        if msgType == "topic_msg"{
+        if msgType == "topic_msg" && false{
             let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
             updataNowTopicCellList(resultDic)
             if setID != nil && topicId != nil && clientID != nil{

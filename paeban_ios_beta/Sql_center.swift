@@ -725,9 +725,6 @@ public class SQL_center{
         }
         return 0
     }
-    
-
-    
     func check_private_msg_type2(input_dic:Dictionary<String,AnyObject>) -> String{
         if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
             let query_id_server = private_table.filter(id_server == input_dic["id_server"]! as? String)
@@ -938,7 +935,7 @@ public class SQL_center{
 
     
     
-    // topic func
+    // topic content func
     func establish_topic_content_table(){
         do{
             try sql_db?.run(topic_content.create { t in
@@ -1059,19 +1056,25 @@ public class SQL_center{
         case uncheck = 0
     }
     func insert_client_topic_content_from_server(input_dic:Dictionary<String,AnyObject>,check_state:Check_state){
-        
-//        let insert = topic_content.insert(
-//            topic_id <- input_dic["topic_id"]! as? String,
-//            topic_text <- input_dic["topic_content"]! as? String,
-//            sender <- input_dic["sender"]! as? String,
-//            receiver <- input_dic["receiver"]! as? String,
-//            time <- time_input,
-//            is_read <- is_read_input,
-//            is_send <- is_send_input,
-//            id_server <- id_server_input,
-//            battery <- input_dic["battery"] as? String
-//        )
-//        try sql_db!.run(insert)
+        do{
+            let time_in = time_transform_to_since1970(time_string: input_dic["time"]! as! String)
+            let insert = topic_content.insert(
+                topic_id <- input_dic["topic_id"]! as? String,
+                topic_text <- input_dic["topic_content"]! as? String,
+                sender <- input_dic["sender"]! as? String,
+                receiver <- input_dic["receiver"]! as? String,
+                time <- time_in,
+                is_read <- input_dic["is_read"] as? Bool,
+                is_send <- Bool(check_state.rawValue),
+                id_server <- input_dic["id_server"]! as? String
+                //battery <- input_dic["battery"] as? String
+            )
+            try sql_db!.run(insert)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
     }
     enum Topic_content_insert_option:String{
         case new_msg = "new_msg"
