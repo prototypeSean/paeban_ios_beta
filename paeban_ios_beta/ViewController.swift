@@ -409,7 +409,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             firstActiveApp = false
             //self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             DispatchQueue.global(qos: .background).async {
-                self.update_database()
+                if sql_database.check_database_is_empty(){
+                    self.update_database(reset_db: "1")
+                }
                 let time_init = Date()
                 while myFriendsList.isEmpty{
                     usleep(100)
@@ -552,11 +554,30 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         firstActiveApp = false
     }
-    func update_database(){
-        var reset_db = "0"
-        if init_sql{
-            reset_db = "1"
+    func add_loading_view() -> UIView?{
+        let nav = self.parent?.parent as? UITabBarController
+        if nav != nil{
+            let height = CGFloat(0 + (nav?.view.frame.height)!)
+            let load_view = UIView()
+            load_view.frame = CGRect(x:0, y: 0, width: self.view.frame.width, height: height)
+            load_view.backgroundColor = UIColor.gray
+            //self.view.addSubview(load_view)
+            let load_simbol = UIActivityIndicatorView()
+            load_simbol.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+            load_simbol.activityIndicatorViewStyle = .whiteLarge
+            load_view.alpha = 0.7
+            nav!.view.addSubview(load_view)
+            load_simbol.center = CGPoint(x: self.view.frame.width/2, y: height/2)
+            load_view.addSubview(load_simbol)
+            load_simbol.startAnimating()
+            return load_view
         }
+        return nil
+    }
+    func update_database(reset_db:String){
+        let lording_view = self.add_loading_view()
+        print(self.parent?.parent)
+        print("lording_view")
         let send_dic:Dictionary<String,String> = [
             "init_sql":reset_db,
             "last_topic_content_id":"0",

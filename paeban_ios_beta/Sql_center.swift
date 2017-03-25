@@ -121,6 +121,9 @@ public class SQL_center{
             print(error)
         }
     }
+    func check_database_is_empty() -> Bool{
+        return false
+    }
     func connect_sql(){
         let urls = FileManager.default
             .urls(
@@ -701,7 +704,6 @@ public class SQL_center{
         
         }
     }
-    // 取得好友的badge
     func get_friend_badges() -> Int{
         let black_list:Array<String> = get_black_list()
         do{
@@ -724,13 +726,7 @@ public class SQL_center{
         return 0
     }
     
-    // ***working
-    
-    
-    // old_data
-    // new_server_msg*
-    // update_local
-    // new_local_msg*
+
     
     func check_private_msg_type2(input_dic:Dictionary<String,AnyObject>) -> String{
         if input_dic["id_server"] != nil && input_dic["id_server"]! as! String != "0"{
@@ -939,7 +935,7 @@ public class SQL_center{
         }
         
     }
-    // ***working
+
     
     
     // topic func
@@ -1058,6 +1054,38 @@ public class SQL_center{
         }
         //self.print_all()
     }
+    enum Check_state:NSNumber{
+        case checked = 1
+        case uncheck = 0
+    }
+    func insert_client_topic_content_from_server(input_dic:Dictionary<String,AnyObject>,check_state:Check_state){
+        
+//        let insert = topic_content.insert(
+//            topic_id <- input_dic["topic_id"]! as? String,
+//            topic_text <- input_dic["topic_content"]! as? String,
+//            sender <- input_dic["sender"]! as? String,
+//            receiver <- input_dic["receiver"]! as? String,
+//            time <- time_input,
+//            is_read <- is_read_input,
+//            is_send <- is_send_input,
+//            id_server <- id_server_input,
+//            battery <- input_dic["battery"] as? String
+//        )
+//        try sql_db!.run(insert)
+    }
+    enum Topic_content_insert_option:String{
+        case new_msg = "new_msg"
+        case sended = "sended"
+        case readed = "readed"
+    }
+    func insert_self_topic_content(input_dic:Dictionary<String,AnyObject>,option:Topic_content_insert_option){
+        //Check_state = new_msg
+            //未送出,直接寫入資料庫
+        //Check_state = sended
+            //找到該條資料升級成已送出
+        //Check_state = readed
+            //找到該條資料升級成已讀
+    }
     func check_id_server(id_server_input:String) -> Bool{
         let query = topic_content.filter(id_server == id_server_input)
         do{
@@ -1084,7 +1112,11 @@ public class SQL_center{
             print(error)
         }
     }
-    // 檢查有沒有未送出的訊息然後一併送出
+        // 檢查有沒有未送出的訊息然後一併送出
+    func get_topic_content_last_checked_server_id() -> String{
+        //沒有救return0
+        return ""
+    }
     func get_unsend_topic_data(topic_id_input:String,client_id:String) -> Array<NSDictionary>?{
         do{
             let query = topic_content.filter(topic_id == topic_id_input).filter(
@@ -1244,8 +1276,6 @@ public class SQL_center{
             return "0"
         }
     }
-    
-    // 取得進行中的badge
     func get_recent_badges() -> Int{
         let myTopicIds:Array<String> = get_my_topics_server_id()
         let black_list:Array<String> = get_black_list()

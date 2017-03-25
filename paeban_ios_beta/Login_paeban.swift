@@ -128,7 +128,6 @@ class login_paeban{
                     let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
                     if ouput != "login_no"{
                         if let httpResponse = response as? HTTPURLResponse {
-                            print(httpResponse.allHeaderFields["Set-Cookie"])
                             if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
                                 //cookie = response_cookie
                                 self.delegate?.get_cookie_by_IDPW_report!(state: "login_yes", setcookie: response_cookie)

@@ -496,6 +496,7 @@ class MyTopicTableViewModel{
     }
     
         // ====data type transfer
+    //MARK: 轉換用函數
     private func transferToStandardType_title(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
         // return_dic = topic_id* -- topic_title : String
         //                        -- topics               -- topic_with_who_id* -- read:Bool

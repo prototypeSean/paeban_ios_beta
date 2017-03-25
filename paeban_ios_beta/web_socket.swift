@@ -44,9 +44,11 @@ func ws_connect_fun(_ ws:WebSocket){
 }
 
 
-public protocol webSocketActiveCenterDelegate{
+@objc public protocol webSocketActiveCenterDelegate{
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>)
     func wsReconnected()
+    @objc optional func new_my_topic_msg(sender:String, id_local:String)
+    @objc optional func new_client_topic_msg(sender:String)
 }
 
 public protocol webSocketActiveCenterDelegate_re{
@@ -97,26 +99,28 @@ open class webSocketActiveCenter{
                     HttpRequestCenter().getHttpImg(url){(img:UIImage) -> Void in
                         userData.img = img
                     }
-                    
                     //寫入好友清單
-                    let friends_id_list = msg["friends_id_list"] as! Array<String>
-                    let friends_name_list = msg["friends_name_list"] as! Array<String>
-                    let friends_pic_list = msg["friends_pic_list"] as! Array<String>
-                    let friends_sex_list = msg["friends_sex_list"] as! Array<String>
-                    let friends_isme_list = msg["friends_isme_list"] as! Array<Bool>
-                    let friends_online_list = msg["friends_online_list"] as! Array<Bool>
-                    if myFriendsList.isEmpty{
-                        for listIndex in 0 ..< friends_id_list.count{
-                            let insertObj = turnToFriendStanderType(
-                                friends_id_list[listIndex],
-                                name: friends_name_list[listIndex],
-                                sex: friends_sex_list[listIndex],
-                                isRealPhoto: friends_isme_list[listIndex],
-                                online: friends_online_list[listIndex],
-                                photoString: friends_pic_list[listIndex])
-                            myFriendsList.append(insertObj)
-                        }
-                    }
+//                    let friends_id_list = msg["friends_id_list"] as! Array<String>
+//                    let friends_name_list = msg["friends_name_list"] as! Array<String>
+//                    let friends_pic_list = msg["friends_pic_list"] as! Array<String>
+//                    let friends_sex_list = msg["friends_sex_list"] as! Array<String>
+//                    let friends_isme_list = msg["friends_isme_list"] as! Array<Bool>
+//                    let friends_online_list = msg["friends_online_list"] as! Array<Bool>
+//                    if myFriendsList.isEmpty{
+//                        for listIndex in 0 ..< friends_id_list.count{
+//                            let insertObj = turnToFriendStanderType(
+//                                friends_id_list[listIndex],
+//                                name: friends_name_list[listIndex],
+//                                sex: friends_sex_list[listIndex],
+//                                isRealPhoto: friends_isme_list[listIndex],
+//                                online: friends_online_list[listIndex],
+//                                photoString: friends_pic_list[listIndex])
+//                            myFriendsList.append(insertObj)
+//                        }
+//                    }
+                }
+                else if msgtypeString == "topic_msg"{
+                    
                 }
             }
             
@@ -163,7 +167,72 @@ open class webSocketActiveCenter{
         wasd_ForRecentTableViewController?.wsReconnected()
         wasd_ForMyTopicTableViewController?.wsReconnected()
     }
+    // internal func
+    func topic_msg_factory(msg:Dictionary<String,AnyObject>){
+        let resultDic:Dictionary<String,AnyObject> = msg["result_dic_v2"] as! Dictionary
+        if userData.id != nil{
+            let sender = resultDic["sender"] as! String
+            if sender == userData.id!{
+                // 自己說的
+                sql_database.insert_self_topic_content(input_dic: resultDic, option: .sended)
+                if wasd_ForChatViewController?.new_my_topic_msg != nil{
+                    // 為了移除送出中的清單
+                     wasd_ForChatViewController?.new_my_topic_msg!(
+                        sender: resultDic["sender"] as! String,
+                        id_local: resultDic["id_local"] as! String)
+                }
+               
+            }
+            else{
+                // 別人說的
+                let previous_receiver_topic_content_id = msg["previous_receiver_topic_content_id"] as! String
+                
+                let topic_content_last_checked_server_id = sql_database.get_topic_content_last_checked_server_id()
+                
+                if previous_receiver_topic_content_id == topic_content_last_checked_server_id{
+                    sql_database.insert_client_topic_content_from_server(input_dic: resultDic, check_state: .checked)
+                    if self.wasd_ForChatViewController?.new_client_topic_msg != nil{
+                        self.wasd_ForChatViewController?.new_client_topic_msg!(sender: sender)
+                    }
+                    
+                }
+                else{
+                    //跟server要
+                    if sql_database.check_database_is_empty(){
+                        //updatedatebase
+                    }
+                    else{
+                        self.update_topic_content_from_server(last_id: topic_content_last_checked_server_id, sender: sender)
+                    }
+                    
+                }
+            }
+        }
+        //update_recent
+    }
+    
+    func update_topic_content_from_server(last_id:String, sender:String){
+        let send_dic:Dictionary<String,AnyObject> = [
+            "last_id":last_id as AnyObject,
+        ]
+        
+        HttpRequestCenter().request_user_data_v2("update_topic_content", send_dic: send_dic) { (return_dic) in
+            if return_dic != nil{
+                let topic_content_list = return_dic!["topic_content_list"] as! Array<Dictionary<String,AnyObject>>
+                for topic_content_dic in topic_content_list{
+                    sql_database.insert_client_topic_content_from_server(input_dic: topic_content_dic, check_state: .checked)
+                }
+                if self.wasd_ForChatViewController?.new_client_topic_msg != nil{
+                    self.wasd_ForChatViewController?.new_client_topic_msg!(sender: sender)
+                }
+            }
+        }
+    }
+    
 }
+
+
+
 
 // MARK:接收封包資料結構
 
