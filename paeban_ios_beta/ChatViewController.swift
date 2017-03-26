@@ -348,7 +348,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
     }
     func new_my_topic_msg(sender: String, id_local: String) {
-        if sender == clientID{
+        if sender == userData.id{
             sending_dic.removeValue(forKey: id_local)
             self.update_database()
             

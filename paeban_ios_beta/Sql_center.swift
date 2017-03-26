@@ -122,7 +122,20 @@ public class SQL_center{
         }
     }
     func check_database_is_empty() -> Bool{
-        return false
+        do{
+            if try (sql_db?.scalar(my_topic.count))! > 0{
+                return false
+            }
+            else if try (sql_db?.scalar(private_table.count))! > 0{
+                return false
+            }
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        
+        return true
     }
     func connect_sql(){
         let urls = FileManager.default
@@ -1075,19 +1088,83 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
+        // MARK:test print
+        print_part_topic_content()
     }
     enum Topic_content_insert_option:String{
         case new_msg = "new_msg"
         case sended = "sended"
         case readed = "readed"
+        case server = "server"
     }
     func insert_self_topic_content(input_dic:Dictionary<String,AnyObject>,option:Topic_content_insert_option){
+        do{
+            if option.rawValue == "new_msg"{
+                let insert = topic_content.insert(
+                    topic_id <- input_dic["topic_id"]! as? String,
+                    topic_text <- input_dic["topic_content"]! as? String,
+                    sender <- input_dic["sender"]! as? String,
+                    receiver <- input_dic["receiver"]! as? String,
+                    time <- Date().timeIntervalSince1970,
+                    is_read <- false,
+                    is_send <- false,
+                    battery <- input_dic["battery"] as? String
+                )
+                try sql_db!.run(insert)
+            }
+            else if option.rawValue == "sended"{
+                let id_local_input = Int64(input_dic["id_local"]! as! String)!
+                print(id_local_input)
+                let query = topic_content.filter(
+                        id == id_local_input
+                )
+                let time_string = input_dic["time"]! as! String
+                let time_input = time_transform_to_since1970(time_string:time_string)
+                try sql_db?.run(query.update(
+                    time <- time_input,
+                    is_send <- true,
+                    id_server <- input_dic["id_server"]! as? String
+                ))
+            }
+            else if option.rawValue == "readed"{
+                let id_local_input = Int64(input_dic["id_local"]! as! String)!
+                let query = topic_content.filter(
+                    id == id_local_input
+                )
+                try sql_db?.run(query.update(
+                    is_read <- true
+                ))
+            }
+            else if option.rawValue == "server"{
+                let time_string = input_dic["time"]! as! String
+                let is_read_input = input_dic["is_read"]! as? Bool
+                let insert = topic_content.insert(
+                    topic_id <- input_dic["topic_id"]! as? String,
+                    topic_text <- input_dic["topic_content"]! as? String,
+                    sender <- input_dic["sender"]! as? String,
+                    receiver <- input_dic["receiver"]! as? String,
+                    time <- time_transform_to_since1970(time_string:time_string),
+                    is_read <- is_read_input,
+                    is_send <- true,
+                    battery <- input_dic["battery"] as? String,
+                    id_server <- input_dic["id_server"]! as? String
+                )
+                try sql_db!.run(insert)
+            }
+            
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
         //Check_state = new_msg
             //未送出,直接寫入資料庫
         //Check_state = sended
             //找到該條資料升級成已送出
         //Check_state = readed
             //找到該條資料升級成已讀
+        // MARK:test print
+        print_part_topic_content()
     }
     func check_id_server(id_server_input:String) -> Bool{
         let query = topic_content.filter(id_server == id_server_input)
@@ -1115,10 +1192,37 @@ public class SQL_center{
             print(error)
         }
     }
+    func print_part_topic_content(){
+        do{
+            let query = topic_content.order(id.desc).limit(3)
+            for topic_c in try sql_db!.prepare(query.order(id.asc)) {
+                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]), text: \(topic_c[topic_text]), time:\(topic_c[time])")
+            }
+            print("========")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
         // 檢查有沒有未送出的訊息然後一併送出
     func get_topic_content_last_checked_server_id() -> String{
-        //沒有救return0
-        return ""
+        do{
+            let query = topic_content.filter(
+                receiver == userData.id &&
+                id_server != nil).order(id.desc).limit(1)
+            if try sql_db?.scalar(query.count) != 0{
+                let last_id = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                    return true
+                })![id_server]!
+                return "\(last_id)"
+            }
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        return "0"
     }
     func get_unsend_topic_data(topic_id_input:String,client_id:String) -> Array<NSDictionary>?{
         do{

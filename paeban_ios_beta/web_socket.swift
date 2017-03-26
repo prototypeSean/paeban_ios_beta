@@ -58,7 +58,7 @@ public protocol webSocketActiveCenterDelegate_re{
 //MARK:webSocket 資料接收中心
 open class webSocketActiveCenter{
     
-    let mainWorkList = ["online","off_line","new_member","update_version"]
+    let mainWorkList = ["online","off_line","new_member","update_version","topic_msg"]
 
     var test_List = [""]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
@@ -120,7 +120,7 @@ open class webSocketActiveCenter{
 //                    }
                 }
                 else if msgtypeString == "topic_msg"{
-                    
+                    topic_msg_factory(msg: msg)
                 }
             }
             
@@ -188,7 +188,7 @@ open class webSocketActiveCenter{
                 let previous_receiver_topic_content_id = msg["previous_receiver_topic_content_id"] as! String
                 
                 let topic_content_last_checked_server_id = sql_database.get_topic_content_last_checked_server_id()
-                
+                print("id_pre_s: \(previous_receiver_topic_content_id) /// id_pre_l: \(topic_content_last_checked_server_id)")
                 if previous_receiver_topic_content_id == topic_content_last_checked_server_id{
                     sql_database.insert_client_topic_content_from_server(input_dic: resultDic, check_state: .checked)
                     if self.wasd_ForChatViewController?.new_client_topic_msg != nil{

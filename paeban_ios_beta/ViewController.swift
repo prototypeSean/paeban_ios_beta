@@ -575,7 +575,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         return nil
     }
     func update_database(reset_db:String){
-        let lording_view = self.add_loading_view()
+        let loading_view = self.add_loading_view()
         print(self.parent?.parent)
         print("lording_view")
         let send_dic:Dictionary<String,String> = [
@@ -591,7 +591,13 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             let black_list_data = return_dic["black_list"] as! Array<String>
             let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
             for topic_content_data_s in topic_content_data{
-                sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
+                if topic_content_data_s["sender"] as! String == userData.id{
+                    sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
+                }
+                else{
+                    sql_database.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
+                }
+                //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
             }
             for private_msg_data_s in private_msg_data{
                 sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
@@ -606,6 +612,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
                 
             }
+            sql_database.print_all()
         }
     }
 }
