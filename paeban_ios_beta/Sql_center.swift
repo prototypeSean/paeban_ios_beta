@@ -1205,6 +1205,7 @@ public class SQL_center{
             print(error)
         }
     }
+    
         // 檢查有沒有未送出的訊息然後一併送出
     func get_topic_content_last_checked_server_id() -> String{
         do{
