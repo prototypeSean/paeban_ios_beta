@@ -46,7 +46,7 @@ public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
 public var myFriendsList:Array<FriendStanderType> = [] //好友清單
 public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 public let notificationDelegateCenter_obj = NotificationDelegateCenter()
-public let locale_host = "https://www.paeban.com/"
+public let locale_host = "http://www.paeban.com:9000/"
 public var main_vc:ViewController?
 public var open_app_frist = true
 public var app_instence:UIApplication?
@@ -163,7 +163,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             firstActiveApp = false
             logInState = true
             cookie = setcookie
-            socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            socket = WebSocket(url: URL(string: "ws://www.paeban.com:9000/echo")!, protocols: ["chat", "superchat"])
             cookie_for_ws = cookie
             socket.headers["Cookie"] = cookie
             socket.delegate = self
@@ -257,7 +257,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if state != "login_no"{
             print("登入成功!!!")
             cookie = state
-            socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            socket = WebSocket(url: URL(string: "ws://www.paeban.com:9000/echo")!, protocols: ["chat", "superchat"])
             cookie_for_ws = cookie
             socket.headers["Cookie"] = cookie
             socket.delegate = self
@@ -307,7 +307,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         else if state == "login_yes"{
             logInState = true
             cookie = setcookie
-            socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            socket = WebSocket(url: URL(string: "ws://www.paeban.com:9000/echo")!, protocols: ["chat", "superchat"])
             cookie_for_ws = cookie
             socket.headers["Cookie"] = cookie
             socket.delegate = self
@@ -375,7 +375,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         
         print("reConnecting...")
-        socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+        socket = WebSocket(url: URL(string: "ws://www.paeban.com:9000/echo")!, protocols: ["chat", "superchat"])
         socket.headers["Cookie"] = cookie_for_ws
         socket.delegate = self
         ws_connect_fun(socket)

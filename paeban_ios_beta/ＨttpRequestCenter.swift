@@ -18,7 +18,7 @@ class HttpRequestCenter{
     var topic_list = [Topic]()
     
     func getTopic(_ topicData:@escaping ([Topic]) -> Void){
-        let url = "https://www.paeban.com/topic_update/"
+        let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=new"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) -> Void in
             let turnToType = self.topic_type(returnData as Dictionary<NSObject, AnyObject>)
@@ -27,7 +27,7 @@ class HttpRequestCenter{
     }
     
     func loginWithIPPW(id:String,pw:String){
-//        let url = "https://www.paeban.com/login_paeban/"
+//        let url = "http://www.paeban.com/login_paeban/"
 //        let sendDic:NSDictionary = ["username":id,"password":pw]
 //        let sendData = "data=\(json_dumps2(sendDic))"
 //        ajax(url, sendDate: sendData) { (returnData) -> Void in
@@ -42,7 +42,7 @@ class HttpRequestCenter{
     func getOldTopic(_ topicID:Int,topicData:@escaping ([Topic])->Void){
         let topicIdToString = String(topicID)
         let sendData = "mode=old;min_topic_id=\(topicIdToString)"
-        let url = "https://www.paeban.com/topic_update/"
+        let url = "http://www.paeban.com/topic_update/"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) -> Void in
             if !returnData.isEmpty {
                 let turnToType = self.topic_type(returnData as Dictionary<NSObject, AnyObject>)
@@ -53,7 +53,7 @@ class HttpRequestCenter{
     }
 
     func topicUserMode(_ topicId:String,InViewAct: @escaping (_ returnData2:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/topic_user_mode/"
+        let url = "http://www.paeban.com/topic_user_mode/"
         let sendData = "mode=check_user_mode;topic_id=\(topicId)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) in
             if !returnData.isEmpty {
@@ -64,7 +64,7 @@ class HttpRequestCenter{
     }
     
     func getTopicContentHistory(_ topicReceiverId:String,topicId:String,InViewAct: @escaping (_ returnData2:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/topic_user_mode/"
+        let url = "http://www.paeban.com/topic_user_mode/"
         let sendData = "mode=get_topic_content_history;topic_receiver_id=\(topicReceiverId);topic_id=\(topicId)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) in
             if !returnData.isEmpty {
@@ -74,7 +74,7 @@ class HttpRequestCenter{
     }
     
     func requestMyTopic(_ InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/topic_update/"
+        let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=request_my_topic"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
             if !returnDic.isEmpty{
@@ -84,14 +84,14 @@ class HttpRequestCenter{
     }
     
     func get_my_topic_title(_ InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/topic_update/"
+        let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=get_my_topic_title"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
             InViewAct(returnDic)
         }
     }
     func get_my_topic_detail(_ topicId:String,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void) {
-        let url = "https://www.paeban.com/topic_update/"
+        let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=get_my_topic_detail;topic_id=\(topicId)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
             if !returnDic.isEmpty{
@@ -106,7 +106,7 @@ class HttpRequestCenter{
         //           -- client_is_real_photo
         //           -- client_sex
         //           -- client_online
-        let url = "https://www.paeban.com/topic_update/"
+        let url = "http://www.paeban.com/topic_update/"
         let sendData = "mode=request_topic_msg_config;topic_id=\(topic_id);client_id=\(client_id);topic_content_id=\(topic_content_id)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
             if !returnDic.isEmpty{
@@ -117,7 +117,7 @@ class HttpRequestCenter{
     }
     
     func reconnect_check_my_table_view(_ send_dic:NSDictionary,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void) {
-        let url = "https://www.paeban.com/ws_reconnect/"
+        let url = "http://www.paeban.com/ws_reconnect/"
         let jsonData = json_dumps2(send_dic)
         let sendData = "mode=check_my_table_view;msg=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
@@ -128,7 +128,7 @@ class HttpRequestCenter{
     }
     
     func reconnect_update_new_user_data(_ send_dic:NSDictionary,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void) {
-        let url = "https://www.paeban.com/ws_reconnect/"
+        let url = "http://www.paeban.com/ws_reconnect/"
         let jsonData = json_dumps2(send_dic)
         let sendData = "mode=update_new_user_data;msg=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
@@ -139,7 +139,7 @@ class HttpRequestCenter{
     }
     
     func getBlurImg(_ send_dic:Dictionary<String,String>,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/request_user_data/"
+        let url = "http://www.paeban.com/request_user_data/"
         let jsonData = json_dumps2(send_dic as NSDictionary)
         let sendData = "mode=get_blur_image;msg=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
@@ -150,7 +150,7 @@ class HttpRequestCenter{
         
     }
     func sendSingData(send_dic:NSDictionary,inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/sing_in/"
+        let url = "http://www.paeban.com/sing_in/"
         let jsonData = json_dumps2(send_dic)
         let sendData = "mode=final_check;data=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
@@ -160,7 +160,7 @@ class HttpRequestCenter{
         }
     }
     func privacy_function(msg_type:String, send_dic:NSDictionary,inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/privacy_function/"
+        let url = "http://www.paeban.com/privacy_function/"
         let jsonData = json_dumps2(send_dic)
         let sendData = "msg_type=\(msg_type);data=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
@@ -170,7 +170,7 @@ class HttpRequestCenter{
         }
     }
     func friend_function(msg_type:String, send_dic:NSDictionary,inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/friend_function/"
+        let url = "http://www.paeban.com/friend_function/"
         let jsonData = json_dumps2(send_dic)
         let sendData = "msg_type=\(msg_type);data=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
@@ -181,7 +181,7 @@ class HttpRequestCenter{
     }
     
     func change_profile(send_dic:NSDictionary, inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/change_profile/"
+        let url = "http://www.paeban.com/change_profile/"
         var send_dic_string = ""
         for send_dic_s in send_dic{
             send_dic_string += "\(send_dic_s.key)=\(send_dic_s.value);"
@@ -193,7 +193,7 @@ class HttpRequestCenter{
     }
     
     func msg_func(msg_type:String, send_dic:NSDictionary,inViewAct:@escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/msg_func/"
+        let url = "http://www.paeban.com/msg_func/"
         let jsonData = json_dumps2(send_dic)
         let sendData = "msg_type=\(msg_type);data=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
@@ -204,7 +204,7 @@ class HttpRequestCenter{
     }
     
     func request_user_data(_ mode:String, send_dic:Dictionary<String,String>,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
-        let url = "https://www.paeban.com/request_user_data/"
+        let url = "http://www.paeban.com/request_user_data/"
         let jsonData = json_dumps2(send_dic as NSDictionary)
         let sendData = "mode=\(mode);msg=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
@@ -286,7 +286,7 @@ class HttpRequestCenter{
             //        print(isInternetAvailable())
             request.allHTTPHeaderFields = ["Cookie":cookie!]
             request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
-            request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
+            request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
             request.httpBody = sendDate.data(using: String.Encoding.utf8)
             let session = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
