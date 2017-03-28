@@ -122,7 +122,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     override func collectionView(_ collectionView: JSQMessagesCollectionView!,
                                  messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
-     
         if message.senderId == senderId { // 2
             return outgoingBubbleImageView
         } else { // 3
@@ -146,7 +145,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             // 重新傳送的按鈕一定要用 CustomMessagesCollectionViewCellOutgoing
             let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
                 as! CustomMessagesCollectionViewCellOutgoing
-            
+            cell.textView.textColor = UIColor.white
+            cell.textView.linkTextAttributes = [NSForegroundColorAttributeName : UIColor.white, NSUnderlineStyleAttributeName : NSUnderlineStyle.styleSingle.rawValue]
             cell.reloadBtnContainer.backgroundColor = UIColor(red:0.99, green:0.38, blue:0.27, alpha:1.0)
             cell.reloadBtnContainer.isHidden = true
             func hideResendBtn_ins(){
@@ -190,8 +190,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         else {
             let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
                 as! CustomMessagesCollectionViewCellIncoming
-            
-            cell.textView!.textColor = UIColor.white
+            cell.textView.textColor = UIColor.white
+            cell.textView.linkTextAttributes = [NSForegroundColorAttributeName : UIColor.white, NSUnderlineStyleAttributeName : NSUnderlineStyle.styleSingle.rawValue]
             let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dismiss_keybroad))
             cell.addGestureRecognizer(tap_event)
             return cell
