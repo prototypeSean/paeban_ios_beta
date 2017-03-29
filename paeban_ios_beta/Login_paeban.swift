@@ -21,7 +21,8 @@ class login_paeban{
     var delegate:login_paeban_delegate?
     var csrf_string = ""
     func get_cookie(){
-        let url = "https://www.paeban.com/register-by-token/facebook/\(fb_ssesion!)"
+        let url = "http://www.paeban.com/register-by-token/facebook/\(fb_ssesion!)"
+        print(url)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
         let session = URLSession.shared
@@ -51,12 +52,12 @@ class login_paeban{
     }
     
     func get_cookie_csrf(){
-        let url = "https://www.paeban.com/login_paeban/"
+        let url = "http://www.paeban.com/login_paeban/"
 
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
         
-        request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
+        request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
         let session = URLSession.shared
         
         let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
@@ -109,14 +110,14 @@ class login_paeban{
 //            print(cookie)
 //            print(getCSRFToken(cookie!)!)
 //            print("=====")
-            let url = "https://www.paeban.com/login_paeban/"
+            let url = "http://www.paeban.com/login_paeban/"
             let sendDic:NSDictionary = ["username":id,"password":pw]
             let sendData = "data=\(json_dumps2(sendDic)!)"
             var request = URLRequest(url: URL(string: url)!)
             request.httpMethod = "POST"
             request.httpBody = sendData.data(using: String.Encoding.utf8)
             request.allHTTPHeaderFields = ["Cookie":cookie!]
-            request.allHTTPHeaderFields = ["Referer":"https://www.paeban.com/"]
+            request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
             let csrf = getCSRFToken(cookie!)
             request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
             let session = URLSession.shared

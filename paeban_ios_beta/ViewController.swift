@@ -163,7 +163,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             firstActiveApp = false
             logInState = true
             cookie = setcookie
-            socket = WebSocket(url: URL(string: "ws://www.paeban.com:9000/echo")!, protocols: ["chat", "superchat"])
+            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["chat", "superchat"])
             cookie_for_ws = cookie
             socket.headers["Cookie"] = cookie
             socket.delegate = self
@@ -257,9 +257,20 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if state != "login_no"{
             print("登入成功!!!")
             cookie = state
-            socket = WebSocket(url: URL(string: "ws://www.paeban.com:9000/echo")!, protocols: ["chat", "superchat"])
+            print(cookie)
+            // ==========test============
+            let url = "http://www.paeban.com/http_test/"
+            let sss = "csrftoken=ieAeobncjMhMEtngISyUAXkO5R7V8ivfyDhi4jMamJcuy4nje8jXgbSqdDYM8Voh; sessionid=ds5u2ud1g4ofpkuhog56wvzeoaxzko4v;"
+            let sendData = ""
+            HttpRequestCenter().ajax2(url, sendDate: sendData, retryCount:1, cookie:sss) { (returnDic) in
+                if !returnDic.isEmpty{
+                    print(returnDic)
+                }
+            }
+            //===========test
+            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo")!)
             cookie_for_ws = cookie
-            socket.headers["Cookie"] = cookie
+            socket.headers["Cookie"] = sss
             socket.delegate = self
             ws_connect_fun(socket)
 //            DispatchQueue.main.async {
@@ -307,7 +318,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         else if state == "login_yes"{
             logInState = true
             cookie = setcookie
-            socket = WebSocket(url: URL(string: "ws://www.paeban.com:9000/echo")!, protocols: ["chat", "superchat"])
+            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
             cookie_for_ws = cookie
             socket.headers["Cookie"] = cookie
             socket.delegate = self
@@ -375,7 +386,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         
         print("reConnecting...")
-        socket = WebSocket(url: URL(string: "ws://www.paeban.com:9000/echo")!, protocols: ["chat", "superchat"])
+        socket = WebSocket(url: URL(string: "ws://www.paeban.comrun/echo")!, protocols: ["chat", "superchat"])
         socket.headers["Cookie"] = cookie_for_ws
         socket.delegate = self
         ws_connect_fun(socket)
@@ -419,7 +430,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     }
                 }
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+                    print(self.cookie_for_ws)
+                    //self.performSegue(withIdentifier: "segueToMainUI", sender: self)
                 }
                 if !notificationSegueInf.isEmpty{
                     DispatchQueue.main.async {
