@@ -291,6 +291,53 @@ func getClassName(classFullName:String) -> String{
     return className
 }
 
+public class Cookie_Data{
+    private var sessionid:String?
+    private var csrftoken:String?
+    
+    func set_cookie(cookie_in:String){
+        set_csrftoken(cookie_in: cookie_in)
+        set_sessionid(cookie_in: cookie_in)
+    }
+    func set_cookie_csrf(cookie_in:String){
+        set_csrftoken(cookie_in: cookie_in)
+    }
+    func get_cookie() -> String{
+        var return_str = ""
+        if self.csrftoken != nil{
+            return_str = "\(return_str)\(self.csrftoken!) "
+        }
+        if self.sessionid != nil{
+            return_str = "\(return_str)\(self.sessionid!) "
+        }
+        return return_str
+    }
+    
+    private func set_csrftoken(cookie_in:String){
+        let reg = "csrftoken=[\\S]+"
+        let output_list = regMatches(for: reg, in: cookie_in)
+        if output_list.count > 0{
+            var csrf = output_list[0]
+            let end_index = csrf.index(csrf.endIndex, offsetBy: -1)
+            if csrf[end_index] != ";"{
+                csrf = "\(csrf);"
+            }
+            self.csrftoken = csrf
+        }
+    }
+    private func set_sessionid(cookie_in:String){
+        let reg = "sessionid=[\\S]+"
+        let output_list = regMatches(for: reg, in: cookie_in)
+        if output_list.count > 0{
+            var sess = output_list[0]
+            let end_index = sess.index(sess.endIndex, offsetBy: -1)
+            if sess[end_index] != ";"{
+                sess = "\(sess);"
+            }
+            self.sessionid = sess
+        }
+    }
+}
 
 
 

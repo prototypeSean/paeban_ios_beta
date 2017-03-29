@@ -22,6 +22,7 @@ public var firstActiveApp = true // MARK:打包前改為 true*******************
 public var logInState = true    //記錄現在是否為登入狀態
 public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
 public var cookie:String?       //全域紀錄的餅乾
+public var cookie_new = Cookie_Data()
 public var notificationSegueInf:Dictionary<String,String> = [:]
 public var socketState = false  //socket是否連線中
 public struct setUserData{
@@ -255,27 +256,21 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     func get_cookie_login_report(state:String) {
         if state != "login_no"{
-            print("登入成功!!!")
             cookie = state
-            print(cookie)
+            cookie_new.set_cookie(cookie_in: state)
             // ==========test============
             let url = "http://www.paeban.com/http_test/"
-            let sss = "csrftoken=ieAeobncjMhMEtngISyUAXkO5R7V8ivfyDhi4jMamJcuy4nje8jXgbSqdDYM8Voh; sessionid=ds5u2ud1g4ofpkuhog56wvzeoaxzko4v;"
-            let sendData = ""
-            HttpRequestCenter().ajax2(url, sendDate: sendData, retryCount:1, cookie:sss) { (returnDic) in
+            HttpRequestCenter().ajax2(url, sendDate:"" , retryCount:1, cookie:cookie_new.get_cookie()) { (returnDic) in
                 if !returnDic.isEmpty{
                     print(returnDic)
                 }
             }
             //===========test
             socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo")!)
-            cookie_for_ws = cookie
-            socket.headers["Cookie"] = sss
+            cookie_for_ws = cookie_new.get_cookie()
+            socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
-//            DispatchQueue.main.async {
-//                self.show_items()
-//            }
         }
         else{
             self.show_items()
