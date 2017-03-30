@@ -94,11 +94,9 @@ class login_paeban{
     
     
     func get_cookie_by_IDPW(id:String,pw:String){
-        if cookie == nil || getCSRFToken(cookie!)! == ""{
-            get_cookie_csrf()
-        }
+        cookie_new.get_csrfToken()
         var timeLimit = 10000 //10s
-        while cookie == nil || getCSRFToken(cookie!)! == ""{
+        while cookie_new.get_cookie() == nil || cookie_new.get_csrfToken() == ""{
             usleep(10000) //10ms
             timeLimit -= 10
             if timeLimit < 0{
@@ -106,7 +104,7 @@ class login_paeban{
                 break
             }
         }
-        if cookie != nil && getCSRFToken(cookie!)! != ""{
+        if cookie_new.get_cookie() != nil && cookie_new.get_csrfToken() != ""{
 //            print(cookie)
 //            print(getCSRFToken(cookie!)!)
 //            print("=====")
@@ -116,9 +114,9 @@ class login_paeban{
             var request = URLRequest(url: URL(string: url)!)
             request.httpMethod = "POST"
             request.httpBody = sendData.data(using: String.Encoding.utf8)
-            request.allHTTPHeaderFields = ["Cookie":cookie!]
+            request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]
             request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
-            let csrf = getCSRFToken(cookie!)
+            let csrf = getCSRFToken(cookie_new.get_cookie())
             request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
             let session = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in

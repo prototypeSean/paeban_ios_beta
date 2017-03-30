@@ -21,7 +21,7 @@ public var firstConnect = true  //紀錄是否為登入後第一次連接websock
 public var firstActiveApp = true // MARK:打包前改為 true****************************
 public var logInState = true    //記錄現在是否為登入狀態
 public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
-public var cookie:String?       //全域紀錄的餅乾
+//public var cookie:String?       //全域紀錄的餅乾
 public var cookie_new = Cookie_Data()
 public var notificationSegueInf:Dictionary<String,String> = [:]
 public var socketState = false  //socket是否連線中
@@ -88,7 +88,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     let version = "1.1.5"
     let login_paeban_obj = login_paeban()
     var state_switch = true
-    var cookie_for_ws:String?
+//    var cookie_for_ws:String?
     // MARK:施工中
     let reset_database = false
     func create_data_base(){
@@ -163,16 +163,16 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if state == "login_yes"{
             firstActiveApp = false
             logInState = true
-            cookie = setcookie
+            cookie_new.set_cookie(cookie_in: setcookie)
             socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["chat", "superchat"])
-            cookie_for_ws = cookie
-            socket.headers["Cookie"] = cookie
+//            cookie_for_ws = cookie
+            socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
         }
         else if state == "login_no"{
             show_items()
-            cookie = setcookie
+            cookie_new.set_cookie(cookie_in: setcookie)
             if open_app_frist{
                 open_app_frist = false
                 DispatchQueue.main.async {
@@ -256,8 +256,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     func get_cookie_login_report(state:String) {
         if state != "login_no"{
-            cookie = state
+//            cookie_ = state
             cookie_new.set_cookie(cookie_in: state)
+            print(cookie_new.get_csrfToken())
             // ==========test============
             let url = "http://www.paeban.com/http_test/"
             HttpRequestCenter().ajax2(url, sendDate:"" , retryCount:1, cookie:cookie_new.get_cookie()) { (returnDic) in
@@ -267,7 +268,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             }
             //===========test
             socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo")!)
-            cookie_for_ws = cookie_new.get_cookie()
+//            cookie_for_ws = cookie_new.get_cookie()
             socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
@@ -312,10 +313,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         else if state == "login_yes"{
             logInState = true
-            cookie = setcookie
+            cookie_new.set_cookie(cookie_in: state)
             socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
-            cookie_for_ws = cookie
-            socket.headers["Cookie"] = cookie
+//            cookie_for_ws = cookie
+            socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
             
@@ -382,7 +383,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         
         print("reConnecting...")
         socket = WebSocket(url: URL(string: "ws://www.paeban.comrun/echo")!, protocols: ["chat", "superchat"])
-        socket.headers["Cookie"] = cookie_for_ws
+        socket.headers["Cookie"] = cookie_new.get_cookie()
         socket.delegate = self
         ws_connect_fun(socket)
 //        if reConnectCount < 10000000{
@@ -425,7 +426,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     }
                 }
                 DispatchQueue.main.async {
-                    print(self.cookie_for_ws)
+//                    print(self.cookie_for_ws)
                     //self.performSegue(withIdentifier: "segueToMainUI", sender: self)
                 }
                 if !notificationSegueInf.isEmpty{

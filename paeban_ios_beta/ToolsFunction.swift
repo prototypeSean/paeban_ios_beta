@@ -291,17 +291,20 @@ func getClassName(classFullName:String) -> String{
     return className
 }
 
+// 從原始的Cookie取得 csrf 跟 sessionid
 public class Cookie_Data{
     private var sessionid:String?
     private var csrftoken:String?
-    
+    // 取出 csrf 跟 sessionid
     func set_cookie(cookie_in:String){
         set_csrftoken(cookie_in: cookie_in)
         set_sessionid(cookie_in: cookie_in)
     }
+    // 更新 csrf
     func set_cookie_csrf(cookie_in:String){
         set_csrftoken(cookie_in: cookie_in)
     }
+    // 取得所有的 Cookie 值
     func get_cookie() -> String{
         var return_str = ""
         if self.csrftoken != nil{
@@ -312,7 +315,18 @@ public class Cookie_Data{
         }
         return return_str
     }
-    
+    // 取得csrfToken
+    func get_csrfToken() -> String{
+        if self.csrftoken != nil{
+            return self.csrftoken!
+        }
+        return ""
+    }
+    // 全部歸零
+    func zero_cookie(){
+        sessionid = nil
+        csrftoken = nil
+    }
     private func set_csrftoken(cookie_in:String){
         let reg = "csrftoken=[\\S]+"
         let output_list = regMatches(for: reg, in: cookie_in)
