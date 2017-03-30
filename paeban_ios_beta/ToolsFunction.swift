@@ -312,6 +312,19 @@ public class Cookie_Data{
         }
         return return_str
     }
+    func get_csrf() -> String{
+        if self.csrftoken != nil{
+            let csrf = self.csrftoken!
+            let sta = csrf.index(csrf.startIndex, offsetBy: 10)
+            let rag = sta..<csrf.characters.endIndex
+            return csrf.substring(with: rag)
+        }
+        return ""
+    }
+    func reset_cookie(){
+        self.csrftoken = nil
+        self.sessionid = nil
+    }
     
     private func set_csrftoken(cookie_in:String){
         let reg = "csrftoken=[\\S]+"

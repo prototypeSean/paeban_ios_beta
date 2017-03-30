@@ -91,7 +91,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         HttpRequestCenter().request_user_data("log_out", send_dic: [:]) { (element) in
             //nil
         }
-        cookie = nil
+        cookie_new.reset_cookie()
         myFriendsList = []
         logInState = false
         firstConnect = true

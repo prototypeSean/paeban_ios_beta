@@ -275,17 +275,13 @@ class HttpRequestCenter{
     }
     
     fileprivate func ajax(_ url:String, sendDate:String,retryCount:Int ,outPutDic:@escaping (Dictionary<String,AnyObject>) -> Void){
-        if cookie != nil{
+        if cookie_new.get_cookie() != ""{
             var ouput:String?
             var ouput_json = [String:AnyObject]()
             var request = URLRequest(url: URL(string: url)!)
             request.httpMethod = "POST"
-            let csrf = getCSRFToken(cookie!)
-            //        print("======cookie=======")
-            //        print(cookie)
-            //        print(isInternetAvailable())
-            request.allHTTPHeaderFields = ["Cookie":cookie!]
-            request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
+            request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]
+            request.allHTTPHeaderFields = ["X-CSRFToken":cookie_new.get_csrf()]
             request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
             request.httpBody = sendDate.data(using: String.Encoding.utf8)
             let session = URLSession.shared
@@ -393,13 +389,12 @@ class HttpRequestCenter{
     
     
     func getHttpImg(_ url:String,getImg:@escaping (_ img:UIImage)->Void){
-        if cookie != nil{
+        if cookie_new.get_cookie() != ""{
             var ouput:UIImage?
             var request = URLRequest(url: URL(string: url)!)
             request.httpMethod = "GET"
-            let csrf = getCSRFToken(cookie!)
-            request.allHTTPHeaderFields = ["Cookie":cookie!]
-            request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
+            request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]
+            request.allHTTPHeaderFields = ["X-CSRFToken":cookie_new.get_csrf()]
             let session = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
                 if error != nil{

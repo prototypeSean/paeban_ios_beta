@@ -94,11 +94,11 @@ class login_paeban{
     
     
     func get_cookie_by_IDPW(id:String,pw:String){
-        if cookie == nil || getCSRFToken(cookie!)! == ""{
+        if cookie_new.get_cookie() == "" || cookie_new.get_csrf() == ""{
             get_cookie_csrf()
         }
         var timeLimit = 10000 //10s
-        while cookie == nil || getCSRFToken(cookie!)! == ""{
+        while cookie_new.get_cookie() == "" || cookie_new.get_csrf() == ""{
             usleep(10000) //10ms
             timeLimit -= 10
             if timeLimit < 0{
@@ -106,7 +106,7 @@ class login_paeban{
                 break
             }
         }
-        if cookie != nil && getCSRFToken(cookie!)! != ""{
+        if cookie_new.get_cookie() != "" && cookie_new.get_csrf() != ""{
 //            print(cookie)
 //            print(getCSRFToken(cookie!)!)
 //            print("=====")
@@ -116,10 +116,9 @@ class login_paeban{
             var request = URLRequest(url: URL(string: url)!)
             request.httpMethod = "POST"
             request.httpBody = sendData.data(using: String.Encoding.utf8)
-            request.allHTTPHeaderFields = ["Cookie":cookie!]
+            request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]
             request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
-            let csrf = getCSRFToken(cookie!)
-            request.allHTTPHeaderFields = ["X-CSRFToken":csrf!]
+            request.allHTTPHeaderFields = ["X-CSRFToken":cookie_new.get_csrf()]
             let session = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
                 if error != nil{
@@ -129,7 +128,6 @@ class login_paeban{
                     let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
                     if ouput != "login_no"{
                         if let httpResponse = response as? HTTPURLResponse {
-                            print(httpResponse.allHeaderFields["Set-Cookie"])
                             if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
                                 //cookie = response_cookie
                                 self.delegate?.get_cookie_by_IDPW_report!(state: "login_yes", setcookie: response_cookie)
