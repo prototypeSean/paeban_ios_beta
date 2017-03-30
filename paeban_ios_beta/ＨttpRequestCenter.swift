@@ -52,16 +52,16 @@ class HttpRequestCenter{
         
     }
 
-    func topicUserMode(_ topicId:String,InViewAct: @escaping (_ returnData2:Dictionary<String,AnyObject>)->Void){
-        let url = "http://www.paeban.com/topic_user_mode/"
-        let sendData = "mode=check_user_mode;topic_id=\(topicId)"
-        ajax(url, sendDate: sendData, retryCount:5) { (returnData) in
-            if !returnData.isEmpty {
-                InViewAct(returnData as Dictionary)
-            }
-            
-        }
-    }
+//    func topicUserMode(_ topicId:String,InViewAct: @escaping (_ returnData2:Dictionary<String,AnyObject>)->Void){
+//        let url = "http://www.paeban.com/topic_user_mode/"
+//        let sendData = "mode=check_user_mode;topic_id=\(topicId)"
+//        ajax(url, sendDate: sendData, retryCount:5) { (returnData) in
+//            if !returnData.isEmpty {
+//                InViewAct(returnData as Dictionary)
+//            }
+//            
+//        }
+//    }
     
     func getTopicContentHistory(_ topicReceiverId:String,topicId:String,InViewAct: @escaping (_ returnData2:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/topic_user_mode/"
