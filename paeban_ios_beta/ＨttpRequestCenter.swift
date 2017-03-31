@@ -312,7 +312,7 @@ class HttpRequestCenter{
                             //print(response)
                         }
                         else{
-                            print(response)
+                            print("http state\(status)")
                             print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
                         }
                     }

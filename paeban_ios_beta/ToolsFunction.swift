@@ -308,7 +308,9 @@ public class Cookie_Data{
             return_str = "\(return_str)\(self.csrftoken!) "
         }
         if self.sessionid != nil{
-            return_str = "\(return_str)\(self.sessionid!) "
+            let ran = self.sessionid!.startIndex..<self.sessionid!.endIndex
+            let new_sess = self.sessionid!.substring(with: ran)
+            return_str = "\(return_str)\(new_sess)"
         }
         return return_str
     }
@@ -316,7 +318,7 @@ public class Cookie_Data{
         if self.csrftoken != nil{
             let csrf = self.csrftoken!
             let sta = csrf.index(csrf.startIndex, offsetBy: 10)
-            let rag = sta..<csrf.characters.endIndex
+            let rag = sta..<csrf.index(csrf.endIndex, offsetBy: -1)
             return csrf.substring(with: rag)
         }
         return ""
