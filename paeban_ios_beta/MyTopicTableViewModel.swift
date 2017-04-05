@@ -51,6 +51,7 @@ class MyTopicTableViewModel{
     }
     func update_title_cell(aftre_update:@escaping(_ title_cell_list:Array<MyTopicStandardType>)->Void){
         get_my_topic_title { (title_cell_list) in
+            
             if self.check_title_cell_is_need_update(check_data: title_cell_list){
                 for new_title_cell_s in title_cell_list{
                     self.replace_or_add_title_cell_with_new(new_title_cell: new_title_cell_s)

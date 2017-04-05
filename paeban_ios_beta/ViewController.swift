@@ -88,6 +88,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     let version = "1.1.5"
     let login_paeban_obj = login_paeban()
     var state_switch = true
+    var cookie_for_ws:String?
+    var location_manager:CLLocationManager?
     // MARK:施工中
     let reset_database = true
     func create_data_base(){
@@ -597,6 +599,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 sql_database.insert_black_list(username_in: blacks)
             }
             for my_topic_id_s in my_topic_list{
+                print("my_topic_id_s")
+                print(my_topic_id_s)
                 sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
                 
             }

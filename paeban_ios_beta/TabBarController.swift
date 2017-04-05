@@ -43,8 +43,6 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
                     switch pageInt {
                     case 1:
                         let target_VC_transform = target_VC as! MyTopicTableViewController
-                        
-                        
                         target_VC_transform.autoLeap(segeu_data: segueInf)
                     case 2:
                         let target_VC_transform = target_VC as! RecentTableViewController

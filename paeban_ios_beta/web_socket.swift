@@ -119,6 +119,9 @@ open class webSocketActiveCenter{
 //                        }
 //                    }
                 }
+                else if msgtypeString == "topic_msg"{
+                    topic_msg_factory(msg: msg)
+                }
             }
             
             if wsad_ForTopicTableViewControllerList.index(of: msgtypeString) != nil {

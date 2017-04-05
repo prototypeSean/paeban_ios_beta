@@ -463,18 +463,17 @@ public class SQL_center{
         return return_dic
     }
     
-    
     // 取得自己的話題在伺服器上的id
     func get_my_topics_server_id() -> Array<String>{
         var return_list:Array<String> = []
         do{
             for topic_s in try sql_db!.prepare(my_topic){
+                print(topic_s[topic_id])
                 if let topic_id = topic_s[topic_id]{
                     return_list.append(topic_id)
                 }
             }
             if !return_list.isEmpty{
-                print("沒有自己的話題")
                 return return_list
             }
         }
@@ -482,6 +481,7 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
+        print("沒有自己的話題")
         return return_list
     }
     

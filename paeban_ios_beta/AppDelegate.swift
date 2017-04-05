@@ -39,12 +39,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     //========收到推播=========
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         
-        if logInState{
+        if logInState && application.applicationState == UIApplicationState.background{
             if let segue_inf = userInfo["segue_inf"] as? Dictionary<String,String>{
                 print("========segue_inf=========")
                 //print(segue_inf)
                 notificationSegueInf = segue_inf
-                notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
             }
         }
     }
@@ -122,11 +121,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
             else{
                 socket.connect()
             }
-            
-            
         }
         else{
             print("socket_is_nil")
+        }
+        if !notificationSegueInf.isEmpty{
+            notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
+            notificationSegueInf = [:]
         }
         
         
