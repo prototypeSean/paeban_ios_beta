@@ -471,13 +471,16 @@ public class SQL_center{
             let private_table_obj = try sql_db?.prepare(query).first(where: { (row) -> Bool in
                 return true
             })
-            let receiver_input = private_table_obj![receiver]!
-            let query2 = private_table.filter(
-                sender == userData.id! &&
-                    receiver == receiver_input &&
-                    is_read == false
-            )
-            try sql_db?.run(query2.update(is_read <- true))
+            if private_table_obj != nil{
+                let receiver_input = private_table_obj![receiver]!
+                let query2 = private_table.filter(
+                    sender == userData.id! &&
+                        receiver == receiver_input &&
+                        is_read == false
+                )
+                try sql_db?.run(query2.update(is_read <- true))
+            }
+            
         }
         catch{
             print("資料庫錯誤")
@@ -767,19 +770,22 @@ public class SQL_center{
             let topic_content_obj = try sql_db?.prepare(query).first(where: { (row) -> Bool in
                 return true
             })
-            let receiver_input = topic_content_obj![receiver]!
-            let topic_id_obj = topic_content_obj![topic_id]!
-            let query2 = topic_content.filter(
-                sender == userData.id! &&
-                receiver == receiver_input &&
-                is_read == false &&
-                topic_id == topic_id_obj &&
-                id <= id_local_int!
-            )
-            let query_count = try sql_db?.scalar(query2.count)
-            if query_count! > 0 {
-                try sql_db?.run(query2.update(is_read <- true))
+            if topic_content_obj != nil{
+                let receiver_input = topic_content_obj![receiver]!
+                let topic_id_obj = topic_content_obj![topic_id]!
+                let query2 = topic_content.filter(
+                    sender == userData.id! &&
+                        receiver == receiver_input &&
+                        is_read == false &&
+                        topic_id == topic_id_obj &&
+                        id <= id_local_int!
+                )
+                let query_count = try sql_db?.scalar(query2.count)
+                if query_count! > 0 {
+                    try sql_db?.run(query2.update(is_read <- true))
+                }
             }
+            
             
 //            var receiver_input:String
 //            for query_s in try sql_db!.prepare(query){
