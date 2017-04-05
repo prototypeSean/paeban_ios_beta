@@ -56,6 +56,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
         // 我不知道為什麼-1 就可以了 高度明明是35....
         topicList.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 0, right: 0)
+        self.check_announcement()
         
     }
         // 覆蓋掉故事板的初始設定顯示
@@ -198,7 +199,14 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
         
     }
-    
+    func check_announcement(){
+        HttpRequestCenter().request_user_data("check_announcement", send_dic: [:]) { (return_dic) in
+            let text = return_dic["announcement"] as! String
+            let alert = UIAlertController(title: "公告", message: text, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
     
     // MARK: delegate -> TableView
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -327,7 +335,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                         let topicIdS = Int(topicS.topicID)
                         minTopicId = min(minTopicId, topicIdS!)
                     }
-                    //print("最小ＩＤ\(String(minTopicId))")
+                    print("最小ＩＤ\(String(minTopicId))")
                     var temp_topic:[Topic]{
                         get{return []}
                         set{
@@ -339,6 +347,11 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                         }
                     }
                     self.httpOBJ.getOldTopic(minTopicId, topicData: { (temp_topic2) in
+                        var llll:Array<String> = []
+                        for c in temp_topic2{
+                            llll.append(c.topicID)
+                        }
+                        print(llll)
                         temp_topic = temp_topic2
                     })
                 }

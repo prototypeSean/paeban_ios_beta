@@ -285,51 +285,37 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             "is_send":false as AnyObject,
             "battery": String(battery_val) as AnyObject
         ]
-        sql_database.inser_date_to_topic_content(input_dic: dataDic)
+        //sql_database.inser_date_to_topic_content(input_dic: dataDic)
+        sql_database.insert_self_topic_content(input_dic: dataDic, option: .new_msg)
         send_all_msg()
-//        let data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!)
-//        var new_message_list:Array<JSQMessage2> = []
-//        for data_s in data_dic{
-//            new_message_list.append(make_JSQMessage2(input_dic: data_s))
-//        }
-//        messages = new_message_list
-//        
-//        self.collectionView?.reloadData()
+
     }
-    // ws回傳信號
+    // websocket delegate
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
-        if msgType == "topic_msg"{
+        if msgType == "topic_msg" && false{
             let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
             updataNowTopicCellList(resultDic)
-            for dicKey in resultDic{
-                let msgData = dicKey.1 as! Dictionary<String,AnyObject>
-                if setID != nil && topicId != nil && clientID != nil{
-                    print("msgData",msgData)
-                    if msgData["sender"] as? String == setID && msgData["receiver"] as? String == clientID && msgData["topic_id"] as? String == topicId{
-                        //自己說的話
-                        //可插入“移除送出中的符號”的code
-                        //print(msg)
-                        
-                        let id_local = msgData["id_local"] as! String
-                        let time_input = msgData["time"] as! String
-                        let id_server_input = msgData["id_server"] as! String
-                        sql_database.update_topic_content_time(id_local: id_local, time_input: time_input, id_server_input:id_server_input)
-                        sending_dic.removeValue(forKey: id_local)
-                        self.update_database()
-                    }
-                    else if msgData["receiver"] as? String == setID && msgData["sender"] as? String == clientID && msgData["topic_id"] as? String == topicId{
-                        //別人說的話
-                        get_history_new()
-                        
-                        let sendData = [
-                            "msg_type":"topic_content_read",
-                            "topic_content_id":dicKey.0
-                        ]
-                        socket.write(data:json_dumps(sendData as NSDictionary))
-                    }
+            if setID != nil && topicId != nil && clientID != nil{
+                if resultDic["sender"] as? String == setID && resultDic["receiver"] as? String == clientID && resultDic["topic_id"] as? String == topicId{
+                    //自己說的話
+                    //可插入“移除送出中的符號”的code
+                    let id_local = resultDic["id_local"] as! String
+
+                    sql_database.insert_self_topic_content(input_dic: resultDic, option: .sended)
+                    sending_dic.removeValue(forKey: id_local)
+                    self.update_database()
                 }
-                
+                else if resultDic["receiver"] as? String == setID && resultDic["sender"] as? String == clientID && resultDic["topic_id"] as? String == topicId{
+                    //別人說的話
+                    get_history_new()
+                    let sendData = [
+                        "msg_type":"topic_content_read",
+                        "topic_content_id":resultDic["id_server"] as! String
+                    ]
+                    socket.write(data:json_dumps(sendData as NSDictionary))
+                    
+                }
             }
             
         }
@@ -347,9 +333,32 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
     
     }
-    
+    func new_client_topic_msg(sender: String) {
+        if sender == clientID{
+            update_database()
+            if topicId != nil && clientID != nil{
+                let last_id = sql_database.get_topic_content_last_id_server(topic_id_input: topicId!, client_id_input: clientID!)
+                let sendData = [
+                    "msg_type":"topic_content_read",
+                    "topic_content_id":last_id
+                ]
+                socket.write(data:json_dumps(sendData as NSDictionary))
+            }
+            
+        }
+    }
+    func new_my_topic_msg(sender: String, id_local: String) {
+        if sender == userData.id{
+            sending_dic.removeValue(forKey: id_local)
+            self.update_database()
+            
+        }
+        
+    }
     func wsReconnected(){
     }
+    
+    // internal func
     func send_all_msg(){
         let unsend_list = sql_database.get_unsend_topic_data(topic_id_input: topicId!, client_id: ownerId!)
         for unsend_list_s in unsend_list!{
@@ -420,32 +429,30 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             
         }
     }
-    func get_history_old(){
-        let first_id_server:String = sql_database.get_topic_content_first_id_server(topic_id_input: topicId!, client_id_input: clientID!)
-        let request_dic:Dictionary<String,String> = [
-            "first_id_server":first_id_server,
-            "client_id":clientID!,
+    func update_topic_content_from_server(){
+        var init_sql = "0"
+        if sql_database.check_database_is_empty(){
+            init_sql = "1"
+        }
+        var last_server_id:String? = sql_database.get_topic_content_last_checked_server_id()
+        if last_server_id == nil{
+            last_server_id = "0"
+        }
+        
+        let send_dic = [
+            "last_server_id":last_server_id!,
+            "init_sql":init_sql,
             "topic_id":topicId!
         ]
-        HttpRequestCenter().request_user_data("history_topic_msg_old", send_dic: request_dic) { (return_dic) in
-            if return_dic["result"] as! String == "not_exist"{
-                
+        HttpRequestCenter().request_user_data("update_topic_content", send_dic: send_dic) { (return_dic) in
+            let result_list = return_dic["result_list"] as! Array<Dictionary<String,AnyObject>>
+            for datas in result_list{
+                sql_database.insert_client_topic_content_from_server(input_dic: datas, check_state: .checked)
             }
-            else if return_dic["result"] as! String == "no_new_data"{
-                DispatchQueue.main.async {
-                    self.update_database()
-                }
+            DispatchQueue.main.async {
+                self.update_database()
+                self.enter_topic_signal()
             }
-            else if return_dic["result"] as! String == "success"{
-                let data_list:Array<Dictionary<String,AnyObject>> = return_dic["data_list"]! as! Array<Dictionary<String, AnyObject>>
-                for data in data_list{
-                    sql_database.inser_date_to_topic_content(input_dic: data)
-                }
-                DispatchQueue.main.async {
-                    self.update_database()
-                }
-            }
-            
         }
     }
     func get_last_read_id(topic_id_input:String, client_id_input:String){
@@ -473,12 +480,14 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         
     }
     func enter_topic_signal(){
-        let sen_dic:NSDictionary = [
-            "msg_type":"enter_topic",
-            "topic_id":topicId!,
-            "client_id":clientID!
-        ]
-        socket.write(data: json_dumps(sen_dic))
+        if topicId != nil && clientID != nil{
+            let sen_dic:NSDictionary = [
+                "msg_type":"enter_topic",
+                "topic_id":topicId!,
+                "client_id":clientID!
+            ]
+            socket.write(data: json_dumps(sen_dic))
+        }
     }
     var aspectRatioConstraint: NSLayoutConstraint? {
         willSet {

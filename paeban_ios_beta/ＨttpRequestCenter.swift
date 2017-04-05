@@ -214,6 +214,20 @@ class HttpRequestCenter{
         }
     }
     
+    func request_user_data_v2(_ mode:String, send_dic:Dictionary<String,AnyObject>,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>?)->Void){
+        let url = "https://www.paeban.com/request_user_data/"
+        let jsonData = json_dumps2(send_dic as NSDictionary)
+        let sendData = "mode=\(mode);msg=\(jsonData!)"
+        ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
+            if !returnDic.isEmpty{
+                InViewAct(returnDic)
+            }
+            else{
+                InViewAct(nil)
+            }
+        }
+    }
+    
     // MARK:================私有函數===============
     
     // MARK:轉換為Topic的標準格式
@@ -370,8 +384,10 @@ class HttpRequestCenter{
                             //print(response)
                         }
                         else{
-                            print(response)
-                            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
+                            outPutDic([:])
+                            //print(response)
+                            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
+                            print("http error state:\(status)")
                         }
                     }
                     

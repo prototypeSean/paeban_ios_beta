@@ -59,6 +59,7 @@
 		CF2E9D681D7BE33C00F485BB /* FriendStanderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E9D671D7BE33C00F485BB /* FriendStanderType.swift */; };
 		CF2E9D6A1D7C76D600F485BB /* FriendChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E9D691D7C76D600F485BB /* FriendChatViewController.swift */; };
 		CF337E051DACEFEC003A133C /* SinInFramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF337E041DACEFEC003A133C /* SinInFramViewController.swift */; };
+		CF42B8AE1E7D6BAC001924F0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF42B8AD1E7D6BAC001924F0 /* MapKit.framework */; };
 		CF79265E1DA0E71D00821860 /* SingInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265D1DA0E71D00821860 /* SingInViewController.swift */; };
 		CF7926601DA0E74200821860 /* SingInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265F1DA0E74200821860 /* SingInModel.swift */; };
 		CF89EF781DD34E1F00876298 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */; };
@@ -133,6 +134,7 @@
 		CF2E9D671D7BE33C00F485BB /* FriendStanderType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendStanderType.swift; sourceTree = "<group>"; };
 		CF2E9D691D7C76D600F485BB /* FriendChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendChatViewController.swift; sourceTree = "<group>"; };
 		CF337E041DACEFEC003A133C /* SinInFramViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinInFramViewController.swift; sourceTree = "<group>"; };
+		CF42B8AD1E7D6BAC001924F0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		CF79265D1DA0E71D00821860 /* SingInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInViewController.swift; sourceTree = "<group>"; };
 		CF79265F1DA0E74200821860 /* SingInModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInModel.swift; sourceTree = "<group>"; };
 		CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 			files = (
 				CFDD861E1E4861540018EC7C /* StoreKit.framework in Frameworks */,
 				CF9E37301E2229AE0077C7C9 /* libsqlite3.tbd in Frameworks */,
+				CF42B8AE1E7D6BAC001924F0 /* MapKit.framework in Frameworks */,
 				73E59CAE7906529E9934E916 /* Pods_paeban_ios_beta.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,6 +172,7 @@
 		1741F3FC9375CBC3750A7722 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CF42B8AD1E7D6BAC001924F0 /* MapKit.framework */,
 				CFDD861D1E4861540018EC7C /* StoreKit.framework */,
 				CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */,
 				5DA9AB49DFA16020BF975A80 /* Pods_paeban_ios_beta.framework */,
