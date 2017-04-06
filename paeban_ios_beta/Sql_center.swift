@@ -1555,7 +1555,7 @@ public class SQL_center{
         }
     }
     
-    // 新增資料到客戶端本地暫存DB
+        // 新增資料到客戶端本地暫存DB
     func tmp_client_addNew(input_dic:Dictionary<String,AnyObject>){
         do{
             let insert = tmp_client_Table.insert(
@@ -1574,7 +1574,7 @@ public class SQL_center{
             print(error)
         }
     }
-    // 搜尋客戶端本地暫存DB
+        // 搜尋客戶端本地暫存DB
     func tmp_client_search(searchByClientId:String, level:Int)-> Dictionary<String,AnyObject>?{
         let query_tmp = tmp_client_Table.filter(client_id == searchByClientId && tmp_client_level == Int64(level))
         do{
@@ -1583,12 +1583,12 @@ public class SQL_center{
             }){
                 let return_dic:Dictionary<String,AnyObject> = [
                     "client_id":query_result[client_id]! as AnyObject,
-                    "tmp_client_name":query_result[client_id]! as AnyObject,
-                    "tmp_client_img":query_result[client_id]! as AnyObject,
-                    "tmp_client_img_name":query_result[client_id]! as AnyObject,
+                    "tmp_client_name":query_result[tmp_client_name]! as AnyObject,
+                    "tmp_client_img":query_result[tmp_client_img]! as AnyObject,
+                    "tmp_client_img_name":query_result[tmp_client_img_name]! as AnyObject,
                     "tmp_client_level":query_result[tmp_client_level]! as AnyObject,
-                    "tmp_client_sex":query_result[client_id]! as AnyObject,
-                    "tmp_client_real_pic":query_result[client_id]! as AnyObject,
+                    "tmp_client_sex":query_result[tmp_client_sex]! as AnyObject,
+                    "tmp_client_real_pic":query_result[tmp_client_real_pic]! as AnyObject,
                 ]
             return return_dic
             }
@@ -1601,9 +1601,46 @@ public class SQL_center{
             }
     }
 
-    // 客戶端本地暫存DB上限
+        // 客戶端本地暫存DB上限
     func tmp_client_limit(){
-        
+        do{
+            let count = try sql_db!.scalar(tmp_client_Table.count)
+            let tmp_client_limit = 300
+            let delete_count = count - tmp_client_limit
+            if delete_count > 0{
+                let delete_rows = tmp_client_Table.order(id.asc).limit(delete_count)
+                try sql_db!.run(delete_rows.delete())
+            }
+        }
+        catch{
+            print("tmp_client_limit錯誤")
+            print(error)
+        }
+    }
+    
+    
+        // 確認客戶端本地照片是否為最新
+    func tmp_client_img_check(client_id:String, tmp_client_img_name:String) -> Bool? {
+        do{
+            let query_client = tmp_client_Table.filter(self.client_id == client_id)
+            if let client_row = try sql_db!.prepare(query_client).first(where: { (row) -> Bool in
+                return true
+            }){
+                if client_row[self.tmp_client_img_name]! == tmp_client_img_name{
+                    return true
+                }
+            
+                else{
+                    return false
+                }
+            }
+            return nil
+        }
+        catch{
+            print("tmp_client_search錯誤")
+            print(error)
+            return nil
+        }
     }
     
 }
