@@ -55,7 +55,7 @@ class MyTopicTableViewModel{
             }
         }
         reload_all_cell()
-        //get_client_data_from_temp_client_table()
+        get_client_data_from_temp_client_table_or_server()
     }
     func get_detail_basic_list_from_local_v2(topic_id_in:String) -> Array<MyTopicStandardType>?{
         if let data_dic = sql_database.get_last_line(topic_id_in: topic_id_in){

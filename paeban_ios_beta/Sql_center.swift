@@ -1471,6 +1471,7 @@ public class SQL_center{
             print("get_level資料庫錯誤")
             print(error)
         }
+        return nil
     }
     
     // user_data
