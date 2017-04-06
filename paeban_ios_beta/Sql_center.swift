@@ -51,6 +51,16 @@ public class SQL_center{
     let topic_title = Expression<String?>("topic_title")
     let tags = Expression<String?>("tags")
     
+    // tmp_client_data
+    let tmp_client_Table = Table("tmp_client_data")
+    let tmp_client_name = Expression<String?>("tmp_client_name")
+    let tmp_client_img = Expression<String?>("tmp_client_img")
+    let tmp_client_img_name = Expression<String?>("tmp_client_img_name")
+    let tmp_client_sex = Expression<String?>("tmp_client_sex")
+    let tmp_client_real_pic = Expression<Bool?>("tmp_client_real_pic")
+    let tmp_client_level = Expression<Int64?>("tmp_client_level")
+    
+    
     func establish_all_table(version:String){
         self.establish_version(version: version)
         self.establish_private_msg_table()
@@ -490,7 +500,7 @@ public class SQL_center{
     }
     
     
-    
+
     // 取得自己話題的badge數
     func get_myTopic_badges() -> Int{
         let myTopicIds:Array<String> = get_my_topics_server_id()
@@ -1504,5 +1514,84 @@ public class SQL_center{
         return nil
     }
     
+    // tmp_client_data
+//    let tmp_client_Table = Table("tmp_client_data")
+//    let tmp_client_img:str
+//    let tmp_client_img_name:str
+//    let tmp_client_sex:str
+//    let tmp_client_real_pic:bool
+//    let tmp_client_level:int
     
+    
+    // 客戶本地暫存DB
+    func establish_tmp_client_data(){
+        do{
+            try sql_db?.run(tmp_client_Table.create { t in
+                t.column(id, primaryKey: true)
+                t.column(client_id)
+                t.column(tmp_client_img)
+                t.column(tmp_client_img_name)
+                t.column(tmp_client_level)
+                t.column(tmp_client_sex)
+                t.column(tmp_client_real_pic)
+            })
+            print("表單建立成功establish_tmp_client_data")
+        }
+        catch{
+            print("establish_tmp_client_data資料庫錯誤")
+            print(error)
+        }
+    }
+    
+    // 新增資料到客戶端本地暫存DB
+    func tmp_client_addNew(input_dic:Dictionary<String,AnyObject>){
+        do{
+            let insert = tmp_client_Table.insert(
+                client_id <- input_dic["client_id"]as?String,
+                tmp_client_name <- input_dic["tmp_client_name"]as?String,
+                tmp_client_img <- input_dic["tmp_client_img"]as?String,
+                tmp_client_img_name <- input_dic["tmp_client_img_name"]as?String,
+                tmp_client_level <- Int64((input_dic["tmp_client_level"]as?Int)!),
+                tmp_client_sex <- input_dic["tmp_client_sex"]as?String,
+                tmp_client_real_pic <- input_dic["tmp_client_real_pic"]as?Bool
+            )
+            try sql_db?.run(insert)
+        }
+        catch{
+            print("tmp_client_addNew錯誤")
+            print(error)
+        }
+    }
+    // 搜尋客戶端本地暫存DB
+    func tmp_client_search(searchByClientId:String, level:Int)-> Dictionary<String,AnyObject>?{
+        let query_tmp = tmp_client_Table.filter(client_id == searchByClientId && tmp_client_level == Int64(level))
+        do{
+            if let query_result = try sql_db!.prepare(query_tmp).first(where: { (row) -> Bool in
+                return true
+            }){
+                let return_dic:Dictionary<String,AnyObject> = [
+                    "client_id":query_result[client_id]! as AnyObject,
+                    "tmp_client_name":query_result[client_id]! as AnyObject,
+                    "tmp_client_img":query_result[client_id]! as AnyObject,
+                    "tmp_client_img_name":query_result[client_id]! as AnyObject,
+                    "tmp_client_level":query_result[tmp_client_level]! as AnyObject,
+                    "tmp_client_sex":query_result[client_id]! as AnyObject,
+                    "tmp_client_real_pic":query_result[client_id]! as AnyObject,
+                ]
+            return return_dic
+            }
+            return nil
+        }
+        catch{
+                print("tmp_client_search錯誤")
+                print(error)
+                return nil
+            }
+    }
+
+    // 客戶端本地暫存DB上限
+    func tmp_client_limit(){
+        
+    }
 }
+
