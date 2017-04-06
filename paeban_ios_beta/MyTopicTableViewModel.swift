@@ -64,6 +64,7 @@ class MyTopicTableViewModel{
             var return_list:Array<MyTopicStandardType> = []
             for data_s in data_dic{
                 let temp_unit = MyTopicStandardType(dataType: "detail")
+                temp_unit.topicId_title = topic_id_in
                 temp_unit.clientId_detial = data_s.key
                 temp_unit.lastLine_detial = data_s.value["topic_text"] as? String
                 temp_unit.read_detial = data_s.value["is_read"] as? Bool
@@ -85,7 +86,24 @@ class MyTopicTableViewModel{
         return nil
     }
     func get_client_data_from_temp_client_table_or_server(){
-        
+        var client_list_for_request:Array<String> = []
+        // 跟server 要詳細資料
+        var prepare_check_img_name:Dictionary<String, String> = [:]
+        // 跟server 核對有沒有需要更新照片
+        for sec_topic_datas in secTopic.values{
+            for cell_s in sec_topic_datas{
+                let level = sql_database.get_level(
+                    topic_id_in: cell_s.topicId_title!,
+                    client_id: cell_s.clientId_detial!)
+                if let result_dic = sql_database.tmp_client_search(searchByClientId: cell_s.clientId_detial!, level: level){
+                    prepare_check_img_name[cell_s.clientId_detial!] = result_dic["tmp_client_img_name"] as? String
+                    //解析
+                }
+                else{
+                    client_list_for_request.append(cell_s.clientId_detial!)
+                }
+            }
+        }
         
     }
     func check_client_online_from_server(user_id_list:Array<String>){

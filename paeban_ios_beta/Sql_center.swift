@@ -1463,7 +1463,7 @@ public class SQL_center{
             return nil
         }
     }
-    func get_level(topic_id_in:String,client_id:String) -> Int?{
+    func get_level(topic_id_in:String,client_id:String) -> Int{
         do{
             
         }
@@ -1471,7 +1471,7 @@ public class SQL_center{
             print("get_level資料庫錯誤")
             print(error)
         }
-        return nil
+        return 0
     }
     
     // user_data
