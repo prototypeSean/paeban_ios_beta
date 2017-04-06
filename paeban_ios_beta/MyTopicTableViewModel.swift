@@ -28,7 +28,8 @@ class MyTopicTableViewModel{
     var topic_leave_list:Array<Dictionary<String,String>> = []
     
     // ====controller func 2.0 ====
-    func main_loading_v2(){
+    func main_loading_v2(topic_id_in:String){
+        get_title_cell_from_local_v2()
         
     }
     func get_title_cell_from_local_v2(){
@@ -44,13 +45,84 @@ class MyTopicTableViewModel{
         }
     }
     func get_detail_cell_from_local_v2(){
-        
+        for cells in mytopic{
+            if cells.dataType == "title"{
+                if let temp_topic_id = cells.topicId_title{
+                    if let basic_cell_list = get_detail_basic_list_from_local_v2(topic_id_in: temp_topic_id){
+                        secTopic[temp_topic_id] = basic_cell_list
+                    }
+                }
+            }
+        }
     }
-    func check_client_online(){
-    
+    func get_detail_basic_list_from_local_v2(topic_id_in:String) -> Array<MyTopicStandardType>?{
+        if let data_dic = sql_database.get_last_line(topic_id_in: topic_id_in){
+            // topic_who* -- topic_text
+            //               is_read
+            var return_list:Array<MyTopicStandardType> = []
+            for data_s in data_dic{
+                let temp_unit = MyTopicStandardType(dataType: "detail")
+                temp_unit.clientId_detial = data_s.key
+                temp_unit.lastLine_detial = data_s.value["topic_text"] as? String
+                temp_unit.read_detial = data_s.value["is_read"] as? Bool
+                temp_unit.time = data_s.value["time"] as? Double
+                return_list.append(temp_unit)
+            }
+            if return_list.count >= 2 {
+                return_list = return_list.sorted(by: { (el1:MyTopicStandardType, el2:MyTopicStandardType) -> Bool in
+                    if el1.time! > el2.time!{
+                        return true
+                    }
+                    return false
+                })
+            }
+            if !return_list.isEmpty{
+                return return_list
+            }
+        }
+        return nil
+    }
+    func check_client_online_from_server(user_id_list:Array<String>){
+        let send_dic:Dictionary<String,AnyObject> = ["user_id_list":user_id_list as AnyObject]
+        HttpRequestCenter().request_user_data_v2("check_client_online", send_dic: send_dic) { (return_dic) in
+            if return_dic != nil{
+                DispatchQueue.main.async {
+                    for client_data in return_dic!{
+                        self.update_online_state_in_sec_topic(user_id: client_data.key, online_state: client_data.value as! Bool)
+                        self.update_online_state_in_table_view(user_id: client_data.key, online_state: client_data.value as! Bool)
+                    }
+                }
+                
+            }
+        }
+    }
+    func update_online_state_in_sec_topic(user_id:String, online_state:Bool){
+        for topic_datas in secTopic{
+            if let index = topic_datas.value.index(where: { (element:MyTopicStandardType) -> Bool in
+                if element.clientId_detial == user_id{
+                    return true
+                }
+                return false
+            }){
+                topic_datas.value[index].clientOnline_detial = online_state
+            }
+        }
+    }
+    func update_online_state_in_table_view(user_id:String, online_state:Bool){
+        var index = 0
+        for topic_datas in mytopic{
+            if topic_datas.clientId_detial == user_id{
+                if mytopic[index].clientOnline_detial != online_state {
+                    let index_path = IndexPath(row: index, section: 0)
+                    mytopic[index].clientOnline_detial = online_state
+                    delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+                }
+            }
+            index += 1
+        }
     }
     func update_my_topic(){
-    
+        
     }
     func update_topic_content(){
         

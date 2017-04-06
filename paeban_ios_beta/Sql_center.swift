@@ -1436,8 +1436,10 @@ public class SQL_center{
                     topic_who = topic_obj[sender]!
                 }
                 return_dic[topic_who] = [
+                    "sender":topic_obj[sender]! as AnyObject,
                     "topic_text":topic_obj[topic_text]! as AnyObject,
                     "is_read":topic_obj[is_read]! as AnyObject,
+                    "time": topic_obj[time]! as AnyObject
                 ]
             }
             // topic_who* -- topic_text
@@ -1503,6 +1505,8 @@ public class SQL_center{
         }
         return nil
     }
+    
+    
     
     
 }
