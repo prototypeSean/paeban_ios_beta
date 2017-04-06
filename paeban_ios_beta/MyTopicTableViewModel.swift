@@ -50,11 +50,12 @@ class MyTopicTableViewModel{
                 if let temp_topic_id = cells.topicId_title{
                     if let basic_cell_list = get_detail_basic_list_from_local_v2(topic_id_in: temp_topic_id){
                         secTopic[temp_topic_id] = basic_cell_list
-                        
                     }
                 }
             }
         }
+        reload_all_cell()
+        //get_client_data_from_temp_client_table()
     }
     func get_detail_basic_list_from_local_v2(topic_id_in:String) -> Array<MyTopicStandardType>?{
         if let data_dic = sql_database.get_last_line(topic_id_in: topic_id_in){
@@ -83,7 +84,10 @@ class MyTopicTableViewModel{
         }
         return nil
     }
-    func get_client_data_from_temp_client_table(){}
+    func get_client_data_from_temp_client_table_or_server(){
+        
+        
+    }
     func check_client_online_from_server(user_id_list:Array<String>){
         let send_dic:Dictionary<String,AnyObject> = ["user_id_list":user_id_list as AnyObject]
         HttpRequestCenter().request_user_data_v2("check_client_online", send_dic: send_dic) { (return_dic) in
@@ -123,15 +127,16 @@ class MyTopicTableViewModel{
             index += 1
         }
     }
-    func update_my_topic(){
+    func update_my_topic_from_server(){
         
     }
-    func update_topic_content(){
+    func update_topic_content_from_server(){
         
     }
-    func update_client_data(){
+    func update_client_data_from_server(){
     
     }
+    
     private func transferToStandardType_detail_v2(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType> {
         // “新建”或“升級”   升級時導入以下屬性 online, img, is_real_pic
         // return_dic --topic_id:String
@@ -176,6 +181,10 @@ class MyTopicTableViewModel{
             return false
         }
         return tempMytopicList
+    }
+    func reload_all_cell(){
+        //判斷刷新前狀態
+        //刷新後復原狀態
     }
     // ====controller func 2.0 ====
     
