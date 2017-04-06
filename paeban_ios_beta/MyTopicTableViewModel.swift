@@ -50,6 +50,7 @@ class MyTopicTableViewModel{
                 if let temp_topic_id = cells.topicId_title{
                     if let basic_cell_list = get_detail_basic_list_from_local_v2(topic_id_in: temp_topic_id){
                         secTopic[temp_topic_id] = basic_cell_list
+                        
                     }
                 }
             }
@@ -82,6 +83,7 @@ class MyTopicTableViewModel{
         }
         return nil
     }
+    func get_client_data_from_temp_client_table(){}
     func check_client_online_from_server(user_id_list:Array<String>){
         let send_dic:Dictionary<String,AnyObject> = ["user_id_list":user_id_list as AnyObject]
         HttpRequestCenter().request_user_data_v2("check_client_online", send_dic: send_dic) { (return_dic) in
