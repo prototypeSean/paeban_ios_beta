@@ -55,7 +55,8 @@ class MyTopicTableViewModel{
             }
         }
         reload_all_cell()
-        get_client_data_from_temp_client_table_or_server()
+        //get_client_data_from_temp_client_table
+        //呼叫get_client_data_from_server
     }
     func get_detail_basic_list_from_local_v2(topic_id_in:String) -> Array<MyTopicStandardType>?{
         if let data_dic = sql_database.get_last_line(topic_id_in: topic_id_in){
@@ -85,7 +86,7 @@ class MyTopicTableViewModel{
         }
         return nil
     }
-    func get_client_data_from_temp_client_table_or_server(){
+    func get_client_data_from_temp_client_table() -> Dictionary<String,AnyObject>{
         var client_list_for_request:Array<String> = []
         // 跟server 要詳細資料
         var prepare_check_img_name:Dictionary<String, String> = [:]
@@ -105,6 +106,21 @@ class MyTopicTableViewModel{
                 }
             }
         }
+        reload_all_cell()
+        return ["client_list_for_request":client_list_for_request as AnyObject,
+                "prepare_check_img_name":prepare_check_img_name as AnyObject]
+    }
+    
+    func get_client_data_from_server(input_dic:Dictionary<String,AnyObject>){
+        let client_list_for_request = input_dic["client_list_for_request"] as! Array<String>
+        if !client_list_for_request.isEmpty{
+            let send_dic1 = ["client_list_for_request":client_list_for_request]
+            HttpRequestCenter().request_user_data_v2("request_client_detail", send_dic: send_dic1 as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                //寫入暫存黨
+                //get_client_data_from_temp_client_table
+            })
+        }
+        
         
     }
     func check_client_online_from_server(user_id_list:Array<String>){
@@ -114,7 +130,8 @@ class MyTopicTableViewModel{
                 DispatchQueue.main.async {
                     for client_data in return_dic!{
                         self.update_online_state_in_sec_topic(user_id: client_data.key, online_state: client_data.value as! Bool)
-                        self.update_online_state_in_table_view(user_id: client_data.key, online_state: client_data.value as! Bool)
+//                        self.update_online_state_in_table_view(user_id: client_data.key, online_state: client_data.value as! Bool)
+                        self.reload_all_cell()
                     }
                 }
                 
@@ -133,19 +150,19 @@ class MyTopicTableViewModel{
             }
         }
     }
-    func update_online_state_in_table_view(user_id:String, online_state:Bool){
-        var index = 0
-        for topic_datas in mytopic{
-            if topic_datas.clientId_detial == user_id{
-                if mytopic[index].clientOnline_detial != online_state {
-                    let index_path = IndexPath(row: index, section: 0)
-                    mytopic[index].clientOnline_detial = online_state
-                    delegate?.model_relod_row(index_path_list: [index_path], option: .none)
-                }
-            }
-            index += 1
-        }
-    }
+//    func update_online_state_in_table_view(user_id:String, online_state:Bool){
+//        var index = 0
+//        for topic_datas in mytopic{
+//            if topic_datas.clientId_detial == user_id{
+//                if mytopic[index].clientOnline_detial != online_state {
+//                    let index_path = IndexPath(row: index, section: 0)
+//                    mytopic[index].clientOnline_detial = online_state
+//                    delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+//                }
+//            }
+//            index += 1
+//        }
+//    }
     func update_my_topic_from_server(){
         
     }
