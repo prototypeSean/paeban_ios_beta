@@ -1463,8 +1463,18 @@ public class SQL_center{
             return nil
         }
     }
+        // 取得我跟人的對話解鎖到第幾層
     func get_level(topic_id_in:String,client_id:String) -> Int{
         do{
+            let query = topic_content.filter(topic_id == topic_id_in && self.client_id == client_id).count
+            let count = try sql_db!.scalar(query)
+            let level:Int = count/7
+            if level >= 0 && level <= 9{
+                return level
+            }
+            else{
+                return 9
+            }
             
         }
         catch{
