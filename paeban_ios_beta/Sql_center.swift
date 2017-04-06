@@ -1463,6 +1463,16 @@ public class SQL_center{
             return nil
         }
     }
+    func get_level(topic_id_in:String,client_id:String) -> Int?{
+        do{
+            
+        }
+        catch{
+            print("get_level資料庫錯誤")
+            print(error)
+        }
+        return nil
+    }
     
     // user_data
     func establish_userdata(){
@@ -1632,5 +1642,6 @@ public class SQL_center{
             return nil
         }
     }
+    
 }
 
