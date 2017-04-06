@@ -449,26 +449,18 @@ public class SQL_center{
         }
         return 0
     }
-    
-    // 取的所有的 BADGE 由三個分開的 func 整理成純文字
-    func get_all_badges() -> Dictionary<String,String>{
-        let friendBagdes = String(get_friend_badges())
-        let myTopicBadges = String(get_myTopic_badges())
-        let recentBadge = String(get_recent_badges())
-        let return_dic:Dictionary<String,String> = [
-            "my_topic_badge":myTopicBadges,
-            "recent_badge":recentBadge,
-            "friend_badge":friendBagdes
-        ]
-        return return_dic
+    func get_topic_detial(topic_id_in:String) -> Dictionary<String,AnyObject>{
+        // output type as ...
+        // return_dic = -- topic_title:Str
+        //              -- topics -- topic_with_who_id* -- read:Bool
+        // tip: use func "get_last_line"
+        return [:]
     }
-    
     // 取得自己的話題在伺服器上的id
     func get_my_topics_server_id() -> Array<String>{
         var return_list:Array<String> = []
         do{
             for topic_s in try sql_db!.prepare(my_topic){
-                print(topic_s[topic_id])
                 if let topic_id = topic_s[topic_id]{
                     return_list.append(topic_id)
                 }
@@ -484,6 +476,20 @@ public class SQL_center{
         print("沒有自己的話題")
         return return_list
     }
+    // 取的所有的 BADGE 由三個分開的 func 整理成純文字
+    func get_all_badges() -> Dictionary<String,String>{
+        let friendBagdes = String(get_friend_badges())
+        let myTopicBadges = String(get_myTopic_badges())
+        let recentBadge = String(get_recent_badges())
+        let return_dic:Dictionary<String,String> = [
+            "my_topic_badge":myTopicBadges,
+            "recent_badge":recentBadge,
+            "friend_badge":friendBagdes
+        ]
+        return return_dic
+    }
+    
+    
     
     // 取得自己話題的badge數
     func get_myTopic_badges() -> Int{
@@ -1413,6 +1419,37 @@ public class SQL_center{
             
         }
         return 0
+    }
+    func get_last_line(topic_id_in:String) -> Dictionary<String,Dictionary<String,AnyObject>>?{
+        do{
+            var return_dic:Dictionary<String,Dictionary<String,AnyObject>> = [:]
+            let query = topic_content.filter(
+                topic_id == topic_id_in &&
+                (sender == userData.id! || receiver == userData.id!)
+            ).order(id.asc)
+            for topic_obj in try sql_db!.prepare(query){
+                var topic_who:String
+                if topic_obj[sender]! == userData.id!{
+                    topic_who = topic_obj[receiver]!
+                }
+                else{
+                    topic_who = topic_obj[sender]!
+                }
+                return_dic[topic_who] = [
+                    "topic_text":topic_obj[topic_text]! as AnyObject,
+                    "is_read":topic_obj[is_read]! as AnyObject,
+                ]
+            }
+            // topic_who* -- topic_text
+            //            -- is_read
+            return return_dic
+            
+        }
+        catch{
+            print("get_last_line錯誤")
+            print(error)
+            return nil
+        }
     }
     
     // user_data

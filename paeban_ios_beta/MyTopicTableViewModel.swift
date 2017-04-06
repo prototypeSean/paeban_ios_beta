@@ -27,7 +27,83 @@ class MyTopicTableViewModel{
     var chat_view:MyTopicViewController?
     var topic_leave_list:Array<Dictionary<String,String>> = []
     
+    // ====controller func 2.0 ====
+    func main_loading_v2(){
+        
+    }
+    func get_title_cell_from_local_v2(){
+        var data_dic:Dictionary<String,AnyObject> = [:]
+        let topic_id_list = sql_database.get_my_topics_server_id()
+        for topic_id in topic_id_list{
+            let temp_dic = sql_database.get_topic_detial(topic_id_in: topic_id)
+            data_dic[topic_id] = temp_dic as AnyObject?
+        }
+        let title_cells = transferToStandardType_title(data_dic)
+        for new_cell in title_cells{
+            self.replace_or_add_title_cell_with_new(new_title_cell: new_cell)
+        }
+    }
+    func get_detail_cell_from_local_v2(){
+        
+    }
+    func check_client_online(){
     
+    }
+    func update_my_topic(){
+    
+    }
+    func update_topic_content(){
+        
+    }
+    func update_client_data(){
+    
+    }
+    private func transferToStandardType_detail_v2(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType> {
+        // “新建”或“升級”   升級時導入以下屬性 online, img, is_real_pic
+        // return_dic --topic_id:String
+        //            --topic_contents-topic_with_who_id*- topic_with_who_name:String
+        //                                               - last_speaker:String
+        //                                               - img
+        //                                               - is_real_pic
+        //                                               - sex
+        //                                               - online
+        //                                               - topic_content
+        //                                               - last_speaker_name
+        //                                               - read
+        //                                               - topic_content_id
+        var tempMytopicList = [MyTopicStandardType]()
+        for topicWithWhoId in inputData["topic_contents"] as! Dictionary<String,Dictionary<String,AnyObject>>{
+            let topicTitleData = MyTopicStandardType(dataType:"detail")
+            topicTitleData.clientId_detial = topicWithWhoId.0
+            topicTitleData.topicId_title = inputData["topic_id"] as? String
+            topicTitleData.clientName_detial = topicWithWhoId.1["topic_with_who_name"] as? String
+            let img = base64ToImage(topicWithWhoId.1["img"] as! String)
+            topicTitleData.clientPhoto_detial = img
+            topicTitleData.clientIsRealPhoto_detial = topicWithWhoId.1["is_real_pic"] as? Bool
+            topicTitleData.clientSex_detial = topicWithWhoId.1["sex"] as? String
+            topicTitleData.clientOnline_detial = topicWithWhoId.1["online"] as? Bool
+            topicTitleData.lastLine_detial = topicWithWhoId.1["topic_content"] as? String
+            topicTitleData.lastSpeaker_detial = topicWithWhoId.1["last_speaker_name"] as? String
+            topicTitleData.read_detial = topicWithWhoId.1["read"] as? Bool
+            topicTitleData.time = time_transform_to_since1970(time_string: (topicWithWhoId.1["speak_time"] as! String))
+            topicTitleData.topicTitle_title = topicWithWhoId.1["topic_title"] as? String
+            let last_speaker_id = topicWithWhoId.1["last_speaker_id"] as! String
+            if last_speaker_id == userData.id{
+                topicTitleData.read_detial = true
+            }
+            topicTitleData.topicContentId_detial = String(topicWithWhoId.1["topic_content_id"] as! Int)
+            
+            tempMytopicList += [topicTitleData]
+        }
+        tempMytopicList.sort { (ta1, ta2) -> Bool in
+            if ta1.time! > ta2.time!{
+                return true
+            }
+            return false
+        }
+        return tempMytopicList
+    }
+    // ====controller func 2.0 ====
     
     
     // ====controller func====
@@ -73,6 +149,9 @@ class MyTopicTableViewModel{
                 aftre_update(detail_cell_list)
             }
         })
+    }
+    func update_detail_cell_v2(topic_id:String,aftre_update:@escaping(_ detail_cell_list:Array<MyTopicStandardType>)->Void){
+        
     }
     func did_select_row(index:Int){
         auto_leap_data_dic = [:]
@@ -607,7 +686,6 @@ class MyTopicTableViewModel{
             delegate?.model_insert_row(index_path_list: [index_path], option: .top)
         }
     }
-    
     private func remove_loading_cell() {
         var remove_loading_cell_index_list:Array<Int> = []
         var remove_loading_cell_index_path_list:Array<IndexPath> = []
