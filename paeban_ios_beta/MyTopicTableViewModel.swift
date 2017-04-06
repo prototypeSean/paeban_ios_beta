@@ -98,6 +98,7 @@ class MyTopicTableViewModel{
                 if let result_dic = sql_database.tmp_client_search(searchByClientId: cell_s.clientId_detial!, level: level){
                     prepare_check_img_name[cell_s.clientId_detial!] = result_dic["tmp_client_img_name"] as? String
                     //解析
+                    
                 }
                 else{
                     client_list_for_request.append(cell_s.clientId_detial!)
