@@ -90,7 +90,7 @@ class MyTopicTableViewModel{
     }
     func get_client_data_from_temp_client_table() -> Dictionary<String,AnyObject>{
         // 將緩衝區資料寫入cell 並返回緩衝區沒有的資料清單
-        var client_list_for_request:Dictionary<String,Array<String>> = [:]
+        var client_list_for_request:Array<Dictionary<String,String>> = []
         // !!跟server 要詳細資料
         var prepare_check_img_name:Dictionary<String, String> = [:]
         // !!跟server 核對有沒有需要更新照片
@@ -105,12 +105,12 @@ class MyTopicTableViewModel{
                     //幫sectopic 更新資料
                 }
                 else{
-                    if client_list_for_request[cell_s.clientId_detial!] == nil{
-                        client_list_for_request[cell_s.clientId_detial!] = [String(level)]
-                    }
-                    else{
-                        client_list_for_request[cell_s.clientId_detial!]?.append(String(level))
-                    }
+                    let temp_dic = [
+                        "topic_id":cell_s.topicId_title!,
+                        "level":String(level),
+                        "client_id":cell_s.clientId_detial!
+                    ]
+                    client_list_for_request.append(temp_dic)
                     //client_list_for_request.append(cell_s.clientId_detial!)
                 }
             }
@@ -120,6 +120,25 @@ class MyTopicTableViewModel{
                 "prepare_check_img_name":prepare_check_img_name as AnyObject]
     }
     func update_sec_topic(input_dic:Dictionary<String,AnyObject>){
+        func getindex(client_id_in:String,level:Int) -> DictionaryIndex<String, [MyTopicStandardType]>?{
+            if let index = secTopic.index(where: { (element:(key: String, value: [MyTopicStandardType])) -> Bool in
+                if let _ = element.value.index(where: { (element2:MyTopicStandardType) -> Bool in
+                    if element2.clientId_detial == client_id_in &&
+                        element2.level == level{
+                        return true
+                    }
+                    return false
+                }){
+                    return true
+                }
+                return false
+            }){
+                return index
+            }
+            return nil
+        }
+        let client_id = input_dic["client_id"] as! String
+        let level = input_dic["level"] as! Int
         
     }
     func get_client_data_from_server(input_dic:Dictionary<String,AnyObject>){
@@ -128,17 +147,18 @@ class MyTopicTableViewModel{
             let send_dic1 = ["client_list_for_request":client_list_for_request]
             HttpRequestCenter().request_user_data_v2("request_client_detail", send_dic: send_dic1 as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
                 if return_dic != nil{
+                    let return_list = return_dic!["return_list"]! as! Array<Dictionary<String,AnyObject>>
+                    for datas in return_list{
+                        sql_database.tmp_client_addNew(input_dic: datas)
+                    }
                     
                 }
                 else{
                     // 網路連線可能有問題...
                 }
-                //!!寫入暫存黨
                 //!!更新cell
             })
         }
-        
-        
     }
     func check_client_online_from_server(user_id_list:Array<String>){
         let send_dic:Dictionary<String,AnyObject> = ["user_id_list":user_id_list as AnyObject]
