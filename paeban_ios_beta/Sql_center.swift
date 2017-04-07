@@ -461,7 +461,7 @@ public class SQL_center{
     }
         // 此函數輸出三份字典，目的在取得「我的話題清單」cell需要顯示的資料，輸入的資料為該話題ID
         // 輸出要「話題標題#1」、「每個對話cell對方已讀了沒#2」、「hashtag#3」
-    func get_my_topic_detial(topic_id_in:String) -> Dictionary<String,AnyObject>{
+    func get_my_topic_detial_for_title_cell(topic_id_in:String) -> Dictionary<String,AnyObject>{
         do{
             // 對照輸入的話題id，確認自己的話題存在，取得自己話題標題
             let query = my_topic.filter(topic_id == topic_id_in)
