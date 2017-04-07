@@ -461,22 +461,52 @@ public class SQL_center{
     }
         // 此函數輸出三份字典，目的在取得「我的話題清單」cell需要顯示的資料，輸入的資料為該話題ID
         // 輸出要「話題標題#1」、「每個對話cell對方已讀了沒#2」、「hashtag#3」
-    func get_my_topic_detial(topic_id_in:String) -> Dictionary<String,AnyObject>{
-        // output type as ...
-        // return_dic = -- topic_title:Str
-        //              -- topics -- topic_with_who_id* -- read:Bool
-        //              -- hash_tag:array
-        // tip: use func "get_last_line", "turn_tag_string_to_tag_list"
-        
-        
-//        let demo_dic:Dictionary<String,AnyObject> = [
-//        "topic_title":"001" as AnyObject,
-//        "topics":[
-//                "2001":false,
-//                "2700":true
-//            ] as AnyObject,
-//        "hash_tag":["hello", "word"] as AnyObject
-//        ]
+    func get_my_topic_detial_for_title_cell(topic_id_in:String) -> Dictionary<String,AnyObject>{
+        let black_list:Array<String> = get_black_list()
+        do{
+            // 對照輸入的話題id，確認自己的話題存在，取得自己話題標題
+            let query = my_topic.filter(topic_id == topic_id_in)
+            // 確認自己的話題存在，取得自己話題「標題＃1」(因為這裡只能輸入一個話題id，所以用.first，之後可能可以改複數變成用for?
+            if let myTopicRow = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            }){
+                // 每個「我的」cell最後一句是否要橘色<跟誰的對話，有沒有已讀> #2
+                var highLightDict:Dictionary<String,Bool> = [:]
+                // 輸入話題ID,取得一個字典是跟誰的對話，還有最後一句話的狀態
+                let lastLine = get_last_line(topic_id_in: topic_id_in)
+                // eachLastLine = 指定話題id之後，遍歷每一個cell
+                for eachLastLine in lastLine!{
+                    // 如果最後一句話不是自己的，而且還沒有已讀 -> <跟誰的對話，沒已讀>
+                    if eachLastLine.value["sender"]as?String != userData.id &&
+                        eachLastLine.value["is_read"]as!Bool == false{
+                        highLightDict[eachLastLine.key] = false
+                    }
+                    // 如果最後一句話不是自己的，而且還沒有已讀 -> <跟誰的對話，已讀>
+                    else if eachLastLine.value["sender"]as?String != userData.id &&
+                        eachLastLine.value["is_read"]as!Bool == true{
+                        highLightDict[eachLastLine.key] = true
+                    }
+                    // 如果最後一句話是自己的 -> <跟誰的對話，已讀>
+                    else if eachLastLine.value["sender"]as?String == userData.id{
+                        highLightDict[eachLastLine.key] = true
+                    }
+                }
+                // 從已經取得的Row提出tag純文字，再轉成清單 ＃3
+                let myTopicTags = turn_tag_string_to_tag_list(tag_string: myTopicRow[tags]!)
+                
+                let returnDict:Dictionary<String,AnyObject> = [
+                    "myTopicTitle":myTopicRow[topic_title] as AnyObject,
+                    "partnerIsRead":highLightDict as AnyObject,
+                    "hash_tag":myTopicTags as AnyObject
+                ]
+                return returnDict
+            }
+            
+        }
+        catch{
+            print("get_my_topic_detial 錯誤")
+            print(error)
+        }
         return [:]
     }
     // 取得自己的話題在伺服器上的id

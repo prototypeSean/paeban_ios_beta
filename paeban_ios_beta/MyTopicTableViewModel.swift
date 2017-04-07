@@ -36,7 +36,7 @@ class MyTopicTableViewModel{
         var data_dic:Dictionary<String,AnyObject> = [:]
         let topic_id_list = sql_database.get_my_topics_server_id()
         for topic_id in topic_id_list{
-            let temp_dic = sql_database.get_my_topic_detial(topic_id_in: topic_id)
+            let temp_dic = sql_database.get_my_topic_detial_for_title_cell(topic_id_in: topic_id)
             data_dic[topic_id] = temp_dic as AnyObject?
         }
         let title_cells = transferToStandardType_title(data_dic)
