@@ -1593,12 +1593,12 @@ public class SQL_center{
             }){
                 let return_dic:Dictionary<String,AnyObject> = [
                     "client_id":query_result[client_id]! as AnyObject,
-                    "tmp_client_name":query_result[tmp_client_name]! as AnyObject,
-                    "tmp_client_img":query_result[tmp_client_img]! as AnyObject,
-                    "tmp_client_img_name":query_result[tmp_client_img_name]! as AnyObject,
-                    "tmp_client_level":query_result[tmp_client_level]! as AnyObject,
-                    "tmp_client_sex":query_result[tmp_client_sex]! as AnyObject,
-                    "tmp_client_real_pic":query_result[tmp_client_real_pic]! as AnyObject,
+                    "client_name":query_result[tmp_client_name]! as AnyObject,
+                    "img":query_result[tmp_client_img]! as AnyObject,
+                    "img_name":query_result[tmp_client_img_name]! as AnyObject,
+                    "level":query_result[tmp_client_level]! as AnyObject,
+                    "sex":query_result[tmp_client_sex]! as AnyObject,
+                    "is_real_pic":query_result[tmp_client_real_pic]! as AnyObject,
                 ]
             return return_dic
             }

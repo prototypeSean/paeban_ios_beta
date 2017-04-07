@@ -110,7 +110,9 @@ class MyTopicTableViewModel{
         return ["client_list_for_request":client_list_for_request as AnyObject,
                 "prepare_check_img_name":prepare_check_img_name as AnyObject]
     }
-    
+    func update_sec_topic(input_dic:Dictionary<String,AnyObject>){
+        
+    }
     func get_client_data_from_server(input_dic:Dictionary<String,AnyObject>){
         let client_list_for_request = input_dic["client_list_for_request"] as! Array<String>
         if !client_list_for_request.isEmpty{
@@ -150,19 +152,6 @@ class MyTopicTableViewModel{
             }
         }
     }
-//    func update_online_state_in_table_view(user_id:String, online_state:Bool){
-//        var index = 0
-//        for topic_datas in mytopic{
-//            if topic_datas.clientId_detial == user_id{
-//                if mytopic[index].clientOnline_detial != online_state {
-//                    let index_path = IndexPath(row: index, section: 0)
-//                    mytopic[index].clientOnline_detial = online_state
-//                    delegate?.model_relod_row(index_path_list: [index_path], option: .none)
-//                }
-//            }
-//            index += 1
-//        }
-//    }
     func update_my_topic_from_server(){
         
     }
