@@ -59,6 +59,7 @@ class MyTopicTableViewModel{
         //呼叫get_client_data_from_server
     }
     func get_detail_basic_list_from_local_v2(topic_id_in:String) -> Array<MyTopicStandardType>?{
+        // 計算出陽春版資料的子cell
         if let data_dic = sql_database.get_last_line(topic_id_in: topic_id_in){
             // topic_who* -- topic_text
             //               is_read
@@ -70,6 +71,7 @@ class MyTopicTableViewModel{
                 temp_unit.lastLine_detial = data_s.value["topic_text"] as? String
                 temp_unit.read_detial = data_s.value["is_read"] as? Bool
                 temp_unit.time = data_s.value["time"] as? Double
+                temp_unit.level = data_s.value["lovel"] as? Int
                 return_list.append(temp_unit)
             }
             if return_list.count >= 2 {
@@ -87,22 +89,29 @@ class MyTopicTableViewModel{
         return nil
     }
     func get_client_data_from_temp_client_table() -> Dictionary<String,AnyObject>{
-        var client_list_for_request:Array<String> = []
-        // 跟server 要詳細資料
+        // 將緩衝區資料寫入cell 並返回緩衝區沒有的資料清單
+        var client_list_for_request:Dictionary<String,Array<String>> = [:]
+        // !!跟server 要詳細資料
         var prepare_check_img_name:Dictionary<String, String> = [:]
-        // 跟server 核對有沒有需要更新照片
+        // !!跟server 核對有沒有需要更新照片
         for sec_topic_datas in secTopic.values{
             for cell_s in sec_topic_datas{
                 let level = sql_database.get_level(
                     topic_id_in: cell_s.topicId_title!,
                     client_id: cell_s.clientId_detial!)
                 if let result_dic = sql_database.tmp_client_search(searchByClientId: cell_s.clientId_detial!, level: level){
-                    prepare_check_img_name[cell_s.clientId_detial!] = result_dic["tmp_client_img_name"] as? String
-                    //解析
-                    
+                    prepare_check_img_name[cell_s.clientId_detial!] = result_dic["img_name"] as? String
+                    update_sec_topic(input_dic: result_dic)
+                    //幫sectopic 更新資料
                 }
                 else{
-                    client_list_for_request.append(cell_s.clientId_detial!)
+                    if client_list_for_request[cell_s.clientId_detial!] == nil{
+                        client_list_for_request[cell_s.clientId_detial!] = [String(level)]
+                    }
+                    else{
+                        client_list_for_request[cell_s.clientId_detial!]?.append(String(level))
+                    }
+                    //client_list_for_request.append(cell_s.clientId_detial!)
                 }
             }
         }
@@ -118,8 +127,14 @@ class MyTopicTableViewModel{
         if !client_list_for_request.isEmpty{
             let send_dic1 = ["client_list_for_request":client_list_for_request]
             HttpRequestCenter().request_user_data_v2("request_client_detail", send_dic: send_dic1 as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
-                //寫入暫存黨
-                //get_client_data_from_temp_client_table
+                if return_dic != nil{
+                    
+                }
+                else{
+                    // 網路連線可能有問題...
+                }
+                //!!寫入暫存黨
+                //!!更新cell
             })
         }
         
@@ -160,52 +175,6 @@ class MyTopicTableViewModel{
     }
     func update_client_data_from_server(){
     
-    }
-    
-    private func transferToStandardType_detail_v2(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType> {
-        // “新建”或“升級”   升級時導入以下屬性 online, img, is_real_pic
-        // return_dic --topic_id:String
-        //            --topic_contents-topic_with_who_id*- topic_with_who_name:String
-        //                                               - last_speaker:String
-        //                                               - img
-        //                                               - is_real_pic
-        //                                               - sex
-        //                                               - online
-        //                                               - topic_content
-        //                                               - last_speaker_name
-        //                                               - read
-        //                                               - topic_content_id
-        var tempMytopicList = [MyTopicStandardType]()
-        for topicWithWhoId in inputData["topic_contents"] as! Dictionary<String,Dictionary<String,AnyObject>>{
-            let topicTitleData = MyTopicStandardType(dataType:"detail")
-            topicTitleData.clientId_detial = topicWithWhoId.0
-            topicTitleData.topicId_title = inputData["topic_id"] as? String
-            topicTitleData.clientName_detial = topicWithWhoId.1["topic_with_who_name"] as? String
-            let img = base64ToImage(topicWithWhoId.1["img"] as! String)
-            topicTitleData.clientPhoto_detial = img
-            topicTitleData.clientIsRealPhoto_detial = topicWithWhoId.1["is_real_pic"] as? Bool
-            topicTitleData.clientSex_detial = topicWithWhoId.1["sex"] as? String
-            topicTitleData.clientOnline_detial = topicWithWhoId.1["online"] as? Bool
-            topicTitleData.lastLine_detial = topicWithWhoId.1["topic_content"] as? String
-            topicTitleData.lastSpeaker_detial = topicWithWhoId.1["last_speaker_name"] as? String
-            topicTitleData.read_detial = topicWithWhoId.1["read"] as? Bool
-            topicTitleData.time = time_transform_to_since1970(time_string: (topicWithWhoId.1["speak_time"] as! String))
-            topicTitleData.topicTitle_title = topicWithWhoId.1["topic_title"] as? String
-            let last_speaker_id = topicWithWhoId.1["last_speaker_id"] as! String
-            if last_speaker_id == userData.id{
-                topicTitleData.read_detial = true
-            }
-            topicTitleData.topicContentId_detial = String(topicWithWhoId.1["topic_content_id"] as! Int)
-            
-            tempMytopicList += [topicTitleData]
-        }
-        tempMytopicList.sort { (ta1, ta2) -> Bool in
-            if ta1.time! > ta2.time!{
-                return true
-            }
-            return false
-        }
-        return tempMytopicList
     }
     func reload_all_cell(){
         //判斷刷新前狀態
@@ -688,6 +657,7 @@ class MyTopicTableViewModel{
     private func transferToStandardType_title(_ inputData:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>{
         // return_dic = topic_id* -- topic_title : String
         //                        -- topics               -- topic_with_who_id* -- read:Bool
+        //                        -- hash_tag
         var tempMytopicList = [MyTopicStandardType]()
         for topic_id in inputData{
             let topicTitleData = MyTopicStandardType(dataType:"title")

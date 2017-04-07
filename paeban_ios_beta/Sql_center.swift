@@ -463,7 +463,18 @@ public class SQL_center{
         // output type as ...
         // return_dic = -- topic_title:Str
         //              -- topics -- topic_with_who_id* -- read:Bool
-        // tip: use func "get_last_line"
+        //              -- hash_tag:array
+        // tip: use func "get_last_line", "turn_tag_string_to_tag_list"
+        
+        
+//        let demo_dic:Dictionary<String,AnyObject> = [
+//        "topic_title":"001" as AnyObject,
+//        "topics":[
+//                "2001":false,
+//                "2700":true
+//            ] as AnyObject,
+//        "hash_tag":["hello", "word"] as Anyobject
+//        ]
         return [:]
     }
     // 取得自己的話題在伺服器上的id
@@ -1449,7 +1460,8 @@ public class SQL_center{
                     "sender":topic_obj[sender]! as AnyObject,
                     "topic_text":topic_obj[topic_text]! as AnyObject,
                     "is_read":topic_obj[is_read]! as AnyObject,
-                    "time": topic_obj[time]! as AnyObject
+                    "time": topic_obj[time]! as AnyObject,
+                    "level":self.get_level(topic_id_in: topic_id_in, client_id: topic_who) as AnyObject
                 ]
             }
             // topic_who* -- topic_text
