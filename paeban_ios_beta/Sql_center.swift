@@ -1616,12 +1616,12 @@ public class SQL_center{
         do{
             let insert = tmp_client_Table.insert(
                 client_id <- input_dic["client_id"]as?String,
-                tmp_client_name <- input_dic["tmp_client_name"]as?String,
-                tmp_client_img <- input_dic["tmp_client_img"]as?String,
-                tmp_client_img_name <- input_dic["tmp_client_img_name"]as?String,
-                tmp_client_level <- Int64((input_dic["tmp_client_level"]as?Int)!),
-                tmp_client_sex <- input_dic["tmp_client_sex"]as?String,
-                tmp_client_real_pic <- input_dic["tmp_client_real_pic"]as?Bool
+                tmp_client_name <- input_dic["client_name"]as?String,
+                tmp_client_img <- input_dic["img"]as?String,
+                tmp_client_img_name <- input_dic["img_name"]as?String,
+                tmp_client_level <- Int64((input_dic["level"]as?Int)!),
+                tmp_client_sex <- input_dic["sex"]as?String,
+                tmp_client_real_pic <- input_dic["is_real_pic"]as?Bool
             )
             try sql_db?.run(insert)
         }
