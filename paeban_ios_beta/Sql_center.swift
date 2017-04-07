@@ -462,7 +462,6 @@ public class SQL_center{
         // 此函數輸出三份字典，目的在取得「我的話題清單」cell需要顯示的資料，輸入的資料為該話題ID
         // 輸出要「話題標題#1」、「每個對話cell對方已讀了沒#2」、「hashtag#3」
     func get_my_topic_detial(topic_id_in:String) -> Dictionary<String,AnyObject>{
-        let black_list:Array<String> = get_black_list()
         do{
             // 對照輸入的話題id，確認自己的話題存在，取得自己話題標題
             let query = my_topic.filter(topic_id == topic_id_in)
@@ -1476,9 +1475,11 @@ public class SQL_center{
     // 輸入話題ID,取得一個字典是跟誰的對話，還有最後一句話的狀態
     func get_last_line(topic_id_in:String) -> Dictionary<String,Dictionary<String,AnyObject>>?{
         do{
+            let black_list:Array<String> = get_black_list()
             var return_dic:Dictionary<String,Dictionary<String,AnyObject>> = [:]
             let query = topic_content.filter(
                 topic_id == topic_id_in &&
+                !black_list.contains(sender) &&
                 (sender == userData.id! || receiver == userData.id!)
             ).order(id.asc)
             for topic_obj in try sql_db!.prepare(query){
