@@ -459,7 +459,7 @@ public class SQL_center{
         }
         return 0
     }
-    func get_topic_detial(topic_id_in:String) -> Dictionary<String,AnyObject>{
+    func get_my_topic_detial(topic_id_in:String) -> Dictionary<String,AnyObject>{
         // output type as ...
         // return_dic = -- topic_title:Str
         //              -- topics -- topic_with_who_id* -- read:Bool
