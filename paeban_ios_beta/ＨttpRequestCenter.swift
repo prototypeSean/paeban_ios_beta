@@ -215,7 +215,7 @@ class HttpRequestCenter{
     }
     
     func request_user_data_v2(_ mode:String, send_dic:Dictionary<String,AnyObject>,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>?)->Void){
-        let url = "https://www.paeban.com/request_user_data/"
+        let url = "http://www.paeban.com/request_user_data/"
         let jsonData = json_dumps2(send_dic as NSDictionary)
         let sendData = "mode=\(mode);msg=\(jsonData!)"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
@@ -327,6 +327,7 @@ class HttpRequestCenter{
                         }
                         else{
                             print("http state\(status)")
+                            print(sendDate)
                             print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
                         }
                     }
@@ -387,6 +388,7 @@ class HttpRequestCenter{
                             outPutDic([:])
                             //print(response)
                             //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
+                            print(sendDate)
                             print("http error state:\(status)")
                         }
                     }

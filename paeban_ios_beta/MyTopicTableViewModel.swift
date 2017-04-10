@@ -28,8 +28,11 @@ class MyTopicTableViewModel{
     var topic_leave_list:Array<Dictionary<String,String>> = []
     
     // ====controller func 2.0 ====
-    func main_loading_v2(topic_id_in:String){
+    func main_loading_v2(){
         get_title_cell_from_local_v2()
+        get_detail_cell_from_local_v2()
+        let need_update_obj_dic = get_client_data_from_temp_client_table()
+        get_client_data_from_server(input_dic: need_update_obj_dic)
         
     }
     func get_title_cell_from_local_v2(){
@@ -41,8 +44,10 @@ class MyTopicTableViewModel{
         }
         let title_cells = transferToStandardType_title(data_dic)
         for new_cell in title_cells{
-            self.replace_or_add_title_cell_with_new(new_title_cell: new_cell)
+            topic_title_cell_add(new_cell: new_cell)
+            //self.replace_or_add_title_cell_with_new(new_title_cell: new_cell)
         }
+        reload_all_cell()
     }
     func get_detail_cell_from_local_v2(){
         for cells in mytopic{
@@ -54,7 +59,7 @@ class MyTopicTableViewModel{
                 }
             }
         }
-        reload_all_cell()
+        //reload_all_cell()
         //get_client_data_from_temp_client_table
         //呼叫get_client_data_from_server
     }
@@ -71,7 +76,13 @@ class MyTopicTableViewModel{
                 temp_unit.lastLine_detial = data_s.value["topic_text"] as? String
                 temp_unit.read_detial = data_s.value["is_read"] as? Bool
                 temp_unit.time = data_s.value["time"] as? Double
-                temp_unit.level = data_s.value["lovel"] as? Int
+                temp_unit.level = data_s.value["level"] as? Int
+                temp_unit.clientOnline_detial = false
+                temp_unit.lastSpeaker_id_detial = data_s.value["sender"] as? String
+                if temp_unit.lastSpeaker_id_detial == userData.id{
+                    temp_unit.lastSpeaker_detial = userData.name
+                }
+                
                 return_list.append(temp_unit)
             }
             if return_list.count >= 2 {
@@ -90,6 +101,7 @@ class MyTopicTableViewModel{
     }
     func get_client_data_from_temp_client_table() -> Dictionary<String,AnyObject>{
         // 將緩衝區資料寫入cell 並返回緩衝區沒有的資料清單
+        
         var client_list_for_request:Array<Dictionary<String,String>> = []
         // !!跟server 要詳細資料
         var prepare_check_img_name:Dictionary<String, String> = [:]
@@ -102,7 +114,6 @@ class MyTopicTableViewModel{
                 if let result_dic = sql_database.tmp_client_search(searchByClientId: cell_s.clientId_detial!, level: level){
                     prepare_check_img_name[cell_s.clientId_detial!] = result_dic["img_name"] as? String
                     update_sec_topic(input_dic: result_dic)
-                    //幫sectopic 更新資料
                 }
                 else{
                     let temp_dic = [
@@ -111,7 +122,6 @@ class MyTopicTableViewModel{
                         "client_id":cell_s.clientId_detial!
                     ]
                     client_list_for_request.append(temp_dic)
-                    //client_list_for_request.append(cell_s.clientId_detial!)
                 }
             }
         }
@@ -120,43 +130,46 @@ class MyTopicTableViewModel{
                 "prepare_check_img_name":prepare_check_img_name as AnyObject]
     }
     func update_sec_topic(input_dic:Dictionary<String,AnyObject>){
-        func getindex(client_id_in:String,level:Int) -> DictionaryIndex<String, [MyTopicStandardType]>?{
-            if let index = secTopic.index(where: { (element:(key: String, value: [MyTopicStandardType])) -> Bool in
-                if let _ = element.value.index(where: { (element2:MyTopicStandardType) -> Bool in
-                    if element2.clientId_detial == client_id_in &&
-                        element2.level == level{
-                        return true
-                    }
-                    return false
-                }){
-                    return true
-                }
-                return false
-            }){
-                return index
+        let client_id = input_dic["client_id"] as! String
+        let level = input_dic["level"] as! Int
+        func check_need_update(check_obj:MyTopicStandardType) -> MyTopicStandardType?{
+            if check_obj.clientId_detial! == client_id &&
+            check_obj.level == level{
+                return check_obj
             }
             return nil
         }
-        let client_id = input_dic["client_id"] as! String
-        let level = input_dic["level"] as! Int
+        let update_list = secTopic.flatMap{$0.value.flatMap{check_need_update(check_obj:$0)}}
+        for update_objs in update_list{
+            update_objs.clientName_detial = input_dic["client_name"] as? String
+            update_objs.clientPhoto_detial = base64ToImage(input_dic["img"] as! String)
+            update_objs.clientSex_detial = input_dic["sex"] as? String
+            update_objs.clientIsRealPhoto_detial = input_dic["is_real_pic"] as? Bool
+            if update_objs.lastSpeaker_id_detial != userData.id{
+                update_objs.lastSpeaker_detial = update_objs.clientName_detial
+            }
+        }
         
     }
     func get_client_data_from_server(input_dic:Dictionary<String,AnyObject>){
-        let client_list_for_request = input_dic["client_list_for_request"] as! Array<String>
+        let client_list_for_request = input_dic["client_list_for_request"] as! Array<Dictionary<String,String>>
         if !client_list_for_request.isEmpty{
             let send_dic1 = ["client_list_for_request":client_list_for_request]
             HttpRequestCenter().request_user_data_v2("request_client_detail", send_dic: send_dic1 as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
                 if return_dic != nil{
-                    let return_list = return_dic!["return_list"]! as! Array<Dictionary<String,AnyObject>>
-                    for datas in return_list{
-                        sql_database.tmp_client_addNew(input_dic: datas)
+                    DispatchQueue.main.async {
+                        let return_list = return_dic!["return_list"]! as! Array<Dictionary<String,AnyObject>>
+                        for datas in return_list{
+                            sql_database.tmp_client_addNew(input_dic: datas)
+                            self.update_sec_topic(input_dic: datas)
+                        }
+                        self.reload_all_cell()
                     }
                     
                 }
                 else{
                     // 網路連線可能有問題...
                 }
-                //!!更新cell
             })
         }
     }
@@ -196,9 +209,23 @@ class MyTopicTableViewModel{
     func update_client_data_from_server(){
     
     }
+    func topic_title_cell_add(new_cell:MyTopicStandardType){
+        if let _ = mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
+            if ele.topicId_title == new_cell.topicId_title{
+                return true
+            }
+            return false
+        }){
+            //pass
+        }
+        else{
+            mytopic.append(new_cell)
+        }
+    }
     func reload_all_cell(){
         //判斷刷新前狀態
         //刷新後復原狀態
+        delegate?.model_relodata()
     }
     // ====controller func 2.0 ====
     
@@ -261,28 +288,26 @@ class MyTopicTableViewModel{
             }
             else{
                 // 伸展子cell
-                if self.check_detail_cell_has_been_load(topic_id: select_cell.topicId_title!){
-                    self.remove_detail_cell_from_tableView()
-                    self.add_detail_cell_to_tableview(topic_id: select_cell.topicId_title!)
-                }
-                else{
-                    add_loaging_cell(at: index)
-                    self.topic_id_wait_to_extend_detail_cell = select_cell.topicId_title!
-                    DispatchQueue.global(qos: .background).async {
-                        sleep(5)
-                        if !self.check_detail_cell_has_been_load(topic_id: select_cell.topicId_title!){
-                            print("=======check_detail_cell_has_been_load_nil==========")
-                            self.update_detail_cell(topic_id: select_cell.topicId_title!, aftre_update: { (detail_cell_list) -> Void in
-                                if self.topic_id_wait_to_extend_detail_cell == select_cell.topicId_title!{
-                                    self.topic_id_wait_to_extend_detail_cell = nil
-                                    self.remove_detail_cell_from_tableView()
-                                    self.remove_loading_cell()
-                                    self.add_detail_cell_to_tableview(topic_id: select_cell.topicId_title!)
-                                }
-                            })
-                        }
-                    }
-                }
+                self.remove_detail_cell_from_tableView()
+                self.add_detail_cell_to_tableview(topic_id: select_cell.topicId_title!)
+//                else{
+//                    add_loaging_cell(at: index)
+//                    self.topic_id_wait_to_extend_detail_cell = select_cell.topicId_title!
+//                    DispatchQueue.global(qos: .background).async {
+//                        sleep(5)
+//                        if !self.check_detail_cell_has_been_load(topic_id: select_cell.topicId_title!){
+//                            print("=======check_detail_cell_has_been_load_nil==========")
+//                            self.update_detail_cell(topic_id: select_cell.topicId_title!, aftre_update: { (detail_cell_list) -> Void in
+//                                if self.topic_id_wait_to_extend_detail_cell == select_cell.topicId_title!{
+//                                    self.topic_id_wait_to_extend_detail_cell = nil
+//                                    self.remove_detail_cell_from_tableView()
+//                                    self.remove_loading_cell()
+//                                    self.add_detail_cell_to_tableview(topic_id: select_cell.topicId_title!)
+//                                }
+//                            })
+//                        }
+//                    }
+//                }
             }
         }
         else if select_cell.dataType == "detail"{
@@ -854,12 +879,12 @@ class MyTopicTableViewModel{
                 self.mytopic.remove(at: old_title_cell_index as Int)
                 self.mytopic.insert(new_title_cell, at: old_title_cell_index as Int)
                 let index_path = IndexPath(row: old_title_cell_index as Int, section: 0)
-                self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+                //self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
             }
             else{
                 let index_path = IndexPath(row: (self.mytopic.count), section: 0)
                 self.mytopic.append(new_title_cell)
-                self.delegate?.model_insert_row(index_path_list: [index_path], option: .top)
+                //self.delegate?.model_insert_row(index_path_list: [index_path], option: .top)
             }
         }
     }

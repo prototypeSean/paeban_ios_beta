@@ -46,6 +46,7 @@ open class MyTopicStandardType {
     var clientOnline_detial:Bool?
     var lastLine_detial: String?
     var lastSpeaker_detial:String?
+    var lastSpeaker_id_detial:String?
     var topicContentId_detial:String?
     var read_detial:Bool?
     var tag_detial:Array<String>?

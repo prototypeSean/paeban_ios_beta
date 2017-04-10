@@ -70,6 +70,7 @@ public class SQL_center{
         self.establish_black_list()
         self.establish_friend_list()
         self.establish_my_topic()
+        self.establish_tmp_client_data()
     }
     func remove_all_table(){
         
@@ -130,6 +131,14 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
+        do{
+            try sql_db?.run(tmp_client_Table.drop())
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        
     }
     func check_database_is_empty() -> Bool{
         do{
@@ -470,32 +479,36 @@ public class SQL_center{
                 return true
             }){
                 // 每個「我的」cell最後一句是否要橘色<跟誰的對話，有沒有已讀> #2
-                var highLightDict:Dictionary<String,Bool> = [:]
+                var highLightDict:Dictionary<String,Dictionary<String,Bool>> = [:]
                 // 輸入話題ID,取得一個字典是跟誰的對話，還有最後一句話的狀態
                 let lastLine = get_last_line(topic_id_in: topic_id_in)
                 // eachLastLine = 指定話題id之後，遍歷每一個cell
                 for eachLastLine in lastLine!{
                     // 如果最後一句話不是自己的，而且還沒有已讀 -> <跟誰的對話，沒已讀>
-                    if eachLastLine.value["sender"]as?String != userData.id &&
+                    if eachLastLine.value["sender"] as? String != userData.id &&
                         eachLastLine.value["is_read"]as!Bool == false{
-                        highLightDict[eachLastLine.key] = false
+                        highLightDict[eachLastLine.key] = ["read":false]
                     }
                     // 如果最後一句話不是自己的，而且還沒有已讀 -> <跟誰的對話，已讀>
                     else if eachLastLine.value["sender"]as?String != userData.id &&
                         eachLastLine.value["is_read"]as!Bool == true{
-                        highLightDict[eachLastLine.key] = true
+                        highLightDict[eachLastLine.key] = ["read":true]
                     }
                     // 如果最後一句話是自己的 -> <跟誰的對話，已讀>
                     else if eachLastLine.value["sender"]as?String == userData.id{
-                        highLightDict[eachLastLine.key] = true
+                        highLightDict[eachLastLine.key] = ["read":true]
                     }
                 }
                 // 從已經取得的Row提出tag純文字，再轉成清單 ＃3
-                let myTopicTags = turn_tag_string_to_tag_list(tag_string: myTopicRow[tags]!)
+                var myTopicTags:Array<String> = []
+                if myTopicRow[tags] != nil{
+                    myTopicTags = turn_tag_string_to_tag_list(tag_string: myTopicRow[tags]!)
+                }
+                
                 
                 let returnDict:Dictionary<String,AnyObject> = [
-                    "myTopicTitle":myTopicRow[topic_title] as AnyObject,
-                    "partnerIsRead":highLightDict as AnyObject,
+                    "topic_title":myTopicRow[topic_title] as AnyObject,
+                    "topics":highLightDict as AnyObject,
                     "hash_tag":myTopicTags as AnyObject
                 ]
                 return returnDict
@@ -1602,6 +1615,7 @@ public class SQL_center{
                 t.column(tmp_client_level)
                 t.column(tmp_client_sex)
                 t.column(tmp_client_real_pic)
+                t.column(tmp_client_name)
             })
             print("表單建立成功establish_tmp_client_data")
         }
@@ -1642,7 +1656,7 @@ public class SQL_center{
                     "client_name":query_result[tmp_client_name]! as AnyObject,
                     "img":query_result[tmp_client_img]! as AnyObject,
                     "img_name":query_result[tmp_client_img_name]! as AnyObject,
-                    "level":query_result[tmp_client_level]! as AnyObject,
+                    "level":Int(query_result[tmp_client_level]!) as AnyObject,
                     "sex":query_result[tmp_client_sex]! as AnyObject,
                     "is_real_pic":query_result[tmp_client_real_pic]! as AnyObject,
                 ]

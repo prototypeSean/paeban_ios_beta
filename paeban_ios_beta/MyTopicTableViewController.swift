@@ -41,7 +41,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
-        model.main_loading()
+        model.main_loading_v2()
         update_badges()
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -86,9 +86,16 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             cell.speaker.text = topicWriteToRow.lastSpeaker_detial
             cell.lastLine.text = topicWriteToRow.lastLine_detial
             cell.photo.image = topicWriteToRow.clientPhoto_detial
-            cell.sexLogo = letoutSexLogo(sexImg:cell.sexLogo, sex: topicWriteToRow.clientSex_detial!)
-            letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
-            letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
+            if topicWriteToRow.clientSex_detial != nil{
+                cell.sexLogo = letoutSexLogo(sexImg:cell.sexLogo, sex: topicWriteToRow.clientSex_detial!)
+            }
+            if topicWriteToRow.clientOnline_detial != nil{
+                letoutOnlineLogo(topicWriteToRow.clientOnline_detial!,cellOnlineLogo: cell.onlineLogo)
+            }
+            if topicWriteToRow.clientIsRealPhoto_detial != nil{
+                letoutIsTruePhoto(topicWriteToRow.clientIsRealPhoto_detial!,isMeImg: cell.isTruePhoto)
+            }
+            
             if topicWriteToRow.read_detial == false && topicWriteToRow.lastSpeaker_detial != userData.name{
                 cell.lastLine.textColor = UIColor(red:0.97, green:0.49, blue:0.31, alpha:1.0)
                 cell.lastLine.font = UIFont.boldSystemFont(ofSize: 16)
@@ -301,7 +308,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         let list_count = table_list.count
         
         if list_count < 6{
-            print("brike")
+            //print("brike")
         }
     }
     func model_relodata(){
