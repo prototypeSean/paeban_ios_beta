@@ -168,11 +168,9 @@ class MyTopicTableViewModel{
                     
                 }
                 else{
-                    print("3秒後重新請求get_client_data_from_server")
-                    func reask(){
+                    DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 3, execute: {
                         self.get_client_data_from_server(input_dic: input_dic)
-                    }
-                    Timer(timeInterval: 3, target: self, selector: #selector(reask()), userInfo: nil, repeats: false)
+                    })
                 }
             })
         }
