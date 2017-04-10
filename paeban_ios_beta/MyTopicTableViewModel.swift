@@ -59,7 +59,7 @@ class MyTopicTableViewModel{
                 }
             }
         }
-        //reload_all_cell()
+        reload_all_cell()
         //get_client_data_from_temp_client_table
         //呼叫get_client_data_from_server
     }
@@ -172,7 +172,7 @@ class MyTopicTableViewModel{
                     func reask(){
                         self.get_client_data_from_server(input_dic: input_dic)
                     }
-                    Timer(timeInterval: 3, target: self, selector: #selector(reask), userInfo: nil, repeats: false)
+                    Timer(timeInterval: 3, target: self, selector: #selector(reask()), userInfo: nil, repeats: false)
                 }
             })
         }
