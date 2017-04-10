@@ -126,6 +126,12 @@ class MyTopicTableViewModel{
             }
         }
         reload_all_cell()
+        // MARK:飛行前移除
+        print("跟server要使用者資料")
+        for cxz in client_list_for_request{
+            print(cxz["client_id"])
+        }
+        
         return ["client_list_for_request":client_list_for_request as AnyObject,
                 "prepare_check_img_name":prepare_check_img_name as AnyObject]
     }
