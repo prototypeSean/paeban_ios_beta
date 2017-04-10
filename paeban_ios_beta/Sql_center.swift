@@ -1701,6 +1701,10 @@ public class SQL_center{
                 }
             
                 else{
+                    let queryDel = tmp_client_Table.filter(
+                        self.client_id == client_id &&
+                        self.tmp_client_name != tmp_client_img_name)
+                    try sql_db!.run(queryDel.delete())
                     return false
                 }
             }
