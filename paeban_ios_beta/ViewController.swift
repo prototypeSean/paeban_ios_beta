@@ -604,7 +604,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
                 
             }
-            sql_database.print_all()
+            print("更新完成！！！")
         }
     }
 }
