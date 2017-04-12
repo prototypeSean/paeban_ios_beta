@@ -10,7 +10,7 @@ import Foundation
 import SQLite
 
 public class SQL_center{
-    let print_part_log_switch = true
+    let print_part_log_switch = false
     var sql_db:Connection?
     // private var
     let private_text = Expression<String?>("private_text")
@@ -776,18 +776,21 @@ public class SQL_center{
         }
     }
     func print_all2(){
-        do{
-            for topic_c in try sql_db!.prepare(private_table) {
-                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]) ms: \(topic_c[private_text])")
-                // id: 1, email: alice@mac.com, name: Optional("Alice")
+        if print_part_log_switch{
+            do{
+                for topic_c in try sql_db!.prepare(private_table) {
+                    print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]) ms: \(topic_c[private_text])")
+                    // id: 1, email: alice@mac.com, name: Optional("Alice")
+                }
+                print("========")
             }
-            print("========")
+            catch{
+                print("資料庫錯誤")
+                print(error)
+                
+            }
         }
-        catch{
-            print("資料庫錯誤")
-            print(error)
         
-        }
     }
     func get_friend_badges() -> Int{
         let black_list:Array<String> = get_black_list()
