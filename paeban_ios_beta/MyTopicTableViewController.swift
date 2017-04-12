@@ -252,7 +252,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     // MARK: delegate
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if msg["msg_type"] as! String == "topic_msg"{
-            model.updataSecTopic_from_socket(msg)
+            model.main_loading_v2()
         }
         else if msg["msg_type"] as! String == "new_topic"{
             for msg_keys in msg.keys{
@@ -260,7 +260,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     let msg_vals = msg[msg_keys] as! Dictionary<String,AnyObject>
                     if let topic_publisher = msg_vals["topic_publisher"] as? String{
                         if topic_publisher == userData.id{
-                            model.main_loading()
+                            model.main_loading_v2()
                             break
                         }
                     }

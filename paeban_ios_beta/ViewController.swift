@@ -162,7 +162,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             firstActiveApp = false
             logInState = true
             cookie_new.set_cookie(cookie_in: setcookie)
-            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["chat", "superchat"])
+            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
             socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
@@ -255,7 +255,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if state != "login_no"{
             cookie_new.set_cookie(cookie_in: state)
             print(cookie_new.get_cookie())
-            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo")!, protocols: ["text"])
+            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
             socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
@@ -301,7 +301,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         else if state == "login_yes"{
             logInState = true
             cookie_new.set_cookie(cookie_in: setcookie)
-            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
             socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
@@ -368,7 +368,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         
         print("reConnecting...")
-        socket = WebSocket(url: URL(string: "ws://www.paeban.comrun/echo")!, protocols: ["chat", "superchat"])
+        socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
         socket.headers["Cookie"] = cookie_new.get_cookie()
         socket.delegate = self
         ws_connect_fun(socket)

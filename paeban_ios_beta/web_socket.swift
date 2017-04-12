@@ -189,7 +189,7 @@ open class webSocketActiveCenter{
                 
                 let topic_content_last_checked_server_id = sql_database.get_topic_content_last_checked_server_id()
                 print("id_pre_s: \(previous_receiver_topic_content_id) /// id_pre_l: \(topic_content_last_checked_server_id)")
-                if previous_receiver_topic_content_id == topic_content_last_checked_server_id{
+                if previous_receiver_topic_content_id >= topic_content_last_checked_server_id{
                     sql_database.insert_client_topic_content_from_server(input_dic: resultDic, check_state: .checked)
                     if self.wasd_ForChatViewController?.new_client_topic_msg != nil{
                         self.wasd_ForChatViewController?.new_client_topic_msg!(sender: sender)
@@ -202,7 +202,7 @@ open class webSocketActiveCenter{
                         //updatedatebase
                     }
                     else{
-                        self.update_topic_content_from_server(last_id: topic_content_last_checked_server_id, sender: sender)
+                        // MARK:更新topic
                     }
                     
                 }
