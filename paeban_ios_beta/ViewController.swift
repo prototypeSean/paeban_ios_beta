@@ -574,37 +574,40 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             "last_private_id":"0"
         ]
         HttpRequestCenter().request_user_data("update_database", send_dic: send_dic) { (return_dic) in
-            init_sql = false
-            let topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
-            let private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
-            let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
-            let black_list_data = return_dic["black_list"] as! Array<String>
-            let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
-            for topic_content_data_s in topic_content_data{
-                if topic_content_data_s["sender"] as! String == userData.id{
-                    sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
+            DispatchQueue.main.async {
+                init_sql = false
+                let topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
+                let private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
+                let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
+                let black_list_data = return_dic["black_list"] as! Array<String>
+                let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
+                for topic_content_data_s in topic_content_data{
+                    if topic_content_data_s["sender"] as! String == userData.id{
+                        sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
+                    }
+                    else{
+                        sql_database.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
+                    }
+                    //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
                 }
-                else{
-                    sql_database.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
+                for private_msg_data_s in private_msg_data{
+                    sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
                 }
-                //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
+                for friends in friend_list_data{
+                    sql_database.insert_friend(username_in: friends["user_id"]!, user_full_name_in: friends["user_full_name"]!, img_name: friends["img"]!)
+                }
+                for blacks in black_list_data{
+                    sql_database.insert_black_list(username_in: blacks)
+                }
+                for my_topic_id_s in my_topic_list{
+                    print("my_topic_id_s")
+                    print(my_topic_id_s)
+                    sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
+                    
+                }
+                print("更新完成！！！")
             }
-            for private_msg_data_s in private_msg_data{
-                sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
-            }
-            for friends in friend_list_data{
-                sql_database.insert_friend(username_in: friends["user_id"]!, user_full_name_in: friends["user_full_name"]!, img_name: friends["img"]!)
-            }
-            for blacks in black_list_data{
-                sql_database.insert_black_list(username_in: blacks)
-            }
-            for my_topic_id_s in my_topic_list{
-                print("my_topic_id_s")
-                print(my_topic_id_s)
-                sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
-                
-            }
-            print("更新完成！！！")
+            
         }
     }
 }
