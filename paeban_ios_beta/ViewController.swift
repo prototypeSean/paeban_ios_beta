@@ -586,7 +586,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 ccc += friend_list_data.count
                 ccc += black_list_data.count
                 ccc += my_topic_list.count
-                print("ccc: \(ccc += private_msg_data.count)")
+                print("ccc: \(ccc)")
                 for topic_content_data_s in topic_content_data{
                     if topic_content_data_s["sender"] as! String == userData.id{
                         sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
