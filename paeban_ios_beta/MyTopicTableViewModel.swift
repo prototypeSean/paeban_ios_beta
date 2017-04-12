@@ -43,11 +43,34 @@ class MyTopicTableViewModel{
             data_dic[topic_id] = temp_dic as AnyObject?
         }
         let title_cells = transferToStandardType_title(data_dic)
+        remove_expired_cell(title_cells: title_cells)
         for new_cell in title_cells{
             topic_title_cell_add(new_cell: new_cell)
             //self.replace_or_add_title_cell_with_new(new_title_cell: new_cell)
         }
         reload_all_cell()
+    }
+    func remove_expired_cell(title_cells:Array<MyTopicStandardType>){
+        var cell_index = 0
+        var remove_list:Array<Int> = []
+        for cells in mytopic{
+            if let _ = title_cells.index(where: { (ele:MyTopicStandardType) -> Bool in
+                if cells.topicId_title == ele.topicId_title{
+                    return true
+                }
+                return false
+            }){
+                //pass
+            }
+            else{
+                remove_list.append(cell_index)
+            }
+            cell_index += 1
+        }
+        remove_list = remove_list.sorted().reversed()
+        for cell_index in remove_list{
+            mytopic.remove(at: cell_index)
+        }
     }
     func get_detail_cell_from_local_v2(){
         for cells in mytopic{
@@ -127,10 +150,10 @@ class MyTopicTableViewModel{
         }
         reload_all_cell()
         // MARK:飛行前移除
-        print("跟server要使用者資料")
-        for cxz in client_list_for_request{
-            print(cxz["client_id"])
-        }
+//        print("跟server要使用者資料")
+//        for cxz in client_list_for_request{
+//            print(cxz["client_id"])
+//        }
         
         return ["client_list_for_request":client_list_for_request as AnyObject,
                 "prepare_check_img_name":prepare_check_img_name as AnyObject]
@@ -789,17 +812,20 @@ class MyTopicTableViewModel{
             }
             return false
         }){
-            let inputList = secTopic[topic_id]!
-            var updataIndexList:Array<IndexPath> = []
-            var updataIndexInt = title_cell_index as Int
-            for insertData in inputList{
-                updataIndexInt += 1
-                let updataIndex = IndexPath(row: updataIndexInt, section: 0)
-                updataIndexList.append(updataIndex)
-                mytopic.insert(insertData, at: updataIndexInt)
+            if secTopic[topic_id] != nil{
+                let inputList = secTopic[topic_id]!
+                var updataIndexList:Array<IndexPath> = []
+                var updataIndexInt = title_cell_index as Int
+                for insertData in inputList{
+                    updataIndexInt += 1
+                    let updataIndex = IndexPath(row: updataIndexInt, section: 0)
+                    updataIndexList.append(updataIndex)
+                    mytopic.insert(insertData, at: updataIndexInt)
+                }
+                delegate?.model_insert_row(index_path_list: updataIndexList, option: .top)
+                //delegate?.model_relodata()
             }
-            delegate?.model_insert_row(index_path_list: updataIndexList, option: .top)
-            //delegate?.model_relodata()
+            
         }
         
     }

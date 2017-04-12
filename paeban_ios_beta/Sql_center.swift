@@ -10,6 +10,7 @@ import Foundation
 import SQLite
 
 public class SQL_center{
+    let print_part_log_switch = true
     var sql_db:Connection?
     // private var
     let private_text = Expression<String?>("private_text")
@@ -1267,17 +1268,20 @@ public class SQL_center{
         }
     }
     func print_part_topic_content(){
-        do{
-            let query = topic_content.order(id.desc).limit(3)
-            for topic_c in try sql_db!.prepare(query.order(id.asc)) {
-                print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]), text: \(topic_c[topic_text]), time:\(topic_c[time])")
+        if print_part_log_switch{
+            do{
+                let query = topic_content.order(id.desc).limit(3)
+                for topic_c in try sql_db!.prepare(query.order(id.asc)) {
+                    print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]), text: \(topic_c[topic_text]), time:\(topic_c[time])")
+                }
+                print("========")
             }
-            print("========")
+            catch{
+                print("資料庫錯誤")
+                print(error)
+            }
         }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
+        
     }
     
         // 檢查有沒有未送出的訊息然後一併送出
