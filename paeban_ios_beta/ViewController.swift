@@ -581,6 +581,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
                 let black_list_data = return_dic["black_list"] as! Array<String>
                 let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
+                var ccc = 0
+                ccc += private_msg_data.count
+                ccc += friend_list_data.count
+                ccc += black_list_data.count
+                ccc += my_topic_list.count
+                print("ccc: \(ccc += private_msg_data.count)")
                 for topic_content_data_s in topic_content_data{
                     if topic_content_data_s["sender"] as! String == userData.id{
                         sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
