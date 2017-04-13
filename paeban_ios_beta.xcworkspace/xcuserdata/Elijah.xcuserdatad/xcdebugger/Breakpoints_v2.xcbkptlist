@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "paeban_ios_beta/MyTopicTableViewModel.swift"
-            timestampString = "513691521.998772"
+            timestampString = "513762084.631834"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "549"
-            endingLineNumber = "549"
+            startingLineNumber = "571"
+            endingLineNumber = "571"
             landmarkName = "request_sec_topic_config(topic_id:topicWithWho:topic_content_id:any_func:)"
             landmarkType = "7">
          </BreakpointContent>

@@ -429,32 +429,32 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             
         }
     }
-    func update_topic_content_from_server(){
-        var init_sql = "0"
-        if sql_database.check_database_is_empty(){
-            init_sql = "1"
-        }
-        var last_server_id:String? = sql_database.get_topic_content_last_checked_server_id()
-        if last_server_id == nil{
-            last_server_id = "0"
-        }
-        
-        let send_dic = [
-            "last_server_id":last_server_id!,
-            "init_sql":init_sql,
-            "topic_id":topicId!
-        ]
-        HttpRequestCenter().request_user_data("update_topic_content", send_dic: send_dic) { (return_dic) in
-            let result_list = return_dic["result_list"] as! Array<Dictionary<String,AnyObject>>
-            for datas in result_list{
-                sql_database.insert_client_topic_content_from_server(input_dic: datas, check_state: .checked)
-            }
-            DispatchQueue.main.async {
-                self.update_database()
-                self.enter_topic_signal()
-            }
-        }
-    }
+//    func update_topic_content_from_server(){
+//        var init_sql = "0"
+//        if sql_database.check_database_is_empty(){
+//            init_sql = "1"
+//        }
+//        var last_server_id:String? = sql_database.get_topic_content_last_checked_server_id()
+//        if last_server_id == nil{
+//            last_server_id = "0"
+//        }
+//        
+//        let send_dic = [
+//            "last_server_id":last_server_id!,
+//            "init_sql":init_sql,
+//            "topic_id":topicId!
+//        ]
+//        HttpRequestCenter().request_user_data("update_topic_content", send_dic: send_dic) { (return_dic) in
+//            let result_list = return_dic["result_list"] as! Array<Dictionary<String,AnyObject>>
+//            for datas in result_list{
+//                sql_database.insert_client_topic_content_from_server(input_dic: datas, check_state: .checked)
+//            }
+//            DispatchQueue.main.async {
+//                self.update_database()
+//                self.enter_topic_signal()
+//            }
+//        }
+//    }
     func get_last_read_id(topic_id_input:String, client_id_input:String){
         var init_sql_state = "0"
         if init_sql{

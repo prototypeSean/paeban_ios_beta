@@ -75,6 +75,7 @@
 		CFD48D671DCB13FD006C48A2 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD48D661DCB13FD006C48A2 /* EditViewController.swift */; };
 		CFDD861E1E4861540018EC7C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDD861D1E4861540018EC7C /* StoreKit.framework */; };
 		CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */; };
+		CFF6C4161E9F4D5200A191FD /* suport_func.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF6C4151E9F4D5200A191FD /* suport_func.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -152,6 +153,7 @@
 		CFD48D661DCB13FD006C48A2 /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		CFDD861D1E4861540018EC7C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewLoadingCell.swift; sourceTree = "<group>"; };
+		CFF6C4151E9F4D5200A191FD /* suport_func.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = suport_func.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -348,6 +350,7 @@
 				932A00E11CFEBA460036E1EA /* web_socket.swift */,
 				CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */,
 				CF288A981E67FF290052DFE8 /* IAPurchaseViewController.swift */,
+				CFF6C4151E9F4D5200A191FD /* suport_func.swift */,
 			);
 			name = all_filed_work;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 				CF7926601DA0E74200821860 /* SingInModel.swift in Sources */,
 				930F90D81DEAC07200346A13 /* EULAViewController.swift in Sources */,
 				932A00E71CFEBA460036E1EA /* TopicTableViewController.swift in Sources */,
+				CFF6C4161E9F4D5200A191FD /* suport_func.swift in Sources */,
 				932A00E61CFEBA460036E1EA /* Topic.swift in Sources */,
 				CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */,
 				930BBCCA1DED626900939C0D /* TPage_1ViewController.swift in Sources */,

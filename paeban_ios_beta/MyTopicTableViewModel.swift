@@ -33,7 +33,7 @@ class MyTopicTableViewModel{
         get_detail_cell_from_local_v2()
         let need_update_obj_dic = get_client_data_from_temp_client_table()
         get_client_data_from_server(input_dic: need_update_obj_dic)
-        
+        reload_all_cell()
     }
     func get_title_cell_from_local_v2(){
         var data_dic:Dictionary<String,AnyObject> = [:]
@@ -48,7 +48,6 @@ class MyTopicTableViewModel{
             topic_title_cell_add(new_cell: new_cell)
             //self.replace_or_add_title_cell_with_new(new_title_cell: new_cell)
         }
-        reload_all_cell()
     }
     func remove_expired_cell(title_cells:Array<MyTopicStandardType>){
         var cell_index = 0
@@ -82,7 +81,6 @@ class MyTopicTableViewModel{
                 }
             }
         }
-        reload_all_cell()
         //get_client_data_from_temp_client_table
         //呼叫get_client_data_from_server
     }
@@ -148,7 +146,6 @@ class MyTopicTableViewModel{
                 }
             }
         }
-        reload_all_cell()
         // MARK:飛行前移除
 //        print("跟server要使用者資料")
 //        for cxz in client_list_for_request{
@@ -231,12 +228,6 @@ class MyTopicTableViewModel{
             }
         }
     }
-    func update_my_topic_from_server(){
-        
-    }
-    func update_topic_content_from_server(){
-        
-    }
     func update_client_data_from_server(){
     
     }
@@ -253,9 +244,40 @@ class MyTopicTableViewModel{
             mytopic.append(new_cell)
         }
     }
+    func reflash_detail_cell(){
+        var remove_list:Array<Int> = []
+        var topic_id:String?
+        var index_count = 0
+        for cells in mytopic{
+            if cells.dataType == "detail"{
+                topic_id = cells.topicId_title!
+                remove_list.append(index_count)
+            }
+            index_count += 1
+        }
+        remove_list = remove_list.sorted().reversed()
+        for remove_index in remove_list{
+            mytopic.remove(at: remove_index)
+        }
+        if topic_id != nil{
+            if let index = mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
+                if ele.topicId_title == topic_id{
+                    return true
+                }
+                return false
+            }){
+                if secTopic[topic_id!] != nil{
+                    for add_cells in secTopic[topic_id!]!{
+                        mytopic.insert(add_cells, at: (index + 1))
+                    }
+                }
+            }
+        }
+    }
     func reload_all_cell(){
         //判斷刷新前狀態
         //刷新後復原狀態
+        reflash_detail_cell()
         delegate?.model_relodata()
     }
     // ====controller func 2.0 ====

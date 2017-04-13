@@ -194,6 +194,9 @@ open class webSocketActiveCenter{
                     if self.wasd_ForChatViewController?.new_client_topic_msg != nil{
                         self.wasd_ForChatViewController?.new_client_topic_msg!(sender: sender)
                     }
+                    if self.wasd_ForMyTopicTableViewController?.new_client_topic_msg != nil{
+                        self.wasd_ForMyTopicTableViewController?.new_client_topic_msg!(sender: sender)
+                    }
                     
                 }
                 else{
@@ -202,31 +205,13 @@ open class webSocketActiveCenter{
                         //updatedatebase
                     }
                     else{
-                        // MARK:更新topic
+                        update_topic_content_from_server()
                     }
                     
                 }
             }
         }
         //update_recent
-    }
-    
-    func update_topic_content_from_server(last_id:String, sender:String){
-        let send_dic:Dictionary<String,AnyObject> = [
-            "last_id":last_id as AnyObject,
-        ]
-        
-        HttpRequestCenter().request_user_data_v2("update_topic_content", send_dic: send_dic) { (return_dic) in
-            if return_dic != nil{
-                let topic_content_list = return_dic!["topic_content_list"] as! Array<Dictionary<String,AnyObject>>
-                for topic_content_dic in topic_content_list{
-                    sql_database.insert_client_topic_content_from_server(input_dic: topic_content_dic, check_state: .checked)
-                }
-                if self.wasd_ForChatViewController?.new_client_topic_msg != nil{
-                    self.wasd_ForChatViewController?.new_client_topic_msg!(sender: sender)
-                }
-            }
-        }
     }
     
 }

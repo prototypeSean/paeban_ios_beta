@@ -252,7 +252,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     // MARK: delegate
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if msg["msg_type"] as! String == "topic_msg"{
-            model.main_loading_v2()
+            //model.main_loading_v2()
         }
         else if msg["msg_type"] as! String == "new_topic"{
             for msg_keys in msg.keys{
@@ -297,6 +297,14 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             sql_database.remove_topic_from_leave_topic_master_table(topic_id_input: topic_id, client_id_input: client_id)
             
         }
+    }
+//    func new_my_topic_msg(sender:String, id_local:String){
+//        print("==new_my_topic_msg==")
+//        model.main_loading_v2()
+//    }
+    @objc func new_client_topic_msg(sender: String) {
+        print("==new_my_topic_msg==")
+        model.main_loading_v2()
     }
     func wsReconnected(){
         self.model.send_leave_topic_master()
