@@ -10,7 +10,7 @@ import Foundation
 import Starscream
 
 @objc protocol login_paeban_delegate {
-    @objc optional func get_cookie_login_report(state:String)
+    @objc optional func login_with_fb_report(state:String)
     @objc optional func get_cookie_csrf_report(state:String,setcookie:String)
     @objc optional func get_cookie_by_IDPW_report(state:String,setcookie:String)
 }
@@ -20,7 +20,7 @@ class login_paeban{
     var fb_ssesion:String?
     var delegate:login_paeban_delegate?
     var csrf_string = ""
-    func get_cookie(){
+    func login_with_fb(){
         let url = "http://www.paeban.com/register-by-token/facebook/\(fb_ssesion!)"
         print(url)
         var request = URLRequest(url: URL(string: url)!)
@@ -28,6 +28,7 @@ class login_paeban{
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             if error != nil{
+                self.delegate?.login_with_fb_report!(state: "net_fail")
                 print("連線錯誤\(error)")
             }
             else{
@@ -36,12 +37,12 @@ class login_paeban{
                     print("001")
                     if let httpResponse = response as? HTTPURLResponse {
                         if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
-                            self.delegate?.get_cookie_login_report!(state: response_cookie)
+                            self.delegate?.login_with_fb_report!(state: response_cookie)
                         }
                     }
                 }
                 else{
-                    self.delegate?.get_cookie_login_report!(state: "login_no")
+                    self.delegate?.login_with_fb_report!(state: "login_no")
                     print("002")
                 }
                 print("回應內容物： \(ouput)")
@@ -59,9 +60,10 @@ class login_paeban{
         
         request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
         let session = URLSession.shared
-        
+//        let aaa = HTTPCookieStorage.shared.cookies(for: URL(string: url)!)
         let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             if error != nil{
+                self.delegate?.get_cookie_csrf_report!(state: "login_fail", setcookie: "")
                 print("連線錯誤\(error)")
             }
             else{
@@ -122,6 +124,7 @@ class login_paeban{
             let session = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
                 if error != nil{
+                    self.delegate?.get_cookie_by_IDPW_report!(state: "net_fail", setcookie: "")
                     print("連線錯誤\(error)")
                 }
                 else{

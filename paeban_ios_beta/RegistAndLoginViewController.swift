@@ -92,7 +92,7 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
     func paeban_login(){
         if let fb_session = FBSDKAccessToken.current(){
             login_paeban_obj.fb_ssesion = fb_session.tokenString
-            login_paeban_obj.get_cookie()
+            login_paeban_obj.login_with_fb()
             print("開始登入")
         }
         else{

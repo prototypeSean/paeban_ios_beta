@@ -213,8 +213,12 @@ func check_online(in vc:UIViewController, with original_func:@escaping ()->Void)
     }
     else{
         let alert = UIAlertController(title: "警告", message: "網路尚未連線", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler:nil))
-        alert.addAction(UIAlertAction(title: "重試", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+        alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler:{ (act) in
+            if let main_vc = vc as? ViewController{
+                main_vc.remove_loading_view()
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "重試", style: UIAlertActionStyle.default, handler: { (act) in
             check_online(in: vc, with: original_func)
         }))
         vc.present(alert, animated: true, completion: nil)

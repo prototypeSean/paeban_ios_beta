@@ -64,6 +64,7 @@
 		CF7926601DA0E74200821860 /* SingInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265F1DA0E74200821860 /* SingInModel.swift */; };
 		CF89EF781DD34E1F00876298 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */; };
 		CF89EF7A1DD498C700876298 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF791DD498C700876298 /* TabBarController.swift */; };
+		CF8F64D71EA4F6820073D433 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8F64D61EA4F6820073D433 /* LoadingView.swift */; };
 		CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */; };
 		CF9E37301E2229AE0077C7C9 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
@@ -140,6 +141,7 @@
 		CF79265F1DA0E74200821860 /* SingInModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInModel.swift; sourceTree = "<group>"; };
 		CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		CF89EF791DD498C700876298 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		CF8F64D61EA4F6820073D433 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = paeban_ios_beta.entitlements; sourceTree = "<group>"; };
 		CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sql_center.swift; sourceTree = "<group>"; };
 		CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -349,6 +351,7 @@
 				938828321DEDBD8D006E66AC /* RegistAndLoginViewController.swift */,
 				932A00E11CFEBA460036E1EA /* web_socket.swift */,
 				CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */,
+				CF8F64D61EA4F6820073D433 /* LoadingView.swift */,
 				CF288A981E67FF290052DFE8 /* IAPurchaseViewController.swift */,
 				CFF6C4151E9F4D5200A191FD /* suport_func.swift */,
 			);
@@ -564,6 +567,7 @@
 				932A00F01CFEBA460036E1EA /* ChatViewController.swift in Sources */,
 				932A00EE1CFEBA460036E1EA /* MyTopicTableViewCell.swift in Sources */,
 				932A00EF1CFEBA460036E1EA /* MyTopicTableViewController.swift in Sources */,
+				CF8F64D71EA4F6820073D433 /* LoadingView.swift in Sources */,
 				CFBA00AF1DB4CE5C00400C98 /* SettingViewController.swift in Sources */,
 				CF337E051DACEFEC003A133C /* SinInFramViewController.swift in Sources */,
 				932A00EC1CFEBA460036E1EA /* TopicViewController.swift in Sources */,

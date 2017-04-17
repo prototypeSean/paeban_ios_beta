@@ -67,6 +67,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBAction func logIn(_ sender: AnyObject) {
         if self.loginId.text! != "" && self.logInPw.text! != ""{
             self.hide_items()
+            set_loading_view_title(title: "登入中")
             loginId.resignFirstResponder()
             logInPw.resignFirstResponder()
             check_online(in: self) {
@@ -90,10 +91,13 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     var state_switch = true
     var cookie_for_ws:String?
     var location_manager:CLLocationManager?
+    var loading_view:UIView?
+    var loading_title_lable:UILabel?
     // MARK:施工中
     let reset_database = true
-    func create_data_base(){
+    func check_data_base(){
         sql_database.connect_sql()
+        set_loading_view_title(title: "正在確認版本")
         let version_in_db = sql_database.load_version()
         if version_in_db != version || reset_database{
             print("資料庫重置")
@@ -130,7 +134,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     override public func viewDidLoad() {
         super.viewDidLoad()
-        create_data_base()
+        //check_data_base()
         main_vc = self
         login_paeban_obj.delegate = self
         loginId.delegate = self
@@ -143,10 +147,18 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     func autoLogin(){
         if let _ = FBSDKAccessToken.current(){
             paeban_login()
-            logInState = true
         }
         else{
             hide_items()
+            let http_cookies = HTTPCookieStorage.shared
+            if let http_cookies_data = http_cookies.cookies(for: URL(string: "http://www.paeban.com/")!){
+                if !http_cookies_data.isEmpty{
+                    if loading_view == nil{
+                        set_loading_view_title(title: "正在嘗試自動登入")
+                    }
+                    login_paeban_obj.get_cookie_csrf()
+                }
+            }
             login_paeban_obj.get_cookie_csrf()
         }
     }
@@ -159,27 +171,41 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     func get_cookie_csrf_report(state:String,setcookie:String){
         if state == "login_yes"{
-            firstActiveApp = false
-            logInState = true
-            cookie_new.set_cookie(cookie_in: setcookie)
-            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
-            socket.headers["Cookie"] = cookie_new.get_cookie()
-            socket.delegate = self
-            ws_connect_fun(socket)
+            DispatchQueue.main.async{
+                firstActiveApp = false
+                logInState = true
+                cookie_new.set_cookie(cookie_in: setcookie)
+                self.check_data_base()
+                self.remove_loading_view()
+                socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
+                socket.headers["Cookie"] = cookie_new.get_cookie()
+                socket.delegate = self
+                ws_connect_fun(socket)
+            }
         }
         else if state == "login_no"{
-            show_items()
-            cookie_new.set_cookie_csrf(cookie_in: setcookie)
-            if open_app_frist{
-                open_app_frist = false
-                DispatchQueue.main.async {
-                    self.seugeToTutorial()
+            DispatchQueue.main.async{
+                self.remove_loading_view()
+                self.show_items()
+                cookie_new.set_cookie_csrf(cookie_in: setcookie)
+                if open_app_frist{
+                    open_app_frist = false
+                    DispatchQueue.main.async {
+                        self.seugeToTutorial()
+                    }
                 }
             }
-            
         }
         else{
-            print(state)
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "錯誤", message: "網路異常，是否嘗試重新連線", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "是", style: .default, handler: { (act) in
+                    self.login_paeban_obj.get_cookie_csrf()
+                }))
+                alert.addAction(UIAlertAction(title: "否", style: .default, handler: { (act) in
+                    self.show_items()
+                }))
+            }
         }
     }
     func BtnOutlet(){
@@ -199,7 +225,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     DispatchQueue.main.async {
                         self.show_items()
                     }
-                    
                 }
                 else{
         
@@ -242,8 +267,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     func paeban_login(){
         hide_items()
         if let fb_session = FBSDKAccessToken.current(){
+            set_loading_view_title(title: "正在使用facebook帳號登入")
+            if loading_view == nil{
+                loading_view = add_loading_view()
+            }
             login_paeban_obj.fb_ssesion = fb_session.tokenString
-            login_paeban_obj.get_cookie()
+            login_paeban_obj.login_with_fb()
             print("開始登入")
         }
         else{
@@ -251,18 +280,35 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             show_items()
         }
     }
-    func get_cookie_login_report(state:String) {
-        if state != "login_no"{
+    func login_with_fb_report(state:String) {
+        if state == "net_fail"{
+            DispatchQueue.main.async {
+                self.remove_loading_view()
+                let alert = UIAlertController(title: "錯誤", message: "網路錯誤，是否嘗試重新登入", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "是", style: .default, handler: { (act) in
+                    self.paeban_login()
+                }))
+                alert.addAction(UIAlertAction(title: "否", style: .default, handler: { (act) in
+                    self.show_items()
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        else if state == "login_no"{
+            DispatchQueue.main.async{
+                self.remove_loading_view()
+                self.show_items()
+                print("登入失敗!!!")
+            }
+        }
+        else{
+            logInState = true
             cookie_new.set_cookie(cookie_in: state)
-            print(cookie_new.get_cookie())
+            check_data_base()
             socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
             socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
-        }
-        else{
-            self.show_items()
-            print("登入失敗!!!")
         }
     }
     func paeban_login_with_IDPW(id:String,pw:String){
@@ -280,12 +326,14 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             self.present(alert, animated: true, completion: {
                 //code
             })
+            self.present(alert, animated: true, completion: nil)
         }
         
     }
     func get_cookie_by_IDPW_report(state:String,setcookie:String){
         if state == "timeout"{
             DispatchQueue.main.async {
+                self.remove_loading_view()
                 let alert = UIAlertController(title: "錯誤", message: "連線逾時，是否重新連線", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "是", style: UIAlertActionStyle.default, handler: { (target) in
                     self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
@@ -301,15 +349,17 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         else if state == "login_yes"{
             logInState = true
             cookie_new.set_cookie(cookie_in: setcookie)
+            check_data_base()
             socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
             socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
             
         }
-        else{
+        else if state == "login_no"{
             print("登入失敗")
             DispatchQueue.main.async {
+                self.remove_loading_view()
                 let alert = UIAlertController(title: "錯誤", message: "帳號或密碼錯誤", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (target) in
                     self.logInPw.text = ""
@@ -322,6 +372,20 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 //self.show_items()
             }
         }
+        else{
+            DispatchQueue.main.async {
+                self.remove_loading_view()
+                let alert = UIAlertController(title: "錯誤", message: "連線逾時，是否重新連線", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "是", style: UIAlertActionStyle.default, handler: { (target) in
+                    self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
+                }))
+                alert.addAction(UIAlertAction(title:"否",style: UIAlertActionStyle.default, handler: { (target) in
+                    //code
+                }))
+                self.present(alert, animated: true, completion: {
+                    //code
+                })
+            }        }
     }
     func hide_items(){
         DispatchQueue.main.async {
@@ -392,16 +456,17 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         wsTimer?.invalidate()
         wsTimer = Timer.scheduledTimer(timeInterval: 45, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
         if firstConnect && logInState{
-            ws_connected(socket)
+            //ws_connected(socket)
             //self.check_sql_state()
             print("connected")
-            socket.write(data: json_dumps([
-                "msg_type": "check_version",
-                "version":version
-            ]))
+//            socket.write(data: json_dumps([
+//                "msg_type": "check_version",
+//                "version":version
+//            ]))
             firstConnect = false
             firstActiveApp = false
-            self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+            // MARK:segue
+            //self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             DispatchQueue.global(qos: .background).async {
                 if sql_database.check_database_is_empty(){
                     self.update_database(reset_db: "1")
@@ -424,7 +489,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         else if logInState{
             print("wsReConnected")
-            ws_connected(socket)
+            //ws_connected(socket)
             wsActive.wsReConnect()
         }
         
@@ -544,8 +609,28 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         firstActiveApp = false
     }
+    func set_loading_view_title(title:String){
+        if loading_view == nil{
+            loading_view = add_loading_view()
+            loading_title_lable?.text = title
+            loading_title_lable?.sizeToFit()
+            loading_title_lable?.center = CGPoint(
+                x: (loading_view?.frame.width)!/2,
+                y: ((loading_view?.frame.height)!/2 + 60)
+            )
+        }
+        else{
+            loading_title_lable?.text = title
+            loading_title_lable?.sizeToFit()
+            loading_title_lable?.center = CGPoint(
+                x: (loading_view?.frame.width)!/2,
+                y: ((loading_view?.frame.height)!/2 + 60)
+            )
+        }
+    }
     func add_loading_view() -> UIView?{
-        let nav = self.parent?.parent as? UITabBarController
+        print("==add_loading_view")
+        let nav = self.parent as? UINavigationController
         if nav != nil{
             let height = CGFloat(0 + (nav?.view.frame.height)!)
             let load_view = UIView()
@@ -556,16 +641,22 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             load_simbol.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
             load_simbol.activityIndicatorViewStyle = .whiteLarge
             load_view.alpha = 0.7
-            nav!.view.addSubview(load_view)
+            self.view.addSubview(load_view)
             load_simbol.center = CGPoint(x: self.view.frame.width/2, y: height/2)
             load_view.addSubview(load_simbol)
             load_simbol.startAnimating()
+            loading_title_lable = UILabel()
+            load_view.addSubview(loading_title_lable!)
             return load_view
         }
         return nil
     }
+    func remove_loading_view(){
+        self.loading_view?.removeFromSuperview()
+        self.loading_view = nil
+    }
     func update_database(reset_db:String){
-        //let loading_view = self.add_loading_view()
+//        let loading_view = self.add_loading_view()
 //        print(self.parent?.parent)
 //        print("lording_view")
         let send_dic:Dictionary<String,String> = [
@@ -581,12 +672,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
                 let black_list_data = return_dic["black_list"] as! Array<String>
                 let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
-//                var ccc = 0
-//                ccc += private_msg_data.count
-//                ccc += friend_list_data.count
-//                ccc += black_list_data.count
-//                ccc += my_topic_list.count
-//                print("ccc: \(ccc)")
                 for topic_content_data_s in topic_content_data{
                     if topic_content_data_s["sender"] as? String == userData.id{
                         sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)

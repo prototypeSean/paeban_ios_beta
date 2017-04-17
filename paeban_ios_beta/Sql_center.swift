@@ -30,7 +30,10 @@ public class SQL_center{
     let battery = Expression<String?>("battery")
     // user data
     let user_data_table = Table("user_data_table")
-    let user_id_table = Expression<String?>("user_id_table")
+    let user_id = Expression<String>("user_id")
+    let user_name = Expression<String>("user_name")
+    let img = Expression<String?>("img")
+    let img_name = Expression<String>("img_name")
     // version
     var version_table = Table("version_table")
     let version_number = Expression<String?>("version_number")
@@ -51,7 +54,9 @@ public class SQL_center{
     let my_topic = Table("my_topic")
     let topic_title = Expression<String?>("topic_title")
     let tags = Expression<String?>("tags")
-    
+    //recent_topic
+    let recrnt_topic = Table("recrnt_topic")
+    let active = Expression<Bool>("active")
     // tmp_client_data
     let tmp_client_Table = Table("tmp_client_data")
     let tmp_client_name = Expression<String?>("tmp_client_name")
@@ -61,6 +66,23 @@ public class SQL_center{
     let tmp_client_real_pic = Expression<Bool?>("tmp_client_real_pic")
     let tmp_client_level = Expression<Int64?>("tmp_client_level")
     
+    func test(){
+        do{
+            let query = topic_content.select(distinct: sender)
+            let q2 = topic_content.filter(sender == "158")
+            for c in try sql_db!.prepare(query){
+                print(c)
+            }
+            for c in try sql_db!.prepare(q2){
+                print(c)
+            }
+            
+        }
+        catch{
+            print(error)
+            print("error!!!!")
+        }
+    }
     
     func establish_all_table(version:String){
         self.establish_version(version: version)
@@ -72,74 +94,32 @@ public class SQL_center{
         self.establish_friend_list()
         self.establish_my_topic()
         self.establish_tmp_client_data()
+        self.establish_recent_topic()
+        self.establish_user_data()
     }
     func remove_all_table(){
-        
-        do{
-            try sql_db?.run(topic_content.drop())
-            
+        let table_list = [
+            topic_content,
+            private_table,
+            version_table,
+            leave_topic,
+            leave_topic_master,
+            friend_list_table,
+            black_list_table,
+            my_topic,
+            tmp_client_Table,
+            recrnt_topic,
+            user_data_table
+        ]
+        for tables in table_list{
+            do{
+                try sql_db?.run(tables.drop())
+            }
+            catch{
+                print("資料庫錯誤")
+                print(error)
+            }
         }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(private_table.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(version_table.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(leave_topic.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(leave_topic_master.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(friend_list_table.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(black_list_table.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(my_topic.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        do{
-            try sql_db?.run(tmp_client_Table.drop())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        
     }
     func check_database_is_empty() -> Bool{
         do{
@@ -555,6 +535,22 @@ public class SQL_center{
         return return_dic
     }
     
+    // recent_topic
+    func establish_recent_topic(){
+        do{
+            try sql_db?.run(my_topic.create { t in
+                t.column(id, primaryKey: true)
+                t.column(topic_title)
+                t.column(topic_id)
+                t.column(client_id)
+            })
+            print("表單建立成功")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
     
 
     // 取得自己話題的badge數
@@ -1286,7 +1282,6 @@ public class SQL_center{
         }
         
     }
-    
         // 檢查有沒有未送出的訊息然後一併送出
     func get_topic_content_last_checked_server_id() -> String{
         do{
@@ -1492,14 +1487,14 @@ public class SQL_center{
         }
         return 0
     }
-    // 輸入話題ID,取得一個字典是跟誰的對話，還有最後一句話的狀態
+        // 輸入話題ID,取得一個字典是跟誰的對話，還有最後一句話的狀態
     func get_last_line(topic_id_in:String) -> Dictionary<String,Dictionary<String,AnyObject>>?{
         do{
-            //let black_list:Array<String> = get_black_list()
+            let black_list:Array<String> = get_black_list()
             var return_dic:Dictionary<String,Dictionary<String,AnyObject>> = [:]
             let query = topic_content.filter(
                 topic_id == topic_id_in &&
-                //!black_list.contains(sender) &&
+                !black_list.contains(sender) &&
                 (sender == userData.id! || receiver == userData.id!)
             ).order(id.asc)
             for topic_obj in try sql_db!.prepare(query){
@@ -1551,11 +1546,14 @@ public class SQL_center{
     }
     
     // user_data
-    func establish_userdata(){
+    func establish_user_data(){
         do{
-            try sql_db?.run(topic_content.create { t in
+            try sql_db?.run(user_data_table.create { t in
                 t.column(id, primaryKey: true)
-                t.column(user_id_table)
+                t.column(user_id)
+                t.column(user_name)
+                t.column(img)
+                t.column(img_name)
             })
             print("表單建立成功")
         }
@@ -1564,8 +1562,34 @@ public class SQL_center{
             print(error)
         }
     }
-    func insert_user_name(){
-        //pass
+    func insert_user_name(input_dic:Dictionary<String,AnyObject>){
+        do{
+            try sql_db!.run(user_data_table.delete())
+            let insert = user_data_table.insert(
+                user_id <- input_dic["user_id"] as! String,
+                user_name <- input_dic["user_name"] as! String,
+                img_name <- input_dic["img_name"] as! String
+            )
+        
+            try sql_db!.run(insert)
+        }
+        catch{
+            print(error)
+            print("insert_user_name error")
+        }
+    }
+    func update_user_img(input_dic:Dictionary<String,AnyObject>){
+        let query = user_data_table.filter(img_name == input_dic["img_name"] as! String)
+        let updata = query.update(
+            img <- input_dic["img"] as? String
+        )
+        do{
+            try sql_db!.run(updata)
+        }
+        catch{
+            print(error)
+            print("update_user_img error")
+        }
     }
     
     
@@ -1602,16 +1626,8 @@ public class SQL_center{
         return nil
     }
     
-    // tmp_client_data
-//    let tmp_client_Table = Table("tmp_client_data")
-//    let tmp_client_img:str
-//    let tmp_client_img_name:str
-//    let tmp_client_sex:str
-//    let tmp_client_real_pic:bool
-//    let tmp_client_level:int
     
-    
-    // 客戶本地暫存DB
+    // tmp_client_data客戶本地暫存DB
     func establish_tmp_client_data(){
         do{
             try sql_db?.run(tmp_client_Table.create { t in
@@ -1631,7 +1647,6 @@ public class SQL_center{
             print(error)
         }
     }
-    
         // 新增資料到客戶端本地暫存DB
     func tmp_client_addNew(input_dic:Dictionary<String,AnyObject>){
         do{
@@ -1677,7 +1692,6 @@ public class SQL_center{
                 return nil
             }
     }
-
         // 客戶端本地暫存DB上限
     func tmp_client_limit(){
         do{
@@ -1694,8 +1708,6 @@ public class SQL_center{
             print(error)
         }
     }
-    
-    
         // 確認客戶端本地照片是否為最新
     func tmp_client_img_check(client_id:String, tmp_client_img_name:String) -> Bool? {
         do{
