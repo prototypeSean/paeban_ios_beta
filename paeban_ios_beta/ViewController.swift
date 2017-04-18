@@ -802,8 +802,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     let temp_present = Int(temp_present_double * 100)
                     if temp_present > writed_row_present{
                         writed_row_present = temp_present
-                        self.set_loading_view_title(title: "正在同步資料庫 \(temp_present)%")
-                        self.set_persent_lable(persent: temp_present_double)
+                        DispatchQueue.main.async {
+                            self.set_loading_view_title(title: "正在同步資料庫 \(temp_present)%")
+                            self.set_persent_lable(persent: temp_present_double)
+                        }
                     }
                 }
                 
