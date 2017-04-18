@@ -247,7 +247,7 @@ func fast_alter(inviter:String,nav_controller:UINavigationController){
     })
 }
 
-
+// 跳頁
 func leap(from currentVC:UIViewController, to page:Int){
     var PartentVC:UIViewController?
     PartentVC = currentVC.parent
@@ -268,7 +268,7 @@ func leap(from currentVC:UIViewController, to page:Int){
     }
 }
 
-
+// 跳到底幾頁
 func leapToPage(segueInf:Dictionary<String,String>) -> Int?{
     var returnInt:Int?
     if let type = segueInf["type"]{
@@ -286,6 +286,7 @@ func leapToPage(segueInf:Dictionary<String,String>) -> Int?{
     return returnInt
 }
 
+// 簡易版alert
 func simpoAlert2(view:UIViewController , reason:String){
     let mailAlert = UIAlertController(title: "錯誤", message: reason, preferredStyle: UIAlertControllerStyle.alert)
     mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
@@ -296,6 +297,7 @@ func simpoAlert2(view:UIViewController , reason:String){
     })
 }
 
+// 轉換時間
 func time_transform_to_since1970(time_string:String) -> TimeInterval!{
     let time_transform = DateFormatter()
     
@@ -312,9 +314,12 @@ func time_transform_to_since1970(time_string:String) -> TimeInterval!{
     return time_input
 }
 
+
 func time_diff(time_input:Double){
     
 }
+
+// 取得class名稱
 func getClassName(classFullName:String) -> String{
     var className = ""
     var start_switch = false
@@ -332,6 +337,7 @@ func getClassName(classFullName:String) -> String{
     return className
 }
 
+// 餅乾的格式
 public class Cookie_Data{
     private var sessionid:String?
     private var csrftoken:String?
@@ -395,6 +401,34 @@ public class Cookie_Data{
     }
 }
 
+func turn_ver_to_list(ver:String)->Array<Int>{
+    var result_list:Array<Int> = []
+    var temp_chs:String = ""
+    for chs in ver.characters{
+        if chs != "."{
+            temp_chs = "\(temp_chs)\(chs)"
+        }
+        else{
+            result_list.append(Int(temp_chs)!)
+            temp_chs = ""
+        }
+    }
+    if temp_chs != ""{
+        result_list.append(Int(temp_chs)!)
+    }
+    return result_list
+}
+func check_version(ver_local:String,ver_server:String) -> Bool{
+    let ver_local_list = turn_ver_to_list(ver: ver_local)
+    let ver_server_list = turn_ver_to_list(ver: ver_server)
+    let list_len = ver_local_list.count
+    for ver_list_index in 0..<list_len{
+        if ver_local_list[ver_list_index] > ver_server_list[ver_list_index]{
+            return true
+        }
+    }
+    return false
+}
 
 
 

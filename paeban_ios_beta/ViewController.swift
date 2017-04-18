@@ -86,27 +86,103 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var state_lable: UILabel!
     
     
-    let version = "1.1.5"
+    let version = "1.1.4.0"
     let login_paeban_obj = login_paeban()
     var state_switch = true
     var cookie_for_ws:String?
     var location_manager:CLLocationManager?
     var loading_view:UIView?
     var loading_title_lable:UILabel?
+    var persent_lable:UILabel?
     // MARK:施工中
     let reset_database = true
+    // =====登入程序=====
     func check_data_base(){
+        // 驗證userdata
+        // 請求版本號
         sql_database.connect_sql()
-        set_loading_view_title(title: "正在確認版本")
         let version_in_db = sql_database.load_version()
-        if version_in_db != version || reset_database{
-            print("資料庫重置")
-            sql_database.remove_all_table()
-            sql_database.establish_all_table(version: version)
+        func check_user_id(user_id:String){
+            if version_in_db != self.version ||
+                self.reset_database ||
+                sql_database.get_user_id() != user_id{
+                set_loading_view_title(title: "正在請求資料庫更新")
+                update_database(reset_db: "1")
+            }
+            else{
+                //segue
+            }
         }
+        func get_user_info(){
+            HttpRequestCenter().request_user_data_v2("get_user_info", send_dic: [:]) { (rturn_dic:Dictionary<String, AnyObject>?) in
+                if rturn_dic != nil{
+                    DispatchQueue.main.async {
+                        if !check_version(ver_local:self.version, ver_server: rturn_dic!["version"] as! String){
+                            let version_at_least = rturn_dic!["version_at_least"] as! String
+                            if !check_version(ver_local:self.version, ver_server: version_at_least){
+                                let alert_msg = "您的版本\(self.version)過舊無法服務\n請更新到最新版本\(rturn_dic!["version"]! as! String)"
+                                let alert = UIAlertController(title: "錯誤", message: alert_msg, preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+                                    // 聽說ios10以前有問題？
+                                    UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
+                                }))
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                            else{
+                                let alert = UIAlertController(title: "通知", message: "版本 \(rturn_dic!["version"]! as! String) 已發布\n請盡快更新\n您現在的版本是\(self.version)", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+                                    check_user_id(user_id: rturn_dic!["user_id"] as! String)
+                                }))
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                        }
+                        else{
+                            check_user_id(user_id: rturn_dic!["user_id"] as! String)
+                        }
+                        
+                        
+                    }
+                    
+                }
+                else{
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "錯誤", message: "版本確認失敗，是否重試", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "是", style: .default, handler: { (act) in
+                            get_user_info()
+                        }))
+                        alert.addAction(UIAlertAction(title: "否", style: .default, handler: { (act) in
+                            HttpRequestCenter().request_user_data("log_out", send_dic: [:]) { (element) in
+                                //nil
+                            }
+                            // 登出
+                            cookie_new.reset_cookie()
+                            logInState = false
+                            firstConnect = true
+                            socket.disconnect()
+                            let session = URLSession.shared
+                            session.finishTasksAndInvalidate()
+                            session.reset {
+                                //pass
+                            }
+                            self.remove_loading_view()
+                            self.show_items()
+                        }))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
+        }
+        set_loading_view_title(title: "正在確認版本")
+        get_user_info()
+        //===================
+//        if version_in_db != version || reset_database{
+//            print("資料庫重置")
+//            sql_database.remove_all_table()
+//            sql_database.establish_all_table(version: version)
+//        }
         // MARK:"重置資料庫開關"
     }
-    
+    // =====登入程序=====
     
     // MARK: override
     override public func viewWillAppear(_ animated: Bool) {
@@ -158,8 +234,13 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     }
                     login_paeban_obj.get_cookie_csrf()
                 }
+                else{
+                    login_paeban_obj.get_cookie_csrf()
+                }
             }
-            login_paeban_obj.get_cookie_csrf()
+            else{
+                login_paeban_obj.get_cookie_csrf()
+            }
         }
     }
     func find_user_kb_height(){
@@ -469,7 +550,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             //self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             DispatchQueue.global(qos: .background).async {
                 if sql_database.check_database_is_empty(){
-                    self.update_database(reset_db: "1")
+                    //self.update_database(reset_db: "1")
                 }
                 let time_init = Date()
                 while myFriendsList.isEmpty{
@@ -613,6 +694,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if loading_view == nil{
             loading_view = add_loading_view()
             loading_title_lable?.text = title
+            loading_title_lable?.textColor = UIColor.white
             loading_title_lable?.sizeToFit()
             loading_title_lable?.center = CGPoint(
                 x: (loading_view?.frame.width)!/2,
@@ -627,6 +709,32 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 y: ((loading_view?.frame.height)!/2 + 60)
             )
         }
+    }
+    func set_persent_lable(persent:Double){
+        if persent_lable != nil{
+            persent_lable?.isHidden = false
+            persent_lable!.center = CGPoint(
+                x: (loading_view?.frame.width)!/2,
+                y: ((loading_view?.frame.height)!/2 + 80)
+            )
+            UIGraphicsBeginImageContext((persent_lable?.frame.size)!)
+            let context = UIGraphicsGetCurrentContext()
+            context!.setFillColor(UIColor.darkGray.cgColor)
+            context!.fill((persent_lable?.frame)!)
+            let c1 = UIColor.white.cgColor
+            let c2 = UIColor.clear.cgColor
+            let left = CGPoint(x: 0, y: (persent_lable?.frame.height)!)
+            let right = CGPoint(x: (persent_lable?.frame.width)!, y: (persent_lable?.frame.height)!)
+            let colorspace = CGColorSpaceCreateDeviceRGB()
+            let gradient = CGGradient(colorsSpace: colorspace, colors: [c1, c2] as CFArray, locations: [CGFloat(persent), CGFloat(persent)])
+                // change 0.0 above to 1-p if you want the top of the gradient orange
+            context!.drawLinearGradient(gradient!, start: left, end: right, options: CGGradientDrawingOptions.drawsAfterEndLocation)
+            
+            let img = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            persent_lable?.backgroundColor = UIColor(patternImage: img!)
+        }
+        
     }
     func add_loading_view() -> UIView?{
         print("==add_loading_view")
@@ -647,6 +755,13 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             load_simbol.startAnimating()
             loading_title_lable = UILabel()
             load_view.addSubview(loading_title_lable!)
+            persent_lable = UILabel()
+            load_view.addSubview(persent_lable!)
+            persent_lable?.frame = CGRect(x: 0, y: 0, width: self.view.frame.width * 0.7, height: 5)
+            persent_lable?.borderColor = UIColor.white
+            persent_lable?.borderWidth = 1
+            persent_lable?.cornerRadius = 2.5
+            persent_lable?.isHidden = true
             return load_view
         }
         return nil
@@ -656,22 +771,42 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         self.loading_view = nil
     }
     func update_database(reset_db:String){
-//        let loading_view = self.add_loading_view()
-//        print(self.parent?.parent)
-//        print("lording_view")
+        // reset_db "1" 重置server資料庫  "0" 不重置
         let send_dic:Dictionary<String,String> = [
             "init_sql":reset_db,
             "last_topic_content_id":"0",
             "last_private_id":"0"
         ]
         HttpRequestCenter().request_user_data("update_database", send_dic: send_dic) { (return_dic) in
-            DispatchQueue.main.async {
+            DispatchQueue.global(qos: .background).async {
                 init_sql = false
                 let topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
                 let private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
                 let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
                 let black_list_data = return_dic["black_list"] as! Array<String>
                 let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
+                
+                self.set_loading_view_title(title: "正在同步對話紀錄")
+                var tatle_row_count = 0
+                tatle_row_count += topic_content_data.count
+                tatle_row_count += private_msg_data.count
+                tatle_row_count += friend_list_data.count
+                tatle_row_count += black_list_data.count
+                tatle_row_count += my_topic_list.count
+                var writed_row = 0
+                var writed_row_present = 0
+                func print_writed_row_present(){
+                    let temp_present_double = Double(writed_row) / Double(tatle_row_count)
+                    let temp_present = Int(temp_present_double * 100)
+                    if temp_present > writed_row_present{
+                        DispatchQueue.main.async {
+                            writed_row_present = temp_present
+                            self.set_loading_view_title(title: "正在同步資料庫 \(temp_present)%")
+                            self.set_persent_lable(persent: temp_present_double)
+                        }
+                    }
+                }
+                
                 for topic_content_data_s in topic_content_data{
                     if topic_content_data_s["sender"] as? String == userData.id{
                         sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
@@ -680,23 +815,31 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         sql_database.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
                     }
                     //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
+                    writed_row += 1
+                    print_writed_row_present()
                 }
                 for private_msg_data_s in private_msg_data{
                     sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
+                    writed_row += 1
+                    print_writed_row_present()
                 }
                 for friends in friend_list_data{
                     sql_database.insert_friend(username_in: friends["user_id"]!, user_full_name_in: friends["user_full_name"]!, img_name: friends["img"]!)
+                    writed_row += 1
+                    print_writed_row_present()
                 }
                 for blacks in black_list_data{
                     sql_database.insert_black_list(username_in: blacks)
+                    writed_row += 1
+                    print_writed_row_present()
                 }
                 for my_topic_id_s in my_topic_list{
-                    print("my_topic_id_s")
-                    print(my_topic_id_s)
                     sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
-                    
+                    writed_row += 1
+                    print_writed_row_present()
                 }
                 print("更新完成！！！")
+                // segue
             }
             
         }

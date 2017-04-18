@@ -1591,7 +1591,21 @@ public class SQL_center{
             print("update_user_img error")
         }
     }
-    
+    func get_user_id() -> String?{
+        do{
+            let target = try sql_db!.prepare(user_data_table).first(where: { (row) -> Bool in
+                return true
+            })
+            if target != nil{
+                return target![user_id]
+            }
+        }
+        catch{
+            print(error)
+            print("get_user_id error")
+        }
+        return nil
+    }
     
     // establish_userdata
     func establish_version(version:String){
