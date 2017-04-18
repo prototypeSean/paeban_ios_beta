@@ -778,7 +778,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             "last_private_id":"0"
         ]
         HttpRequestCenter().request_user_data("update_database", send_dic: send_dic) { (return_dic) in
-            DispatchQueue.global(qos: .background).async {
+            DispatchQueue.main.async {
                 init_sql = false
                 let topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
                 let private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
@@ -799,11 +799,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     let temp_present_double = Double(writed_row) / Double(tatle_row_count)
                     let temp_present = Int(temp_present_double * 100)
                     if temp_present > writed_row_present{
-                        DispatchQueue.main.async {
-                            writed_row_present = temp_present
-                            self.set_loading_view_title(title: "正在同步資料庫 \(temp_present)%")
-                            self.set_persent_lable(persent: temp_present_double)
-                        }
+                        writed_row_present = temp_present
+                        self.set_loading_view_title(title: "正在同步資料庫 \(temp_present)%")
+                        self.set_persent_lable(persent: temp_present_double)
                     }
                 }
                 
