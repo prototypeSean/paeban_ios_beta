@@ -779,7 +779,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         ]
         let t1 = NSDate().timeIntervalSince1970
         HttpRequestCenter().request_user_data("update_database", send_dic: send_dic) { (return_dic) in
-            DispatchQueue.main.async {
+            DispatchQueue.global(qos: .default).async {
                 print("time_delta1: \(NSDate().timeIntervalSince1970 - t1)")
                 init_sql = false
                 let topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
@@ -802,7 +802,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     let temp_present = Int(temp_present_double * 100)
                     if temp_present > writed_row_present{
                         writed_row_present = temp_present
-                        DispatchQueue.global(qos: .userInteractive).async {
+                        DispatchQueue.main.async {
                             self.set_loading_view_title(title: "正在同步資料庫 \(temp_present)%")
                             self.set_persent_lable(persent: temp_present_double)
                         }
