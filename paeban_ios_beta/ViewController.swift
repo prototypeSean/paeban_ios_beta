@@ -777,15 +777,17 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             "last_topic_content_id":"0",
             "last_private_id":"0"
         ]
+        let t1 = NSDate().timeIntervalSince1970
         HttpRequestCenter().request_user_data("update_database", send_dic: send_dic) { (return_dic) in
             DispatchQueue.main.async {
+                print("time_delta1: \(NSDate().timeIntervalSince1970 - t1)")
                 init_sql = false
                 let topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
                 let private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
                 let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
                 let black_list_data = return_dic["black_list"] as! Array<String>
                 let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
-                
+                print("time_delta2: \(NSDate().timeIntervalSince1970 - t1)")
                 self.set_loading_view_title(title: "正在同步對話紀錄")
                 var tatle_row_count = 0
                 tatle_row_count += topic_content_data.count
@@ -836,6 +838,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     writed_row += 1
                     print_writed_row_present()
                 }
+                print("time_delta3: \(NSDate().timeIntervalSince1970 - t1)")
                 print("更新完成！！！")
                 // segue
             }
