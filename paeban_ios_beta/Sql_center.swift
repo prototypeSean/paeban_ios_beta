@@ -1593,11 +1593,40 @@ public class SQL_center{
     }
     func get_user_id() -> String?{
         do{
-            let target = try sql_db!.prepare(user_data_table).first(where: { (row) -> Bool in
+            let target = try sql_db!.prepare(user_data_table.order(id.desc)).first(where: { (row) -> Bool in
                 return true
             })
             if target != nil{
                 return target![user_id]
+            }
+        }
+        catch{
+            print(error)
+            print("get_user_id error")
+        }
+        return nil
+    }
+    func get_user_data() -> Dictionary<String,String>?{
+        do{
+            let target = try sql_db!.prepare(user_data_table.order(id.desc)).first(where: { (row) -> Bool in
+                return true
+            })
+            if target != nil{
+                if target![img] == nil{
+                    return [
+                        "user_id": target![user_id],
+                        "user_name": target![user_name],
+                        "img_name": target![img_name]
+                    ]
+                }
+                else{
+                    return [
+                        "user_id": target![user_id],
+                        "user_name": target![user_name],
+                        "img_name": target![img_name],
+                        "img": target![img]!
+                    ]
+                }
             }
         }
         catch{

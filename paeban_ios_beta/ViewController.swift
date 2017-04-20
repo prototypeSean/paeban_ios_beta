@@ -95,22 +95,85 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     var loading_title_lable:UILabel?
     var persent_lable:UILabel?
     // MARK:施工中
-    let reset_database = true
+    let reset_database = false
     // =====登入程序=====
     func check_data_base(){
         // 驗證userdata
         // 請求版本號
         sql_database.connect_sql()
+        // MARK:飛行前移除
+        sql_database.print_all()
         let version_in_db = sql_database.load_version()
-        func check_user_id(user_id:String){
+        
+        func check_user_id(input_dic:Dictionary<String, AnyObject>){
             if version_in_db != self.version ||
                 self.reset_database ||
-                sql_database.get_user_id() != user_id{
+                input_dic["user_id"] as? String != sql_database.get_user_id(){
+                print("資料庫重置")
+                
+                sql_database.remove_all_table()
+                sql_database.establish_all_table(version: version)
+                // reset database
+                
+                sql_database.insert_user_name(input_dic: input_dic)
+                // write user data to database
+                
+                userData.id = input_dic["user_id"] as? String
+                userData.name = input_dic["user_name"] as? String
+                // set public var
+                
+                let url = "http://www.paeban.com/media/\(input_dic["img_name"] as! String)"
+                HttpRequestCenter().getHttpImg(url, getImg: { (img) in
+                    userData.img = img
+                    let img_string = imageToBase64(image: img, optional: "withHeader")
+                    let insert_dic = [
+                        "img_name": input_dic["img_name"] as! String,
+                        "img":img_string
+                    ]
+                    sql_database.update_user_img(input_dic: insert_dic as Dictionary<String, AnyObject>)
+                })
+                // get user img from server
+                // and write into database
+                
                 set_loading_view_title(title: "正在請求資料庫更新")
                 update_database(reset_db: "1")
             }
             else{
-                //segue
+                if let user_data_get_from_local_database = sql_database.get_user_data(){
+                    userData.id = user_data_get_from_local_database["user_id"]
+                    userData.name = user_data_get_from_local_database["user_name"]
+                    if user_data_get_from_local_database["img"] == nil{
+                        let img_name = user_data_get_from_local_database["img_name"]!
+                        let url = "http://www.paeban.com/media/\(img_name)"
+                        HttpRequestCenter().getHttpImg(url, getImg: { (img) in
+                            userData.img = img
+                            let img_string = imageToBase64(image: img, optional: "withHeader")
+                            let insert_dic = [
+                                "img_name": input_dic["img_name"] as! String,
+                                "img":img_string
+                            ]
+                            sql_database.update_user_img(input_dic: insert_dic as Dictionary<String, AnyObject>)
+                        })
+                    }
+                    else{
+                        let img_str = user_data_get_from_local_database["img"]!
+                        userData.img = base64ToImage(img_str)
+                    }
+                }
+                else{
+                    DispatchQueue.global(qos: .background).async {
+                        for _ in 0...10{
+                            print("!!!!!!!!嚴重邏輯錯誤 ＃147!!!!!!!!!!")
+                            sleep(1)
+                            // 無法取得使用者資料！！！
+                        }
+                    }
+                }
+                // MARK:飛行前移除
+                print("seggg2")
+                remove_loading_view()
+                show_items()
+                self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             }
         }
         func get_user_info(){
@@ -131,18 +194,15 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                             else{
                                 let alert = UIAlertController(title: "通知", message: "版本 \(rturn_dic!["version"]! as! String) 已發布\n請盡快更新\n您現在的版本是\(self.version)", preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
-                                    check_user_id(user_id: rturn_dic!["user_id"] as! String)
+                                    check_user_id(input_dic: rturn_dic!)
                                 }))
                                 self.present(alert, animated: true, completion: nil)
                             }
                         }
                         else{
-                            check_user_id(user_id: rturn_dic!["user_id"] as! String)
+                            check_user_id(input_dic: rturn_dic!)
                         }
-                        
-                        
                     }
-                    
                 }
                 else{
                     DispatchQueue.main.async {
@@ -176,9 +236,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         get_user_info()
         //===================
 //        if version_in_db != version || reset_database{
-//            print("資料庫重置")
-//            sql_database.remove_all_table()
-//            sql_database.establish_all_table(version: version)
 //        }
         // MARK:"重置資料庫開關"
     }
@@ -191,7 +248,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         self.navigationController?.isNavigationBarHidden = true
         print("--viewWillAppear--")
         tutorial.titleLabel?.adjustsFontSizeToFitWidth = true
-        check_online(in: self, with: autoLogin)
     }
     override public func viewDidAppear(_ animated: Bool) {
 //        let alert = UIAlertController(title: "123", message: ssss, preferredStyle: UIAlertControllerStyle.alert)
@@ -217,11 +273,14 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         logInPw.delegate = self
         find_user_kb_height()
         BtnOutlet()
+        check_online(in: self, with: autoLogin)
     }
     
     // MARK: 內部函數
     func autoLogin(){
         if let _ = FBSDKAccessToken.current(){
+            // MARK: 飛行
+            print("paeban_login__2")
             paeban_login()
         }
         else{
@@ -337,6 +396,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if((FBSDKAccessToken.current()) != nil){
             FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                 if (error == nil){
+                    // MARK:飛行
+                    print("paeban_login__1")
                     self.paeban_login()
                 }
                 else{
@@ -546,8 +607,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
 //            ]))
             firstConnect = false
             firstActiveApp = false
-            // MARK:segue
-            //self.performSegue(withIdentifier: "segueToMainUI", sender: self)
             DispatchQueue.global(qos: .background).async {
                 if sql_database.check_database_is_empty(){
                     //self.update_database(reset_db: "1")
@@ -771,24 +830,21 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         self.loading_view = nil
     }
     func update_database(reset_db:String){
+        print("===update_database===")
         // reset_db "1" 重置server資料庫  "0" 不重置
         let send_dic:Dictionary<String,String> = [
             "init_sql":reset_db,
             "last_topic_content_id":"0",
             "last_private_id":"0"
         ]
-        let t1 = NSDate().timeIntervalSince1970
         HttpRequestCenter().request_user_data("update_database", send_dic: send_dic) { (return_dic) in
             DispatchQueue.global(qos: .default).async {
-                print("time_delta1: \(NSDate().timeIntervalSince1970 - t1)")
                 init_sql = false
                 let topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
                 let private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
                 let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
                 let black_list_data = return_dic["black_list"] as! Array<String>
                 let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
-                print("time_delta2: \(NSDate().timeIntervalSince1970 - t1)")
-                self.set_loading_view_title(title: "正在同步對話紀錄")
                 var tatle_row_count = 0
                 tatle_row_count += topic_content_data.count
                 tatle_row_count += private_msg_data.count
@@ -814,6 +870,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
                     }
                     else{
+                        // MARK:飛行前移除
+                        print(topic_content_data_s["topic_content"])
                         sql_database.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
                     }
                     //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
@@ -840,9 +898,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     writed_row += 1
                     print_writed_row_present()
                 }
-                print("time_delta3: \(NSDate().timeIntervalSince1970 - t1)")
                 print("更新完成！！！")
-                // segue
+                DispatchQueue.main.async {
+                    // MARK:飛行前移除
+                    print("segg1")
+                    self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+                }
             }
             
         }
