@@ -206,7 +206,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 }
                 else{
                     DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "錯誤", message: "版本確認失敗，是否重試", preferredStyle: .alert)
+                        let alert = UIAlertController(title: "錯誤", message: "登入失敗，是否重試", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "是", style: .default, handler: { (act) in
                             get_user_info()
                         }))
@@ -410,9 +410,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         hide_items()
         if let fb_session = FBSDKAccessToken.current(){
             set_loading_view_title(title: "正在使用facebook帳號登入")
-            if loading_view == nil{
-                loading_view = add_loading_view()
-            }
+//            if loading_view == nil{
+//                loading_view = add_loading_view()
+//            }
             login_paeban_obj.fb_ssesion = fb_session.tokenString
             login_paeban_obj.login_with_fb()
             print("開始登入")
@@ -432,6 +432,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 }))
                 alert.addAction(UIAlertAction(title: "否", style: .default, handler: { (act) in
                     self.show_items()
+                    self.remove_loading_view()
                 }))
                 self.present(alert, animated: true, completion: nil)
             }
@@ -507,6 +508,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     self.logInPw.text = ""
                     self.loginId.becomeFirstResponder()
                     self.show_items()
+                    self.remove_loading_view()
                 }))
                 self.present(alert, animated: true, completion: {
                     //code
@@ -515,6 +517,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             }
         }
         else{
+            // net_fail
             DispatchQueue.main.async {
                 self.remove_loading_view()
                 let alert = UIAlertController(title: "錯誤", message: "連線逾時，是否重新連線", preferredStyle: UIAlertControllerStyle.alert)
