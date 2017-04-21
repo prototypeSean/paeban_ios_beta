@@ -96,36 +96,35 @@ class login_paeban{
     
     
     func get_cookie_by_IDPW(id:String,pw:String){
-        if cookie_new.get_cookie() == "" || cookie_new.get_csrf() == ""{
-            get_cookie_csrf()
-        }
-        var timeLimit = 10000 //10s
-        while cookie_new.get_cookie() == "" || cookie_new.get_csrf() == ""{
-            usleep(10000) //10ms
-            timeLimit -= 10
-            if timeLimit < 0{
-                delegate?.get_cookie_by_IDPW_report!(state: "timeout", setcookie: "")
-                break
-            }
-        }
-        if cookie_new.get_cookie() != "" && cookie_new.get_csrf() != ""{
-//            print(cookie)
-//            print(getCSRFToken(cookie!)!)
-//            print("=====")
-            let url = "http://www.paeban.com/login_paeban/"
-            let sendDic:NSDictionary = ["username":id,"password":pw]
-            let sendData = "data=\(json_dumps2(sendDic)!)"
-            var request = URLRequest(url: URL(string: url)!)
-            request.httpMethod = "POST"
-            request.httpBody = sendData.data(using: String.Encoding.utf8)
-            request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]
-            request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
-            request.allHTTPHeaderFields = ["X-CSRFToken":cookie_new.get_csrf()]
-            let session = URLSession.shared
+//        if cookie_new.get_cookie() == "" || cookie_new.get_csrf() == ""{
+//            get_cookie_csrf()
+//        }
+//        var timeLimit = 10000 //10s
+//        while cookie_new.get_cookie() == "" || cookie_new.get_csrf() == ""{
+//            usleep(10000) //10ms
+//            timeLimit -= 10
+//            if timeLimit < 0{
+//                delegate?.get_cookie_by_IDPW_report!(state: "timeout", setcookie: "")
+//                break
+//            }
+//        }
+        
+        let url = "http://www.paeban.com/login_paeban/"
+        let sendDic:NSDictionary = ["username":id,"password":pw]
+        let sendData = "data=\(json_dumps2(sendDic)!)"
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "POST"
+        request.httpBody = sendData.data(using: String.Encoding.utf8)
+        request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
+        request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]
+        request.allHTTPHeaderFields = ["X-CSRFToken":cookie_new.get_csrf()]
+        let session = URLSession.shared
+        func start_login(){
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
                 if error != nil{
                     self.delegate?.get_cookie_by_IDPW_report!(state: "net_fail", setcookie: "")
                     print("連線錯誤\(error)")
+                    
                 }
                 else{
                     let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
@@ -135,17 +134,69 @@ class login_paeban{
                                 //cookie = response_cookie
                                 self.delegate?.get_cookie_by_IDPW_report!(state: "login_yes", setcookie: response_cookie)
                             }
+                            else{
+                                print("response_cookie_error")
+                            }
+                            
                         }
+                        else{
+                            
+                            print("httpResponse_error")
+                            
+                        }
+                        print(response as Any)
                     }
                     else{
                         self.delegate?.get_cookie_by_IDPW_report!(state: "login_no", setcookie: "")
                     }
-                    //print("ouput")
-                    //print(ouput)
                 }
                 
             })
             task.resume()
+        }
+        
+        
+        var request_csrf = URLRequest(url: URL(string: url)!)
+        request_csrf.httpMethod = "GET"
+        
+        request_csrf.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
+        let task_csrf = session.dataTask(with: request_csrf, completionHandler: {data, response, error -> Void in
+            if error != nil{
+                self.delegate?.get_cookie_csrf_report!(state: "login_fail", setcookie: "")
+                print("連線錯誤\(error)")
+            }
+            else{
+                //let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                if let httpResponse = response as? HTTPURLResponse {
+                    //                        print("========print(response)========")
+                    //                        print(response)
+                    if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
+                        cookie_new.set_cookie(cookie_in: response_cookie)
+                        request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]
+                        request.allHTTPHeaderFields = ["X-CSRFToken":cookie_new.get_csrf()]
+                        start_login()
+                    }
+                    else{
+                        self.delegate?.get_cookie_by_IDPW_report!(state: "timeout", setcookie: "")
+                    }
+                    
+                }
+                else{
+                    self.delegate?.get_cookie_by_IDPW_report!(state: "timeout", setcookie: "")
+                }
+                print(response as Any)
+                //print(ouput)
+
+            }
+            
+            
+        })
+        if (cookie_new.get_cookie() != "" && cookie_new.get_csrf() != ""){
+            //task.resume()
+            start_login()
+        }
+        else{
+            task_csrf.resume()
         }
         
         

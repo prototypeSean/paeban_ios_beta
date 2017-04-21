@@ -1350,6 +1350,7 @@ public class SQL_center{
                 ]
                 return_list.append(return_dic)
             }
+            try sql_db?.run(query_server.filter(receiver == userData.id!).update(is_read <- true))
             let query_local = query.filter(id_server == nil)
             for query_s in try sql_db!.prepare(query_local){
                 var is_resd_input = false
@@ -1412,6 +1413,15 @@ public class SQL_center{
                     try sql_db?.run(query2.update(is_read <- true))
                 }
             }
+            // MARK: 飛行
+            
+            let query2 = sql_database.topic_content.filter(
+                id == id_local_int!
+            )
+            let sss = try sql_db?.prepare(query2).first(where: { (row) -> Bool in
+                return true
+            })
+            print(sss?[is_read])
             
             
 //            var receiver_input:String

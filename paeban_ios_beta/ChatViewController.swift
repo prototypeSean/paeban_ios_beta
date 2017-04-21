@@ -294,33 +294,35 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
         if msgType == "topic_msg" && false{
-            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
-            updataNowTopicCellList(resultDic)
-            if setID != nil && topicId != nil && clientID != nil{
-                if resultDic["sender"] as? String == setID && resultDic["receiver"] as? String == clientID && resultDic["topic_id"] as? String == topicId{
-                    //自己說的話
-                    //可插入“移除送出中的符號”的code
-                    let id_local = resultDic["id_local"] as! String
-
-                    sql_database.insert_self_topic_content(input_dic: resultDic, option: .sended)
-                    sending_dic.removeValue(forKey: id_local)
-                    self.update_database()
-                }
-                else if resultDic["receiver"] as? String == setID && resultDic["sender"] as? String == clientID && resultDic["topic_id"] as? String == topicId{
-                    //別人說的話
-                    get_history_new()
-                    let sendData = [
-                        "msg_type":"topic_content_read",
-                        "topic_content_id":resultDic["id_server"] as! String
-                    ]
-                    socket.write(data:json_dumps(sendData as NSDictionary))
-                    
-                }
-            }
+//            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
+//            updataNowTopicCellList(resultDic)
+//            if setID != nil && topicId != nil && clientID != nil{
+//                if resultDic["sender"] as? String == setID && resultDic["receiver"] as? String == clientID && resultDic["topic_id"] as? String == topicId{
+//                    //自己說的話
+//                    //可插入“移除送出中的符號”的code
+//                    let id_local = resultDic["id_local"] as! String
+//
+//                    sql_database.insert_self_topic_content(input_dic: resultDic, option: .sended)
+//                    sending_dic.removeValue(forKey: id_local)
+//                    self.update_database()
+//                }
+//                else if resultDic["receiver"] as? String == setID && resultDic["sender"] as? String == clientID && resultDic["topic_id"] as? String == topicId{
+//                    //別人說的話
+//                    get_history_new()
+//                    let sendData = [
+//                        "msg_type":"topic_content_read",
+//                        "topic_content_id":resultDic["id_server"] as! String
+//                    ]
+//                    socket.write(data:json_dumps(sendData as NSDictionary))
+//                    
+//                }
+//            }
             
         }
         else if msgType == "topic_content_been_read"{
             let id_local_input = msg["id_local"] as! String
+            print(id_local_input)
+            sql_database.print_all()
             sql_database.update_topic_content_read(id_local: id_local_input)
             update_database()
         }
@@ -351,7 +353,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         if sender == userData.id{
             sending_dic.removeValue(forKey: id_local)
             self.update_database()
-            
         }
         
     }
@@ -429,32 +430,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             
         }
     }
-//    func update_topic_content_from_server(){
-//        var init_sql = "0"
-//        if sql_database.check_database_is_empty(){
-//            init_sql = "1"
-//        }
-//        var last_server_id:String? = sql_database.get_topic_content_last_checked_server_id()
-//        if last_server_id == nil{
-//            last_server_id = "0"
-//        }
-//        
-//        let send_dic = [
-//            "last_server_id":last_server_id!,
-//            "init_sql":init_sql,
-//            "topic_id":topicId!
-//        ]
-//        HttpRequestCenter().request_user_data("update_topic_content", send_dic: send_dic) { (return_dic) in
-//            let result_list = return_dic["result_list"] as! Array<Dictionary<String,AnyObject>>
-//            for datas in result_list{
-//                sql_database.insert_client_topic_content_from_server(input_dic: datas, check_state: .checked)
-//            }
-//            DispatchQueue.main.async {
-//                self.update_database()
-//                self.enter_topic_signal()
-//            }
-//        }
-//    }
     func get_last_read_id(topic_id_input:String, client_id_input:String){
         var init_sql_state = "0"
         if init_sql{

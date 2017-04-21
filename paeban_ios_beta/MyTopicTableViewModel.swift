@@ -34,6 +34,7 @@ class MyTopicTableViewModel{
         let need_update_obj_dic = get_client_data_from_temp_client_table()
         get_client_data_from_server(input_dic: need_update_obj_dic)
         reload_all_cell()
+        //sql_database.print_all()
     }
     func get_title_cell_from_local_v2(){
         var data_dic:Dictionary<String,AnyObject> = [:]
@@ -267,6 +268,14 @@ class MyTopicTableViewModel{
                 return false
             }){
                 if secTopic[topic_id!] != nil{
+                    secTopic[topic_id!]?.sort(by: { (ele1, ele2) -> Bool in
+                        if ele1.time != nil && ele2.time != nil{
+                            if ele1.time! < ele2.time!{
+                                return true
+                            }
+                        }
+                        return false
+                    })
                     for add_cells in secTopic[topic_id!]!{
                         mytopic.insert(add_cells, at: (index + 1))
                     }

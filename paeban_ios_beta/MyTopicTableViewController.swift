@@ -41,6 +41,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
+        print("viewWillAppear")
         model.main_loading_v2()
         update_badges()
     }

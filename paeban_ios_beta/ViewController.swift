@@ -72,7 +72,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             logInPw.resignFirstResponder()
             check_online(in: self) {
                 self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
-                self.logInPw.text = ""
+                //self.logInPw.text = ""
             }
         }
     }
@@ -95,7 +95,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     var loading_title_lable:UILabel?
     var persent_lable:UILabel?
     // MARK:施工中
-    let reset_database = false
+    let reset_database = true
     // =====登入程序=====
     func check_data_base(){
         // 驗證userdata
@@ -193,7 +193,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                             }
                             else{
                                 let alert = UIAlertController(title: "通知", message: "版本 \(rturn_dic!["version"]! as! String) 已發布\n請盡快更新\n您現在的版本是\(self.version)", preferredStyle: .alert)
-                                alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+                                alert.addAction(UIAlertAction(title: "更新", style: .default, handler: { (act) in
+                                    UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
+                                }))
+                                alert.addAction(UIAlertAction(title: "稍後", style: .default, handler: { (act) in
                                     check_user_id(input_dic: rturn_dic!)
                                 }))
                                 self.present(alert, animated: true, completion: nil)
@@ -477,9 +480,17 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if state == "timeout"{
             DispatchQueue.main.async {
                 self.remove_loading_view()
+                print("tout2")
                 let alert = UIAlertController(title: "錯誤", message: "連線逾時，是否重新連線", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "是", style: UIAlertActionStyle.default, handler: { (target) in
-                    self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
+                    self.hide_items()
+                    self.set_loading_view_title(title: "登入中")
+                    self.loginId.resignFirstResponder()
+                    self.logInPw.resignFirstResponder()
+                    check_online(in: self) {
+                        self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
+                        //self.logInPw.text = ""
+                    }
                 }))
                 alert.addAction(UIAlertAction(title:"否",style: UIAlertActionStyle.default, handler: { (target) in
                     //code
@@ -520,9 +531,17 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             // net_fail
             DispatchQueue.main.async {
                 self.remove_loading_view()
+                print("tout1")
                 let alert = UIAlertController(title: "錯誤", message: "連線逾時，是否重新連線", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "是", style: UIAlertActionStyle.default, handler: { (target) in
-                    self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
+                    self.hide_items()
+                    self.set_loading_view_title(title: "登入中")
+                    self.loginId.resignFirstResponder()
+                    self.logInPw.resignFirstResponder()
+                    check_online(in: self) {
+                        self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
+                        //self.logInPw.text = ""
+                    }
                 }))
                 alert.addAction(UIAlertAction(title:"否",style: UIAlertActionStyle.default, handler: { (target) in
                     //code
@@ -873,8 +892,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
                     }
                     else{
-                        // MARK:飛行前移除
-                        print(topic_content_data_s["topic_content"])
                         sql_database.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
                     }
                     //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
@@ -903,8 +920,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 }
                 print("更新完成！！！")
                 DispatchQueue.main.async {
-                    // MARK:飛行前移除
-                    print("segg1")
+                    self.remove_loading_view()
+                    self.show_items()
                     self.performSegue(withIdentifier: "segueToMainUI", sender: self)
                 }
             }
