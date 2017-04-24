@@ -156,41 +156,6 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         btnBlock.clipsToBounds = true
 
     }
-    func getHistory(){
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { 
-            let http_obj = HttpRequestCenter()
-            http_obj.getTopicContentHistory(self.setID!, topicId: self.topicId!, InViewAct: { (returnDic) in
-                
-                let checkMsgType = returnDic.index(where: { (msg_type, _) -> Bool in
-                    if msg_type == "msg_type"{
-                        //話題已關閉
-                        return true
-                    }
-                    else{
-                        return false
-                    }
-                })
-                
-                if checkMsgType == nil{
-                    let myImg = base64ToImage(returnDic["my_img"] as! String)
-                    
-                    let msg = returnDic["msg"] as! Dictionary<String,AnyObject>
-                    DispatchQueue.main.async(execute: {
-                        self.myPhotoSave = myImg
-                        self.myPhotoImg.image = self.myPhotoSave
-                        //let chatViewCon = self.contanterView
-                        //chatViewCon?.historyMsg = msg
-                        self.msg = msg
-                    })
-                }
-                else{
-                    DispatchQueue.main.async(execute: {
-                        //self.alertTopicClosed()
-                    })
-                }
-            })
-        }
-    }
     func alertTopicClosed(){
         let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.alert)
         
@@ -291,7 +256,6 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         wsActive.wasd_ForMyTopicViewController = self
 //        setImage()
         topicTitleContent.text = topicTitle
-        getHistory()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -309,6 +273,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         chatViewCon.clientID = self.setID
         chatViewCon.clientName = self.setName
         chatViewCon.model = self.model
+        chatViewCon.topic_title_var = self.topicTitle
         
         if self.msg == nil {
             self.contanterView = chatViewCon

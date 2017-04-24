@@ -76,7 +76,7 @@ class MyTopicTableViewModel{
         for cells in mytopic{
             if cells.dataType == "title"{
                 if let temp_topic_id = cells.topicId_title{
-                    if let basic_cell_list = get_detail_basic_list_from_local_v2(topic_id_in: temp_topic_id){
+                    if let basic_cell_list = get_detail_basic_list_from_local_v2(topic_id_in: temp_topic_id, topic_title_in: cells.topicTitle_title!){
                         secTopic[temp_topic_id] = basic_cell_list
                     }
                 }
@@ -85,7 +85,7 @@ class MyTopicTableViewModel{
         //get_client_data_from_temp_client_table
         //呼叫get_client_data_from_server
     }
-    func get_detail_basic_list_from_local_v2(topic_id_in:String) -> Array<MyTopicStandardType>?{
+    func get_detail_basic_list_from_local_v2(topic_id_in:String, topic_title_in:String) -> Array<MyTopicStandardType>?{
         // 計算出陽春版資料的子cell
         if let data_dic = sql_database.get_last_line(topic_id_in: topic_id_in){
             // topic_who* -- topic_text
@@ -99,6 +99,7 @@ class MyTopicTableViewModel{
                 temp_unit.read_detial = data_s.value["is_read"] as? Bool
                 temp_unit.time = data_s.value["time"] as? Double
                 temp_unit.level = data_s.value["level"] as? Int
+                temp_unit.topicTitle_title = topic_title_in
                 temp_unit.clientOnline_detial = false
                 temp_unit.lastSpeaker_id_detial = data_s.value["sender"] as? String
                 if temp_unit.lastSpeaker_id_detial == userData.id{

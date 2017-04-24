@@ -174,6 +174,15 @@ func turn_full_title_to_tag_save_type(input_full_title:String) -> String{
     return tag_save_string
 }
 
+// 把tag清單轉字串
+func turn_tag_list_to_tag_string(tag_list:Array<String>) -> String{
+    var return_str = ""
+    for c in tag_list{
+        return_str = "\(return_str) #\(c)"
+    }
+    return return_str
+}
+
 // 解析資料庫裡的tag
 func turn_tag_string_to_tag_list(tag_string:String) -> Array<String>{
     let reg_tag = "#[a-zA-Z0-9\\u4e00-\\u9fa5Ａ-Ｚａ-ｚ０-９]+"

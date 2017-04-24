@@ -41,6 +41,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     let myPhotoImg = UIImageView()
     var guestPhotoImg = UIImageView()
     var get_client_img_timer:Timer?
+    var tags:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -420,7 +421,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         chatViewCon.ownerId = self.ownerId
         chatViewCon.clientID = self.setID
         chatViewCon.clientName = self.setName
-        
+        chatViewCon.tags = self.tags
+        chatViewCon.topic_title_var = self.topicTitle
         if self.msg == nil {
             self.contanterView = chatViewCon
         }

@@ -98,8 +98,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                 topicViewCon.title = selectTopicData.ownerName
                 topicViewCon.setID = selectTopicData.owner
                 topicViewCon.setName = selectTopicData.ownerName
+                topicViewCon.tags = turn_tag_list_to_tag_string(tag_list:selectTopicData.hashtags!)
                 topicViewCon.delegate = self
-                
                 //            topicViewCon.topicTitleContent.text = selectTopicData.title
             }
         }

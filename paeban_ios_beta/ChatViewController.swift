@@ -35,6 +35,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     var ownerId:String?
     var model:MyTopicTableViewModel?
     var sending_dic:Dictionary<String,Int> = [:]
+    var topic_title_var:String?
+    var tags:String?
     
     //collectionView(_:attributedTextForMessageBubbleTopLabelAtIndexPath:)
     //MARK:讀入歷史訊息
@@ -287,8 +289,18 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         ]
         //sql_database.inser_date_to_topic_content(input_dic: dataDic)
         sql_database.insert_self_topic_content(input_dic: dataDic, option: .new_msg)
+        if !sql_database.check_is_in_mytopic(check_topic_id: topicId!) &&
+            !sql_database.check_is_in_recent_topic(check_topic_id: topicId!){
+            let insert_dic = [
+                "topic_title": topic_title_var!,
+                "topic_id": topicId!,
+                "client_id": clientID!,
+                "tags":tags!
+            ]
+            sql_database.insert_recent_topic(input_dic: insert_dic)
+            sql_database.print_recent_db()
+        }
         send_all_msg()
-
     }
     // websocket delegate
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
@@ -321,7 +333,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
         else if msgType == "topic_content_been_read"{
             let id_local_input = msg["id_local"] as! String
-            print(id_local_input)
+            print("topic_content_been_read \(id_local_input)")
             sql_database.print_all()
             sql_database.update_topic_content_read(id_local: id_local_input)
             update_database()
@@ -336,10 +348,12 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     
     }
     func new_client_topic_msg(sender: String) {
+        print("new_client_topic_msg")
         if sender == clientID{
             update_database()
             if topicId != nil && clientID != nil{
                 let last_id = sql_database.get_topic_content_last_id_server(topic_id_input: topicId!, client_id_input: clientID!)
+                print("new_client_topic_msg2")
                 let sendData = [
                     "msg_type":"topic_content_read",
                     "topic_content_id":last_id

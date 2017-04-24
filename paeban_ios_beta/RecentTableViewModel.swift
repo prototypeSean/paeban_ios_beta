@@ -26,7 +26,6 @@ class RecentTableViewModel{
     // controller func
     func reCheckDataBase() {
         get_recent_data()
-        
     }
     func recive_topic_msg(msg:Dictionary<String,AnyObject>){
         update_last_line(msg: msg)
@@ -77,15 +76,20 @@ class RecentTableViewModel{
         // 照片，但是設定圓角在VC
         cell.clientImg.image = topicWriteToRow.clientPhoto_detial
         // 性別圖示
-        cell.clientSex.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
+        if topicWriteToRow.clientSex_detial != nil{
+            cell.clientSex.image = letoutSexLogo(topicWriteToRow.clientSex_detial!)
+        }
         // 本人照片圖示
         cell.isMyPic.image = UIImage(named:"True_photo")!.withRenderingMode(.alwaysTemplate)
-        if topicWriteToRow.clientIsRealPhoto_detial!{
-            cell.isMyPic.tintColor = UIColor.white
+        if topicWriteToRow.clientIsRealPhoto_detial != nil{
+            if topicWriteToRow.clientIsRealPhoto_detial!{
+                cell.isMyPic.tintColor = UIColor.white
+            }
+            else{
+                cell.isMyPic.tintColor = UIColor.clear
+            }
         }
-        else{
-            cell.isMyPic.tintColor = UIColor.clear
-        }
+        
         // 發話人標籤
         var lastSpeakerName:String?
         if topicWriteToRow.lastSpeaker_detial! == userData.name{
@@ -105,7 +109,9 @@ class RecentTableViewModel{
             }
             
         }
-        cell.lastSpeaker.text = "\(lastSpeakerName!)"
+        if lastSpeakerName != nil{
+           cell.lastSpeaker.text = "\(lastSpeakerName!)"
+        }
         // 話題owner
         cell.ownerName.text = topicWriteToRow.clientName_detial
         // 最新一句對話
@@ -119,15 +125,18 @@ class RecentTableViewModel{
         cell.online.layer.borderColor = UIColor.white.cgColor
         cell.online.layer.cornerRadius = cr
         cell.online.clipsToBounds = true
-        if topicWriteToRow.clientOnline_detial!{
-            cell.online.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
+        if topicWriteToRow.clientOnline_detial != nil{
+            if topicWriteToRow.clientOnline_detial!{
+                cell.online.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
+            }
+            else{
+                
+                cell.online.tintColor = UIColor.lightGray
+            }
         }
-        else{
-            
-            cell.online.tintColor = UIColor.lightGray
+        if topicWriteToRow.battery != nil{
+            letoutBattery(battery: cell.battery, batteryLeft: topicWriteToRow.battery!)
         }
-        
-        letoutBattery(battery: cell.battery, batteryLeft: topicWriteToRow.battery!)
         
         return cell
     }
@@ -298,14 +307,50 @@ class RecentTableViewModel{
         }
     }
     private func get_recent_data(){
-        HttpRequestCenter().request_user_data("recent_data", send_dic: [:]) { (retuen_dic) in
-            let data = retuen_dic["data"] as! Dictionary<String,AnyObject>
-            DispatchQueue.main.async {
-                self.remove_out_off_data(data: data)
-                for datas in data{
-                    self.transformStaticType(datas.0, inputData: datas.1 as! Dictionary<String,AnyObject>)
+        let result_data = sql_database.get_recent_last_line()
+        let client_list_for_request = draw_basic_cell(input_dic: result_data)
+        get_client_data_from_server(client_list_for_request: client_list_for_request)
+        self.sort_recent_db_by_time()
+        self.delegate?.model_relodata()
+        //飛行
+        print(recentDataBase)
+    }
+    private func get_client_data_from_server(client_list_for_request:Array<Dictionary<String,AnyObject>>){
+        if !client_list_for_request.isEmpty{
+            let send_dic1 = ["client_list_for_request":client_list_for_request]
+            HttpRequestCenter().request_user_data_v2("request_client_detail", send_dic: send_dic1 as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                if return_dic != nil{
+                    DispatchQueue.main.async {
+                        let return_list = return_dic!["return_list"]! as! Array<Dictionary<String,AnyObject>>
+                        for datas in return_list{
+                            sql_database.tmp_client_addNew(input_dic: datas)
+                            self.update_cells(input_dic: datas)
+                        }
+                        self.sort_recent_db_by_time()
+                        self.delegate?.model_relodata()
+                    }
+                    
                 }
+                else{
+                    DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 3, execute: {
+                        self.get_client_data_from_server(client_list_for_request: client_list_for_request)
+                    })
+                }
+            })
+        }
+    }
+    private func update_cells(input_dic:Dictionary<String, AnyObject>){
+        if let cell_index = recentDataBase.index(where: { (ele:MyTopicStandardType) -> Bool in
+            if ele.clientId_detial == input_dic["client_id"] as? String{
+                return true
             }
+            return false
+        }){
+            recentDataBase[cell_index].clientName_detial = input_dic["client_name"] as? String
+            recentDataBase[cell_index].clientPhoto_detial = base64ToImage(input_dic["img"] as! String)
+            recentDataBase[cell_index].clientSex_detial = input_dic["sex"] as? String
+            recentDataBase[cell_index].clientIsRealPhoto_detial = input_dic["is_real_pic"] as? Bool
+            recentDataBase[cell_index].level = input_dic["level"] as? Int
         }
     }
     private func remove_out_off_data(data:Dictionary<String,AnyObject>){
@@ -317,7 +362,6 @@ class RecentTableViewModel{
         var remove_list:Array<Int> = []
         var count_index = 0
         for cell_s in recentDataBase{
-            print(cell_s.topicId_title)
             if let _ = check_topic_id_list.index(of: cell_s.topicId_title!){
                 //pass
             }
@@ -375,7 +419,24 @@ class RecentTableViewModel{
     
     
     // transform
-    
+    func draw_basic_cell(input_dic:Dictionary<String,AnyObject>) -> Array<Dictionary<String,AnyObject>>{
+        recentDataBase = []
+        var client_list_for_request:Array<Dictionary<String,AnyObject>> = []
+        for datas in input_dic{
+            // 工作2 if no key "img"  add to request_img_list
+            let datas_val = datas.value as! Dictionary<String,AnyObject>
+            if datas_val["img"] == nil{
+                let temp_dic = [
+                    "level": datas_val["level"] as! String,
+                    "topic_id": datas.key,
+                    "client_id":datas_val["owner"] as! String
+                ]
+                client_list_for_request.append(temp_dic as [String : AnyObject])
+            }
+            self.transformStaticType(datas.0, inputData: datas.1 as! Dictionary<String,AnyObject>)
+        }
+        return client_list_for_request
+    }
     func transformStaticType(_ inputKey:String,inputData:Dictionary<String,AnyObject>){
         if let recentDataBaseIndex = recentDataBase.index(where: { (target) -> Bool in
             if target.topicId_title == inputKey{
@@ -390,22 +451,19 @@ class RecentTableViewModel{
             operatingObj.lastSpeaker_detial = inputData["last_speaker"] as? String
             operatingObj.topicContentId_detial = inputData["topic_content_id"] as? String
             operatingObj.read_detial = inputData["is_read"] as? Bool
-            operatingObj.time = time_transform_to_since1970(time_string: inputData["time"] as! String)
-            operatingObj.battery = Int((inputData["battery"] as? String)!)
+            operatingObj.time = inputData["time"] as? Double
+            //operatingObj.battery = Int((inputData["battery"] as? String)!)
             recentDataBase[recentDataBaseIndex] = operatingObj
-            DispatchQueue.main.async {
-                self.sort_recent_db_by_time()
-                self.delegate?.model_relodata()
-            }
-            let httpSendDic = ["client_id":inputData["owner"] as! String,
-                               "topic_id":inputKey]
-            HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
-                operatingObj.clientPhoto_detial = base64ToImage(returnData["data"] as! String)
-                DispatchQueue.main.async {
-                    self.sort_recent_db_by_time()
-                    self.delegate?.model_relodata()
-                }
-            })
+            // 工作2 if need to updata level
+//            let httpSendDic = ["client_id":inputData["owner"] as! String,
+//                               "topic_id":inputKey]
+//            HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
+//                operatingObj.clientPhoto_detial = base64ToImage(returnData["data"] as! String)
+//                DispatchQueue.main.async {
+//                    self.sort_recent_db_by_time()
+//                    self.delegate?.model_relodata()
+//                }
+//            })
         }
         else{
             let ouputObj = MyTopicStandardType(dataType: "detail")
@@ -419,23 +477,20 @@ class RecentTableViewModel{
             ouputObj.topicContentId_detial = inputData["topic_content_id"] as? String
             ouputObj.read_detial = inputData["is_read"] as? Bool
             ouputObj.clientIsRealPhoto_detial = inputData["owner_is_real_img"] as?Bool
-            ouputObj.clientOnline_detial = inputData["owner_online"] as? Bool
+            //ouputObj.clientOnline_detial = inputData["owner_online"] as? Bool
             ouputObj.tag_detial = inputData["tag_list"] as? Array<String>
-            ouputObj.time = time_transform_to_since1970(time_string: inputData["time"] as! String)
-            ouputObj.battery = Int((inputData["battery"] as? String)!)
-            let httpSendDic = ["client_id":inputData["owner"] as! String,
-                               "topic_id":inputKey]
-            DispatchQueue.main.async {
-                self.sort_recent_db_by_time()
-                self.delegate?.model_relodata()
-            }
-            HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
-                ouputObj.clientPhoto_detial = base64ToImage(returnData["data"] as! String)
-                DispatchQueue.main.async {
-                    self.sort_recent_db_by_time()
-                    self.delegate?.model_relodata()
-                }
-            })
+            ouputObj.time = inputData["time"] as? Double
+            ouputObj.clientOnline_detial = false
+            //ouputObj.battery = Int((inputData["battery"] as? String)!)
+//            let httpSendDic = ["client_id":inputData["owner"] as! String,
+//                               "topic_id":inputKey]
+//            HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
+//                ouputObj.clientPhoto_detial = base64ToImage(returnData["data"] as! String)
+//                DispatchQueue.main.async {
+//                    self.sort_recent_db_by_time()
+//                    self.delegate?.model_relodata()
+//                }
+//            })
             //ouputObj.clientPhoto_detial = UIImage.init(data: data)
             recentDataBase.append(ouputObj)
         }

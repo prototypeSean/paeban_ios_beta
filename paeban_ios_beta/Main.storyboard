@@ -966,7 +966,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="New-VA-2ba" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="4Dk-gy-K5h"/>
             </objects>
-            <point key="canvasLocation" x="-4694.202898550725" y="259.23913043478262"/>
+            <point key="canvasLocation" x="-4100" y="123"/>
         </scene>
         <!--話題-->
         <scene sceneID="VON-sR-4Xb">
@@ -1422,7 +1422,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O6Z-c3-l05" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3274" y="254"/>
+            <point key="canvasLocation" x="-3222" y="254"/>
         </scene>
         <!--我的話題-->
         <scene sceneID="Rjg-9b-c6S">
@@ -1692,7 +1692,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                 </containerView>
             </objects>
-            <point key="canvasLocation" x="-2270" y="-743"/>
+            <point key="canvasLocation" x="-2959" y="-743"/>
         </scene>
         <!--我的-->
         <scene sceneID="OpS-3a-p5B">
@@ -1717,7 +1717,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7qW-eA-2pg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2268" y="-1528"/>
+            <point key="canvasLocation" x="-2962" y="-1520"/>
         </scene>
         <!--好友-->
         <scene sceneID="XLp-Uj-GQc">
@@ -2142,7 +2142,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oKu-0o-XaP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2961" y="-743"/>
+            <point key="canvasLocation" x="-2259" y="-743"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="KMX-ba-Jnp">
@@ -2165,7 +2165,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lQw-ap-tyI" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="vhB-t5-vNT"/>
             </objects>
-            <point key="canvasLocation" x="-3274" y="915"/>
+            <point key="canvasLocation" x="-3223" y="932"/>
         </scene>
         <!--Launch Screen View Controller-->
         <scene sceneID="UD4-uD-nM2">
@@ -2293,7 +2293,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sLl-S5-q3t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2958" y="-1520"/>
+            <point key="canvasLocation" x="-2271" y="-1520"/>
         </scene>
         <!--好友-->
         <scene sceneID="yuG-qr-K20">
@@ -2656,7 +2656,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bie-q2-caM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2268" y="254"/>
+            <point key="canvasLocation" x="-2357" y="254"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="ODT-yF-TlF">
@@ -2674,7 +2674,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UJc-sI-jvU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2268" y="915"/>
+            <point key="canvasLocation" x="-2358" y="932"/>
         </scene>
         <!--好友-->
         <scene sceneID="Zse-f7-ZDN">
@@ -2825,7 +2825,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HWC-Tl-57a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1578" y="910"/>
+            <point key="canvasLocation" x="-1578" y="932"/>
         </scene>
         <!--Sing In View Controller-->
         <scene sceneID="JOP-Bm-LCd">
@@ -3042,9 +3042,9 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9Et-Zw-Bc4"/>
         <segue reference="nCN-DR-xXv"/>
-        <segue reference="wZO-VC-xmQ"/>
-        <segue reference="l0w-d5-79K"/>
+        <segue reference="9Et-Zw-Bc4"/>
+        <segue reference="vc1-tE-BTH"/>
+        <segue reference="lxg-Ec-9Hp"/>
     </inferredMetricsTieBreakers>
 </document>

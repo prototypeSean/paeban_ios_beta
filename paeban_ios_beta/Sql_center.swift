@@ -55,7 +55,7 @@ public class SQL_center{
     let topic_title = Expression<String?>("topic_title")
     let tags = Expression<String?>("tags")
     //recent_topic
-    let recrnt_topic = Table("recrnt_topic")
+    let recent_topic = Table("recent_topic")
     let active = Expression<Bool>("active")
     // tmp_client_data
     let tmp_client_Table = Table("tmp_client_data")
@@ -65,6 +65,8 @@ public class SQL_center{
     let tmp_client_sex = Expression<String?>("tmp_client_sex")
     let tmp_client_real_pic = Expression<Bool?>("tmp_client_real_pic")
     let tmp_client_level = Expression<Int64?>("tmp_client_level")
+    //recent
+    
     
     func test(){
         do{
@@ -108,8 +110,9 @@ public class SQL_center{
             black_list_table,
             my_topic,
             tmp_client_Table,
-            recrnt_topic,
-            user_data_table
+            recent_topic,
+            user_data_table,
+            recent_topic
         ]
         for tables in table_list{
             do{
@@ -449,8 +452,20 @@ public class SQL_center{
         }
         return 0
     }
-        // 此函數輸出三份字典，目的在取得「我的話題清單」cell需要顯示的資料，輸入的資料為該話題ID
-        // 輸出要「話題標題#1」、「每個對話cell對方已讀了沒#2」、「hashtag#3」
+    func check_is_in_mytopic(check_topic_id:String) -> Bool{
+        do{
+            let query = my_topic.filter(topic_id == check_topic_id)
+            if try sql_db!.scalar(query.count) > 0 {
+                return true
+            }
+            return false
+        }
+        catch{
+            print("insert_recent_topic資料庫錯誤")
+            print(error)
+            return false
+        }
+    }
     func get_my_topic_detial_for_title_cell(topic_id_in:String) -> Dictionary<String,AnyObject>{
         do{
             // 對照輸入的話題id，確認自己的話題存在，取得自己話題標題
@@ -502,7 +517,8 @@ public class SQL_center{
         }
         return [:]
     }
-    // 取得自己的話題在伺服器上的id
+        // 此函數輸出三份字典，目的在取得「我的話題清單」cell需要顯示的資料，輸入的資料為該話題ID
+        // 輸出要「話題標題#1」、「每個對話cell對方已讀了沒#2」、「hashtag#3」
     func get_my_topics_server_id() -> Array<String>{
         var return_list:Array<String> = []
         do{
@@ -522,7 +538,7 @@ public class SQL_center{
         print("沒有自己的話題")
         return return_list
     }
-    // 取的所有的 BADGE 由三個分開的 func 整理成純文字
+        // 取得自己的話題在伺服器上的id
     func get_all_badges() -> Dictionary<String,String>{
         let friendBagdes = String(get_friend_badges())
         let myTopicBadges = String(get_myTopic_badges())
@@ -534,15 +550,19 @@ public class SQL_center{
         ]
         return return_dic
     }
+        // 取的所有的 BADGE 由三個分開的 func 整理成純文字
+    
     
     // recent_topic
     func establish_recent_topic(){
         do{
-            try sql_db?.run(my_topic.create { t in
+            try sql_db?.run(recent_topic.create { t in
                 t.column(id, primaryKey: true)
                 t.column(topic_title)
                 t.column(topic_id)
                 t.column(client_id)
+                t.column(tags)
+                t.column(active)
             })
             print("表單建立成功")
         }
@@ -551,7 +571,85 @@ public class SQL_center{
             print(error)
         }
     }
-    
+    func insert_recent_topic(input_dic:Dictionary<String,String>){
+        let insert = recent_topic.insert(
+            topic_title <- input_dic["topic_title"],
+            topic_id <- input_dic["topic_id"],
+            client_id <- input_dic["client_id"],
+            tags <- input_dic["tags"],
+            active <- true
+        )
+        do{
+            try sql_db?.run(insert)
+        }
+        catch{
+            print("insert_recent_topic資料庫錯誤")
+            print(error)
+        }
+    }
+    func check_is_in_recent_topic(check_topic_id:String) -> Bool{
+        do{
+            let query = recent_topic.filter(topic_id == check_topic_id)
+            if try sql_db!.scalar(query.count) > 0 {
+                return true
+            }
+            return false
+        }
+        catch{
+            print("check_is_in_recent_topic資料庫錯誤")
+            print(error)
+            return false
+        }
+    }
+    func get_recent_last_line() -> Dictionary<String,AnyObject>{
+        do{
+            var return_dic:Dictionary<String,AnyObject> = [:]
+            for recent_datas in try sql_db!.prepare(recent_topic.filter(active == true)){
+                let query = topic_content.filter(
+                    topic_id == recent_datas[topic_id]!
+                )
+                if let topic_content_obj = try sql_db!.prepare(query.order(id.desc)).first(where: { (row) -> Bool in
+                    return true
+                }){
+                    let level = get_level(topic_id_in: recent_datas[topic_id]!, client_id: recent_datas[topic_id]!)
+                    var temp_dic:Dictionary<String,AnyObject> = [
+                        "owner": recent_datas[client_id]! as AnyObject,
+                        "last_line": topic_content_obj[topic_text]! as AnyObject,
+                        "topic_content_id": String(topic_content_obj[id]) as AnyObject,
+                        "last_speaker": topic_content_obj[sender]! as AnyObject,
+                        "is_read": topic_content_obj[is_read]! as AnyObject,
+                        "tag_list": turn_tag_string_to_tag_list(tag_string: recent_datas[tags]!) as AnyObject,
+                        "topic_title": recent_datas[topic_title]! as AnyObject,
+                        "time": topic_content_obj[time] as AnyObject,
+                        "level": String(level) as AnyObject
+                    ]
+                    
+                    if let temp_data = tmp_client_search(searchByClientId: recent_datas[topic_id]!, level: level){
+                        temp_dic["owner_name"] = temp_data["client_name"]
+                        temp_dic["owner_is_real_img"] = temp_data["is_real_pic"]
+                        temp_dic["owner_sex"] = temp_data["sex"]
+                        temp_dic["img"] = temp_data["img"]
+                    }
+                    return_dic[recent_datas[topic_id]!] = temp_dic as AnyObject
+                }
+            }
+            return return_dic
+        }
+        catch{
+            print("get_recent_last_line資料庫錯誤")
+            print(error)
+        }
+        return [:]
+    }
+    func print_recent_db(){
+        do{
+            let sss = try sql_db?.scalar(recent_topic.count)
+            print(sss as Any)
+        }
+        catch{
+            
+        }
+    }
 
     // 取得自己話題的badge數
     func get_myTopic_badges() -> Int{

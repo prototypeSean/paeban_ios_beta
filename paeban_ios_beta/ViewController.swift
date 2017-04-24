@@ -867,12 +867,14 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
                 let black_list_data = return_dic["black_list"] as! Array<String>
                 let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
+                let recent_list = return_dic["recent_list"] as! Array<Dictionary<String,String>>
                 var tatle_row_count = 0
                 tatle_row_count += topic_content_data.count
                 tatle_row_count += private_msg_data.count
                 tatle_row_count += friend_list_data.count
                 tatle_row_count += black_list_data.count
                 tatle_row_count += my_topic_list.count
+                tatle_row_count += recent_list.count
                 var writed_row = 0
                 var writed_row_present = 0
                 func print_writed_row_present(){
@@ -881,7 +883,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     if temp_present > writed_row_present{
                         writed_row_present = temp_present
                         DispatchQueue.main.async {
-                            self.set_loading_view_title(title: "正在同步資料庫 \(temp_present)%")
+                            self.set_loading_view_title(title: "正在同步資料庫: \(temp_present)%")
                             self.set_persent_lable(persent: temp_present_double)
                         }
                     }
@@ -917,6 +919,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
                     writed_row += 1
                     print_writed_row_present()
+                }
+                for recent_datas in recent_list{
+                    sql_database.insert_recent_topic(input_dic: recent_datas)
+                    writed_row += 1
                 }
                 print("更新完成！！！")
                 DispatchQueue.main.async {
