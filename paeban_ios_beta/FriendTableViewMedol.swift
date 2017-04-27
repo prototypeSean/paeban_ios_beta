@@ -10,30 +10,9 @@ import Foundation
 import UIKit
 
 class FriendTableViewMedol:webSocketActiveCenterDelegate{
-    var friendsList:Array<FriendStanderType>{
-        get{
-            return myFriendsList
-        }
-        set{
-            myFriendsList = newValue
-//            var list:Array<String> = []
-//            for sss in newValue{
-//                if sss.name != nil{
-//                    list.append(sss.name!)
-//                }
-//                else{
-//                    list.append("title")
-//                }
-//                
-//            }
-//            print(list)
-//            print(invite_list)
-//            print("=====")
-        }
-    }
+    var friendsList:Array<FriendStanderType> = []
     var chat_view:FriendChatUpViewController?
     var invite_list:Array<FriendStanderType> = []
-    
     var friend_list_database:Array<FriendStanderType> = []
     
     func getDataCount() -> Int{
@@ -45,6 +24,92 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         self.targetVC = view_controller
         wsActive.wasd_FriendTableViewMedol = self
     }
+    // code 2.0
+    func getFrientList(){
+        let result_dic = sql_database.get_friend_list()
+        let new_table_data = turnToFriendStanderType_v3(friend_list:result_dic)
+        renew_friend_list_database(input_list: new_table_data)
+        update_imgs_from_server()
+    }
+    func renew_friend_list_database(input_list:Array<FriendStanderType>){
+        friend_list_database = input_list.sorted(by: { (ele1, ele2) -> Bool in
+            if ele1.time != nil && ele2.time != nil{
+                if ele1.time! > ele2.time!{
+                    return true
+                }
+            }
+            return false
+        })
+        updateModel()
+    }
+    func turnToFriendStanderType_v3(friend_list:Array<Dictionary<String,AnyObject>>) -> Array<FriendStanderType>{
+        var return_list:Array<FriendStanderType> = []
+        for friend_data in friend_list{
+            let temp_cell = FriendStanderType()
+            temp_cell.id = friend_data["client_id"] as? String
+            temp_cell.cell_type = "friend"
+            temp_cell.name = friend_data["client_name"] as? String
+            temp_cell.isRealPhoto = friend_data["isRealPhoto"] as? Bool
+            temp_cell.photoHttpStr = friend_data["img_name"] as? String
+            temp_cell.sex = friend_data["sex"] as? String
+            temp_cell.read_msg = friend_data["is_read"] as? Bool
+            let lastLine = friend_data["lastLine"] as? String
+            let last_speaker = friend_data["last_speaker"] as? String
+            if last_speaker != "" && lastLine != ""{
+                temp_cell.lastLine = "\(lastLine!)"
+                temp_cell.last_speaker = last_speaker
+                temp_cell.time = friend_data["time"] as? Double
+            }
+            return_list.append(temp_cell)
+        }
+        return_list.sort { (fs1, fs2) -> Bool in
+            if fs1.time != nil && fs2.time != nil{
+                if fs1.time! > fs2.time!{
+                    return true
+                }
+                return false
+            }
+            else if fs1.time != nil && fs2.time == nil{
+                return true
+            }
+            return false
+        }
+        return return_list
+    }
+    func update_imgs_from_server(){
+        var cell_index = 0
+        let res_friend_list_database:Array<FriendStanderType> = friend_list_database.reversed()
+        let last_change_index = res_friend_list_database.index { (ele:FriendStanderType) -> Bool in
+            if ele.photo == nil{
+                return true
+            }
+            return false
+        }
+        
+        for cells in friend_list_database{
+            if cells.photo == nil{
+                let url = "http://www.paeban.com/media/\(cells.photoHttpStr!)"
+                HttpRequestCenter().getHttpImg(url, getImg: { (img) in
+                    sql_database.update_friend_img(
+                        username_in: cells.id!,
+                        img: imageToBase64(image: img, optional: "withHeader"),
+                        img_name: cells.photoHttpStr!
+                    )
+                    if last_change_index != nil{
+                        if cell_index == Int(last_change_index!) {
+                            let result_dic = sql_database.get_friend_list()
+                            let new_table_data = self.turnToFriendStanderType_v3(friend_list:result_dic)
+                            self.renew_friend_list_database(input_list: new_table_data)
+                        }
+                    }
+                    
+                })
+            }
+            cell_index += 1
+        }
+    }
+    // code 2.0
+    
     
     func getCell(_ index:Int,cell:UITableViewCell) -> UITableViewCell {
         let data = friendsList[index]
@@ -105,12 +170,15 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             cell2.onlineImg.clipsToBounds = true
 
             cell2.onlineImg.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-            if data.online!{
-                cell2.onlineImg.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
+            if data.online != nil{
+                if data.online!{
+                    cell2.onlineImg.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
+                }
+                else{
+                    cell2.onlineImg.tintColor = UIColor.lightGray
+                }
             }
-            else{
-                cell2.onlineImg.tintColor = UIColor.lightGray
-            }
+            
             let thePhotoLayer:CALayer = cell2.photo.layer
             thePhotoLayer.masksToBounds = true
             thePhotoLayer.cornerRadius = 6
@@ -198,7 +266,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         returnDic["clientImg"] = dataSouse.photo
         return returnDic
     }
-    func getFrientList(){
+    func getFrientList_old(){
         HttpRequestCenter().request_user_data("get_friend_list_v2", send_dic: [:], InViewAct: { (return_dic) in
             var request_friend_detail_dic:Dictionary<String,String> = [:]
             var update_seitch = false
@@ -214,7 +282,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                     }
                 }
                 else{
-                    sql_database.insert_friend(username_in: friend_data.key, user_full_name_in: value["user_full_name"]!, img_name: value["image_name"]!)
+//                    sql_database.insert_friend(username_in: friend_data.key, user_full_name_in: value["user_full_name"]!, img_name: value["image_name"]!)
                     request_friend_detail_dic[friend_data.key] = value["image_name"]!
                     self.updata_friend_img(username_in: friend_data.key, url: value["image_name"]!)
                 }
@@ -250,13 +318,13 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         
     }
     func check_if_list_need_to_update_or_add(new_obj:FriendStanderType) -> Bool{
-        if let friend_cell_index = myFriendsList.index(where: {(element) -> Bool in
+        if let friend_cell_index = friendsList.index(where: {(element) -> Bool in
             if element.id == new_obj.id{
                 return true
             }
             return false
         }){
-            let old_obj = myFriendsList[friend_cell_index]
+            let old_obj = friendsList[friend_cell_index]
             if old_obj.lastLine == new_obj.lastLine{
                 return false
             }
@@ -271,8 +339,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             }
             return false
         }){
-            myFriendsList.remove(at: friend_index as Int)
-            myFriendsList.insert(new_obj, at: friend_index as Int)
+            friendsList.remove(at: friend_index as Int)
+            friendsList.insert(new_obj, at: friend_index as Int)
             let index_path = IndexPath(row: friend_index, section: 0)
             targetVC.tableView.beginUpdates()
             targetVC.tableView.reloadRows(at: [index_path], with: .none)
@@ -291,7 +359,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             }
             cell_index += 1
         }
-        myFriendsList.insert(new_obj, at: cell_index)
+        friendsList.insert(new_obj, at: cell_index)
         let index_path = IndexPath(row: cell_index, section: 0)
         targetVC.tableView.beginUpdates()
         targetVC.tableView.insertRows(at: [index_path], with: .left)
@@ -305,13 +373,17 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 }
                 return false
             }){
-                myFriendsList.remove(at: friend_cell_index as Int)
-                myFriendsList.insert(friend_cell_s, at: friend_cell_index as Int)
-                let index_path = IndexPath(row: friend_cell_index as Int, section: 0)
-                targetVC.tableView.beginUpdates()
-                targetVC.tableView.reloadRows(at: [index_path], with: .none)
-                targetVC.tableView.endUpdates()
+                friendsList.remove(at: friend_cell_index as Int)
+                friendsList.insert(friend_cell_s, at: friend_cell_index as Int)
+//                let index_path = IndexPath(row: friend_cell_index as Int, section: 0)
+//                targetVC.tableView.beginUpdates()
+//                targetVC.tableView.reloadRows(at: [index_path], with: .none)
+//                targetVC.tableView.endUpdates()
             }
+            else{
+                friendsList.append(friend_cell_s)
+            }
+            
         }
     }
     func turnToMessage3(_ inputDic:Dictionary<String,AnyObject>) -> JSQMessage3{
@@ -430,12 +502,17 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         // 1.原本沒有伸展按鈕
         // 2.有伸展按鈕但沒打開
         // 3.有伸展按鈕且有打開
+        
+        //fly
+        print("table_view_state: \(extend_btn_state)")
         if extend_btn_state == 1{
             if !self.invite_list.isEmpty{
                 add_list_extend_btn()
             }
             replace_friend_cell()
             targetVC.tableView.reloadData()
+            //fly
+            print(friendsList)
         }
         else if extend_btn_state == 2{
             var new_friendsList = friendsList

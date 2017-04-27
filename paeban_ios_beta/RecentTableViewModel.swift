@@ -92,7 +92,7 @@ class RecentTableViewModel{
         
         // 發話人標籤
         var lastSpeakerName:String?
-        if topicWriteToRow.lastSpeaker_detial! == userData.name{
+        if topicWriteToRow.lastSpeaker_detial! == userData.id{
             lastSpeakerName = userData.name
             cell.lastLine.textColor = UIColor(red:0.30, green:0.30, blue:0.30, alpha:1.0)
             cell.lastLine.font = UIFont.systemFont(ofSize: 16)
@@ -116,8 +116,6 @@ class RecentTableViewModel{
         cell.ownerName.text = topicWriteToRow.clientName_detial
         // 最新一句對話
         cell.lastLine.text = topicWriteToRow.lastLine_detial
-        
-        
         cell.online.layoutIfNeeded()
         cell.online.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         let cr = (cell.online.frame.size.width)/2

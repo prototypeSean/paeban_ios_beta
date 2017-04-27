@@ -864,7 +864,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 init_sql = false
                 let topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
                 let private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
-                let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,String>>
+                let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,AnyObject>>
                 let black_list_data = return_dic["black_list"] as! Array<String>
                 let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
                 let recent_list = return_dic["recent_list"] as! Array<Dictionary<String,String>>
@@ -906,7 +906,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     print_writed_row_present()
                 }
                 for friends in friend_list_data{
-                    sql_database.insert_friend(username_in: friends["user_id"]!, user_full_name_in: friends["user_full_name"]!, img_name: friends["img"]!)
+                    sql_database.insert_friend(input_dic: friends)
                     writed_row += 1
                     print_writed_row_present()
                 }

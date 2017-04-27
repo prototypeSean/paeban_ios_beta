@@ -364,11 +364,13 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
     }
     func new_my_topic_msg(sender: String, id_local: String) {
-        if sender == userData.id{
-            sending_dic.removeValue(forKey: id_local)
-            self.update_database()
+        DispatchQueue.main.async {
+            if sender == userData.id{
+                print("===new_my_topic_msg===")
+                self.sending_dic.removeValue(forKey: id_local)
+                self.update_database()
+            }
         }
-        
     }
     func wsReconnected(){
     }
@@ -377,8 +379,10 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     func send_all_msg(){
         let unsend_list = sql_database.get_unsend_topic_data(topic_id_input: topicId!, client_id: ownerId!)
         for unsend_list_s in unsend_list!{
-            sending_dic[unsend_list_s["id_local"] as! String] = Int(Date().timeIntervalSince1970)
-            socket.write(data: json_dumps(unsend_list_s))
+            if sending_dic[unsend_list_s["id_local"] as! String] == nil{
+                sending_dic[unsend_list_s["id_local"] as! String] = Int(Date().timeIntervalSince1970)
+                socket.write(data: json_dumps(unsend_list_s))
+            }
         }
         reset_sending_dic_after_5_sec()
         reload_after_5_sec()
@@ -520,11 +524,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     func reset_sending_dic(){
         let time_now = Int(Date().timeIntervalSince1970)
         for sending_dic_datas in sending_dic{
-            print(sending_dic_datas.value - time_now)
             if time_now - sending_dic_datas.value >= 4 {
                 sending_dic.removeValue(forKey: sending_dic_datas.key)
             }
         }
+        print(sending_dic)
     }
     func make_JSQMessage2(input_dic:Dictionary<String,AnyObject>) -> JSQMessage2{
         let msgToJSQ = JSQMessage2(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["topic_content"] as? String)

@@ -71,9 +71,12 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            self.rTVModel.add_leave_topic_table(index: indexPath.row)
-            self.rTVModel.send_leave_topic()
-            self.rTVModel.remove_cell(index: indexPath.row)
+//            self.rTVModel.add_leave_topic_table(index: indexPath.row)
+//            self.rTVModel.send_leave_topic()
+            //self.rTVModel.remove_cell(index: indexPath.row)
+            let topic_id = self.rTVModel.recentDataBase[indexPath.row].topicId_title!
+            sql_database.delete_recent_topic(topic_id_in:topic_id)
+            self.rTVModel.reCheckDataBase()
         }
         
         delete.backgroundColor = UIColor.gray

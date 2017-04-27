@@ -174,13 +174,18 @@ open class webSocketActiveCenter{
             let sender = resultDic["sender"] as! String
             if sender == userData.id!{
                 // 自己說的
-                sql_database.insert_self_topic_content(input_dic: resultDic, option: .sended)
-                if wasd_ForChatViewController?.new_my_topic_msg != nil{
-                    // 為了移除送出中的清單
-                     wasd_ForChatViewController?.new_my_topic_msg!(
-                        sender: resultDic["sender"] as! String,
-                        id_local: resultDic["id_local"] as! String)
+                //飛行
+                print(resultDic["sender"] as Any)
+                DispatchQueue.main.async {
+                    sql_database.insert_self_topic_content(input_dic: resultDic, option: .sended)
+                    if self.wasd_ForChatViewController?.new_my_topic_msg != nil{
+                        // 為了移除送出中的清單
+                        self.wasd_ForChatViewController?.new_my_topic_msg!(
+                            sender: resultDic["sender"] as! String,
+                            id_local: resultDic["id_local"] as! String)
+                    }
                 }
+                
                
             }
             else{

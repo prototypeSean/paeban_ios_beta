@@ -166,6 +166,8 @@ public class SQL_center{
                 t.column(user_full_name)
                 t.column(friend_image)
                 t.column(friend_image_file_name)
+                t.column(tmp_client_real_pic)
+                t.column(tmp_client_sex)
             })
             print("表單建立成功friend_list_table")
         }
@@ -174,12 +176,14 @@ public class SQL_center{
             print(error)
         }
     }
-    func insert_friend(username_in:String,user_full_name_in:String,img_name:String){
+    func insert_friend(input_dic:Dictionary<String,AnyObject>){
         do{
             let insert = friend_list_table.insert(
-                username <- username_in,
-                user_full_name <- user_full_name_in,
-                friend_image_file_name <- img_name
+                username <- input_dic["client_id"] as! String,
+                user_full_name <- input_dic["client_name"] as! String,
+                friend_image_file_name <- input_dic["img_name"] as? String,
+                tmp_client_real_pic <- input_dic["is_real_pic"] as? Bool,
+                tmp_client_sex <- input_dic["sex"] as? String
             )
             try sql_db!.run(insert)
         }
@@ -280,6 +284,42 @@ public class SQL_center{
             print(error)
         }
         
+    }
+    func get_friend_list() -> Array<Dictionary<String,AnyObject>>{
+        do{
+            var return_list:Array<Dictionary<String,AnyObject>> = []
+            for friend_datas in try sql_db!.prepare(friend_list_table){
+                var temp_dic:Dictionary<String,AnyObject> = [
+                    "client_id": friend_datas[username] as AnyObject,
+                    "client_name": friend_datas[user_full_name] as AnyObject,
+                    "sex": friend_datas[tmp_client_sex]! as AnyObject,
+                    "isRealPhoto": friend_datas[tmp_client_real_pic]! as AnyObject,
+                    "img_name": friend_datas[friend_image_file_name] as AnyObject
+                ]
+                let private_msg_query = private_table.filter(
+                    sender == friend_datas[username] ||
+                    receiver == friend_datas[username]
+                ).order(id.desc)
+                if let private_msg_obj = try sql_db!.prepare(private_msg_query).first(where: { (row) -> Bool in
+                    return true
+                }){
+                    temp_dic["lastLine"] = private_msg_obj[private_text]! as AnyObject
+                    temp_dic["last_speaker"] = private_msg_obj[sender]! as AnyObject
+                    temp_dic["time"] = private_msg_obj[time]! as AnyObject
+                    temp_dic["is_read"] = private_msg_obj[is_read]! as AnyObject
+                }
+                if friend_datas[friend_image] != nil{
+                    temp_dic["img"] = friend_datas[friend_image]! as AnyObject
+                }
+                return_list.append(temp_dic)
+            }
+            return return_list
+        }
+        catch{
+            print("get_friend_list ERROR")
+            print(error)
+        }
+        return []
     }
     
     
@@ -640,6 +680,16 @@ public class SQL_center{
             print(error)
         }
         return [:]
+    }
+    func delete_recent_topic(topic_id_in:String){
+        do{
+            let delete = recent_topic.filter(topic_id == topic_id_in).delete()
+            try sql_db!.run(delete)
+        }
+        catch{
+            print("delete_recent_topic資料庫錯誤")
+            print(error)
+        }
     }
     func print_recent_db(){
         do{
