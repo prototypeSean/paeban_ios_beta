@@ -23,16 +23,16 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         super.viewDidLoad()
         model = FriendTableViewMedol(with: self)
         //self.tableView.gestureRecognizerShouldBegin(self.tableView.gestureRecognizers) = false
-        
+        model?.getFrientList()
+        model?.synchronize_friend_table()
         // 讓整個VIEW往上縮起tabbar的高度
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
         //autoLeap()
         self.tableView.reloadData()
-        model?.getFrientList()
         model?.chat_view = nil
-        getInvitwList()
+        getInviteList()
         self.update_badges()
     }
     // MARK: - Table view data source
@@ -150,9 +150,18 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         
         if model?.friendsList[indexPath.row].cell_type == "invite"{
             let ok_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "\u{2713}\n確認") { (UITableViewRowAction, IndexPath) in
-                self.friend_confirm(answer: "yes", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
+                let target_obj = self.model?.friendsList[IndexPath.row]
+                self.friend_confirm(answer: "yes", friend_id: (target_obj?.id)!)
+                let temp_input_dic:Dictionary<String,AnyObject> = [
+                    "client_id": target_obj?.id as AnyObject,
+                    "client_name": target_obj?.name as AnyObject,
+                    "img_name": target_obj?.photoHttpStr as AnyObject,
+                    "is_real_pic": target_obj?.isRealPhoto as AnyObject,
+                    "sex": target_obj?.sex as AnyObject
+                ]
+                sql_database.insert_friend(input_dic: temp_input_dic)
                 self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
-                
+                self.model?.updateModel()
             }
             //let img2 = UIImage(named: "check")
             ok_btn.backgroundColor = UIColor(red:0.00, green:0.67, blue:0.52, alpha:1.0)
@@ -224,7 +233,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             
         }
     }
-    func getInvitwList(){
+    func getInviteList(){
         let send_dic:NSDictionary = [
             "none": "none"
         ]

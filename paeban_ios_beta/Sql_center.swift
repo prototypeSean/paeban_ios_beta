@@ -178,14 +178,32 @@ public class SQL_center{
     }
     func insert_friend(input_dic:Dictionary<String,AnyObject>){
         do{
-            let insert = friend_list_table.insert(
-                username <- input_dic["client_id"] as! String,
-                user_full_name <- input_dic["client_name"] as! String,
-                friend_image_file_name <- input_dic["img_name"] as? String,
-                tmp_client_real_pic <- input_dic["is_real_pic"] as? Bool,
-                tmp_client_sex <- input_dic["sex"] as? String
-            )
-            try sql_db!.run(insert)
+            let client_id_var = input_dic["client_id"] as! String
+            if (try sql_db!.scalar(friend_list_table.filter(username == client_id_var).count)) == 0{
+                // 是全新資料
+                let insert = friend_list_table.insert(
+                    username <- input_dic["client_id"] as! String,
+                    user_full_name <- input_dic["client_name"] as! String,
+                    friend_image_file_name <- input_dic["img_name"] as? String,
+                    tmp_client_real_pic <- input_dic["is_real_pic"] as? Bool,
+                    tmp_client_sex <- input_dic["sex"] as? String
+                )
+                try sql_db!.run(insert)
+            }
+            else{
+                let target_obj = try sql_db!.prepare(friend_list_table.filter(username == client_id_var)).first(where: { (row) -> Bool in
+                    return true
+                })
+                if (input_dic["client_name"] as! String) != target_obj![user_full_name]{
+                    try sql_db!.run(friend_list_table.filter(username == client_id_var).update(user_full_name <- input_dic["client_name"] as! String))
+                }
+                if (input_dic["img_name"] as! String) != target_obj![friend_image_file_name]{
+                    try sql_db!.run(friend_list_table.filter(username == client_id_var).update(
+                        friend_image_file_name <- input_dic["img_name"] as? String,
+                        friend_image <- nil
+                    ))
+                }
+            }
         }
         catch{
             print("資料庫錯誤")

@@ -108,6 +108,32 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             cell_index += 1
         }
     }
+    func synchronize_friend_table(){
+        let local_friend_datas = sql_database.get_friend_list()
+        var check_dic:Dictionary<String,AnyObject> = [:]
+        for friends in local_friend_datas{
+            let temp_dic = [
+                "client_id": friends["client_id"]! as! String,
+                "client_name": friends["client_name"]! as! String,
+                "img_name": friends["img_name"]! as! String
+            ]
+            check_dic[friends["client_id"]! as! String] = temp_dic as AnyObject
+        }
+        HttpRequestCenter().request_user_data_v2("synchronize_friend_table", send_dic: ["local_friend_dic":check_dic as AnyObject]) { (return_dic:Dictionary<String, AnyObject>?) in
+            if return_dic != nil{
+                for return_list_data in return_dic!["return_list"] as! Array<Dictionary<String,AnyObject>>{
+                    sql_database.insert_friend(input_dic: return_list_data)
+                }
+                if !(return_dic!["return_list"] as! Array<Dictionary<String,AnyObject>>).isEmpty{
+                    //飛行
+                    print("重新載入好友清單．．．")
+                    self.getFrientList()
+                    self.updateModel()
+                }
+                
+            }
+        }
+    }
     // code 2.0
     
     
@@ -398,18 +424,42 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
     func addInviteList(input_dic:Dictionary<String,AnyObject>){
         var temp_invite_list:Array<FriendStanderType> = []
         for input_dic_keys in input_dic.keys{
-            let input_dic_data = input_dic[input_dic_keys] as! Dictionary<String,AnyObject>
-            let add_data = FriendStanderType()
-            add_data.cell_type = "invite"
-            add_data.id = input_dic_keys
-            add_data.name = input_dic_data["name"] as? String
-            add_data.isRealPhoto = input_dic_data["isRealPhoto"] as? Bool
-            add_data.online = false
-            add_data.photoHttpStr = input_dic_data["photoHttpStr"] as? String
-            add_data.sex = input_dic_data["sex"] as? String
-            temp_invite_list.append(add_data)
+            if !check_already_friend(client_id: input_dic_keys){
+                let input_dic_data = input_dic[input_dic_keys] as! Dictionary<String,AnyObject>
+                let add_data = FriendStanderType()
+                add_data.cell_type = "invite"
+                add_data.id = input_dic_keys
+                add_data.name = input_dic_data["name"] as? String
+                add_data.isRealPhoto = input_dic_data["isRealPhoto"] as? Bool
+                add_data.online = false
+                add_data.photoHttpStr = input_dic_data["photoHttpStr"] as? String
+                add_data.sex = input_dic_data["sex"] as? String
+                temp_invite_list.append(add_data)
+            }
         }
         self.invite_list = temp_invite_list
+    }
+    func check_already_friend(client_id:String) -> Bool{
+        // named by DK
+        // 驗證邀請清單內有無已是好友的人，有的話自動回覆server確認邀請
+        if let _ = friend_list_database.index(where: { (ele:FriendStanderType) -> Bool in
+            if ele.id == client_id{
+                return true
+            }
+            return false
+        }){
+            // 送出同意訊號
+            let send_dic:NSDictionary = [
+                "msg_type":"friend_confirm",
+                "friend_id":client_id,
+                "answer": "yes"
+            ]
+            socket.write(data: json_dumps(send_dic))
+            return true
+        }
+        else{
+            return false
+        }
     }
     func table_view_state() -> Int{
         var extend_btn_state:Int = 0
@@ -547,20 +597,30 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
     func update_online(){
         
     }
-    func add_friend(id:String, name:String, photoHttpStr:String, isRealPhoto:Bool, online:Bool){
-        let friend_obj = FriendStanderType()
-        friend_obj.cell_type = "friend"
-        friend_obj.id = id
-        friend_obj.name = name
-        friend_obj.photoHttpStr = photoHttpStr
-        friend_obj.online = online
-        friend_obj.isRealPhoto = isRealPhoto
+    func add_friend(id:String, name:String, photoHttpStr:String, isRealPhoto:Bool, online:Bool, sex:String){
+        let temp_input_dic:Dictionary<String,AnyObject> = [
+            "client_id": id as AnyObject,
+            "client_name": name as AnyObject,
+            "img_name": photoHttpStr as AnyObject,
+            "is_real_pic" : isRealPhoto as AnyObject,
+            "sex" : sex as AnyObject
+        ]
         
-        let index_path = IndexPath(row: friendsList.count, section: 0)
-        friendsList.append(friend_obj)
-        targetVC.tableView.beginUpdates()
-        targetVC.tableView.insertRows(at: [index_path], with: .left)
-        targetVC.tableView.endUpdates()
+        sql_database.insert_friend(input_dic: temp_input_dic)
+        updateModel()
+//        let friend_obj = FriendStanderType()
+//        friend_obj.cell_type = "friend"
+//        friend_obj.id = id
+//        friend_obj.name = name
+//        friend_obj.photoHttpStr = photoHttpStr
+//        friend_obj.online = online
+//        friend_obj.isRealPhoto = isRealPhoto
+//        
+//        let index_path = IndexPath(row: friendsList.count, section: 0)
+//        friendsList.append(friend_obj)
+//        targetVC.tableView.beginUpdates()
+//        targetVC.tableView.insertRows(at: [index_path], with: .left)
+//        targetVC.tableView.endUpdates()
     }
     func add_singo_invite_cell(msg:Dictionary<String, AnyObject>){
         let invite_obj = FriendStanderType()
@@ -570,6 +630,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         invite_obj.photoHttpStr = msg["sender_pic"] as? String
         invite_obj.isRealPhoto = msg["isRealPhoto"] as? Bool
         invite_obj.online = false
+        invite_obj.sex = msg["sex"] as? String
+        
         invite_list.append(invite_obj)        
         updateModel()
         
@@ -590,7 +652,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             targetVC.tableView.endUpdates()
         }
     }
-    
     func wsOnMsg(_ msg: Dictionary<String, AnyObject>) {
         if let msg_type:String =  msg["msg_type"] as? String{
             if msg_type == "check_online"{
@@ -614,7 +675,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                                     name: msg["friend_name"] as! String,
                                     photoHttpStr: msg["friend_pic"] as! String,
                                     isRealPhoto: msg["isRealPhoto"] as! Bool,
-                                    online: msg["online"] as! Bool
+                                    online: msg["online"] as! Bool,
+                                    sex: msg["sex"] as! String
                     )
                 }
             }
@@ -659,6 +721,9 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                         friendsList.insert(temp_cell_obj, at: 0)
                         self.targetVC.tableView.reloadData()
                     }
+                    else{
+                        synchronize_friend_table()
+                    }
                 }
                 
                 
@@ -667,6 +732,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         }
     }
     func wsReconnected(){
+        synchronize_friend_table()
     }
     func find_client_id(id_1:String, id_2:String) -> String{
         if id_1 == userData.id{
