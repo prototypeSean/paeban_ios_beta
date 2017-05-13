@@ -690,7 +690,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                     let sender_name = resultDic["sender_name"] as! String
                     let msg_text = resultDic["private_text"] as! String
                     let last_line = "\(sender_name):  \(msg_text)"
-                    
                     let client_id = self.find_client_id(
                         id_1: resultDic["sender_id"]! as! String,
                         id_2: resultDic["receiver_id"]! as! String

@@ -904,6 +904,15 @@
                                     <action selector="name_btn:" destination="fKg-5c-ll5" eventType="touchUpInside" id="mpc-Xj-NBY"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ba9-Z2-XU2">
+                                <rect key="frame" x="20" y="108" width="91" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.55417786229999999" green="1" blue="0.97652398090000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="RESET"/>
+                                <connections>
+                                    <action selector="reset_act:" destination="fKg-5c-ll5" eventType="touchUpInside" id="Dak-hF-Vfr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -966,7 +975,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="New-VA-2ba" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="4Dk-gy-K5h"/>
             </objects>
-            <point key="canvasLocation" x="-4100" y="123"/>
+            <point key="canvasLocation" x="-4100" y="122.28260869565219"/>
         </scene>
         <!--話題-->
         <scene sceneID="VON-sR-4Xb">

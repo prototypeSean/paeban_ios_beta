@@ -47,6 +47,15 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     @IBAction func save_btn(_ sender: AnyObject) {
         save_data_to_server()
     }
+    
+    @IBAction func reset_act(_ sender: Any) {
+        let send_dic = [
+            "msg_type":"cmd",
+            "text":"reset_friend"
+        ]
+        socket.write(data: json_dumps(send_dic as NSDictionary))
+    }
+    
     var initFearm:CGRect?
     var initCenter:CGPoint?
     var selectedField:UIButton?
