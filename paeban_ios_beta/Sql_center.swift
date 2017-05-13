@@ -34,6 +34,9 @@ public class SQL_center{
     let user_name = Expression<String>("user_name")
     let img = Expression<String?>("img")
     let img_name = Expression<String>("img_name")
+    // user_img
+    let user_img_table = Table("user_img_table")
+    let user_img_level = Expression<String>("user_img_level")
     // version
     var version_table = Table("version_table")
     let version_number = Expression<String?>("version_number")

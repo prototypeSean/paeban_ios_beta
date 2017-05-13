@@ -559,6 +559,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             if !self.invite_list.isEmpty{
                 add_list_extend_btn()
             }
+            getFrientList()
             replace_friend_cell()
             targetVC.tableView.reloadData()
             //fly
