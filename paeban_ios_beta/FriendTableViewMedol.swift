@@ -55,8 +55,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             temp_cell.read_msg = friend_data["is_read"] as? Bool
             let lastLine = friend_data["lastLine"] as? String
             let last_speaker = friend_data["last_speaker"] as? String
-            if last_speaker != "" && lastLine != ""{
-                temp_cell.lastLine = "\(lastLine!)"
+            if last_speaker != nil && lastLine != nil{
+                temp_cell.lastLine = "\(lastLine)"
                 temp_cell.last_speaker = last_speaker
                 temp_cell.time = friend_data["time"] as? Double
             }
