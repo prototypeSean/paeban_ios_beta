@@ -559,7 +559,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             if !self.invite_list.isEmpty{
                 add_list_extend_btn()
             }
-            getFrientList()
             replace_friend_cell()
             targetVC.tableView.reloadData()
             //fly
@@ -608,7 +607,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         ]
         
         sql_database.insert_friend(input_dic: temp_input_dic)
-        updateModel()
+        getFrientList()
 //        let friend_obj = FriendStanderType()
 //        friend_obj.cell_type = "friend"
 //        friend_obj.id = id

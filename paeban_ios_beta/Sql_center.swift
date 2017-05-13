@@ -101,6 +101,7 @@ public class SQL_center{
         self.establish_tmp_client_data()
         self.establish_recent_topic()
         self.establish_user_data()
+        self.establish_user_img()
     }
     func remove_all_table(){
         let table_list = [
@@ -115,7 +116,8 @@ public class SQL_center{
             tmp_client_Table,
             recent_topic,
             user_data_table,
-            recent_topic
+            recent_topic,
+            user_img_table
         ]
         for tables in table_list{
             do{
@@ -1816,7 +1818,32 @@ public class SQL_center{
     }
     
     // user_img
-    
+    func establish_user_img(){
+        do{
+            try sql_db?.run(user_img_table.create { t in
+                t.column(id, primaryKey: true)
+                t.column(user_img_level)
+                t.column(img)
+            })
+            print("建立成功 version_table")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func insert_user_img(img_input:UIImage){
+        
+    }
+    func get_img(level:String){
+        do{
+            let query = user_img_table.filter(user_img_level == level)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
     
     // establish_userdata
     func establish_version(version:String){
