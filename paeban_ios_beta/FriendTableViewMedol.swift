@@ -54,10 +54,10 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             temp_cell.sex = friend_data["sex"] as? String
             temp_cell.read_msg = friend_data["is_read"] as? Bool
             let lastLine = friend_data["lastLine"] as? String
-            let last_speaker = friend_data["last_speaker"] as? String
-            if last_speaker != nil && lastLine != nil{
+            let last_speaker_name = friend_data["last_speaker_name"] as? String
+            if last_speaker_name != nil && lastLine != nil{
                 temp_cell.lastLine = "\(lastLine!)"
-                temp_cell.last_speaker = last_speaker
+                temp_cell.last_speaker = last_speaker_name
                 temp_cell.time = friend_data["time"] as? Double
             }
             return_list.append(temp_cell)
@@ -689,7 +689,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 for resultDic in resultDic_msg_id.values{
                     let sender_name = resultDic["sender_name"] as! String
                     let msg_text = resultDic["private_text"] as! String
-                    let last_line = "\(sender_name):  \(msg_text)"
                     let client_id = self.find_client_id(
                         id_1: resultDic["sender_id"]! as! String,
                         id_2: resultDic["receiver_id"]! as! String
@@ -700,7 +699,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                         }
                         return false
                     }){
-                        friendsList[friend_cell_index].lastLine = last_line
+                        friendsList[friend_cell_index].lastLine = msg_text
+                        friendsList[friend_cell_index].last_speaker = sender_name
                         //print(chat_view?.clientId)
                         //print(client_id)
                         if chat_view?.clientId == client_id{

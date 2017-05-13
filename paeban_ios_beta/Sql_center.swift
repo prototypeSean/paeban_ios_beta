@@ -101,7 +101,6 @@ public class SQL_center{
         self.establish_tmp_client_data()
         self.establish_recent_topic()
         self.establish_user_data()
-        self.establish_user_img()
     }
     func remove_all_table(){
         let table_list = [
@@ -117,7 +116,6 @@ public class SQL_center{
             recent_topic,
             user_data_table,
             recent_topic,
-            user_img_table
         ]
         for tables in table_list{
             do{
@@ -330,6 +328,12 @@ public class SQL_center{
                     temp_dic["last_speaker"] = private_msg_obj[sender]! as AnyObject
                     temp_dic["time"] = private_msg_obj[time]! as AnyObject
                     temp_dic["is_read"] = private_msg_obj[is_read]! as AnyObject
+                    if private_msg_obj[sender]! == userData.id{
+                        temp_dic["last_speaker_name"] = userData.name! as AnyObject?
+                    }
+                    else{
+                        temp_dic["last_speaker_name"] = friend_datas[user_full_name] as AnyObject?
+                    }
                 }
                 if friend_datas[friend_image] != nil{
                     temp_dic["img"] = friend_datas[friend_image]! as AnyObject
@@ -1817,33 +1821,6 @@ public class SQL_center{
         return nil
     }
     
-    // user_img
-    func establish_user_img(){
-        do{
-            try sql_db?.run(user_img_table.create { t in
-                t.column(id, primaryKey: true)
-                t.column(user_img_level)
-                t.column(img)
-            })
-            print("建立成功 version_table")
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-    }
-    func insert_user_img(img_input:UIImage){
-        
-    }
-    func get_img(level:String){
-        do{
-            let query = user_img_table.filter(user_img_level == level)
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-    }
     
     // establish_userdata
     func establish_version(version:String){
