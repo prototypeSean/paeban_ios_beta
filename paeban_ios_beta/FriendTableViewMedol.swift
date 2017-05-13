@@ -724,7 +724,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                         synchronize_friend_table()
                     }
                 }
-                
+                getFrientList()
                 
             }
             
