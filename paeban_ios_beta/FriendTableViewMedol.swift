@@ -669,16 +669,16 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 change_online_state(change_id: check_id, state: true)
             }
             else if msg_type == "friend_confirm_success"{
-//                if msg["answer"] as! String == "yes"{
-//                    print(msg)
-//                    self.add_friend(id: msg["friend_id"] as! String,
-//                                    name: msg["friend_name"] as! String,
-//                                    photoHttpStr: msg["friend_pic"] as! String,
-//                                    isRealPhoto: msg["isRealPhoto"] as! Bool,
-//                                    online: msg["online"] as! Bool,
-//                                    sex: msg["sex"] as! String
-//                    )
-//                }
+                if msg["answer"] as! String == "yes"{
+                    print(msg)
+                    self.add_friend(id: msg["friend_id"] as! String,
+                                    name: msg["friend_name"] as! String,
+                                    photoHttpStr: msg["friend_pic"] as! String,
+                                    isRealPhoto: msg["isRealPhoto"] as! Bool,
+                                    online: msg["online"] as! Bool,
+                                    sex: msg["sex"] as! String
+                    )
+                }
             }
             else if msg_type == "friend_confirm"{
                 add_singo_invite_cell(msg: msg)
