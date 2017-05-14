@@ -26,6 +26,13 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     @IBOutlet weak var btnAddFriend: UIButton!
     @IBOutlet weak var btnIgnroe: UIButton!
     @IBOutlet weak var btnBlock: UIButton!
+    //飛行
+    @IBAction func tes_btn(_ sender: Any) {
+        myPhotoImg.image = set_my_img_level(input_img: userData.img!)
+    }
+    @IBOutlet weak var level: UITextField!
+    @IBOutlet weak var level_result: UITextField!
+    
     
     var delegate:TopicViewControllerDelegate?
     var setID:String?
@@ -215,7 +222,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         
         // add any other subcontent that you want clipped 最上層才放圖片進去
         
-        myPhotoImg.image = myPhotoSave
+        //myPhotoImg.image = myPhotoSave
+        myPhotoImg.image = userData.img
         //        print(myPhotoSave)
         myPhotoImg.frame = myphotoborderView.bounds
         myphotoborderView.addSubview(myPhotoImg)
@@ -449,6 +457,28 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             btnAddFriend.backgroundColor = nil
             isfriend = false
         }
+    }
+    
+    // test
+    func set_my_img_level(input_img:UIImage)->UIImage?{
+        if let level_int = Int(self.level.text!){
+            let context = CIContext(options: nil)
+            let currentFilter = CIFilter(name: "CIGaussianBlur")
+            let beginImage = CIImage(image: input_img)
+            currentFilter!.setValue(beginImage, forKey: kCIInputImageKey)
+            
+            currentFilter!.setValue(level_int, forKey: kCIInputRadiusKey)
+            let cropFilter = CIFilter(name: "CICrop")
+            cropFilter!.setValue(currentFilter!.outputImage, forKey: kCIInputImageKey)
+            cropFilter!.setValue(CIVector(cgRect: beginImage!.extent), forKey: "inputRectangle")
+            let output = cropFilter!.outputImage
+            let cgimg = context.createCGImage(output!, from: output!.extent)
+            let processedImage = UIImage(cgImage: cgimg!)
+            level_result.text = self.level.text
+            return processedImage
+        }
+        level_result.text = "Fail"
+        return nil
     }
     
 }

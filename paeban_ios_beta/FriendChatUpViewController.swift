@@ -26,6 +26,7 @@ class FriendChatUpViewController: UIViewController {
         block()
     }
     
+    
     //var delegate:TopicViewControllerDelegate?
     var setID:String?
     var setName:String?
@@ -130,9 +131,7 @@ class FriendChatUpViewController: UIViewController {
         topicInfoBG.layer.addSublayer(gradientLayer)
         
     }
-    func set_my_img_level(){
-        
-    }
+    
 
     // 封鎖
     func block(){
