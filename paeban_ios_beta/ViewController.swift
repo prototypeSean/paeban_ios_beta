@@ -94,6 +94,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     var loading_view:UIView?
     var loading_title_lable:UILabel?
     var persent_lable:UILabel?
+    var my_blur_img_level_dic =  [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 8:3, 9:0]
     // MARK:施工中
     let reset_database = true
     // =====登入程序=====
