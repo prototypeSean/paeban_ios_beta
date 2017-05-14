@@ -161,7 +161,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
                 ]
                 sql_database.insert_friend(input_dic: temp_input_dic)
                 self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
-                self.model?.updateModel()
+                self.model?.getFrientList()
             }
             //let img2 = UIImage(named: "check")
             ok_btn.backgroundColor = UIColor(red:0.00, green:0.67, blue:0.52, alpha:1.0)
