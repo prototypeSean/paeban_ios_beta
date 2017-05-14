@@ -42,6 +42,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     var guestPhotoImg = UIImageView()
     var get_client_img_timer:Timer?
     var tags:String?
+    var my_img_level:Int?
+    var client_img_level:Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
