@@ -139,16 +139,14 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     override func viewWillAppear(_ animated: Bool) {
         self.add_tap()
-        messages = new_data()
-        self.collectionView.reloadData()
-        self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
-        DispatchQueue.global(qos: .background).async {
-            usleep(50)
-            DispatchQueue.main.async {
-                self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
-                self.get_history_new_from_server()
-            }
-        }
+        update_database()
+//        DispatchQueue.global(qos: .background).async {
+//            usleep(50)
+//            DispatchQueue.main.async {
+//                self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
+//                self.get_history_new_from_server()
+//            }
+//        }
 
         wsActive.wasd_ForFriendChatViewController = self
     }
@@ -480,7 +478,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     func new_client_topic_msg(sender: String) {
         if clientId == sender{
-            self.get_history_new_from_server()
+            update_database()
         }
         
     }

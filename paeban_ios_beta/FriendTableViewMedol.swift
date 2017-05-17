@@ -685,44 +685,42 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: targetVC.parent as! UINavigationController)
             }
             else if msg_type == "priv_msg"{
-                let resultDic_msg_id:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary<String,AnyObject>
-                for resultDic in resultDic_msg_id.values{
-                    let sender_name = resultDic["sender_name"] as! String
-                    let msg_text = resultDic["private_text"] as! String
-                    let client_id = self.find_client_id(
-                        id_1: resultDic["sender_id"]! as! String,
-                        id_2: resultDic["receiver_id"]! as! String
-                    )
-                    if let friend_cell_index = friendsList.index(where: { (element) -> Bool in
-                        if element.id == client_id{
-                            return true
-                        }
-                        return false
-                    }){
-                        friendsList[friend_cell_index].lastLine = msg_text
-                        friendsList[friend_cell_index].last_speaker = sender_name
-                        //print(chat_view?.clientId)
-                        //print(client_id)
-                        if chat_view?.clientId == client_id{
-                            if sender_name != userData.name{
-                                friendsList[friend_cell_index].read_msg = true
-                            }
-                            else{
-                                friendsList[friend_cell_index].read_msg = false
-                            }
-                            
+                let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary<String,AnyObject>
+                let sender_name = resultDic["sender_name"] as! String
+                let msg_text = resultDic["private_text"] as! String
+                let client_id = self.find_client_id(
+                    id_1: resultDic["sender"]! as! String,
+                    id_2: resultDic["receiver"]! as! String
+                )
+                if let friend_cell_index = friendsList.index(where: { (element) -> Bool in
+                    if element.id == client_id{
+                        return true
+                    }
+                    return false
+                }){
+                    friendsList[friend_cell_index].lastLine = msg_text
+                    friendsList[friend_cell_index].last_speaker = sender_name
+                    //print(chat_view?.clientId)
+                    //print(client_id)
+                    if chat_view?.clientId == client_id{
+                        if sender_name != userData.name{
+                            friendsList[friend_cell_index].read_msg = true
                         }
                         else{
                             friendsList[friend_cell_index].read_msg = false
                         }
-                        let temp_cell_obj = friendsList[friend_cell_index]
-                        friendsList.remove(at: friend_cell_index)
-                        friendsList.insert(temp_cell_obj, at: 0)
-                        self.targetVC.tableView.reloadData()
+                        
                     }
                     else{
-                        synchronize_friend_table()
+                        friendsList[friend_cell_index].read_msg = false
                     }
+                    let temp_cell_obj = friendsList[friend_cell_index]
+                    friendsList.remove(at: friend_cell_index)
+                    friendsList.insert(temp_cell_obj, at: 0)
+                    self.targetVC.tableView.reloadData()
+                }
+                else{
+                    synchronize_friend_table()
                 }
                 getFrientList()
                 

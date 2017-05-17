@@ -58,7 +58,7 @@ public protocol webSocketActiveCenterDelegate_re{
 //MARK:webSocket 資料接收中心
 open class webSocketActiveCenter{
     
-    let mainWorkList = ["online","off_line","new_member","update_version","topic_msg"]
+    let mainWorkList = ["online","off_line","new_member","update_version","topic_msg","priv_msg"]
 
     var test_List = [""]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
@@ -121,6 +121,9 @@ open class webSocketActiveCenter{
                 }
                 else if msgtypeString == "topic_msg"{
                     topic_msg_factory(msg: msg)
+                }
+                else if msgtypeString == "priv_msg"{
+                    private_msg_factory(msg: msg)
                 }
             }
             
@@ -223,7 +226,7 @@ open class webSocketActiveCenter{
         let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
         if Int(private_content_last_checked_server_id)! >= Int(private_content_last_id)!{
             let result_dic = msg["result_dic"] as! Dictionary<String,AnyObject>
-            let sender = result_dic["sender_id"] as! String
+            let sender = result_dic["sender"] as! String
             sql_database.inser_date_to_private_msg(input_dic: result_dic)
             if self.wasd_ForFriendChatViewController?.new_client_topic_msg != nil{
                 self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)
