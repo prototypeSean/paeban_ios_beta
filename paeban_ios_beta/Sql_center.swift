@@ -1729,6 +1729,25 @@ public class SQL_center{
         }
         return 0
     }
+    func get_level_my(topic_id_in:String,client_id:String) -> Int{
+        do{
+            let query = topic_content.filter(topic_id == topic_id_in && self.client_id == client_id).count
+            let count = try sql_db!.scalar(query)
+            let level:Int = count/7
+            if level >= 0 && level <= 9{
+                return level
+            }
+            else{
+                return 9
+            }
+            
+        }
+        catch{
+            print("get_level資料庫錯誤")
+            print(error)
+        }
+        return 0
+    }
     
     // user_data
     func establish_user_data(){

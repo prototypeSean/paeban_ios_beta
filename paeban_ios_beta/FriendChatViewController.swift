@@ -357,6 +357,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 }
                 else if (resultDic["sender_id"] as? String)! == clientId
                     && (resultDic["receiver_id"] as? String)! == userData.id!{
+                    print(resultDic)
                     self.get_history_new_from_server()
                     
                     // 別人說的

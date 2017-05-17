@@ -218,6 +218,9 @@ open class webSocketActiveCenter{
         }
         //update_recent
     }
+    func private_msg_factory(msg:Dictionary<String,AnyObject>){
+        
+    }
     
 }
 
