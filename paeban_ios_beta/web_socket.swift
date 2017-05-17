@@ -194,7 +194,7 @@ open class webSocketActiveCenter{
                 
                 let topic_content_last_checked_server_id = sql_database.get_topic_content_last_checked_server_id()
                 print("id_pre_s: \(previous_receiver_topic_content_id) /// id_pre_l: \(topic_content_last_checked_server_id)")
-                if previous_receiver_topic_content_id >= topic_content_last_checked_server_id{
+                if Int(previous_receiver_topic_content_id)! >= Int(topic_content_last_checked_server_id)!{
                     sql_database.insert_client_topic_content_from_server(input_dic: resultDic, check_state: .checked)
                     if self.wasd_ForChatViewController?.new_client_topic_msg != nil{
                         self.wasd_ForChatViewController?.new_client_topic_msg!(sender: sender)
@@ -210,7 +210,7 @@ open class webSocketActiveCenter{
                         //updatedatebase
                     }
                     else{
-                        update_topic_content_from_server()
+                        update_topic_content_from_server(delegate_target:self.wasd_ForMyTopicTableViewController)
                     }
                     
                 }
@@ -219,7 +219,19 @@ open class webSocketActiveCenter{
         //update_recent
     }
     func private_msg_factory(msg:Dictionary<String,AnyObject>){
-        
+        let private_content_last_id = msg["private_content_last_checked_server_id"] as! String
+        let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
+        if Int(private_content_last_checked_server_id)! >= Int(private_content_last_id)!{
+            let result_dic = msg["result_dic"] as! Dictionary<String,AnyObject>
+            let sender = result_dic["sender_id"] as! String
+            sql_database.inser_date_to_private_msg(input_dic: result_dic)
+            if self.wasd_ForFriendChatViewController?.new_client_topic_msg != nil{
+                self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)
+            }
+        }
+        else{
+            //update_from_server
+        }
     }
     
 }

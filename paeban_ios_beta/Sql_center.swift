@@ -1194,7 +1194,22 @@ public class SQL_center{
         }
         
     }
-
+    func get_private_msg_last_checked_server_id() -> String{
+        do{
+            let query = private_table.filter(receiver == userData.id!).order(id.desc)
+            if let private_msg_obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            }){
+                return private_msg_obj[id_server]!
+            }
+            return "0"
+        }
+        catch{
+            print("get_private_msg_last_checked_server_id ERROR")
+            print(error)
+            return "0"
+        }
+    }
     
     
     // topic content func

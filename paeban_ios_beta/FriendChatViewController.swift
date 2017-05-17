@@ -324,7 +324,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
         
-        if msgType == "priv_msg"{
+        if msgType == "priv_msg" && false{
             let resultDic_msg_id:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary<String,AnyObject>
             for resultDic in resultDic_msg_id.values{
                 if (resultDic["sender_id"] as? String)! == userData.id!
@@ -477,6 +477,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
     }
     func wsReconnected(){
+    }
+    func new_client_topic_msg(sender: String) {
+        if clientId == sender{
+            self.get_history_new_from_server()
+        }
+        
     }
     func get_history_new_from_server(){
         print("get_history_new_from_server")
