@@ -1127,9 +1127,16 @@ public class SQL_center{
                     "is_read":is_resd_input as AnyObject,
                     "is_send":query_s[is_send] as AnyObject,
                     "write_time":write_time as AnyObject,
-                    "id_local":id_local as AnyObject
+                    "id_local":id_local as AnyObject,
+                    "id_server":query_s[id_server] as AnyObject
                     ]
                 return_list.append(return_dic)
+                if query_s[sender]! != userData.id{
+                    // update private msg to readed
+                    let query_s_local_id = query_s[id]
+                    let update = private_table.filter(id == query_s_local_id).update(is_read <- true)
+                    try sql_db!.run(update)
+                }
             }
             let query_local = query.filter(id_server == nil)
             for query_s in try sql_db!.prepare(query_local){

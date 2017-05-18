@@ -96,19 +96,19 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     override func viewWillAppear(_ animated: Bool) {
         add_tap()
-        messages = renew_data()
-        self.collectionView.reloadData()
-        DispatchQueue.global(qos: .background).async {
-            usleep(50)
-            DispatchQueue.main.async {
-                self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
-                self.get_history_new()
-                self.get_last_read_id(topic_id_input: self.topicId!, client_id_input: self.clientID!)
-            }
-        }
-        
-        
-        
+//        messages = renew_data()
+//        self.collectionView.reloadData()
+//        DispatchQueue.global(qos: .background).async {
+//            usleep(50)
+//            DispatchQueue.main.async {
+//                self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
+//                self.get_history_new()
+//                self.get_last_read_id(topic_id_input: self.topicId!, client_id_input: self.clientID!)
+//            }
+//        }
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        update_database()
     }
 
         // 下面兩個負責讀取訊息

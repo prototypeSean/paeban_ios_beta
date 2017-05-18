@@ -139,7 +139,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     override func viewWillAppear(_ animated: Bool) {
         self.add_tap()
-        update_database()
 //        DispatchQueue.global(qos: .background).async {
 //            usleep(50)
 //            DispatchQueue.main.async {
@@ -147,8 +146,10 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
 //                self.get_history_new_from_server()
 //            }
 //        }
-
         wsActive.wasd_ForFriendChatViewController = self
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        update_database()
     }
     override func viewDidDisappear(_ animated: Bool) {
         self.dismiss(animated: false, completion: nil)
@@ -480,7 +481,10 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         if clientId == sender{
             update_database()
         }
-        
+    }
+    func new_my_topic_msg(sender: String, id_local: String) {
+        sending_dic.removeValue(forKey: id_local)
+        update_database()
     }
     func get_history_new_from_server(){
         print("get_history_new_from_server")
@@ -546,8 +550,20 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     func new_data() -> Array<JSQMessage3>{
         var new_message_list:Array<JSQMessage3> = []
         let data_dic = sql_database.get_private_histopry_msg(client_id: clientId!)
+        var last_read_id:String?
         for data_s in data_dic{
             new_message_list.append(make_JSQMessage3(input_dic: data_s))
+            if (data_s["sender"] as! String) != userData.id && (data_s["is_read"] as! Bool) == false{
+                last_read_id = data_s["id_server"] as? String
+            }
+        }
+        if last_read_id != nil{
+            let sendData = ["msg_type":"priv_msg_been_read",
+                            "msg_id":last_read_id!]
+            var addDic:Dictionary<String,AnyObject> = [:]
+            addDic["missionType"] = "priv_msg_been_read" as AnyObject?
+            addDic["data"] = sendData as AnyObject?
+            executeWork(addDic)
         }
         return new_message_list
     }

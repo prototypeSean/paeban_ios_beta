@@ -222,24 +222,32 @@ open class webSocketActiveCenter{
         //update_recent
     }
     func private_msg_factory(msg:Dictionary<String,AnyObject>){
-        let private_content_last_id = msg["private_content_last_checked_server_id"] as! String
-        let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
-        if Int(private_content_last_checked_server_id)! >= Int(private_content_last_id)!{
-            let result_dic = msg["result_dic"] as! Dictionary<String,AnyObject>
-            let sender = result_dic["sender"] as! String
-            sql_database.inser_date_to_private_msg(input_dic: result_dic)
-            if self.wasd_ForFriendChatViewController?.new_client_topic_msg != nil{
-                self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)
-            }
+        let result_dic = msg["result_dic"] as! Dictionary<String,AnyObject>
+        let sender = result_dic["sender"] as! String
+        if sender == userData.id{
+            let id_local = result_dic["id_local"] as! String
+            let time_input = result_dic["time"] as! String
+            let id_server_input = result_dic["id_server"] as! String
+            sql_database.update_private_msg_time(id_local: id_local, time_input: time_input, id_server_input: id_server_input)
         }
         else{
-            //update_from_server
+            let private_content_last_id = msg["private_content_last_checked_server_id"] as! String
+            let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
+            if Int(private_content_last_checked_server_id)! >= Int(private_content_last_id)!{
+                
+                sql_database.inser_date_to_private_msg(input_dic: result_dic)
+                if self.wasd_ForFriendChatViewController?.new_client_topic_msg != nil{
+                    self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)
+                }
+            }
+            else{
+                //update_from_server
+            }
         }
+        
     }
     
 }
-
-
 
 
 // MARK:接收封包資料結構
