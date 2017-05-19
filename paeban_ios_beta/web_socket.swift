@@ -187,6 +187,12 @@ open class webSocketActiveCenter{
                             sender: resultDic["sender"] as! String,
                             id_local: resultDic["id_local"] as! String)
                     }
+                    if self.wasd_ForTopicViewController?.new_my_topic_msg != nil{
+                        // 為了移除送出中的清單
+                        self.wasd_ForTopicViewController?.new_my_topic_msg!(
+                            sender: resultDic["sender"] as! String,
+                            id_local: resultDic["id_local"] as! String)
+                    }
                 }
                 
                
@@ -204,6 +210,9 @@ open class webSocketActiveCenter{
                     }
                     if self.wasd_ForMyTopicTableViewController?.new_client_topic_msg != nil{
                         self.wasd_ForMyTopicTableViewController?.new_client_topic_msg!(sender: sender)
+                    }
+                    if self.wasd_ForTopicViewController?.new_client_topic_msg != nil{
+                        self.wasd_ForTopicViewController?.new_client_topic_msg!(sender: sender)
                     }
                     
                 }

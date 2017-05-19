@@ -58,11 +58,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         get_client_img(owner: ownerId!, topic_id: topicId!)
     }
     override func viewDidAppear(_ animated: Bool) {
-        let level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
-        if userData.img != nil{
-            myPhotoImg.image = set_my_img_level(input_img: userData.img!, level_input: level)
-        }
-        
+        my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
+        re_new_my_img()
     }
     override func viewDidDisappear(_ animated: Bool) {
         self.dismiss(animated: false, completion: nil)
@@ -108,6 +105,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     
     // MARK: internal func
     func getHttpData() {
+        // woking 檢查必要性
         DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
             let httpObj = HttpRequestCenter()
             httpObj.getTopicContentHistory(self.ownerId!,topicId: self.topicId!, InViewAct: { (returnData2) in
@@ -133,7 +131,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                     let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
                     DispatchQueue.main.async(execute: {
                         self.myPhotoSave = myImg
-                        self.myPhotoImg.image = self.myPhotoSave
+                        //self.myPhotoImg.image = self.myPhotoSave
                         //let chatViewCon = self.contanterView
                         
                         self.msg = msg
@@ -222,7 +220,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         // add any other subcontent that you want clipped 最上層才放圖片進去
         
         //myPhotoImg.image = myPhotoSave
-        myPhotoImg.image = userData.img
+        //myPhotoImg.image = userData.img
         //        print(myPhotoSave)
         myPhotoImg.frame = myphotoborderView.bounds
         myphotoborderView.addSubview(myPhotoImg)
@@ -421,6 +419,12 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     func wsReconnected(){
     }
+    func new_my_topic_msg(sender: String, id_local: String) {
+        check_my_photo_level()
+    }
+    func new_client_topic_msg(sender: String) {
+        check_my_photo_level()
+    }
     // MARK: override function
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let chatViewCon = segue.destination as! ChatViewController
@@ -459,20 +463,31 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     
     // test
+    func check_my_photo_level(){
+        let new_level = sql_database.get_level_my(topic_id_in: self.topicId!, client_id: self.ownerId!)
+        if self.my_img_level != new_level{
+            self.my_img_level = new_level
+            re_new_my_img()
+        }
+    }
     func re_new_my_img(){
-//        DispatchQueue.global(qos: .background){
-//            let level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
-//            if userData.img != nil{
-//                myPhotoImg.image = set_my_img_level(input_img: userData.img!, level_input: level)
-//            }
-//        }
-        
+        DispatchQueue.global(qos: .background).async {
+            let level = sql_database.get_level_my(topic_id_in: self.topicId!, client_id: self.ownerId!)
+            print("level:\(level)")
+            if userData.img != nil{
+                let temp_img = self.set_my_img_level(input_img: userData.img!, level_input: level)
+                DispatchQueue.main.async {
+                    self.myPhotoImg.image = temp_img
+                }
+            }
+        }
     }
     func set_my_img_level(input_img:UIImage, level_input:Int)->UIImage?{
         let context = CIContext(options: nil)
         let currentFilter = CIFilter(name: "CIGaussianBlur")
         let beginImage = CIImage(image: input_img)
         let blur_parameter = my_blur_img_level_dic[level_input]!
+        print("blur_parameter:\(blur_parameter)")
         currentFilter!.setValue(beginImage, forKey: kCIInputImageKey)
         currentFilter!.setValue(blur_parameter, forKey: kCIInputRadiusKey)
         let cropFilter = CIFilter(name: "CICrop")
