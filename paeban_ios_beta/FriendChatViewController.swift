@@ -324,6 +324,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         let msgType =  msg["msg_type"] as! String
         
         if msgType == "priv_msg" && false{
+            // 代碼移到web socket center運行
             let resultDic_msg_id:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary<String,AnyObject>
             for resultDic in resultDic_msg_id.values{
                 if (resultDic["sender_id"] as? String)! == userData.id!

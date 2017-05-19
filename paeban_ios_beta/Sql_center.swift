@@ -997,9 +997,9 @@ public class SQL_center{
                 return "new_server_msg"
             }
             catch{
-                return "old_data"
                 print("資料庫錯誤")
                 print(error)
+                return "old_data"
             }
         }
         else{

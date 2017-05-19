@@ -668,7 +668,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 let check_id = msg["user_id"] as! String
                 change_online_state(change_id: check_id, state: true)
             }
-            else if msg_type == "friend_confirm_success"{
+                // 飛行
+            else if msg_type == "friend_confirm_success" && false{
                 if msg["answer"] as! String == "yes"{
                     print(msg)
                     self.add_friend(id: msg["friend_id"] as! String,
