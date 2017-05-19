@@ -1006,9 +1006,11 @@ public class SQL_center{
             return "new_local_msg"
         }
     }
+    // working 我的 client的訊息分開寫入  改成兩個函數
     func inser_date_to_private_msg(input_dic:Dictionary<String,AnyObject>){
         do{
             let topic_msg_type = check_private_msg_type2(input_dic: input_dic)
+            print ("topic_msg_type: \(topic_msg_type)")
             if topic_msg_type == "update_local"{
                 let id_local_input = Int64(input_dic["id_local"]! as! String)!
                 let query = private_table.filter(
@@ -1734,7 +1736,11 @@ public class SQL_center{
         // 取得我跟人的對話解鎖到第幾層
     func get_level(topic_id_in:String,client_id:String) -> Int{
         do{
-            let query = topic_content.filter(topic_id == topic_id_in && self.client_id == client_id).count
+            let query = topic_content.filter(
+                topic_id == topic_id_in &&
+                self.receiver == userData.id &&
+                self.sender == client_id
+                ).count
             let count = try sql_db!.scalar(query)
             let level:Int = count/7
             if level >= 0 && level <= 9{
@@ -1753,7 +1759,11 @@ public class SQL_center{
     }
     func get_level_my(topic_id_in:String,client_id:String) -> Int{
         do{
-            let query = topic_content.filter(topic_id == topic_id_in && self.client_id == client_id).count
+            let query = topic_content.filter(
+                topic_id == topic_id_in &&
+                self.receiver == client_id &&
+                self.sender == userData.id!
+                ).count
             let count = try sql_db!.scalar(query)
             let level:Int = count/7
             if level >= 0 && level <= 9{

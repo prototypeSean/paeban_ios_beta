@@ -26,14 +26,6 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     @IBOutlet weak var btnAddFriend: UIButton!
     @IBOutlet weak var btnIgnroe: UIButton!
     @IBOutlet weak var btnBlock: UIButton!
-    //飛行
-    @IBAction func tes_btn(_ sender: Any) {
-        myPhotoImg.image = set_my_img_level(input_img: userData.img!)
-    }
-    @IBOutlet weak var level: UITextField!
-    @IBOutlet weak var level_result: UITextField!
-    
-    
     var delegate:TopicViewControllerDelegate?
     var setID:String?
     var setName:String?
@@ -64,6 +56,13 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         topicTitleContent.text = topicTitle
         check_is_friend()
         get_client_img(owner: ownerId!, topic_id: topicId!)
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        let level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
+        if userData.img != nil{
+            myPhotoImg.image = set_my_img_level(input_img: userData.img!, level_input: level)
+        }
+        
     }
     override func viewDidDisappear(_ animated: Bool) {
         self.dismiss(animated: false, completion: nil)
@@ -460,25 +459,29 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     
     // test
-    func set_my_img_level(input_img:UIImage)->UIImage?{
-        if let level_int = Int(self.level.text!){
-            let context = CIContext(options: nil)
-            let currentFilter = CIFilter(name: "CIGaussianBlur")
-            let beginImage = CIImage(image: input_img)
-            currentFilter!.setValue(beginImage, forKey: kCIInputImageKey)
-            
-            currentFilter!.setValue(level_int, forKey: kCIInputRadiusKey)
-            let cropFilter = CIFilter(name: "CICrop")
-            cropFilter!.setValue(currentFilter!.outputImage, forKey: kCIInputImageKey)
-            cropFilter!.setValue(CIVector(cgRect: beginImage!.extent), forKey: "inputRectangle")
-            let output = cropFilter!.outputImage
-            let cgimg = context.createCGImage(output!, from: output!.extent)
-            let processedImage = UIImage(cgImage: cgimg!)
-            level_result.text = self.level.text
-            return processedImage
-        }
-        level_result.text = "Fail"
-        return nil
+    func re_new_my_img(){
+//        DispatchQueue.global(qos: .background){
+//            let level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
+//            if userData.img != nil{
+//                myPhotoImg.image = set_my_img_level(input_img: userData.img!, level_input: level)
+//            }
+//        }
+        
+    }
+    func set_my_img_level(input_img:UIImage, level_input:Int)->UIImage?{
+        let context = CIContext(options: nil)
+        let currentFilter = CIFilter(name: "CIGaussianBlur")
+        let beginImage = CIImage(image: input_img)
+        let blur_parameter = my_blur_img_level_dic[level_input]!
+        currentFilter!.setValue(beginImage, forKey: kCIInputImageKey)
+        currentFilter!.setValue(blur_parameter, forKey: kCIInputRadiusKey)
+        let cropFilter = CIFilter(name: "CICrop")
+        cropFilter!.setValue(currentFilter!.outputImage, forKey: kCIInputImageKey)
+        cropFilter!.setValue(CIVector(cgRect: beginImage!.extent), forKey: "inputRectangle")
+        let output = cropFilter!.outputImage
+        let cgimg = context.createCGImage(output!, from: output!.extent)
+        let processedImage = UIImage(cgImage: cgimg!)
+        return processedImage
     }
     
 }

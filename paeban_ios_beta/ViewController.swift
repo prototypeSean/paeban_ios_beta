@@ -13,6 +13,13 @@ import FBSDKCoreKit
 import FBSDKShareKit
 import CoreLocation
 
+// setting config
+public var my_blur_img_level_dic = [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 8:3, 9:0]
+public let version = "1.1.4.0"
+public let reset_database = true
+// setting config
+
+
 // MARK:公用變數
 public var ssss:String?
 public var back_ground_state = false
@@ -85,8 +92,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var tutorial: UIButton!
     @IBOutlet weak var state_lable: UILabel!
     
-    
-    let version = "1.1.4.0"
     let login_paeban_obj = login_paeban()
     var state_switch = true
     var cookie_for_ws:String?
@@ -94,9 +99,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     var loading_view:UIView?
     var loading_title_lable:UILabel?
     var persent_lable:UILabel?
-    var my_blur_img_level_dic =  [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 8:3, 9:0]
-    // MARK:施工中
-    let reset_database = true
+    
     // =====登入程序=====
     func check_data_base(){
         // 驗證userdata
@@ -107,8 +110,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         let version_in_db = sql_database.load_version()
         
         func check_user_id(input_dic:Dictionary<String, AnyObject>){
-            if version_in_db != self.version ||
-                self.reset_database ||
+            if version_in_db != version ||
+                reset_database ||
                 input_dic["user_id"] as? String != sql_database.get_user_id(){
                 print("資料庫重置")
                 
@@ -181,10 +184,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             HttpRequestCenter().request_user_data_v2("get_user_info", send_dic: [:]) { (rturn_dic:Dictionary<String, AnyObject>?) in
                 if rturn_dic != nil{
                     DispatchQueue.main.async {
-                        if !check_version(ver_local:self.version, ver_server: rturn_dic!["version"] as! String){
+                        if !check_version(ver_local:version, ver_server: rturn_dic!["version"] as! String){
                             let version_at_least = rturn_dic!["version_at_least"] as! String
-                            if !check_version(ver_local:self.version, ver_server: version_at_least){
-                                let alert_msg = "您的版本\(self.version)過舊無法服務\n請更新到最新版本\(rturn_dic!["version"]! as! String)"
+                            if !check_version(ver_local:version, ver_server: version_at_least){
+                                let alert_msg = "您的版本\(version)過舊無法服務\n請更新到最新版本\(rturn_dic!["version"]! as! String)"
                                 let alert = UIAlertController(title: "錯誤", message: alert_msg, preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
                                     // 聽說ios10以前有問題？
@@ -193,7 +196,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                                 self.present(alert, animated: true, completion: nil)
                             }
                             else{
-                                let alert = UIAlertController(title: "通知", message: "版本 \(rturn_dic!["version"]! as! String) 已發布\n請盡快更新\n您現在的版本是\(self.version)", preferredStyle: .alert)
+                                let alert = UIAlertController(title: "通知", message: "版本 \(rturn_dic!["version"]! as! String) 已發布\n請盡快更新\n您現在的版本是\(version)", preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: "更新", style: .default, handler: { (act) in
                                     UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
                                 }))
@@ -703,7 +706,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         }
                     }
                 }
-                check_version(ver_local:self.version , ver_server: version_server as! String)
+                check_version(ver_local:version , ver_server: version_server as! String)
                 
             }
             else if msgtype == "announcement"{
