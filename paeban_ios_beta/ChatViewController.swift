@@ -69,6 +69,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         self.dismiss(animated: false, completion: nil)
         wsActive.wasd_ForChatViewController = nil
     }
@@ -95,6 +96,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         dennis_kao_s_fucking_trash()
     }
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         add_tap()
 //        messages = renew_data()
 //        self.collectionView.reloadData()
@@ -108,6 +110,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
 //        }
     }
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         update_database()
     }
 
