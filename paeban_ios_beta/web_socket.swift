@@ -242,7 +242,7 @@ open class webSocketActiveCenter{
         else{
             let private_content_last_id = msg["private_content_last_checked_server_id"] as! String
             let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
-            print("ids:\(private_content_last_checked_server_id)  idl:\(private_content_last_id)")
+            //print("ids:\(private_content_last_checked_server_id)  idl:\(private_content_last_id)")
             if Int(private_content_last_checked_server_id)! >= Int(private_content_last_id)!{
                 sql_database.inser_date_to_private_msg(input_dic: result_dic)
                 if self.wasd_ForFriendChatViewController?.new_client_topic_msg != nil{
@@ -252,6 +252,14 @@ open class webSocketActiveCenter{
             else{
                 // working
                 // update_from_server
+                let send_dic = [
+                    "last_id_local":private_content_last_checked_server_id
+                ]
+                HttpRequestCenter().request_user_data_v2("update_private_mag", send_dic: send_dic as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                    if return_dic != nil{
+                        
+                    }
+                })
             }
         }
         

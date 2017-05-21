@@ -1006,7 +1006,7 @@ public class SQL_center{
             return "new_local_msg"
         }
     }
-    // working 我的 client的訊息分開寫入  改成兩個函數
+    // working (暫緩 好像目前沒問題)我的client的訊息分開寫入  改成兩個函數
     func inser_date_to_private_msg(input_dic:Dictionary<String,AnyObject>){
         do{
             let topic_msg_type = check_private_msg_type2(input_dic: input_dic)
@@ -1742,7 +1742,8 @@ public class SQL_center{
                 self.sender == client_id
                 ).count
             let count = try sql_db!.scalar(query)
-            let level:Int = count/7
+            let level:Int = count/unlock_img_exp
+            print("get_level\(level)")
             if level >= 0 && level <= 9{
                 return level
             }
@@ -1765,7 +1766,8 @@ public class SQL_center{
                 self.sender == userData.id!
                 ).count
             let count = try sql_db!.scalar(query)
-            let level:Int = count/7
+            let level:Int = count/unlock_img_exp
+            print("get_level_my\(get_level_my)")
             if level >= 0 && level <= 9{
                 return level
             }

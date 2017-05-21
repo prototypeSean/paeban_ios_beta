@@ -42,7 +42,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     var get_client_img_timer:Timer?
     var tags:String?
     var my_img_level:Int?
-    var client_img_level:Int?
+    var client_data_obj:Client_detail_data?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,12 +50,16 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         getHttpData()
         
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         topicTitleContent.text = topicTitle
         check_is_friend()
-        get_client_img(owner: ownerId!, topic_id: topicId!)
+        client_data_obj = Client_detail_data(topic_id: topicId!, client_id: ownerId!)
+        client_data_obj?.get_client_img(act: { (return_img:UIImage?) in
+            self.ownerImg = return_img
+            //self.guestPhoto.image = return_img
+        })
+        //get_client_img(owner: ownerId!, topic_id: topicId!)
     }
     override func viewDidAppear(_ animated: Bool) {
         my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
@@ -146,17 +150,17 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         }
     }
     func get_client_img(owner:String,topic_id:String){
-        print("get_client_img")
-        let httpSendDic = ["client_id":owner,
-                           "topic_id":topic_id]
-        HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
-            DispatchQueue.main.async {
-                let gttp_return_img = base64ToImage(returnData["data"] as! String)
-                self.ownerImg = gttp_return_img
-                self.guestPhotoImg.image = gttp_return_img
-            }
-        })
-        get_client_img_timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.check_client_img), userInfo: nil, repeats: false)
+        // old
+//        let httpSendDic = ["client_id":owner,
+//                           "topic_id":topic_id]
+//        HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
+//            DispatchQueue.main.async {
+//                let gttp_return_img = base64ToImage(returnData["data"] as! String)
+//                self.ownerImg = gttp_return_img
+//                self.guestPhotoImg.image = gttp_return_img
+//            }
+//        })
+//        get_client_img_timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.check_client_img), userInfo: nil, repeats: false)
     }
     func check_client_img(){
         if self.guestPhotoImg.image == nil{
@@ -356,29 +360,29 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
         if msgType == "topic_msg"{
-            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
-            if msg["img"] as? String != nil && msg["img"] as? String != ""{
-                let imgStr = msg["img"] as? String
-                let tempImg = updateImg(imgStr)
-                if tempImg != nil{
-                    //print("updateImg")
-                    
-                    for dicKey in resultDic{
-                        let msgData = dicKey.1 as! Dictionary<String,AnyObject>
-                        let sender = msgData["sender"] as! String
-                        let receiver = msgData["receiver"] as! String
-                        if sender == userData.id && receiver == ownerId{
-                            myPhotoImg.image = tempImg
-                            myPhotoSave = tempImg
-                        }
-                        else if receiver == userData.id && sender == ownerId{
-                            guestPhotoImg.image = tempImg
-                            ownerImg = tempImg
-                        }
-                        break
-                    }
-                }
-            }
+//            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
+//            if msg["img"] as? String != nil && msg["img"] as? String != ""{
+//                let imgStr = msg["img"] as? String
+//                let tempImg = updateImg(imgStr)
+//                if tempImg != nil{
+//                    //print("updateImg")
+//                    
+//                    for dicKey in resultDic{
+//                        let msgData = dicKey.1 as! Dictionary<String,AnyObject>
+//                        let sender = msgData["sender"] as! String
+//                        let receiver = msgData["receiver"] as! String
+//                        if sender == userData.id && receiver == ownerId{
+//                            myPhotoImg.image = tempImg
+//                            myPhotoSave = tempImg
+//                        }
+//                        else if receiver == userData.id && sender == ownerId{
+//                            guestPhotoImg.image = tempImg
+//                            ownerImg = tempImg
+//                        }
+//                        break
+//                    }
+//                }
+//            }
         }
         else if msgType == "topic_closed"{
             let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
@@ -423,7 +427,10 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         check_my_photo_level()
     }
     func new_client_topic_msg(sender: String) {
-        check_my_photo_level()
+        client_data_obj?.get_client_img(act: { (return_img:UIImage?) in
+            self.ownerImg = return_img
+            //self.guestPhoto.image = return_img
+        })
     }
     // MARK: override function
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
