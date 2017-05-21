@@ -138,6 +138,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         dennis_kao_s_fucking_trash()
     }
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.add_tap()
 //        DispatchQueue.global(qos: .background).async {
 //            usleep(50)
@@ -149,9 +150,11 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         wsActive.wasd_ForFriendChatViewController = self
     }
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         update_database()
     }
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         self.dismiss(animated: false, completion: nil)
         wsActive.wasd_ForFriendChatViewController = nil
     }

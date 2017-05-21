@@ -57,18 +57,21 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         client_data_obj = Client_detail_data(topic_id: topicId!, client_id: ownerId!)
         client_data_obj?.get_client_img(act: { (return_img:UIImage?) in
             self.ownerImg = return_img
-            //self.guestPhoto.image = return_img
+            self.guestPhotoImg.image = return_img
         })
         //get_client_img(owner: ownerId!, topic_id: topicId!)
     }
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
         re_new_my_img()
     }
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         self.dismiss(animated: false, completion: nil)
     }
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         setImage()
     }
     
@@ -431,7 +434,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             DispatchQueue.main.async {
                 if return_img != nil{
                     self.ownerImg = return_img
-                    self.guestPhoto.image = return_img
+                    self.guestPhotoImg.image = return_img
                 }
             }
             
