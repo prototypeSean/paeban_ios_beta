@@ -428,7 +428,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     func new_client_topic_msg(sender: String) {
         client_data_obj?.get_client_img(act: { (return_img:UIImage?) in
-            self.ownerImg = return_img
+            DispatchQueue.main.async {
+                self.ownerImg = return_img
+            }
             //self.guestPhoto.image = return_img
         })
     }
