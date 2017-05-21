@@ -106,8 +106,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         // 驗證userdata
         // 請求版本號
         sql_database.connect_sql()
-        // MARK:飛行前移除
-        sql_database.print_all()
         let version_in_db = sql_database.load_version()
         
         func check_user_id(input_dic:Dictionary<String, AnyObject>){

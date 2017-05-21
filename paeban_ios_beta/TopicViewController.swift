@@ -55,14 +55,11 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         topicTitleContent.text = topicTitle
         check_is_friend()
         client_data_obj = Client_detail_data(topic_id: topicId!, client_id: ownerId!)
-        client_data_obj?.get_client_img(act: { (return_img:UIImage?) in
-            self.ownerImg = return_img
-            self.guestPhotoImg.image = return_img
-        })
         //get_client_img(owner: ownerId!, topic_id: topicId!)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        re_new_client_img()
         my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
         re_new_my_img()
     }
@@ -430,14 +427,14 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         check_my_photo_level()
     }
     func new_client_topic_msg(sender: String) {
+        re_new_client_img()
+    }
+    func re_new_client_img(){
         client_data_obj?.get_client_img(act: { (return_img:UIImage?) in
-            DispatchQueue.main.async {
-                if return_img != nil{
-                    self.ownerImg = return_img
-                    self.guestPhotoImg.image = return_img
-                }
+            if return_img != nil{
+                self.ownerImg = return_img
+                self.guestPhotoImg.image = return_img
             }
-            
         })
     }
     // MARK: override function

@@ -25,7 +25,10 @@ class Client_detail_data{
         if level != new_level{
             if let client_data = sql_database.tmp_client_search(searchByClientId: client_id, level: new_level){
                 // 本地有
-                act(base64ToImage(client_data["img"] as! String))
+                DispatchQueue.main.async {
+                    self.level = new_level
+                    act(base64ToImage(client_data["img"] as! String))
+                }
             }
             else{
                 // 本地沒有 從網路要
@@ -42,8 +45,12 @@ class Client_detail_data{
                     if return_dic != nil{
                         let return_list = return_dic!["return_list"]! as! Array<Dictionary<String,AnyObject>>
                         for datas in return_list{
+                            self.level = new_level
                             sql_database.tmp_client_addNew(input_dic: datas)
-                            act(base64ToImage(datas["img"] as! String))
+                            print("data levle: \(datas["level"])")
+                            DispatchQueue.main.async {
+                                act(base64ToImage(datas["img"] as! String))
+                            }
                         }
                     }
                 })

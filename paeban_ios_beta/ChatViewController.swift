@@ -338,7 +338,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         else if msgType == "topic_content_been_read"{
             let id_local_input = msg["id_local"] as! String
             print("topic_content_been_read \(id_local_input)")
-            sql_database.print_all()
             sql_database.update_topic_content_read(id_local: id_local_input)
             update_database()
         }
