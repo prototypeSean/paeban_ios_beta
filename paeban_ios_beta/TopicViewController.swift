@@ -431,9 +431,10 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             DispatchQueue.main.async {
                 if return_img != nil{
                     self.ownerImg = return_img
+                    self.guestPhoto.image = return_img
                 }
             }
-            //self.guestPhoto.image = return_img
+            
         })
     }
     // MARK: override function
