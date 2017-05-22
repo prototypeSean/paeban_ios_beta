@@ -52,4 +52,18 @@ func update_private_mag(last_id_local:String, after:(()->Void)?){
     })
 }
 
+func random_pass(prasent_rate:Int, work:()->Void){
+    let rad = arc4random_uniform(100)
+    if Int(rad) <= prasent_rate{
+        work()
+    }
+}
+
+
+
+
+
+
+
+
 

@@ -122,8 +122,11 @@ open class webSocketActiveCenter{
                 else if msgtypeString == "topic_msg"{
                     topic_msg_factory(msg: msg)
                 }
+                // 飛行  remove random pass
                 else if msgtypeString == "priv_msg"{
-                    private_msg_factory(msg: msg)
+                    random_pass(prasent_rate: 80, work: {
+                        private_msg_factory(msg: msg)
+                    })
                 }
             }
             
