@@ -58,7 +58,7 @@ func random_pass(prasent_rate:Int, work:()->Void){
         work()
     }
     else{
-        print("===訊號已被攔截===")
+        print("===訊號已被攔截=== 攔截率：\(100 - prasent_rate)%")
     }
 }
 
