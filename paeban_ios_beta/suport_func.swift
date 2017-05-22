@@ -57,6 +57,9 @@ func random_pass(prasent_rate:Int, work:()->Void){
     if Int(rad) <= prasent_rate{
         work()
     }
+    else{
+        print("===訊號已被攔截===")
+    }
 }
 
 
