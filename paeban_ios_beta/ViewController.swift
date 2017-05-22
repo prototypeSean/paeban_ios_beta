@@ -18,6 +18,8 @@ public var my_blur_img_level_dic = [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 
 public let version = "1.1.4.0"
 public let reset_database = true
 public let unlock_img_exp = 7
+public let private_msg_update = true
+public let topic_msg_update = true
 // init config
 
 
@@ -865,13 +867,21 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         HttpRequestCenter().request_user_data("update_database", send_dic: send_dic) { (return_dic) in
             DispatchQueue.global(qos: .default).async {
                 init_sql = false
-                let topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
-                let private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
+                var topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
+                var private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
                 let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,AnyObject>>
                 let black_list_data = return_dic["black_list"] as! Array<String>
                 let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
                 let recent_list = return_dic["recent_list"] as! Array<Dictionary<String,String>>
                 var tatle_row_count = 0
+                if !private_msg_update{
+                    private_msg_data = []
+                }
+                if !topic_msg_update{
+                    topic_content_data = []
+                }
+                
+                
                 tatle_row_count += topic_content_data.count
                 tatle_row_count += private_msg_data.count
                 tatle_row_count += friend_list_data.count
@@ -891,7 +901,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         }
                     }
                 }
-                
                 for topic_content_data_s in topic_content_data{
                     if topic_content_data_s["sender"] as? String == userData.id{
                         sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)

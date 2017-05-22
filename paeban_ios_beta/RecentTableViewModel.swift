@@ -452,16 +452,7 @@ class RecentTableViewModel{
             operatingObj.time = inputData["time"] as? Double
             //operatingObj.battery = Int((inputData["battery"] as? String)!)
             recentDataBase[recentDataBaseIndex] = operatingObj
-            // 工作2 if need to updata level
-//            let httpSendDic = ["client_id":inputData["owner"] as! String,
-//                               "topic_id":inputKey]
-//            HttpRequestCenter().getBlurImg(httpSendDic, InViewAct: { (returnData) in
-//                operatingObj.clientPhoto_detial = base64ToImage(returnData["data"] as! String)
-//                DispatchQueue.main.async {
-//                    self.sort_recent_db_by_time()
-//                    self.delegate?.model_relodata()
-//                }
-//            })
+
         }
         else{
             let ouputObj = MyTopicStandardType(dataType: "detail")

@@ -689,12 +689,13 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: targetVC.parent as! UINavigationController)
             }
             else if msg_type == "priv_msg"{
+                // working 改成從本地資料庫讀取  從另一個delegate
                 let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary<String,AnyObject>
                 let sender_name = resultDic["sender_name"] as! String
                 let msg_text = resultDic["private_text"] as! String
                 let client_id = self.find_client_id(
-                    id_1: resultDic["sender"]! as! String,
-                    id_2: resultDic["receiver"]! as! String
+                    id_1: resultDic["sender_id"]! as! String,
+                    id_2: resultDic["receiver_id"]! as! String
                 )
                 if let friend_cell_index = friendsList.index(where: { (element) -> Bool in
                     if element.id == client_id{
