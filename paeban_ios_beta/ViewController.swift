@@ -18,8 +18,8 @@ public var my_blur_img_level_dic = [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 
 public let version = "1.1.4.0"
 public let reset_database = true
 public let unlock_img_exp = 7
-public let private_msg_update = true
-public let topic_msg_update = true
+public let private_msg_update = false
+public let topic_msg_update = false
 // init config
 
 

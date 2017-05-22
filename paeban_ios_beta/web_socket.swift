@@ -235,7 +235,7 @@ open class webSocketActiveCenter{
     }
     func private_msg_factory(msg:Dictionary<String,AnyObject>){
         let result_dic = msg["result_dic"] as! Dictionary<String,AnyObject>
-        let sender = result_dic["sender"] as! String
+        let sender = result_dic["sender_id"] as! String
         if sender == userData.id{
             let id_local = result_dic["id_local"] as! String
             let time_input = result_dic["time"] as! String
