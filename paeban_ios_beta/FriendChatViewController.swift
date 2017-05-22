@@ -302,9 +302,9 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         let dataDic:Dictionary<String,AnyObject> = [
             "msg_type":"priv_msg" as AnyObject,
             "private_text":text! as AnyObject,
-            "receiver":clientId! as AnyObject,
+            "receiver_id":clientId! as AnyObject,
             "temp_priv_msg_id":tempTopicMsgId as AnyObject,
-            "sender":userData.id! as AnyObject,
+            "sender_id":userData.id! as AnyObject,
             "is_read":false as AnyObject,
             "is_send":false as AnyObject
         ]
