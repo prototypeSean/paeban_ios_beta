@@ -250,14 +250,9 @@ open class webSocketActiveCenter{
                 }
             }
             else{
-                // working
-                // update_from_server
-                let send_dic = [
-                    "last_id_local":private_content_last_checked_server_id
-                ]
-                HttpRequestCenter().request_user_data_v2("update_private_mag", send_dic: send_dic as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
-                    if return_dic != nil{
-                        
+                update_private_mag(last_id_local: private_content_last_checked_server_id, after:{() -> Void in
+                    if self.wasd_ForFriendChatViewController?.new_client_topic_msg != nil{
+                        self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)
                     }
                 })
             }
@@ -266,6 +261,7 @@ open class webSocketActiveCenter{
     }
     
 }
+
 
 
 // MARK:接收封包資料結構

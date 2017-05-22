@@ -127,8 +127,11 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 if !(return_dic!["return_list"] as! Array<Dictionary<String,AnyObject>>).isEmpty{
                     //飛行
                     print("重新載入好友清單．．．")
-                    self.getFrientList()
-                    self.updateModel()
+                    let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
+                    update_private_mag(last_id_local: private_content_last_checked_server_id, after:{() -> Void in
+                        self.getFrientList()
+                        self.updateModel()
+                    })
                 }
                 
             }

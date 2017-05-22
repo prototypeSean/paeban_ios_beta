@@ -37,5 +37,19 @@ func update_topic_content_from_server(delegate_target:webSocketActiveCenterDeleg
         
     }
 }
+func update_private_mag(last_id_local:String, after:(()->Void)?){
+    let send_dic = [
+        "last_id_local":last_id_local
+    ]
+    HttpRequestCenter().request_user_data_v2("update_private_mag", send_dic: send_dic as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+        if return_dic != nil{
+            let private_msg_data = return_dic!["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
+            for private_msg_data_s in private_msg_data{
+                sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
+            }
+            after?()
+        }
+    })
+}
 
 
