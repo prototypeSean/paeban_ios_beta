@@ -1050,8 +1050,8 @@ public class SQL_center{
                 }
                 let insert = private_table.insert(
                     private_text <- input_dic["private_text"]! as? String,
-                    sender <- input_dic["sender"]! as? String,
-                    receiver <- input_dic["receiver"]! as? String,
+                    sender <- input_dic["sender_id"]! as? String,
+                    receiver <- input_dic["receiver_id"]! as? String,
                     time <- time_input,
                     is_read <- is_read_input,
                     is_send <- is_send_input,
