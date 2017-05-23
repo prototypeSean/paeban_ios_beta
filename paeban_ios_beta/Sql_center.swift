@@ -1701,29 +1701,64 @@ public class SQL_center{
         do{
             let black_list:Array<String> = get_black_list()
             var return_dic:Dictionary<String,Dictionary<String,AnyObject>> = [:]
-            let query = topic_content.filter(
+//            let query = topic_content.filter(
+//                topic_id == topic_id_in &&
+//                !black_list.contains(sender) &&
+//                (sender == userData.id! || receiver == userData.id!)
+//            ).order(id.asc)
+            let query2 = topic_content.filter(
                 topic_id == topic_id_in &&
-                !black_list.contains(sender) &&
-                (sender == userData.id! || receiver == userData.id!)
-            ).order(id.asc)
-            for topic_obj in try sql_db!.prepare(query){
-                var topic_who:String
-                if topic_obj[sender]! == userData.id!{
-                    topic_who = topic_obj[receiver]!
+                    !black_list.contains(sender)
+                ).select(distinct: sender)
+            for sender_s in try sql_db!.prepare(query2){
+                let temp_sender_id = sender_s[sender]!
+                if temp_sender_id != userData.id{
+                    let query_last = topic_content.filter(
+                        topic_id == topic_id_in &&
+                        (sender == userData.id! && receiver == temp_sender_id) ||
+                        (receiver == userData.id! && sender == temp_sender_id)
+                    ).order(id.desc).limit(1)
+                    if let temp_last_obj = try sql_db!.prepare(query_last).first(where: { (row) -> Bool in
+                        return true
+                    }){
+                        var topic_who:String
+                        if temp_last_obj[sender]! == userData.id!{
+                            topic_who = temp_last_obj[receiver]!
+                        }
+                        else{
+                            topic_who = temp_last_obj[sender]!
+                        }
+                        return_dic[topic_who] = [
+                            "sender":temp_last_obj[sender]! as AnyObject,
+                            "topic_text":temp_last_obj[topic_text]! as AnyObject,
+                            "is_read":temp_last_obj[is_read]! as AnyObject,
+                            "time": temp_last_obj[time]! as AnyObject,
+                            "level":self.get_level(topic_id_in: topic_id_in, client_id: topic_who) as AnyObject
+                        ]
+                    }
                 }
-                else{
-                    topic_who = topic_obj[sender]!
-                }
-                return_dic[topic_who] = [
-                    "sender":topic_obj[sender]! as AnyObject,
-                    "topic_text":topic_obj[topic_text]! as AnyObject,
-                    "is_read":topic_obj[is_read]! as AnyObject,
-                    "time": topic_obj[time]! as AnyObject,
-                    "level":self.get_level(topic_id_in: topic_id_in, client_id: topic_who) as AnyObject
-                ]
             }
+            
+            
+//            for topic_obj in try sql_db!.prepare(query){
+//                var topic_who:String
+//                if topic_obj[sender]! == userData.id!{
+//                    topic_who = topic_obj[receiver]!
+//                }
+//                else{
+//                    topic_who = topic_obj[sender]!
+//                }
+//                return_dic[topic_who] = [
+//                    "sender":topic_obj[sender]! as AnyObject,
+//                    "topic_text":topic_obj[topic_text]! as AnyObject,
+//                    "is_read":topic_obj[is_read]! as AnyObject,
+//                    "time": topic_obj[time]! as AnyObject,
+//                    "level":self.get_level(topic_id_in: topic_id_in, client_id: topic_who) as AnyObject
+//                ]
+//            }
             // topic_who* -- topic_text
             //            -- is_read
+            //print(return_dic)
             return return_dic
             
         }
