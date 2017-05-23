@@ -174,8 +174,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         }
                     }
                 }
-                // MARK:飛行前移除
-                print("seggg2")
                 remove_loading_view()
                 show_items()
                 self.performSegue(withIdentifier: "segueToMainUI", sender: self)
@@ -287,8 +285,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     // MARK: 內部函數
     func autoLogin(){
         if let _ = FBSDKAccessToken.current(){
-            // MARK: 飛行
-            print("paeban_login__2")
             paeban_login()
         }
         else{
@@ -404,8 +400,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if((FBSDKAccessToken.current()) != nil){
             FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, picture.type(large), email"]).start(completionHandler: { (connection, result, error) -> Void in
                 if (error == nil){
-                    // MARK:飛行
-                    print("paeban_login__1")
                     self.paeban_login()
                 }
                 else{

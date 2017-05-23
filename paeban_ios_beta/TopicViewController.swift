@@ -430,7 +430,11 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         re_new_client_img()
     }
     func re_new_client_img(){
-        client_data_obj?.get_client_img(act: { (return_img:UIImage?) in
+        print("+++++++++++++++++++")
+        print(client_data_obj)
+        client_data_obj!.get_client_img(act: { (return_img:UIImage?) in
+            print("----------------------------")
+            print(return_img)
             if return_img != nil{
                 self.ownerImg = return_img
                 self.guestPhotoImg.image = return_img
@@ -485,7 +489,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     func re_new_my_img(){
         DispatchQueue.global(qos: .background).async {
             let level = sql_database.get_level_my(topic_id_in: self.topicId!, client_id: self.ownerId!)
-            print("level:\(level)")
+            print("=====level_my:\(level)")
             if userData.img != nil{
                 let temp_img = self.set_my_img_level(input_img: userData.img!, level_input: level)
                 DispatchQueue.main.async {

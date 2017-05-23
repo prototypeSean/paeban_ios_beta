@@ -22,7 +22,7 @@ class Client_detail_data{
     }
     func get_client_img(act:@escaping (_ return_img:UIImage?)->Void){
         let new_level = sql_database.get_level(topic_id_in: topic_id, client_id: client_id)
-        if level != new_level{
+        if level != new_level || true{
             if let client_data = sql_database.tmp_client_search(searchByClientId: client_id, level: new_level){
                 // 本地有
                 DispatchQueue.main.async {

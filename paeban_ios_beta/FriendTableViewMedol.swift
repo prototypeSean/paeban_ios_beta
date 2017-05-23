@@ -129,8 +129,10 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                     print("重新載入好友清單．．．")
                     let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
                     update_private_mag(last_id_local: private_content_last_checked_server_id, after:{() -> Void in
-                        self.getFrientList()
-                        self.updateModel()
+                        DispatchQueue.main.async {
+                            self.getFrientList()
+                            self.updateModel()
+                        }
                     })
                 }
                 
@@ -671,8 +673,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 let check_id = msg["user_id"] as! String
                 change_online_state(change_id: check_id, state: true)
             }
-                // 飛行
-            else if msg_type == "friend_confirm_success" && false{
+            else if msg_type == "friend_confirm_success"{
                 if msg["answer"] as! String == "yes"{
                     print(msg)
                     self.add_friend(id: msg["friend_id"] as! String,
