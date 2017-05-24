@@ -420,7 +420,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     func update_database(){
         messages = renew_data()
         self.collectionView.reloadData()
-        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
+        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: false)
     }
     func get_history_new(){
         let last_id_server:String = sql_database.get_topic_content_last_id_server(topic_id_input: topicId!, client_id_input: clientID!)
