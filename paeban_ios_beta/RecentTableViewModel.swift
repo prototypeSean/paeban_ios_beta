@@ -138,8 +138,6 @@ class RecentTableViewModel{
         
         return cell
     }
-    
-    
     func letoutBattery(battery:UIImageView, batteryLeft:Int){
         if batteryLeft <= 30{
             battery.image = UIImage(named:"battery-low")
@@ -154,7 +152,6 @@ class RecentTableViewModel{
             battery.image = UIImage(named:"battery-full")
         }
     }
-    
     func clientOnline(_ msg:Dictionary<String,AnyObject>) -> Bool{
         var dataChange = false
         let onLineUser = msg["user_id"] as! String
@@ -169,7 +166,6 @@ class RecentTableViewModel{
         }
         return dataChange
     }
-    
     func clientOffline(_ msg:Dictionary<String,AnyObject>) -> Bool{
         let offLineUser = msg["user_id"] as! String
         var dataChange = false
@@ -260,7 +256,6 @@ class RecentTableViewModel{
             socket.write(data: json_dumps(send_dic))
         }
     }
-    
     private func find_target_cell_index(topic_id:String,client_id:String) -> Int?{
         if let index = recentDataBase.index(where: { (element) -> Bool in
             if element.topicId_title == topic_id &&
@@ -349,6 +344,8 @@ class RecentTableViewModel{
             recentDataBase[cell_index].clientSex_detial = input_dic["sex"] as? String
             recentDataBase[cell_index].clientIsRealPhoto_detial = input_dic["is_real_pic"] as? Bool
             recentDataBase[cell_index].level = input_dic["level"] as? Int
+            print("-----data_from_server--------")
+            print(input_dic["level"])
         }
     }
     private func remove_out_off_data(data:Dictionary<String,AnyObject>){

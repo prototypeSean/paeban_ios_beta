@@ -200,21 +200,19 @@ open class webSocketActiveCenter{
             else{
                 // 別人說的
                 let previous_receiver_topic_content_id = msg["previous_receiver_topic_content_id"] as! String
-                
                 let topic_content_last_checked_server_id = sql_database.get_topic_content_last_checked_server_id()
-                print("id_pre_s: \(previous_receiver_topic_content_id) /// id_pre_l: \(topic_content_last_checked_server_id)")
+                let delegate_list:Array<webSocketActiveCenterDelegate?> = [
+                    self.wasd_ForChatViewController,
+                    self.wasd_ForMyTopicTableViewController,
+                    self.wasd_ForTopicViewController
+                ]
+//                print("id_pre_s: \(previous_receiver_topic_content_id) /// id_pre_l: \(topic_content_last_checked_server_id)")
                 if Int(previous_receiver_topic_content_id)! >= Int(topic_content_last_checked_server_id)!{
+                    // 寫入ＤＢ
                     sql_database.insert_client_topic_content_from_server(input_dic: resultDic, check_state: .checked)
-                    if self.wasd_ForChatViewController?.new_client_topic_msg != nil{
-                        self.wasd_ForChatViewController?.new_client_topic_msg!(sender: sender)
+                    for target_delegate in delegate_list{
+                        target_delegate?.new_client_topic_msg?(sender: sender)
                     }
-                    if self.wasd_ForMyTopicTableViewController?.new_client_topic_msg != nil{
-                        self.wasd_ForMyTopicTableViewController?.new_client_topic_msg!(sender: sender)
-                    }
-                    if self.wasd_ForTopicViewController?.new_client_topic_msg != nil{
-                        self.wasd_ForTopicViewController?.new_client_topic_msg!(sender: sender)
-                    }
-                    
                 }
                 else{
                     //跟server要
@@ -222,7 +220,7 @@ open class webSocketActiveCenter{
                         //updatedatebase
                     }
                     else{
-                        update_topic_content_from_server(delegate_target:self.wasd_ForMyTopicTableViewController)
+                        update_topic_content_from_server(delegate_target_list: delegate_list)
                     }
                     
                 }

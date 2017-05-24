@@ -68,6 +68,8 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     var model:MyTopicTableViewModel?
     
     var guestPhotoImg = UIImageView()
+    var client_data_obj:Client_detail_data?
+    var my_img_level:Int?
     // internal func
     func setImage(){
         // MARK: 為了陰影跟圓角 要作三層圖曾
@@ -260,6 +262,16 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.check_is_friend()
+        client_data_obj = Client_detail_data(topic_id: topicId!, client_id: setID!)
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        //pass lord img
+        client_data_obj?.get_client_img { (return_img:UIImage?) in
+            if return_img != nil{
+                self.guestPhotoImg.image = return_img
+            }
+        }
+        re_new_my_img()
     }
     override func viewDidLayoutSubviews() {
         setImage()
@@ -283,33 +295,68 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         }
     }
     
+    func check_my_photo_level(){
+        let new_level = sql_database.get_level_my(topic_id_in: self.topicId!, client_id: self.ownerId!)
+        if self.my_img_level != new_level{
+            self.my_img_level = new_level
+            re_new_my_img()
+        }
+    }
+    func re_new_my_img(){
+        DispatchQueue.global(qos: .background).async {
+            let level = sql_database.get_level_my(topic_id_in: self.topicId!, client_id: self.setID!)
+            print("=====level_my:\(level)")
+            if userData.img != nil{
+                let temp_img = self.set_my_img_level(input_img: userData.img!, level_input: level)
+                DispatchQueue.main.async {
+                    self.myPhotoImg.image = temp_img
+                }
+            }
+        }
+    }
+    func set_my_img_level(input_img:UIImage, level_input:Int)->UIImage?{
+        let context = CIContext(options: nil)
+        let currentFilter = CIFilter(name: "CIGaussianBlur")
+        let beginImage = CIImage(image: input_img)
+        let blur_parameter = my_blur_img_level_dic[level_input]!
+        currentFilter!.setValue(beginImage, forKey: kCIInputImageKey)
+        currentFilter!.setValue(blur_parameter, forKey: kCIInputRadiusKey)
+        let cropFilter = CIFilter(name: "CICrop")
+        cropFilter!.setValue(currentFilter!.outputImage, forKey: kCIInputImageKey)
+        cropFilter!.setValue(CIVector(cgRect: beginImage!.extent), forKey: "inputRectangle")
+        let output = cropFilter!.outputImage
+        let cgimg = context.createCGImage(output!, from: output!.extent)
+        let processedImage = UIImage(cgImage: cgimg!)
+        return processedImage
+    }
     
     // delegate -> websocket
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
+        // 照片轉交給其他機制
         if msgType == "topic_msg"{
-            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
-            if msg["img"] as? String != nil && msg["img"] as? String != ""{
-                let imgStr = msg["img"] as? String
-                let tempImg = updateImg(imgStr)
-                if tempImg != nil{
-                    //print("updateImg")
-                    for dicKey in resultDic{
-                        let msgData = dicKey.1 as! Dictionary<String,AnyObject>
-                        let sender = msgData["sender"] as! String
-                        let receiver = msgData["receiver"] as! String
-                        if sender == userData.id && receiver == setID{
-                            myPhotoImg.image = tempImg
-                            myPhotoSave = tempImg
-                        }
-                        else if receiver == userData.id && sender == setID{
-                            guestPhotoImg.image = tempImg
-                            clientImg = tempImg
-                        }
-                        break
-                    }
-                }
-            }
+//            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
+//            if msg["img"] as? String != nil && msg["img"] as? String != ""{
+//                let imgStr = msg["img"] as? String
+//                let tempImg = updateImg(imgStr)
+//                if tempImg != nil{
+//                    //print("updateImg")
+//                    for dicKey in resultDic{
+//                        let msgData = dicKey.1 as! Dictionary<String,AnyObject>
+//                        let sender = msgData["sender"] as! String
+//                        let receiver = msgData["receiver"] as! String
+//                        if sender == userData.id && receiver == setID{
+//                            myPhotoImg.image = tempImg
+//                            myPhotoSave = tempImg
+//                        }
+//                        else if receiver == userData.id && sender == setID{
+//                            guestPhotoImg.image = tempImg
+//                            clientImg = tempImg
+//                        }
+//                        break
+//                    }
+//                }
+//            }
         }
             
         else if msgType == "topic_closed"{
@@ -337,6 +384,16 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         
     }
     func wsReconnected(){
+    }
+    func new_client_topic_msg(sender: String) {
+        client_data_obj?.get_client_img { (return_img:UIImage?) in
+            if return_img != nil{
+                self.guestPhotoImg.image = return_img
+            }
+        }
+    }
+    func new_my_topic_msg(sender: String, id_local: String) {
+        check_my_photo_level()
     }
     private func check_is_friend(){
         if let _ = myFriendsList.index(where: { (element) -> Bool in

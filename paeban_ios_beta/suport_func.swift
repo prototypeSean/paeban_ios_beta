@@ -8,7 +8,7 @@
 
 import Foundation
 
-func update_topic_content_from_server(delegate_target:webSocketActiveCenterDelegate?){
+func update_topic_content_from_server(delegate_target_list:Array<webSocketActiveCenterDelegate?>){
     let last_topic_content_id = sql_database.get_topic_content_last_checked_server_id()
     let send_dic:Dictionary<String,AnyObject> = [
         "last_topic_content_id": last_topic_content_id as AnyObject
@@ -23,11 +23,10 @@ func update_topic_content_from_server(delegate_target:webSocketActiveCenterDeleg
                     }
                     else{
                         sql_database.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
-                        if delegate_target?.new_client_topic_msg != nil{
-                            delegate_target?.new_client_topic_msg!(sender: (topic_content_data_s["sender"] as? String)!)
-                        }
-                        if delegate_target?.new_client_topic_msg != nil{
-                            delegate_target?.new_client_topic_msg!(sender: (topic_content_data_s["sender"] as? String)!)
+                        for delegate_target in delegate_target_list{
+                            if delegate_target?.new_client_topic_msg != nil{
+                                delegate_target?.new_client_topic_msg!(sender: (topic_content_data_s["sender"] as? String)!)
+                            }
                         }
                     }
                     //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
