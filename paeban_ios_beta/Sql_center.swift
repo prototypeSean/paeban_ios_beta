@@ -675,10 +675,11 @@ public class SQL_center{
                 let query = topic_content.filter(
                     topic_id == recent_datas[topic_id]!
                 )
-                if let topic_content_obj = try sql_db!.prepare(query.order(id.desc)).first(where: { (row) -> Bool in
+                if let topic_content_obj = try sql_db!.prepare(query.order(id.desc).limit(1)).first(where: { (row) -> Bool in
                     return true
                 }){
-                    let level = get_level(topic_id_in: recent_datas[topic_id]!, client_id: recent_datas[topic_id]!)
+                    
+                    let level = get_level(topic_id_in: recent_datas[topic_id]!, client_id: recent_datas[client_id]!)
                     var temp_dic:Dictionary<String,AnyObject> = [
                         "owner": recent_datas[client_id]! as AnyObject,
                         "last_line": topic_content_obj[topic_text]! as AnyObject,
