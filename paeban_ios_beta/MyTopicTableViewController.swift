@@ -307,6 +307,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         print("==new_my_topic_msg==")
         model.main_loading_v2()
     }
+    
     func wsReconnected(){
         self.model.send_leave_topic_master()
         model.main_loading()

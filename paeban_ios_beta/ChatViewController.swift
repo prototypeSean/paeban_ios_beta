@@ -246,7 +246,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
         return new_message_list
     }
-    
+    func check_new_msg_to_read(check_list:Array<Dictionary<String, AnyObject>>){
+        let sort_list:Array<Dictionary<String, AnyObject>> = check_list.reversed()
+        for datas in sort_list{
+            if datas["sender"] as! String != userData.id!{
+                if datas["is_read"] as! Bool == false{
+                    // 寄送已讀  通知對方確認
+                }
+            }
+        }
+    }
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAt indexPath: IndexPath!) -> NSAttributedString!{
         return NSAttributedString(string:"test========================")
     }

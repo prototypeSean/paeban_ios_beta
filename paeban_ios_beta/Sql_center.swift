@@ -1716,8 +1716,8 @@ public class SQL_center{
                 if temp_sender_id != userData.id{
                     let query_last = topic_content.filter(
                         topic_id == topic_id_in &&
-                        (sender == userData.id! && receiver == temp_sender_id) ||
-                        (receiver == userData.id! && sender == temp_sender_id)
+                        ((sender == userData.id! && receiver == temp_sender_id) ||
+                        (receiver == userData.id! && sender == temp_sender_id))
                     ).order(id.desc).limit(1)
                     if let temp_last_obj = try sql_db!.prepare(query_last).first(where: { (row) -> Bool in
                         return true
