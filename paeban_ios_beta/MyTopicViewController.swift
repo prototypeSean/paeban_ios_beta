@@ -266,8 +266,6 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     }
     override func viewDidAppear(_ animated: Bool) {
         //pass lord img
-    }
-    override func viewDidLayoutSubviews() {
         setImage()
         re_new_my_img()
         client_data_obj?.get_client_img { (return_img:UIImage?) in
@@ -275,6 +273,9 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
                 self.guestPhotoImg.image = return_img
             }
         }
+    }
+    override func viewDidLayoutSubviews() {
+        
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let chatViewCon = segue.destination as! ChatViewController
