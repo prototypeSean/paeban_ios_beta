@@ -71,7 +71,7 @@ public class SQL_center{
     //recent
     
     
-    func insert_private_msg_mega_ver(input_list:Array<Dictionary<String, AnyObject>>){
+    func insert_private_msg_mega_ver(input_list:Array<Dictionary<String, AnyObject>>, persent_report:@escaping ()->Void){
         do{
             try sql_db?.transaction {
                 for input_dic in input_list{
@@ -90,6 +90,7 @@ public class SQL_center{
                         self.id_server <- id_server_input
                     )
                     try self.sql_db!.run(insert)
+                    persent_report()
                 }
             }
         }
@@ -98,7 +99,7 @@ public class SQL_center{
             print("error!!!!")
         }
     }
-    func insert_topic_msg_mega_ver(input_list:Array<Dictionary<String, AnyObject>>){
+    func insert_topic_msg_mega_ver(input_list:Array<Dictionary<String, AnyObject>>, persent_report:@escaping ()->Void){
         do{
             try sql_db!.transaction {
                 for topic_content_data_s in input_list{
@@ -108,6 +109,7 @@ public class SQL_center{
                     else{
                         self.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
                     }
+                    persent_report()
                 }
             }
         }

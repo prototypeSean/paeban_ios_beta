@@ -868,13 +868,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
                 let recent_list = return_dic["recent_list"] as! Array<Dictionary<String,String>>
                 var tatle_row_count = 0
-                if !private_msg_update{
-                    private_msg_data = []
-                }
-                if !topic_msg_update{
-                    topic_content_data = []
-                }
-                
                 
                 tatle_row_count += topic_content_data.count
                 tatle_row_count += private_msg_data.count
@@ -895,29 +888,15 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         }
                     }
                 }
-                // 飛行  移除舊版寫入
-                let tt1 = Date().timeIntervalSince1970
-                for topic_content_data_s in topic_content_data{
-                    if topic_content_data_s["sender"] as? String == userData.id{
-                        sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
-                    }
-                    else{
-                        sql_database.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
-                    }
-                    //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
+                sql_database.insert_topic_msg_mega_ver(input_list: topic_content_data,persent_report:{() in
                     writed_row += 1
                     print_writed_row_present()
-                }
-                let tt2 = Date().timeIntervalSince1970
-                print(tt2 - tt1)
-                sql_database.insert_topic_msg_mega_ver(input_list: topic_content_data)
-                print(Date().timeIntervalSince1970 - tt2)
-//                for private_msg_data_s in private_msg_data{
-//                    sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
-//                    writed_row += 1
-//                    print_writed_row_present()
-//                }
-                sql_database.insert_private_msg_mega_ver(input_list: private_msg_data)
+                })
+                
+                sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
+                    writed_row += 1
+                    print_writed_row_present()
+                })
                 for friends in friend_list_data{
                     sql_database.insert_friend(input_dic: friends)
                     writed_row += 1
