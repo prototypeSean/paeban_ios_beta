@@ -906,11 +906,16 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     writed_row += 1
                     print_writed_row_present()
                 }
+                let ttt1 = Date().timeIntervalSince1970
                 for private_msg_data_s in private_msg_data{
                     sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
                     writed_row += 1
                     print_writed_row_present()
                 }
+                let ttt2 = Date().timeIntervalSince1970
+                print(ttt2 - ttt1)
+                sql_database.test(input_list: private_msg_data)
+                print(Date().timeIntervalSince1970 - ttt2)
                 for friends in friend_list_data{
                     sql_database.insert_friend(input_dic: friends)
                     writed_row += 1

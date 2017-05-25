@@ -71,17 +71,27 @@ public class SQL_center{
     //recent
     
     
-    func test(){
+    func test(input_list:Array<Dictionary<String, AnyObject>>){
         do{
-            let query = topic_content.select(distinct: sender)
-            let q2 = topic_content.filter(sender == "158")
-            for c in try sql_db!.prepare(query){
-                print(c)
+            try sql_db?.transaction {
+                for input_dic in input_list{
+                    let id_server_input = input_dic["id_server"]! as? String
+                    let is_read_input = input_dic["is_read"]! as? Bool
+                    let is_send_input = true
+                    let time_string = input_dic["time"]! as! String
+                    let time_input = time_transform_to_since1970(time_string:time_string)
+                    let insert = self.private_table.insert(
+                        self.private_text <- input_dic["private_text"]! as? String,
+                        self.sender <- input_dic["sender_id"]! as? String,
+                        self.receiver <- input_dic["receiver_id"]! as? String,
+                        self.time <- time_input,
+                        self.is_read <- is_read_input,
+                        self.is_send <- is_send_input,
+                        self.id_server <- id_server_input
+                    )
+                    try self.sql_db!.run(insert)
+                }
             }
-            for c in try sql_db!.prepare(q2){
-                print(c)
-            }
-            
         }
         catch{
             print(error)

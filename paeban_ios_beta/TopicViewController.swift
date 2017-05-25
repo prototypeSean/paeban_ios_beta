@@ -59,6 +59,10 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        setImage()
+        re_new_client_img()
+        my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
+        re_new_my_img()
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -66,10 +70,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        setImage()
-        re_new_client_img()
-        my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
-        re_new_my_img()
+        
     }
     
         
@@ -415,11 +416,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                     nav.popToRootViewController(animated: true)
                 }
             }
-            
-            
-            
         }
-        
     }
     func wsReconnected(){
     }
