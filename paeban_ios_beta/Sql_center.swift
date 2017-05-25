@@ -71,7 +71,7 @@ public class SQL_center{
     //recent
     
     
-    func test(input_list:Array<Dictionary<String, AnyObject>>){
+    func insert_private_msg_mega_ver(input_list:Array<Dictionary<String, AnyObject>>){
         do{
             try sql_db?.transaction {
                 for input_dic in input_list{
@@ -96,6 +96,24 @@ public class SQL_center{
         catch{
             print(error)
             print("error!!!!")
+        }
+    }
+    func insert_topic_msg_mega_ver(input_list:Array<Dictionary<String, AnyObject>>){
+        do{
+            try sql_db!.transaction {
+                for topic_content_data_s in input_list{
+                    if topic_content_data_s["sender"] as? String == userData.id{
+                        self.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
+                    }
+                    else{
+                        self.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
+                    }
+                }
+            }
+        }
+        catch{
+            print("ERROR!!!!! insert_topic_msg_mega_ver")
+            print(error)
         }
     }
     

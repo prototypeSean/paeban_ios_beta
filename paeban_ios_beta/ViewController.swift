@@ -895,6 +895,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         }
                     }
                 }
+                // 飛行  移除舊版寫入
+                let tt1 = Date().timeIntervalSince1970
                 for topic_content_data_s in topic_content_data{
                     if topic_content_data_s["sender"] as? String == userData.id{
                         sql_database.insert_self_topic_content(input_dic: topic_content_data_s, option: .server)
@@ -906,16 +908,16 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     writed_row += 1
                     print_writed_row_present()
                 }
-                let ttt1 = Date().timeIntervalSince1970
-                for private_msg_data_s in private_msg_data{
-                    sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
-                    writed_row += 1
-                    print_writed_row_present()
-                }
-                let ttt2 = Date().timeIntervalSince1970
-                print(ttt2 - ttt1)
-                sql_database.test(input_list: private_msg_data)
-                print(Date().timeIntervalSince1970 - ttt2)
+                let tt2 = Date().timeIntervalSince1970
+                print(tt2 - tt1)
+                sql_database.insert_topic_msg_mega_ver(input_list: topic_content_data)
+                print(Date().timeIntervalSince1970 - tt2)
+//                for private_msg_data_s in private_msg_data{
+//                    sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
+//                    writed_row += 1
+//                    print_writed_row_present()
+//                }
+                sql_database.insert_private_msg_mega_ver(input_list: private_msg_data)
                 for friends in friend_list_data{
                     sql_database.insert_friend(input_dic: friends)
                     writed_row += 1
