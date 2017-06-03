@@ -759,15 +759,17 @@ public class SQL_center{
     }
     func get_recent_last_line() -> Dictionary<String,AnyObject>{
         do{
+            let black_list = get_black_list()
             var return_dic:Dictionary<String,AnyObject> = [:]
             for recent_datas in try sql_db!.prepare(recent_topic.filter(active == true)){
                 let query = topic_content.filter(
-                    topic_id == recent_datas[topic_id]!
+                    topic_id == recent_datas[topic_id]! &&
+                    !black_list.contains(sender) &&
+                    !black_list.contains(receiver)
                 )
                 if let topic_content_obj = try sql_db!.prepare(query.order(id.desc).limit(1)).first(where: { (row) -> Bool in
                     return true
                 }){
-                    
                     let level = get_level(topic_id_in: recent_datas[topic_id]!, client_id: recent_datas[client_id]!)
                     var temp_dic:Dictionary<String,AnyObject> = [
                         "owner": recent_datas[client_id]! as AnyObject,
@@ -1060,7 +1062,7 @@ public class SQL_center{
             let query = private_table.filter(
                 sender != userData.id &&
                 is_read == false &&
-                black_list.contains(username) == false
+                black_list.contains(sender) == false
                 )
                 let query_count = try sql_db?.scalar(query.count)
                 return query_count!
@@ -1795,7 +1797,7 @@ public class SQL_center{
                     topic_id != myTopId &&
                     sender != userData.id &&
                     is_read == false &&
-                    black_list.contains(username) == false
+                    black_list.contains(sender) == false
                 )
                 let query_count = try sql_db?.scalar(query.count)
                 return query_count!

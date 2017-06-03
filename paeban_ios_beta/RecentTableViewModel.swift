@@ -239,7 +239,23 @@ class RecentTableViewModel{
         
     }
     func updata_online_state(){
-        
+        var client_list:Array<String> = []
+        for client_data_s in recentDataBase{
+            client_list.append(client_data_s.clientId_detial!)
+        }
+        HttpRequestCenter().inquire_online_state(client_id_list: client_list) { (return_dic:Dictionary<String, AnyObject>) in
+            if !return_dic.isEmpty{
+                DispatchQueue.main.async {
+                    let return_dic_copy = return_dic as! Dictionary<String,Bool>
+                    for cell_datas in self.recentDataBase{
+                        if let online_state = return_dic_copy[cell_datas.clientId_detial!]{
+                            cell_datas.clientOnline_detial = online_state
+                        }
+                    }
+                    self.delegate?.model_relodata()
+                }
+            }
+        }
     }
     
     // 施工中
@@ -308,8 +324,6 @@ class RecentTableViewModel{
         get_client_data_from_server(client_list_for_request: client_list_for_request)
         self.sort_recent_db_by_time()
         self.delegate?.model_relodata()
-        //飛行
-        print(recentDataBase)
     }
     private func get_client_data_from_server(client_list_for_request:Array<Dictionary<String,AnyObject>>){
         if !client_list_for_request.isEmpty{

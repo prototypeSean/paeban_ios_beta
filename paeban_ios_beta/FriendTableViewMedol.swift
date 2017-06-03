@@ -30,6 +30,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         let new_table_data = turnToFriendStanderType_v3(friend_list:result_dic)
         renew_friend_list_database(input_list: new_table_data)
         update_imgs_from_server()
+        update_online_state()
     }
     func renew_friend_list_database(input_list:Array<FriendStanderType>){
         friend_list_database = input_list.sorted(by: { (ele1, ele2) -> Bool in
@@ -136,6 +137,25 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                     })
                 }
                 
+            }
+        }
+    }
+    func update_online_state(){
+        var client_id_list:Array<String> = []
+        for cell_datas in friendsList{
+            client_id_list.append(cell_datas.id!)
+        }
+        HttpRequestCenter().inquire_online_state(client_id_list: client_id_list) { (return_dic:Dictionary<String, AnyObject>) in
+            if !return_dic.isEmpty{
+                let return_dic_copy = return_dic as! Dictionary<String,Bool>
+                for cell_datas in self.friendsList{
+                    if let online_state = return_dic_copy[cell_datas.id!]{
+                        cell_datas.online = online_state
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.updateModel()
+                }
             }
         }
     }

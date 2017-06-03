@@ -20,7 +20,7 @@ protocol MyTopicTableViewModelDelegate {
 class MyTopicTableViewModel{
     // 主table顯示用清單
     var mytopic:Array<MyTopicStandardType> = []
-    var secTopic:Dictionary = [String: [MyTopicStandardType]]()
+    var secTopic:Dictionary<String,Array<MyTopicStandardType>> = [:]
     var delegate:MyTopicTableViewModelDelegate?
     var topic_id_wait_to_extend_detail_cell:String?
     var auto_leap_data_dic:Dictionary<String,String> = [:]

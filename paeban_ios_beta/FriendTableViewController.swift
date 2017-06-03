@@ -23,7 +23,6 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         super.viewDidLoad()
         model = FriendTableViewMedol(with: self)
         //self.tableView.gestureRecognizerShouldBegin(self.tableView.gestureRecognizers) = false
-        model?.getFrientList()
         model?.synchronize_friend_table()
         // 讓整個VIEW往上縮起tabbar的高度
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
@@ -32,6 +31,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         //autoLeap()
         self.tableView.reloadData()
         model?.chat_view = nil
+        model?.getFrientList()
         getInviteList()
         self.update_badges()
     }
