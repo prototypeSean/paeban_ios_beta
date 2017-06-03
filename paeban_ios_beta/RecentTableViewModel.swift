@@ -26,6 +26,7 @@ class RecentTableViewModel{
     // controller func
     func reCheckDataBase() {
         get_recent_data()
+        updata_online_state()
     }
     func recive_topic_msg(msg:Dictionary<String,AnyObject>){
         update_last_line(msg: msg)
@@ -237,7 +238,9 @@ class RecentTableViewModel{
         }
         
     }
-    
+    func updata_online_state(){
+        
+    }
     
     // 施工中
     

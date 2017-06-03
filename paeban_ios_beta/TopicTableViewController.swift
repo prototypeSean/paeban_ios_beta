@@ -25,9 +25,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     @IBOutlet weak var editArea: UIView!
     @IBAction func testBtn(_ sender: AnyObject) {
-        
         leap(from: self, to: 2)
-        
     }
     var filteredArray = [String]()
     var searchKeyAndState:Dictionary<String,String?> = ["key": nil, "smallest_id": "init", "state": "none"]
@@ -60,9 +58,9 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
     }
         // 覆蓋掉故事板的初始設定顯示
-    override func viewDidLayoutSubviews() {
-        initAddTopicArea()
-    }
+//    override func viewDidLayoutSubviews() {
+//        initAddTopicArea()
+//    }
         // 從聊天視窗回到清單把cell的反灰取消
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -75,6 +73,11 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
 //            print(sql_database.get_unsend_topic_data(topic_id_input: "703", client_id: "aaasss"))
 //        }
         
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        initAddTopicArea()
+        Block_list_center().upload_data_to_synchronize_server_block_list()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //print(segue.identifier)
@@ -123,6 +126,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                     }
                     self.topics = temp_topic
                     self.topicList.reloadData()
+                    self.update_online_state()
                 }
                 
             })
@@ -148,6 +152,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                             self.topicList.reloadData()
                             refreshControl?.endRefreshing()
                             self.requestUpDataSwitch = true
+                            self.update_online_state()
                         })
                     }
                 }
@@ -160,6 +165,26 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         else{
             refreshControl?.endRefreshing()
         }
+    }
+    func update_online_state(){
+        var client_id_list:Array<String> = []
+        for cell_datas in topics{
+            client_id_list.append(cell_datas.owner)
+        }
+        HttpRequestCenter().inquire_online_state(client_id_list: client_id_list) { (return_dic:Dictionary<String, AnyObject>) in
+            if !return_dic.isEmpty{
+                let return_dic_copy = return_dic as! Dictionary<String,Bool>
+                for cell_datas in self.topics{
+                    if let online_state = return_dic_copy[cell_datas.owner]{
+                        cell_datas.online = online_state
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.topicList.reloadData()
+                }
+            }
+        }
+        
     }
     func new_topic_did_load(_ http_obj:HttpRequestCenter){
         //print("websocket data did load")
@@ -288,9 +313,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         cell.online.layer.borderColor = UIColor.white.cgColor
         cell.online.layer.cornerRadius = cr
         cell.online.clipsToBounds = true
-        
-        
-        
+
         if topic.online{
             cell.online.tintColor = UIColor(red:0.15, green:0.88, blue:0.77, alpha:1.0)
         }
@@ -298,9 +321,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             cell.online.tintColor = UIColor.lightGray
         }
         // Configure the cell...
-        
-        
-        
+
         return cell
     }
     func letoutBattery(battery:UIImageView, batteryLeft:Int){

@@ -386,7 +386,7 @@ public class SQL_center{
         do{
             try sql_db?.run(black_list_table.create { t in
                 t.column(id, primaryKey: true)
-                t.column(username)
+                t.column(username, unique:true)
                 t.column(is_send)
             })
             print("表單建立成功")
@@ -399,7 +399,8 @@ public class SQL_center{
     func insert_black_list(username_in:String){
         do{
             let insert = black_list_table.insert(
-                username <- username_in
+                username <- username_in,
+                is_send <- false
             )
             try sql_db!.run(insert)
         }
@@ -409,12 +410,36 @@ public class SQL_center{
         }
     }
     func insert_black_list_from_server(username_in:String){
-        
+        do{
+            let insert = black_list_table.insert(
+                username <- username_in,
+                is_send <- true
+            )
+            try sql_db!.run(insert)
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
     }
     func get_black_list() -> Array<String>{
         var return_list:Array<String> = []
         do{
             for names in try sql_db!.prepare(black_list_table) {
+                return_list.append(names[username])
+            }
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+        return return_list
+    }
+    func get_un_send_block_list() -> Array<String>{
+        var return_list:Array<String> = []
+        let query = black_list_table.filter(is_send == false)
+        do{
+            for names in try sql_db!.prepare(query) {
                 return_list.append(names[username])
             }
         }
@@ -431,6 +456,40 @@ public class SQL_center{
         }
         catch{
             print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func ckeck_user_is_blocked(client_id_in:String) -> Bool{
+        do{
+            let query = black_list_table.filter(username == client_id_in)
+            if let query_count = try sql_db?.scalar(query.count){
+                if query_count == 0{
+                    return false
+                }
+                else{
+                    return true
+                }
+            }
+            else{
+                return false
+            }
+        }
+        catch{
+            print("ERROR!!! ckeck_user_is_blocked")
+            print(error)
+            return false
+        }
+    }
+    func update_is_send_data(success_list:Array<String>){
+        do{
+            for client_id_s in success_list{
+                let query = black_list_table.filter(username == client_id_s)
+                let update = query.update(is_send <- true)
+                try sql_db!.run(update)
+            }
+        }
+        catch{
+            print("ERROR!!! update_is_send_data")
             print(error)
         }
     }
@@ -771,7 +830,7 @@ public class SQL_center{
                     topic_id == myTopId &&
                     sender != userData.id &&
                     is_read == false &&
-                    black_list.contains(username) == false
+                    black_list.contains(sender) == false
                 )
                 let query_count = try sql_db?.scalar(query.count)
                 return query_count!
@@ -1580,6 +1639,7 @@ public class SQL_center{
                 ]
                 return_list.append(return_dic)
             }
+            send_read_to_server(topic_id_input: topic_id_input, client_id: client_id)
             try sql_db?.run(query_server.filter(receiver == userData.id!).update(is_read <- true))
             let query_local = query.filter(id_server == nil)
             for query_s in try sql_db!.prepare(query_local){
@@ -1605,6 +1665,28 @@ public class SQL_center{
             return []
         }
         
+    }
+    func send_read_to_server(topic_id_input:String,client_id:String){
+        let query = topic_content.filter(topic_id == topic_id_input).filter(
+                (sender == client_id && receiver == userData.id!)
+            ).order(time.desc)
+        do{
+            if let last_msg_obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            }){
+                if last_msg_obj[is_read] == false{
+                    let sendData = [
+                        "msg_type":"topic_content_read",
+                        "topic_content_id":last_msg_obj[id_server]
+                    ]
+                    socket.write(data:json_dumps(sendData as NSDictionary))
+                }
+            }
+        }
+        catch{
+            print("ERROR!!!  send_read_to_server")
+            print(error)
+        }
     }
     func update_topic_content_time(id_local:String,time_input:String,id_server_input:String){
         print(id_local)

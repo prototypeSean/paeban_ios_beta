@@ -203,6 +203,17 @@ class HttpRequestCenter{
         }
     }
     
+    func inquire_online_state(client_id_list:Array<String>, after:@escaping (_ return_dic:Dictionary<String,AnyObject>)->Void){
+        let send_dic = [
+            "client_id_list": client_id_list
+        ]
+        request_user_data_v2("inquire_online_state", send_dic: send_dic as Dictionary<String, AnyObject>) { (return_dic:Dictionary<String, AnyObject>?) in
+            if return_dic != nil{
+                after(return_dic!)
+            }
+        }
+    }
+    
     func request_user_data(_ mode:String, send_dic:Dictionary<String,String>,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
         let url = "http://www.paeban.com/request_user_data/"
         let jsonData = json_dumps2(send_dic as NSDictionary)

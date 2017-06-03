@@ -619,7 +619,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         wsTimer?.invalidate()
         wsTimer = Timer.scheduledTimer(timeInterval: 45, target: self, selector: #selector(ViewController.stayConnect), userInfo: nil, repeats: true)
         if firstConnect && logInState{
-            //ws_connected(socket)
+            ws_connected(socket)
             //self.check_sql_state()
             print("connected")
 //            socket.write(data: json_dumps([
@@ -650,7 +650,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         else if logInState{
             print("wsReConnected")
-            //ws_connected(socket)
+            ws_connected(socket)
             wsActive.wsReConnect()
         }
         
@@ -903,7 +903,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     print_writed_row_present()
                 }
                 for blacks in black_list_data{
-                    sql_database.insert_black_list(username_in: blacks)
+                    sql_database.insert_black_list_from_server(username_in: blacks)
                     writed_row += 1
                     print_writed_row_present()
                 }

@@ -34,6 +34,7 @@ class MyTopicTableViewModel{
         let need_update_obj_dic = get_client_data_from_temp_client_table()
         get_client_data_from_server(input_dic: need_update_obj_dic)
         reload_all_cell()
+        updata_online_state()
         //sql_database.print_all()
     }
     func get_title_cell_from_local_v2(){
@@ -289,6 +290,29 @@ class MyTopicTableViewModel{
         //刷新後復原狀態
         reflash_detail_cell()
         delegate?.model_relodata()
+    }
+    func updata_online_state(){
+        var client_list:Array<String> = []
+        for sec_topic_datas in secTopic.values{
+            for client_objs in sec_topic_datas{
+                client_list.append(client_objs.clientId_detial!)
+            }
+        }
+        HttpRequestCenter().inquire_online_state(client_id_list: client_list) { (return_dic:Dictionary<String, AnyObject>) in
+            if !return_dic.isEmpty{
+                DispatchQueue.main.async {
+                    let return_dic_copy = return_dic as! Dictionary<String,Bool>
+                    for sec_topic_datas in self.secTopic.values{
+                        for client_objs in sec_topic_datas{
+                            if let online_state = return_dic_copy[client_objs.clientId_detial!]{
+                                client_objs.clientOnline_detial = online_state
+                            }
+                        }
+                    }
+                    self.reload_all_cell()
+                }
+            }
+        }
     }
     // ====controller func 2.0 ====
     

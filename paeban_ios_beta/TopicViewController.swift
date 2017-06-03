@@ -278,29 +278,28 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
         // 封鎖
     func block(){
-        let data:NSDictionary = [
-            "block_id":setID!,
-            "topic_id":topicId!
-        ]
+//        let data:NSDictionary = [
+//            "block_id":setID!,
+//            "topic_id":topicId!
+//        ]
         let confirm = UIAlertController(title: "封鎖", message: "封鎖  \(setName!) ? 將再也無法聯繫他", preferredStyle: UIAlertControllerStyle.alert)
         confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
         confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
             let nav = self.parent as! UINavigationController
             nav.popViewController(animated: true)
-            HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
-                if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
-                    if key == "msgtype"{
-                        return true
-                    }
-                    else{return false}
-                }){
-                    if Dictionary["msgtype"] as! String == "block_success"{
-                        //code
-                    }
-                }
-            }
-            
-            
+            Block_list_center().add_user_to_block_list(client_id: self.setID!)
+//            HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
+//                if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
+//                    if key == "msgtype"{
+//                        return true
+//                    }
+//                    else{return false}
+//                }){
+//                    if Dictionary["msgtype"] as! String == "block_success"{
+//                        //code
+//                    }
+//                }
+//            }
             
         }))
         self.present(confirm, animated: true, completion: nil)
