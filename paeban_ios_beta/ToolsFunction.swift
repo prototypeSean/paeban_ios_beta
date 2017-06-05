@@ -438,6 +438,42 @@ func check_version(ver_local:String,ver_server:String) -> Bool{
     }
     return false
 }
+func compare_friend_stander_type(ele1:FriendStanderType, ele2:FriendStanderType) -> Bool{
+    func make_list(target_obj:FriendStanderType) -> Array<String>{
+        var result_list:Array<String> = []
+        if target_obj.cell_type == "list"{
+            result_list.append(String(target_obj.invite_list_count!))
+            return result_list
+        }
+        else if target_obj.cell_type == "invite"{
+            result_list.append(String(target_obj.id!))
+            return result_list
+        }
+        else{
+            result_list.append(target_obj.cell_type!)
+            result_list.append(String(target_obj.id!))
+            result_list.append(String(target_obj.last_speaker!))
+            result_list.append(String(target_obj.lastLine!))
+            result_list.append(String(target_obj.name!))
+            result_list.append(String(target_obj.online!))
+            result_list.append(String(target_obj.photoHttpStr!))
+            return result_list
+        }
+    }
+    let ele1_property_list:Array<String> = make_list(target_obj: ele1)
+    let ele2_property_list:Array<String> = make_list(target_obj: ele2)
+    if ele1_property_list.count != ele2_property_list.count{
+        return false
+    }
+    else{
+        for index in 0 ..< ele1_property_list.count{
+            if ele1_property_list[index] != ele2_property_list[index]{
+                return false
+            }
+        }
+        return true
+    }
+}
 
 
 

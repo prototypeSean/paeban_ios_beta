@@ -426,10 +426,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             }){
                 friendsList.remove(at: friend_cell_index as Int)
                 friendsList.insert(friend_cell_s, at: friend_cell_index as Int)
-//                let index_path = IndexPath(row: friend_cell_index as Int, section: 0)
-//                targetVC.tableView.beginUpdates()
-//                targetVC.tableView.reloadRows(at: [index_path], with: .none)
-//                targetVC.tableView.endUpdates()
             }
             else{
                 friendsList.append(friend_cell_s)
@@ -656,10 +652,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         invite_obj.isRealPhoto = msg["isRealPhoto"] as? Bool
         invite_obj.online = false
         invite_obj.sex = msg["sex"] as? String
-        
         invite_list.append(invite_obj)        
         updateModel()
-        
     }
     
     // delegate

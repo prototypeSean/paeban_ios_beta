@@ -339,7 +339,11 @@ public class SQL_center{
     func get_friend_list() -> Array<Dictionary<String,AnyObject>>{
         do{
             var return_list:Array<Dictionary<String,AnyObject>> = []
-            for friend_datas in try sql_db!.prepare(friend_list_table){
+            let black_list = get_black_list()
+            print(black_list)
+            let query = friend_list_table.filter(!black_list.contains(username))
+            for friend_datas in try sql_db!.prepare(query){
+                print(friend_datas[username])
                 var temp_dic:Dictionary<String,AnyObject> = [
                     "client_id": friend_datas[username] as AnyObject,
                     "client_name": friend_datas[user_full_name] as AnyObject,
