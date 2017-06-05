@@ -84,7 +84,7 @@ class HttpRequestCenter{
     }
     
     func get_my_topic_title(_ InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>)->Void){
-        let url = "http://www.paeban.com/topic_update/"
+        let url = "http://www.paeban.com/topic_update/"  // 馬上摳我  我要知道是誰呼叫這個函數
         let sendData = "mode=get_my_topic_title"
         ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
             InViewAct(returnDic)
