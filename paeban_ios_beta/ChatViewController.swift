@@ -97,6 +97,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        wsActive.wasd_ForChatViewController = self
         add_tap()
 //        messages = renew_data()
 //        self.collectionView.reloadData()
@@ -112,6 +113,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         update_database()
+        update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
+        
     }
 
         // 下面兩個負責讀取訊息
@@ -512,7 +515,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
         //      上面要留白多高
         //      self.topContentAdditionalInset = 90
-        wsActive.wasd_ForChatViewController = self
         
         //MARK: 跟自定義的泡泡關聯
         self.outgoingCellIdentifier = CustomMessagesCollectionViewCellOutgoing.cellReuseIdentifier()

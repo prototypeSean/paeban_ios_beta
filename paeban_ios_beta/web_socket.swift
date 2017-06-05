@@ -249,11 +249,8 @@ open class webSocketActiveCenter{
                 }
             }
             else{
-                update_private_mag(last_id_local: private_content_last_checked_server_id, after:{() -> Void in
-                    if self.wasd_ForFriendChatViewController?.new_client_topic_msg != nil{
-                        self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)
-                    }
-                })
+                let delegate_list = [self.wasd_ForFriendChatViewController]
+                update_private_mag(delegate_target_list: delegate_list)
             }
         }
         

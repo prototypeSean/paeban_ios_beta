@@ -152,6 +152,8 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         update_database()
+        let delegate_list = [wsActive.wasd_ForFriendChatViewController]
+        update_private_mag(delegate_target_list: delegate_list)
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)

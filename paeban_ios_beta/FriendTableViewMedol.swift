@@ -128,13 +128,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 if !(return_dic!["return_list"] as! Array<Dictionary<String,AnyObject>>).isEmpty{
                     //飛行
                     print("重新載入好友清單．．．")
-                    let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
-                    update_private_mag(last_id_local: private_content_last_checked_server_id, after:{() -> Void in
-                        DispatchQueue.main.async {
-                            self.getFrientList()
-                            self.updateModel()
-                        }
-                    })
+                    let delegate_list = [wsActive.wasd_FriendTableViewMedol]
+                    update_private_mag(delegate_target_list: delegate_list)
                 }
                 
             }
@@ -757,7 +752,10 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         }
         return id_1
     }
-    
+    func new_client_topic_msg(sender: String) {
+        self.getFrientList()
+        self.updateModel()
+    }
     
 }
 

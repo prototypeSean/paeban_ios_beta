@@ -23,11 +23,15 @@ func update_topic_content_from_server(delegate_target_list:Array<webSocketActive
                     }
                     else{
                         sql_database.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
+                        
+                        
                         for delegate_target in delegate_target_list{
                             if delegate_target?.new_client_topic_msg != nil{
                                 delegate_target?.new_client_topic_msg!(sender: (topic_content_data_s["sender"] as? String)!)
                             }
                         }
+                        
+                        
                     }
                     //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
                 }
@@ -36,7 +40,8 @@ func update_topic_content_from_server(delegate_target_list:Array<webSocketActive
         
     }
 }
-func update_private_mag(last_id_local:String, after:(()->Void)?){
+func update_private_mag(delegate_target_list:Array<webSocketActiveCenterDelegate?>){
+    let last_id_local = sql_database.get_private_msg_last_checked_server_id()
     let send_dic = [
         "last_id_local":last_id_local
     ]
@@ -45,8 +50,15 @@ func update_private_mag(last_id_local:String, after:(()->Void)?){
             let private_msg_data = return_dic!["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
             for private_msg_data_s in private_msg_data{
                 sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
+                let sender = private_msg_data_s["sender_id"] as! String
+                for delegate_s in delegate_target_list{
+                    if delegate_s?.new_client_topic_msg != nil{
+                        delegate_s?.new_client_topic_msg!(sender: sender)
+                    }
+                }
             }
-            after?()
+            
+            
         }
     })
 }
