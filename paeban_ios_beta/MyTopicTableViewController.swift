@@ -221,7 +221,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             let data = self.model.mytopic[IndexPath_parameter.row]
 //            sql_database.add_topic_to_leave_topic_master_table(topic_id_input: data.topicId_title!, client_id_input: data.clientId_detial!)
 //            self.model.send_leave_topic_master()
-            sql_database.add_ignore_list(topic_id_in: data.topicId_title!, client_id: data.clientId_detial!)
+            Ignore_list_center().add_ignore_list(topic_id_in: data.topicId_title!, client_id: data.clientId_detial!)
+            //sql_database.add_ignore_list(topic_id_in: data.topicId_title!, client_id: data.clientId_detial!)
             self.model.delete_detail_cell(index: IndexPath_parameter.row)
             self.update_badges()
         }

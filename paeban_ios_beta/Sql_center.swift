@@ -158,6 +158,7 @@ public class SQL_center{
         self.establish_tmp_client_data()
         self.establish_recent_topic()
         self.establish_user_data()
+        self.establish_ignore_list()
     }
     func remove_all_table(){
         let table_list = [
@@ -173,6 +174,7 @@ public class SQL_center{
             recent_topic,
             user_data_table,
             recent_topic,
+            ignore_list
         ]
         for tables in table_list{
             do{
@@ -312,6 +314,7 @@ public class SQL_center{
                     return_dic[my_topic_id_s]?.append(ignore_objs[username])
                 }
             }
+            print(return_dic)
             return return_dic
         }
         catch{
@@ -896,8 +899,13 @@ public class SQL_center{
     func get_recent_last_line() -> Dictionary<String,AnyObject>{
         do{
             let black_list = get_black_list()
+            let ignore_list = get_ignore_topic_id_list()
             var return_dic:Dictionary<String,AnyObject> = [:]
-            for recent_datas in try sql_db!.prepare(recent_topic.filter(active == true)){
+            let query_recent = recent_topic.filter(
+                active == true &&
+                !ignore_list.contains(topic_id)
+            )
+            for recent_datas in try sql_db!.prepare(query_recent){
                 let query = topic_content.filter(
                     topic_id == recent_datas[topic_id]! &&
                     !black_list.contains(sender) &&
@@ -1962,14 +1970,15 @@ public class SQL_center{
         do{
             let black_list:Array<String> = get_black_list()
             var return_dic:Dictionary<String,Dictionary<String,AnyObject>> = [:]
-//            let query = topic_content.filter(
-//                topic_id == topic_id_in &&
-//                !black_list.contains(sender) &&
-//                (sender == userData.id! || receiver == userData.id!)
-//            ).order(id.asc)
+            let ignore_dic = get_ignore_client_id_list()
+            var ignore_list:Array<String> = []
+            if ignore_dic[topic_id_in] != nil{
+                ignore_list = ignore_dic[topic_id_in]!
+            }
             let query2 = topic_content.filter(
-                topic_id == topic_id_in &&
-                    !black_list.contains(sender)
+                    topic_id == topic_id_in &&
+                    !black_list.contains(sender) &&
+                    !ignore_list.contains(sender)
                 ).select(distinct: sender)
             for sender_s in try sql_db!.prepare(query2){
                 let temp_sender_id = sender_s[sender]!

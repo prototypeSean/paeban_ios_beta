@@ -74,7 +74,9 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
 //            self.rTVModel.add_leave_topic_table(index: indexPath.row)
 //            self.rTVModel.send_leave_topic()
             //self.rTVModel.remove_cell(index: indexPath.row)
+            let select_data = self.rTVModel.recentDataBase[indexPath.row]
             let topic_id = self.rTVModel.recentDataBase[indexPath.row].topicId_title!
+            Ignore_list_center().add_ignore_list(topic_id_in: select_data.topicId_title!, client_id: select_data.clientId_detial!)
             sql_database.delete_recent_topic(topic_id_in:topic_id)
             self.rTVModel.reCheckDataBase()
         }

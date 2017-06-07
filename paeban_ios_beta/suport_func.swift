@@ -76,6 +76,7 @@ func random_pass(prasent_rate:Int, work:()->Void){
 class Ignore_list_center{
     func add_ignore_list(topic_id_in: String, client_id: String){
         sql_database.add_ignore_list(topic_id_in: topic_id_in, client_id: client_id)
+        send_ignore_list_to_server()
     }
     func send_ignore_list_to_server(){
         let send_list = sql_database.get_un_send_ignore_list()
