@@ -69,8 +69,9 @@ public class SQL_center{
     let tmp_client_real_pic = Expression<Bool?>("tmp_client_real_pic")
     let tmp_client_level = Expression<Int64?>("tmp_client_level")
     //recent
-    
-    
+    // ignore_list
+    let ignore_list = Table("ignore_list")
+
     func insert_private_msg_mega_ver(input_list:Array<Dictionary<String, AnyObject>>, persent_report:@escaping ()->Void){
         do{
             try sql_db?.transaction {
@@ -109,6 +110,32 @@ public class SQL_center{
                     else{
                         self.insert_client_topic_content_from_server(input_dic: topic_content_data_s, check_state: .checked)
                     }
+                    persent_report()
+                }
+            }
+        }
+        catch{
+            print("ERROR!!!!! insert_topic_msg_mega_ver")
+            print(error)
+        }
+    }
+    func insert_topic_msg_mega_ver_v2(input_list:Array<Dictionary<String, AnyObject>>, persent_report:@escaping ()->Void){
+        do{
+            try sql_db!.transaction {
+                for input_dic in input_list{
+                    let time_in = time_transform_to_since1970(time_string: input_dic["time"]! as! String)
+                    let insert = self.topic_content.insert(
+                        self.topic_id <- input_dic["topic_id"]! as? String,
+                        self.topic_text <- input_dic["topic_content"]! as? String,
+                        self.sender <- input_dic["sender"]! as? String,
+                        self.receiver <- input_dic["receiver"]! as? String,
+                        self.time <- time_in,
+                        self.is_read <- input_dic["is_read"] as? Bool,
+                        self.is_send <- true,
+                        self.id_server <- input_dic["id_server"]! as? String
+                        //battery <- input_dic["battery"] as? String
+                    )
+                    try self.sql_db!.run(insert)
                     persent_report()
                 }
             }
@@ -188,6 +215,111 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
+    }
+    // ignore_list
+    func establish_ignore_list(){
+        do{
+            try sql_db?.run(ignore_list.create { t in
+                t.column(id, primaryKey: true)
+                t.column(topic_id)
+                t.column(username)
+                t.column(is_send)
+            })
+            print("表單建立成功friend_list_table")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func add_ignore_list(topic_id_in:String, client_id:String){
+        do{
+            let insert = ignore_list.insert(
+                topic_id <- topic_id_in,
+                username <- client_id,
+                is_send <- false
+            )
+            try sql_db!.run(insert)
+        }
+        catch{
+            print("ERROR!!! add_ignore_list")
+            print(error)
+        }
+    }
+    func get_un_send_ignore_list() -> Array<Dictionary<String,String>>{
+        // topic_id client_id id
+        var result_list:Array<Dictionary<String,String>> = []
+        let query = ignore_list.filter(is_send == false)
+        do{
+            for datas in try sql_db!.prepare(query){
+                let temp_dic = [
+                    "topic_id": datas[topic_id]!,
+                    "client_id": datas[username],
+                    "id_local": String(datas[id])
+                ]
+                result_list.append(temp_dic)
+            }
+            return result_list
+        }
+        catch{
+            print("ERROR!!! get_un_send_ignore_list")
+            print(error)
+        }
+        return []
+    }
+    func check_is_in_ignore_list(topic_id_in:String, client_id:String) -> Bool{
+        return false
+    }
+    func update_ignore_list_is_send(is_send_list:Array<String>){
+        var is_send_list_int64:Array<Int64> = []
+        for send_id_s in is_send_list{
+            is_send_list_int64.append(Int64(send_id_s)!)
+        }
+        let query = ignore_list.filter(is_send_list_int64.contains(id))
+        let update = query.update(is_send <- true)
+        do{
+            try sql_db!.run(update)
+        }
+        catch{
+            print("ERROR!!!! update_ignore_list_is_send")
+            print(error)
+        }
+    }
+    func get_ignore_topic_id_list() -> Array<String>{
+        let my_topic_id_list = get_my_topics_server_id()
+        let query = ignore_list.filter(!my_topic_id_list.contains(topic_id))
+        var return_list:Array<String> = []
+        do{
+            for ignore_objs in try sql_db!.prepare(query){
+                return_list.append(ignore_objs[topic_id]!)
+            }
+            return return_list
+        }
+        catch{
+            print("ERROR!!! get_ignore_topic_id_list")
+            print(error)
+            return []
+        }
+    }
+    func get_ignore_client_id_list() -> Dictionary<String,Array<String>>{
+        var return_dic:Dictionary<String,Array<String>> = [:]
+        let my_topic_id_list = get_my_topics_server_id()
+        do{
+            for my_topic_id_s in my_topic_id_list{
+                return_dic[my_topic_id_s] = []
+                let query = ignore_list.filter(topic_id == my_topic_id_s)
+                for ignore_objs in try sql_db!.prepare(query){
+                    return_dic[my_topic_id_s]?.append(ignore_objs[username])
+                }
+            }
+            return return_dic
+        }
+        catch{
+            print("ERROR!!! get_ignore_client_id_list")
+            print(error)
+            return [:]
+        }
+        
     }
     
     // friend_list
@@ -774,26 +906,28 @@ public class SQL_center{
                 if let topic_content_obj = try sql_db!.prepare(query.order(id.desc).limit(1)).first(where: { (row) -> Bool in
                     return true
                 }){
-                    let level = get_level(topic_id_in: recent_datas[topic_id]!, client_id: recent_datas[client_id]!)
-                    var temp_dic:Dictionary<String,AnyObject> = [
-                        "owner": recent_datas[client_id]! as AnyObject,
-                        "last_line": topic_content_obj[topic_text]! as AnyObject,
-                        "topic_content_id": String(topic_content_obj[id]) as AnyObject,
-                        "last_speaker": topic_content_obj[sender]! as AnyObject,
-                        "is_read": topic_content_obj[is_read]! as AnyObject,
-                        "tag_list": turn_tag_string_to_tag_list(tag_string: recent_datas[tags]!) as AnyObject,
-                        "topic_title": recent_datas[topic_title]! as AnyObject,
-                        "time": topic_content_obj[time] as AnyObject,
-                        "level": String(level) as AnyObject
-                    ]
-                    
-                    if let temp_data = tmp_client_search(searchByClientId: recent_datas[topic_id]!, level: level){
-                        temp_dic["owner_name"] = temp_data["client_name"]
-                        temp_dic["owner_is_real_img"] = temp_data["is_real_pic"]
-                        temp_dic["owner_sex"] = temp_data["sex"]
-                        temp_dic["img"] = temp_data["img"]
+                    if !check_is_in_ignore_list(topic_id_in: topic_content_obj[topic_id]!, client_id: recent_datas[client_id]!){
+                        let level = get_level(topic_id_in: recent_datas[topic_id]!, client_id: recent_datas[client_id]!)
+                        var temp_dic:Dictionary<String,AnyObject> = [
+                            "owner": recent_datas[client_id]! as AnyObject,
+                            "last_line": topic_content_obj[topic_text]! as AnyObject,
+                            "topic_content_id": String(topic_content_obj[id]) as AnyObject,
+                            "last_speaker": topic_content_obj[sender]! as AnyObject,
+                            "is_read": topic_content_obj[is_read]! as AnyObject,
+                            "tag_list": turn_tag_string_to_tag_list(tag_string: recent_datas[tags]!) as AnyObject,
+                            "topic_title": recent_datas[topic_title]! as AnyObject,
+                            "time": topic_content_obj[time] as AnyObject,
+                            "level": String(level) as AnyObject
+                        ]
+                        
+                        if let temp_data = tmp_client_search(searchByClientId: recent_datas[topic_id]!, level: level){
+                            temp_dic["owner_name"] = temp_data["client_name"]
+                            temp_dic["owner_is_real_img"] = temp_data["is_real_pic"]
+                            temp_dic["owner_sex"] = temp_data["sex"]
+                            temp_dic["img"] = temp_data["img"]
+                        }
+                        return_dic[recent_datas[topic_id]!] = temp_dic as AnyObject
                     }
-                    return_dic[recent_datas[topic_id]!] = temp_dic as AnyObject
                 }
             }
             return return_dic
@@ -828,20 +962,23 @@ public class SQL_center{
     func get_myTopic_badges() -> Int{
         let myTopicIds:Array<String> = get_my_topics_server_id()
         let black_list:Array<String> = get_black_list()
+        let my_topic_ignore_client_id_dic = get_ignore_client_id_list()
+        var query_count = 0
         do{
             // 抓所有的MyTopic的topic_id
             if userData.id != nil{
-            for myTopId in myTopicIds{
-                let query = topic_content.filter(
-                    topic_id == myTopId &&
-                    sender != userData.id &&
-                    is_read == false &&
-                    black_list.contains(sender) == false
-                )
-                let query_count = try sql_db?.scalar(query.count)
-                return query_count!
+                for myTopId in myTopicIds{
+                    let query = topic_content.filter(
+                        topic_id == myTopId &&
+                            sender != userData.id &&
+                            is_read == false &&
+                            black_list.contains(sender) == false &&
+                            my_topic_ignore_client_id_dic[myTopId]!.contains(sender) == false
+                        )
+                    query_count += (try sql_db?.scalar(query.count))!
+                }
             }
-            }
+            return query_count
         }
         catch{
             print("get_myTopic_badges錯誤")
@@ -1439,19 +1576,24 @@ public class SQL_center{
     }
     func insert_client_topic_content_from_server(input_dic:Dictionary<String,AnyObject>,check_state:Check_state){
         do{
-            let time_in = time_transform_to_since1970(time_string: input_dic["time"]! as! String)
-            let insert = topic_content.insert(
-                topic_id <- input_dic["topic_id"]! as? String,
-                topic_text <- input_dic["topic_content"]! as? String,
-                sender <- input_dic["sender"]! as? String,
-                receiver <- input_dic["receiver"]! as? String,
-                time <- time_in,
-                is_read <- input_dic["is_read"] as? Bool,
-                is_send <- Bool(check_state.rawValue),
-                id_server <- input_dic["id_server"]! as? String
-                //battery <- input_dic["battery"] as? String
-            )
-            try sql_db!.run(insert)
+            let id_server_input = input_dic["id_server"]! as! String
+            let filter = topic_content.filter(id_server == id_server_input)
+            let count = try sql_db!.scalar(filter.count)
+            if count == 0{
+                let time_in = time_transform_to_since1970(time_string: input_dic["time"]! as! String)
+                let insert = topic_content.insert(
+                    topic_id <- input_dic["topic_id"]! as? String,
+                    topic_text <- input_dic["topic_content"]! as? String,
+                    sender <- input_dic["sender"]! as? String,
+                    receiver <- input_dic["receiver"]! as? String,
+                    time <- time_in,
+                    is_read <- input_dic["is_read"] as? Bool,
+                    is_send <- Bool(check_state.rawValue),
+                    id_server <- input_dic["id_server"]! as? String
+                    //battery <- input_dic["battery"] as? String
+                )
+                try sql_db!.run(insert)
+            }
         }
         catch{
             print("資料庫錯誤")
@@ -1793,19 +1935,19 @@ public class SQL_center{
     func get_recent_badges() -> Int{
         let myTopicIds:Array<String> = get_my_topics_server_id()
         let black_list:Array<String> = get_black_list()
+        let ignore_list = get_ignore_topic_id_list()
         do{
             if userData.id != nil{
-            // 抓所有的recentTopic的topic_id  只是我的話題的反向布林操作
-            for myTopId in myTopicIds{
+                // 抓所有的recentTopic的topic_id  只是我的話題的反向布林操作
                 let query = topic_content.filter(
-                    topic_id != myTopId &&
+                    !myTopicIds.contains(topic_id) &&
                     sender != userData.id &&
                     is_read == false &&
-                    black_list.contains(sender) == false
+                    !black_list.contains(sender) &&
+                    !ignore_list.contains(topic_id)
                 )
                 let query_count = try sql_db?.scalar(query.count)
                 return query_count!
-            }
             }
         }
         catch{
@@ -1831,7 +1973,7 @@ public class SQL_center{
                 ).select(distinct: sender)
             for sender_s in try sql_db!.prepare(query2){
                 let temp_sender_id = sender_s[sender]!
-                if temp_sender_id != userData.id{
+                if temp_sender_id != userData.id && !check_is_in_ignore_list(topic_id_in: topic_id_in, client_id: temp_sender_id){
                     let query_last = topic_content.filter(
                         topic_id == topic_id_in &&
                         ((sender == userData.id! && receiver == temp_sender_id) ||

@@ -219,8 +219,9 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let data = self.model.mytopic[IndexPath_parameter.row]
-            sql_database.add_topic_to_leave_topic_master_table(topic_id_input: data.topicId_title!, client_id_input: data.clientId_detial!)
-            self.model.send_leave_topic_master()
+//            sql_database.add_topic_to_leave_topic_master_table(topic_id_input: data.topicId_title!, client_id_input: data.clientId_detial!)
+//            self.model.send_leave_topic_master()
+            sql_database.add_ignore_list(topic_id_in: data.topicId_title!, client_id: data.clientId_detial!)
             self.model.delete_detail_cell(index: IndexPath_parameter.row)
             self.update_badges()
         }
@@ -232,9 +233,10 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         let block = UITableViewRowAction(style: .default, title: "封鎖") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
-            let topic_id = data.topicId_title!
-            let client_name = data.clientName_detial!
-            self.block(topic_id: topic_id, block_id: block_id, client_name: client_name)
+//            let topic_id = data.topicId_title!
+//            let client_name = data.clientName_detial!
+//            self.block(topic_id: topic_id, block_id: block_id, client_name: client_name)
+            Block_list_center().add_user_to_block_list(client_id: block_id)
             
         }
         block.backgroundColor = UIColor.red
@@ -310,7 +312,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     
     func wsReconnected(){
         self.model.send_leave_topic_master()
-        model.main_loading()
+        model.main_loading_v2()
         update_badges()
     }
     func brake(){

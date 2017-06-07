@@ -208,7 +208,7 @@ open class webSocketActiveCenter{
                     self.wasd_ForTopicViewController
                 ]
 //                print("id_pre_s: \(previous_receiver_topic_content_id) /// id_pre_l: \(topic_content_last_checked_server_id)")
-                if Int(previous_receiver_topic_content_id)! >= Int(topic_content_last_checked_server_id)!{
+                if Int(previous_receiver_topic_content_id)! == Int(topic_content_last_checked_server_id)!{
                     // 寫入ＤＢ
                     sql_database.insert_client_topic_content_from_server(input_dic: resultDic, check_state: .checked)
                     for target_delegate in delegate_list{
@@ -242,7 +242,7 @@ open class webSocketActiveCenter{
             let private_content_last_id = msg["private_content_last_checked_server_id"] as! String
             let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
             //print("ids:\(private_content_last_checked_server_id)  idl:\(private_content_last_id)")
-            if Int(private_content_last_checked_server_id)! >= Int(private_content_last_id)!{
+            if Int(private_content_last_checked_server_id)! == Int(private_content_last_id)!{
                 sql_database.inser_date_to_private_msg(input_dic: result_dic)
                 if self.wasd_ForFriendChatViewController?.new_client_topic_msg != nil{
                     self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)

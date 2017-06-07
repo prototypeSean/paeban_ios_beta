@@ -51,9 +51,10 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     @IBAction func reset_act(_ sender: Any) {
         let send_dic = [
             "msg_type":"cmd",
-            "text":"test3"
+            "text":"test2"
         ]
         socket.write(data: json_dumps(send_dic as NSDictionary))
+        //sql_database.print_all()
     }
     
     var initFearm:CGRect?

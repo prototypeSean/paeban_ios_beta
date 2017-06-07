@@ -390,7 +390,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         let block_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "封鎖") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             func excute(){
                 let data = self.topics[IndexPath_parameter.row]
-                self.block_user(setID: data.owner, topicId: data.topicID)
+                //self.block_user(setID: data.owner, topicId: data.topicID)
+                Block_list_center().add_user_to_block_list(client_id: data.owner)
                 self.remove_cell(index: IndexPath_parameter.row)
             }
             // MARK: 改alert

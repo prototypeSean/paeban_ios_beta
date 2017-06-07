@@ -73,7 +73,23 @@ func random_pass(prasent_rate:Int, work:()->Void){
     }
 }
 
-
+class Ignore_list_center{
+    func add_ignore_list(topic_id_in: String, client_id: String){
+        sql_database.add_ignore_list(topic_id_in: topic_id_in, client_id: client_id)
+    }
+    func send_ignore_list_to_server(){
+        let send_list = sql_database.get_un_send_ignore_list()
+        if !send_list.isEmpty{
+            let send_dic = ["ignore_list": send_list]
+            HttpRequestCenter().request_user_data_v2("send_ignore_list", send_dic: send_dic as Dictionary<String, AnyObject>) { (return_dic: Dictionary<String, AnyObject>?) in
+                if return_dic != nil{
+                    let is_send_list = return_dic!["is_send_list"]
+                    sql_database.update_ignore_list_is_send(is_send_list: is_send_list as! Array<String>)
+                }
+            }
+        }
+    }
+}
 
 
 
