@@ -96,17 +96,17 @@ class RecentTableViewModel{
         if topicWriteToRow.lastSpeaker_detial! == userData.id{
             lastSpeakerName = userData.name
             cell.lastLine.textColor = UIColor(red:0.30, green:0.30, blue:0.30, alpha:1.0)
-            cell.lastLine.font = UIFont.systemFont(ofSize: 16)
+//            cell.lastLine.font = UIFont.systemFont(ofSize: 13)
         }
         else{
             lastSpeakerName = topicWriteToRow.clientName_detial
             if topicWriteToRow.read_detial == false{
                 cell.lastLine.textColor = UIColor(red:0.97, green:0.49, blue:0.31, alpha:1.0)
-                cell.lastLine.font = UIFont.boldSystemFont(ofSize: 16)
+//                cell.lastLine.font = UIFont.boldSystemFont(ofSize: 13)
             }
             else{
                 cell.lastLine.textColor = UIColor(red:0.30, green:0.30, blue:0.30, alpha:1.0)
-                cell.lastLine.font = UIFont.systemFont(ofSize: 16)
+//                cell.lastLine.font = UIFont.systemFont(ofSize: 13)
             }
             
         }

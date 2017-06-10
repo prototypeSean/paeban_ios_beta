@@ -199,14 +199,14 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             cell2.last_line.text = data.lastLine
             if data.read_msg == false, data.last_speaker != userData.name{
                 if data.last_speaker != userData.name{
-                    cell2.last_line.textColor = UIColor(red:0.30, green:0.30, blue:0.30, alpha:1.0)
+                    cell2.last_line.textColor = UIColor(red:0.97, green:0.49, blue:0.31, alpha:1.0)
                 }
                 else{
-                    cell2.last_line.textColor = nil
+                    cell2.last_line.textColor = UIColor(red:0.30, green:0.30, blue:0.30, alpha:1.0)
                 }
             }
             else{
-                cell2.last_line.textColor = nil
+                cell2.last_line.textColor = UIColor(red:0.30, green:0.30, blue:0.30, alpha:1.0)
             }
             cell2.onlineImg.layoutIfNeeded()
             cell2.onlineImg.layer.borderWidth = 1
