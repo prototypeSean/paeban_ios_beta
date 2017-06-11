@@ -52,14 +52,20 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         topicTitleContent.text = topicTitle
         check_is_friend()
         client_data_obj = Client_detail_data(topic_id: topicId!, client_id: ownerId!)
         //get_client_img(owner: ownerId!, topic_id: topicId!)
+        
+//        re_new_client_img()
+//        my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
+//        re_new_my_img()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setImage()
+    // 2017_06_11 setImage()移動到viewDidLayoutSubviews測試
+//        setImage()
         re_new_client_img()
         my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
         re_new_my_img()
@@ -68,9 +74,14 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         super.viewDidDisappear(animated)
         self.dismiss(animated: false, completion: nil)
     }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+        setImage()
     }
     
         
@@ -188,10 +199,12 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         guestPhoto.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
         guestPhoto.layer.shadowOpacity = 1
         guestPhoto.layer.shadowRadius = 2
-        
+//        print("guestPhoto.bounds.height==",guestPhoto.bounds.height)
         // add the border to subview 第二層做邊框（這邊設0因為不需要）
         let guetsborderView = UIView()
         guetsborderView.frame = guestPhoto.bounds
+//        print("guetsborderView.frame.height==",guetsborderView.frame.height)
+//        print("guestPhoto.bounds.height==",guestPhoto.bounds.height)
         guetsborderView.layer.cornerRadius = guestPhoto.frame.size.height/2
         guetsborderView.layer.borderColor = UIColor.black.cgColor
         guetsborderView.layer.borderWidth = 0
