@@ -267,7 +267,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     }
     override func viewDidAppear(_ animated: Bool) {
         //pass lord img
-        setImage()
+//        setImage()
         re_new_my_img()
         client_data_obj?.get_client_img { (return_img:UIImage?) in
             if return_img != nil{
@@ -276,8 +276,9 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         }
     }
     override func viewDidLayoutSubviews() {
-        
+        setImage()
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let chatViewCon = segue.destination as! ChatViewController
         chatViewCon.setID = userData.id
