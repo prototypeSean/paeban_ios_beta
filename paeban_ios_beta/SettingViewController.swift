@@ -234,6 +234,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     // override
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "設定"
         pencilIcon.image = UIImage(named:"pencil")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         pencilIcon.tintColor = UIColor.orange
         pencilIcon.layer.shadowColor = UIColor.black.cgColor

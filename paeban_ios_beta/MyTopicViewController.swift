@@ -132,6 +132,14 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         topicInfoBG.layer.addSublayer(gradientLayer)
         
 //      MARK: 設定按鈕
+        // 設定自動調整按鈕文字大小
+        btnAddFriend.titleLabel?.adjustsFontSizeToFitWidth = true
+        btnAddFriend.titleLabel?.minimumScaleFactor = 0.7
+        btnIgnroe.titleLabel?.adjustsFontSizeToFitWidth = true
+        btnIgnroe.titleLabel?.minimumScaleFactor = 0.7
+        btnBlock.titleLabel?.adjustsFontSizeToFitWidth = true
+        btnBlock.titleLabel?.minimumScaleFactor = 0.7
+        
         // 按下按鈕文字回白
         btnAddFriend.setTitleColor(UIColor.white, for: .highlighted)
         btnIgnroe.setTitleColor(UIColor.white, for: .highlighted)

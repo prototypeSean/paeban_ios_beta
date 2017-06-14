@@ -200,6 +200,7 @@ class FriendChatUpViewController: UIViewController {
     
     // 按鈕初始外觀
     func setButton(){
+        
         reportOutlet.layoutIfNeeded()
         let btn_radius:CGFloat = CGFloat(reportOutlet.bounds.size.height)/2
         reportOutlet.layer.cornerRadius = btn_radius
@@ -212,6 +213,12 @@ class FriendChatUpViewController: UIViewController {
         blockOutlet.layer.borderColor = UIColor.gray.cgColor
         blockOutlet.layer.cornerRadius = btn_radius
         blockOutlet.clipsToBounds = true
+        
+        // 設定自動調整按鈕文字大小
+        reportOutlet.titleLabel?.adjustsFontSizeToFitWidth = true
+        reportOutlet.titleLabel?.minimumScaleFactor = 0.7
+        blockOutlet.titleLabel?.adjustsFontSizeToFitWidth = true
+        blockOutlet.titleLabel?.minimumScaleFactor = 0.7
         }
     
     func relace_chat_view_client_id(){
