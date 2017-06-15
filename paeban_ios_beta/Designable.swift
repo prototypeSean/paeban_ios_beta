@@ -12,6 +12,16 @@ import UIKit
 @IBDesignable class DesignableButton:UIButton { }
 @IBDesignable class DesignableTextField:UITextField { }
 
+// 本地化的東西沒地方放暫放在這
+// 用法：self.title = "設定".localized(withComment: "設定->導覽頁左上角文字")
+extension String {
+    func localized(withComment:String) -> String {
+        return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: withComment)
+    }
+}
+// 本地化的東西沒地方放暫放在這
+
+// 讓故事版可以模擬CSS
 extension UIView {
     @IBInspectable
     var borderWidth :CGFloat {

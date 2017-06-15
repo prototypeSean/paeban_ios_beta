@@ -1051,7 +1051,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="New-VA-2ba" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="4Dk-gy-K5h"/>
             </objects>
-            <point key="canvasLocation" x="-3975.36231884058" y="178.53260869565219"/>
+            <point key="canvasLocation" x="-3975" y="254"/>
         </scene>
         <!--話題-->
         <scene sceneID="VON-sR-4Xb">
@@ -3047,7 +3047,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3jQ-z4-OcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3930" y="715"/>
+            <point key="canvasLocation" x="-4575" y="761"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="4rY-IB-Pr9">
@@ -3079,7 +3079,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xnY-NF-H5h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4750" y="1301"/>
+            <point key="canvasLocation" x="-3975" y="977"/>
         </scene>
         <!--Tutoria Inside View Controller-->
         <scene sceneID="tO7-nr-8Qa">
@@ -3097,7 +3097,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ETU-lq-T2n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3975" y="1300"/>
+            <point key="canvasLocation" x="-4616" y="1660"/>
         </scene>
     </scenes>
     <resources>

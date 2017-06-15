@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1909C1671EF26DCB00EE5183 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1909C1691EF26DCB00EE5183 /* InfoPlist.strings */; };
+		1909C1701EF278D300EE5183 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1909C1721EF278D300EE5183 /* Localizable.strings */; };
 		190B21BE1EEFA9C2007067B7 /* TutoriaInsideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190B21BD1EEFA9C2007067B7 /* TutoriaInsideViewController.swift */; };
 		190B21BF1EEFD41E007067B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 190B21C11EEFD41E007067B7 /* Main.storyboard */; };
 		73E59CAE7906529E9934E916 /* Pods_paeban_ios_beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DA9AB49DFA16020BF975A80 /* Pods_paeban_ios_beta.framework */; };
@@ -83,6 +85,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1909C1641EF26CC000EE5183 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
+		1909C1681EF26DCB00EE5183 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1909C16A1EF26DE700EE5183 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1909C16B1EF270E000EE5183 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		1909C16C1EF270E000EE5183 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		1909C1711EF278D300EE5183 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1909C1731EF2797E00EE5183 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		190B21BD1EEFA9C2007067B7 /* TutoriaInsideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutoriaInsideViewController.swift; sourceTree = "<group>"; };
 		190B21C01EEFD41E007067B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		190B21C31EEFD42E007067B7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
@@ -191,6 +200,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1909C16D1EF2768D00EE5183 /* Localize */ = {
+			isa = PBXGroup;
+			children = (
+				1909C1721EF278D300EE5183 /* Localizable.strings */,
+			);
+			name = Localize;
+			sourceTree = "<group>";
+		};
 		93077EF31E223800004900FF /* CustomJSQ */ = {
 			isa = PBXGroup;
 			children = (
@@ -235,6 +252,7 @@
 		931FF1931CFEA848000E7F8A /* paeban_ios_beta */ = {
 			isa = PBXGroup;
 			children = (
+				1909C16D1EF2768D00EE5183 /* Localize */,
 				CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */,
 				CF9E372C1E21E2F40077C7C9 /* all_filed_work */,
 				CF79265C1DA0E6E500821860 /* sing_in */,
@@ -251,6 +269,7 @@
 				932A00DB1CFEBA460036E1EA /* Labels.swift */,
 				932A00F41D0025AC0036E1EA /* Assets.xcassets */,
 				931FF1A01CFEA848000E7F8A /* Info.plist */,
+				1909C1691EF26DCB00EE5183 /* InfoPlist.strings */,
 				934EBAFF1DCB0A3600FB9748 /* Designable.swift */,
 			);
 			path = paeban_ios_beta;
@@ -444,6 +463,8 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
+				"zh-Hans",
 			);
 			mainGroup = 931FF1881CFEA848000E7F8A;
 			productRefGroup = 931FF1921CFEA848000E7F8A /* Products */;
@@ -461,7 +482,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */,
+				1909C1671EF26DCB00EE5183 /* InfoPlist.strings in Resources */,
 				932A00F51D0025AC0036E1EA /* Assets.xcassets in Resources */,
+				1909C1701EF278D300EE5183 /* Localizable.strings in Resources */,
 				190B21BF1EEFD41E007067B7 /* Main.storyboard in Resources */,
 				93077EF01E20E035004900FF /* CustomMessagesCollectionViewCellOutgoing.xib in Resources */,
 				93077EEE1E20DEB1004900FF /* CustomMessagesCollectionViewCellIncoming.xib in Resources */,
@@ -593,11 +616,32 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		1909C1691EF26DCB00EE5183 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1909C1681EF26DCB00EE5183 /* en */,
+				1909C16A1EF26DE700EE5183 /* ja */,
+				1909C16C1EF270E000EE5183 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1909C1721EF278D300EE5183 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1909C1711EF278D300EE5183 /* en */,
+				1909C1731EF2797E00EE5183 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		190B21C11EEFD41E007067B7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				190B21C01EEFD41E007067B7 /* Base */,
 				190B21C31EEFD42E007067B7 /* en */,
+				1909C1641EF26CC000EE5183 /* ja */,
+				1909C16B1EF270E000EE5183 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -610,6 +654,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -659,6 +704,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
