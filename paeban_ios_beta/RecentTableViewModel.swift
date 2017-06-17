@@ -53,19 +53,6 @@ class RecentTableViewModel{
             }
             return sexImg!
         }
-        // 沒作用
-        //        func letoutIsTruePhoto(_ isTruePhoto:Bool) -> UIImageView {
-        //            let isMeImg = UIImageView()
-        //            isMeImg.image = UIImage(named:"True_photo")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-        //
-        //            return isMeImg
-        //        }
-        // 沒作用
-        //        func letoutOnlineImg(_ online:Bool) -> UIImageView{
-        //            let onlineimage = UIImageView()
-        //            onlineimage.image = UIImage(named:"online")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-        //            return onlineimage
-        //        }
         
         // 麻煩的東西這邊才開始畫外觀
         let topicWriteToRow = recentDataBase[index]
@@ -183,9 +170,10 @@ class RecentTableViewModel{
     }
     func topicClosed(_ msg:Dictionary<String,AnyObject>) -> Bool{
         var dataChanged = false
-        if let topic_id = msg["topic_id"] as? Array<String>{
+        if let topic_id = msg["topic_id"] as? String{
+            sql_database.delete_recent_topic(topic_id_in: topic_id)
             if let data_index = recentDataBase.index(where: { (target) -> Bool in
-                if target.topicId_title == topic_id[0]{
+                if target.topicId_title == topic_id{
                     return true
                 }
                 else{return false}
@@ -197,15 +185,14 @@ class RecentTableViewModel{
         }
         return dataChanged
     }
-    func add_leave_topic_table(index:Int){
-        let topic_id = recentDataBase[index].topicId_title!
-        sql_database.add_topic_to_topic_table(topic_id_input:topic_id)
-    }
-    func send_leave_topic(){
-        let send_list = sql_database.get_topic_table_list()
-        //print(send_list)
-        self.send_leave_topic_to_ws(data_s: send_list)
-    }
+//    func add_leave_topic_table(index:Int){
+//        let topic_id = recentDataBase[index].topicId_title!
+//        sql_database.add_topic_to_topic_table(topic_id_input:topic_id)
+//    }
+//    func send_leave_topic(){
+//        let send_list = sql_database.get_topic_table_list()
+//        self.send_leave_topic_to_ws(data_s: send_list)
+//    }
     func remove_cell(index:Int){
         recentDataBase.remove(at: index)
         let index_path = IndexPath(row: index, section: 0)
@@ -327,26 +314,14 @@ class RecentTableViewModel{
     }
     private func get_client_data_from_server(client_list_for_request:Array<Dictionary<String,AnyObject>>){
         if !client_list_for_request.isEmpty{
-            let send_dic1 = ["client_list_for_request":client_list_for_request]
-            HttpRequestCenter().request_user_data_v2("request_client_detail", send_dic: send_dic1 as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
-                if return_dic != nil{
-                    DispatchQueue.main.async {
-                        let return_list = return_dic!["return_list"]! as! Array<Dictionary<String,AnyObject>>
-                        for datas in return_list{
-                            sql_database.tmp_client_addNew(input_dic: datas)
-                            self.update_cells(input_dic: datas)
-                        }
-                        self.sort_recent_db_by_time()
-                        self.delegate?.model_relodata()
-                    }
-                    
-                }
-                else{
-                    DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 3, execute: {
-                        self.get_client_data_from_server(client_list_for_request: client_list_for_request)
-                    })
-                }
-            })
+            for data_s in client_list_for_request{
+                let detail_client_data_obj = Client_detail_data(topic_id: data_s["topic_id"] as! String, client_id: data_s["client_id"] as! String)
+                detail_client_data_obj.get_client_data(act: { (return_dic:Dictionary<String, AnyObject>) in
+                    self.update_cells(input_dic: return_dic)
+                    self.sort_recent_db_by_time()
+                    self.delegate?.model_relodata()
+                })
+            }
         }
     }
     private func update_cells(input_dic:Dictionary<String, AnyObject>){
@@ -441,7 +416,7 @@ class RecentTableViewModel{
                 let temp_dic = [
                     "level": datas_val["level"] as! String,
                     "topic_id": datas.key,
-                    "client_id":datas_val["owner"] as! String
+                    "client_id":datas_val["owner"] as! String,
                 ]
                 client_list_for_request.append(temp_dic as [String : AnyObject])
             }
@@ -464,6 +439,8 @@ class RecentTableViewModel{
             operatingObj.topicContentId_detial = inputData["topic_content_id"] as? String
             operatingObj.read_detial = inputData["is_read"] as? Bool
             operatingObj.time = inputData["time"] as? Double
+            operatingObj.tag_detial = inputData["tag_list"] as? Array<String>
+            operatingObj.topicTitle_title = inputData["topic_title"] as? String
             //operatingObj.battery = Int((inputData["battery"] as? String)!)
             recentDataBase[recentDataBaseIndex] = operatingObj
 

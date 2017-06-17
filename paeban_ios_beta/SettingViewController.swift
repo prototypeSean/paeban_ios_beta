@@ -48,15 +48,27 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         save_data_to_server()
     }
     
+    @IBOutlet weak var cmd_line: UITextField!
     @IBAction func reset_act(_ sender: Any) {
+        let cmd = cmd_line.text!
         let send_dic = [
             "msg_type":"cmd",
-            "text":"test3"
+            "text":cmd
         ]
         socket.write(data: json_dumps(send_dic as NSDictionary))
-        //sql_database.print_all()
+        
     }
     
+    @IBOutlet weak var local_cmd_line: UITextField!
+    @IBAction func local_cmd(_ sender: Any) {
+        let cmd_line = local_cmd_line.text!
+        if cmd_line  == "recent_db"{
+            sql_database.print_recent_db()
+        }
+        else{
+            print("cmd:'\(cmd_line)' 不存在")
+        }
+    }
     var initFearm:CGRect?
     var initCenter:CGPoint?
     var selectedField:UIButton?
@@ -187,7 +199,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
                 //["old_user_name": , "show_my_gender": 1, "old_user_pic": member/154/tes_gkpZIVk.jpeg, "show_my_photo": 0, "msg_type": update_user_profile, "user_pic": member/154/tes_gkpZIVk.jpeg, "user_name": ]
                 userData.name = return_dic["user_name"] as! String?
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
-                    let url = locale_host + "media/" + (return_dic["user_pic"] as! String)
+                    let url = local_host + "media/" + (return_dic["user_pic"] as! String)
                     HttpRequestCenter().getHttpImg(url, getImg: { (return_img) in
                         userData.img = return_img
                     })

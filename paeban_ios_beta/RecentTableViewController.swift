@@ -1,6 +1,6 @@
 import UIKit
 
-class RecentTableViewController: UITableViewController, webSocketActiveCenterDelegate, RecentTableViewModelDelegate{
+class RecentTableViewController: UITableViewController, webSocketActiveCenterDelegate, RecentTableViewModelDelegate, TopicViewControllerDelegate{
     var rTVModel = RecentTableViewModel()
     
     // data source
@@ -15,7 +15,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     }
     override func viewWillAppear(_ animated: Bool) {
         print("recent viewWillAppear")
-        self.rTVModel.send_leave_topic()
+        //self.rTVModel.send_leave_topic()
         rTVModel.reCheckDataBase()
         self.update_badges()
         //autoLeap()
@@ -62,6 +62,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             topicViewCon.ownerId = getSegueData["ownerId"] as? String
             topicViewCon.topicTitle = getSegueData["topicTitle"] as? String
             topicViewCon.title = getSegueData["title"] as? String
+            topicViewCon.delegate = self
             rTVModel.chat_view = topicViewCon
         }
         
@@ -115,11 +116,11 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             else if msg_type == "friend_confirm"{
                 fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: self.parent as! UINavigationController)
             }
-            else if msg_type == "leave_topic_client"{
-                if let topic_id = msg["topic_id"] as? String{
-                    sql_database.remove_topic_from_topic_table(topic_id_input: topic_id)
-                }
-            }
+//            else if msg_type == "leave_topic_client"{
+//                if let topic_id = msg["topic_id"] as? String{
+//                    sql_database.remove_topic_from_topic_table(topic_id_input: topic_id)
+//                }
+//            }
             else if msg["msg_type"] as! String == "leave_topic_master_client"{
                 let topic_id = msg["topic_id"] as! String
                 let owner_name = msg["owner_name"] as! String
@@ -127,14 +128,13 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
                 self.show_leave_topic_master_alert()
                 self.rTVModel.remove_cell(by: topic_id)
                 self.update_badges()
-                
             }
             
         }
     }
     func wsReconnected(){
         self.rTVModel.reCheckDataBase()
-        self.rTVModel.send_leave_topic()
+        //self.rTVModel.send_leave_topic()
         self.update_badges()
     }
     func model_relodata(){
@@ -145,6 +145,12 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         self.tableView.beginUpdates()
         self.tableView.deleteRows(at: index_path_list, with: option)
         self.tableView.endUpdates()
+    }
+    func topic_has_been_closed(_ topicID: String) {
+        let msg_dic:Dictionary<String,AnyObject> = ["topic_id": topicID as AnyObject]
+        if rTVModel.topicClosed(msg_dic){
+            self.tableView.reloadData()
+        }
     }
     func model_insert_row(index_path_list:Array<IndexPath>, option:UITableViewRowAnimation){}
     func segue_to_chat_view(detail_cell_obj:MyTopicStandardType){}

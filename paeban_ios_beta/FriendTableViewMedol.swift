@@ -89,7 +89,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         
         for cells in friend_list_database{
             if cells.photo == nil{
-                let url = "http://www.paeban.com/media/\(cells.photoHttpStr!)"
+                let url = "\(local_host)media/\(cells.photoHttpStr!)"
                 HttpRequestCenter().getHttpImg(url, getImg: { (img) in
                     sql_database.update_friend_img(
                         username_in: cells.id!,
@@ -164,7 +164,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             if data.photo == nil{
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
                     if data.photoHttpStr != nil && data.photoHttpStr != ""{
-                        let url = "http://www.paeban.com/media/\(data.photoHttpStr!)"
+                        let url = "\(local_host)media/\(data.photoHttpStr!)"
                         HttpRequestCenter().getHttpImg(url, getImg: { (get_img) in
                             if let user_index = self.friendsList.index(where: { (target) -> Bool in
                                 if target.photoHttpStr == data.photoHttpStr!{
@@ -237,7 +237,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             if data.photo == nil{
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
                     if data.photoHttpStr != nil && data.photoHttpStr != ""{
-                        let url = "http://www.paeban.com/media/\(data.photoHttpStr!)"
+                        let url = "\(local_host)media/\(data.photoHttpStr!)"
                         HttpRequestCenter().getHttpImg(url, getImg: { (get_img) in
                             if let user_index = self.friendsList.index(where: { (target) -> Bool in
                                 if target.photoHttpStr == data.photoHttpStr!{

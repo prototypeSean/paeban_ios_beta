@@ -908,11 +908,36 @@
                                 <rect key="frame" x="20" y="108" width="91" height="58"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.55417786229999999" green="1" blue="0.97652398090000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="RESET"/>
+                                <state key="normal" title="server_cmd"/>
                                 <connections>
                                     <action selector="reset_act:" destination="fKg-5c-ll5" eventType="touchUpInside" id="Dak-hF-Vfr"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xhc-ch-ZVI">
+                                <rect key="frame" x="20" y="67" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.15083701250000001" green="0.83450589009999998" blue="0.77773329020000004" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JiT-UM-2U2">
+                                <rect key="frame" x="20" y="242" width="91" height="56"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.50766919150000001" green="0.50219578730000003" blue="0.83450589009999998" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="local_cmd"/>
+                                <connections>
+                                    <action selector="local_cmd:" destination="fKg-5c-ll5" eventType="touchUpInside" id="imb-jt-vCo"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qx6-Rq-CTS">
+                                <rect key="frame" x="20" y="204" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.50766919150000001" green="0.50219578730000003" blue="0.83450589009999998" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -964,9 +989,11 @@
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="cmd_line" destination="Xhc-ch-ZVI" id="peH-K4-BiZ"/>
                         <outlet property="isTruePhoto" destination="uRi-2o-6l1" id="D8K-u4-xwb"/>
                         <outlet property="isTruePhotoSwitch" destination="fYH-Co-Mvs" id="QHd-P7-bCR"/>
                         <outlet property="is_true_photo_switch" destination="fYH-Co-Mvs" id="YMk-bn-Qeq"/>
+                        <outlet property="local_cmd_line" destination="qx6-Rq-CTS" id="skU-7l-9O3"/>
                         <outlet property="name_btn_obj" destination="32V-73-tmZ" id="a7l-1q-qVy"/>
                         <outlet property="name_text" destination="S25-om-PzD" id="ph7-Ac-cCn"/>
                         <outlet property="pencilIcon" destination="6PF-TS-XGb" id="UbZ-aO-djp"/>
@@ -975,7 +1002,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="New-VA-2ba" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="4Dk-gy-K5h"/>
             </objects>
-            <point key="canvasLocation" x="-3974" y="179"/>
+            <point key="canvasLocation" x="-3975.36231884058" y="178.53260869565219"/>
         </scene>
         <!--話題-->
         <scene sceneID="VON-sR-4Xb">

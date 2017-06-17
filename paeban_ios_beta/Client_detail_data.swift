@@ -58,6 +58,42 @@ class Client_detail_data{
         }
     }
     
+    func get_client_data(act:@escaping (_ return_dic:Dictionary<String,AnyObject>)->Void){
+        let new_level = sql_database.get_level(topic_id_in: topic_id, client_id: client_id)
+        if level != new_level || true{
+            if let client_data = sql_database.tmp_client_search(searchByClientId: client_id, level: new_level){
+                // 本地有
+                DispatchQueue.main.async {
+                    self.level = new_level
+                    act(client_data)
+                }
+            }
+            else{
+                // 本地沒有 從網路要
+                let send_dic = [
+                    "topic_id":topic_id,
+                    "level":String(new_level),
+                    "client_id":client_id
+                ]
+                let client_list_for_request:Array<Dictionary<String,String>> = [send_dic]
+                let send_dic2 = [
+                    "client_list_for_request":client_list_for_request
+                ]
+                HttpRequestCenter().request_user_data_v2("request_client_detail", send_dic: send_dic2 as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                    if return_dic != nil{
+                        let return_list = return_dic!["return_list"]! as! Array<Dictionary<String,AnyObject>>
+                        for datas in return_list{
+                            self.level = new_level
+                            sql_database.tmp_client_addNew(input_dic: datas)
+                            DispatchQueue.main.async {
+                                act(datas)
+                            }
+                        }
+                    }
+                })
+            }
+        }
+    }
     
 }
 

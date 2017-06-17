@@ -38,7 +38,7 @@ public func turnToFriendStanderType(_ id:String,name:String,sex:String,isRealPho
     returnObj.photoHttpStr = photoString
     let test = HttpRequestCenter()
     
-    test.getHttpImg("http://www.paeban.com/media/\(photoString)") { (img) in
+    test.getHttpImg("\(local_host)media/\(photoString)") { (img) in
         returnObj.photo = img
     }
     return returnObj

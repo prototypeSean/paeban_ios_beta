@@ -21,7 +21,7 @@ class login_paeban{
     var delegate:login_paeban_delegate?
     var csrf_string = ""
     func login_with_fb(){
-        let url = "http://www.paeban.com/register-by-token/facebook/\(fb_ssesion!)"
+        let url = "\(local_host)register-by-token/facebook/\(fb_ssesion!)"
         print(url)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
@@ -53,12 +53,12 @@ class login_paeban{
     }
     
     func get_cookie_csrf(){
-        let url = "http://www.paeban.com/login_paeban/"
+        let url = "\(local_host)login_paeban/"
 
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
         
-        request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
+        request.allHTTPHeaderFields = ["Referer":"\(local_host)"]
         let session = URLSession.shared
 //        let aaa = HTTPCookieStorage.shared.cookies(for: URL(string: url)!)
         let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
@@ -109,13 +109,13 @@ class login_paeban{
 //            }
 //        }
         
-        let url = "http://www.paeban.com/login_paeban/"
+        let url = "\(local_host)login_paeban/"
         let sendDic:NSDictionary = ["username":id,"password":pw]
         let sendData = "data=\(json_dumps2(sendDic)!)"
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
         request.httpBody = sendData.data(using: String.Encoding.utf8)
-        request.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
+        request.allHTTPHeaderFields = ["Referer":"\(local_host)"]
         request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]
         request.allHTTPHeaderFields = ["X-CSRFToken":cookie_new.get_csrf()]
         let session = URLSession.shared
@@ -159,7 +159,7 @@ class login_paeban{
         var request_csrf = URLRequest(url: URL(string: url)!)
         request_csrf.httpMethod = "GET"
         
-        request_csrf.allHTTPHeaderFields = ["Referer":"http://www.paeban.com/"]
+        request_csrf.allHTTPHeaderFields = ["Referer":"\(local_host)"]
         let task_csrf = session.dataTask(with: request_csrf, completionHandler: {data, response, error -> Void in
             if error != nil{
                 self.delegate?.get_cookie_csrf_report!(state: "login_fail", setcookie: "")

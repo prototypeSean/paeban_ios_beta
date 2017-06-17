@@ -18,8 +18,7 @@ public var my_blur_img_level_dic = [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 
 public let version = "1.1.4.0"
 public let reset_database = true
 public let unlock_img_exp = 7
-public let private_msg_update = true
-public let topic_msg_update = true
+public let local_host = "http://www.paeban.com/"
 // init config
 
 
@@ -56,7 +55,6 @@ public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
 public var myFriendsList:Array<FriendStanderType> = [] //好友清單
 public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 public let notificationDelegateCenter_obj = NotificationDelegateCenter()
-public let locale_host = "http://www.paeban.com:9000/"
 public var main_vc:ViewController?
 public var open_app_frist = true
 public var app_instence:UIApplication?
@@ -127,7 +125,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 userData.name = input_dic["user_name"] as? String
                 // set public var
                 
-                let url = "http://www.paeban.com/media/\(input_dic["img_name"] as! String)"
+                let url = "\(local_host)media/\(input_dic["img_name"] as! String)"
                 HttpRequestCenter().getHttpImg(url, getImg: { (img) in
                     userData.img = img
                     let img_string = imageToBase64(image: img, optional: "withHeader")
@@ -149,7 +147,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     userData.name = user_data_get_from_local_database["user_name"]
                     if user_data_get_from_local_database["img"] == nil{
                         let img_name = user_data_get_from_local_database["img_name"]!
-                        let url = "http://www.paeban.com/media/\(img_name)"
+                        let url = "\(local_host)media/\(img_name)"
                         HttpRequestCenter().getHttpImg(url, getImg: { (img) in
                             userData.img = img
                             let img_string = imageToBase64(image: img, optional: "withHeader")
@@ -290,7 +288,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         else{
             hide_items()
             let http_cookies = HTTPCookieStorage.shared
-            if let http_cookies_data = http_cookies.cookies(for: URL(string: "http://www.paeban.com/")!){
+            if let http_cookies_data = http_cookies.cookies(for: URL(string: "\(local_host)")!){
                 if !http_cookies_data.isEmpty{
                     if loading_view == nil{
                         set_loading_view_title(title: "正在嘗試自動登入")
@@ -916,6 +914,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     sql_database.insert_recent_topic(input_dic: recent_datas)
                     writed_row += 1
                 }
+                sql_database.calculate_ignore_list()
                 print("更新完成！！！")
                 DispatchQueue.main.async {
                     self.remove_loading_view()

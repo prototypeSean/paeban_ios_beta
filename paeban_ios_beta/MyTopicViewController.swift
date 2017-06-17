@@ -362,11 +362,9 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         }
             
         else if msgType == "topic_closed"{
-            let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
-            if closeTopicIdList != nil{
-                if closeTopicIdList?.index(of: self.topicId!) != nil{
-                    self.alertTopicClosed()
-                }
+            let topic_id = msg["topic_id"] as? String
+            if topic_id != nil{
+                self.alertTopicClosed()
             }
         }
         else if msgType == "has_been_friend"{
