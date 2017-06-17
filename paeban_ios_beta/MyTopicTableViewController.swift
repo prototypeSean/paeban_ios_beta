@@ -232,11 +232,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         let block = UITableViewRowAction(style: .default, title: "封鎖") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
 //            let topic_id = data.topicId_title!
-//            let client_name = data.clientName_detial!
-//            self.block(topic_id: topic_id, block_id: block_id, client_name: client_name)
+            let client_name = data.clientName_detial!
+            self.block(block_id: block_id, client_name: client_name)
             // working  下面搬到上面的內部
-            Block_list_center().add_user_to_block_list(client_id: block_id)
-            
+            // 飛行
+            print(block_id)
+            //Block_list_center().add_user_to_block_list(client_id: block_id)
         }
         block.backgroundColor = UIColor.red
         close_topic_btn.backgroundColor = UIColor.black
@@ -536,27 +537,13 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         return tempMytopicList
     }
     
-    func block(topic_id:String, block_id:String, client_name:String){
-        let data:NSDictionary = [
-            "block_id":block_id,
-            "topic_id":topic_id
-        ]
+    func block(block_id:String, client_name:String){
         let confirm = UIAlertController(title: "封鎖", message: "封鎖  \(client_name) ? 本話題不會再出現此用戶", preferredStyle: UIAlertControllerStyle.alert)
         confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
         confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
             self.model.remove_detail_cell(by: block_id)
-            HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
-                if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
-                    if key == "msgtype"{
-                        return true
-                    }
-                    else{return false}
-                }){
-                    if Dictionary["msgtype"] as! String == "block_success"{
-                        //code
-                    }
-                }
-            }
+            self.model.remove_sec_topic_data(client_id:block_id)
+            Block_list_center().add_user_to_block_list(client_id: block_id)
         }))
         self.present(confirm, animated: true, completion: nil)
         

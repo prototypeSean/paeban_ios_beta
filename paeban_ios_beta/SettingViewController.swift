@@ -65,6 +65,25 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         if cmd_line  == "recent_db"{
             sql_database.print_recent_db()
         }
+        else if cmd_line == "print_block"{
+            sql_database.print_block()
+        }
+        else if cmd_line == "reset_db"{
+            sql_database.remove_all_table()
+            sql_database.establish_all_table(version: version)
+            update_database(reset_db: "1")
+        }
+        else if cmd_line == "help"{
+            let help_list = [
+                "recent_db       列印recent_topic",
+                "print_block     列印封鎖清單",
+                "reset_db        重置資料庫"
+            ]
+            print("----cmd line----")
+            for cmd_lines in help_list{
+                print(cmd_lines)
+            }
+        }
         else{
             print("cmd:'\(cmd_line)' 不存在")
         }
@@ -276,6 +295,73 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
     
+    func update_database(reset_db:String){
+        print("===update_database===")
+        // reset_db "1" 重置server資料庫  "0" 不重置
+        let send_dic:Dictionary<String,String> = [
+            "init_sql":reset_db,
+            "last_topic_content_id":"0",
+            "last_private_id":"0"
+        ]
+        HttpRequestCenter().request_user_data("update_database", send_dic: send_dic) { (return_dic) in
+            DispatchQueue.global(qos: .default).async {
+                init_sql = false
+                var topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
+                var private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
+                let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,AnyObject>>
+                let black_list_data = return_dic["black_list"] as! Array<String>
+                let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
+                let recent_list = return_dic["recent_list"] as! Array<Dictionary<String,String>>
+                var tatle_row_count = 0
+                
+                tatle_row_count += topic_content_data.count
+                tatle_row_count += private_msg_data.count
+                tatle_row_count += friend_list_data.count
+                tatle_row_count += black_list_data.count
+                tatle_row_count += my_topic_list.count
+                tatle_row_count += recent_list.count
+                var writed_row = 0
+                var writed_row_present = 0
+                func print_writed_row_present(){
+                    let temp_present_double = Double(writed_row) / Double(tatle_row_count)
+                    let temp_present = Int(temp_present_double * 100)
+                    if temp_present > writed_row_present{
+                        writed_row_present = temp_present
+                    }
+                }
+                sql_database.insert_topic_msg_mega_ver(input_list: topic_content_data,persent_report:{() in
+                    writed_row += 1
+                    print_writed_row_present()
+                })
+                
+                sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
+                    writed_row += 1
+                    print_writed_row_present()
+                })
+                for friends in friend_list_data{
+                    sql_database.insert_friend(input_dic: friends)
+                    writed_row += 1
+                    print_writed_row_present()
+                }
+                for blacks in black_list_data{
+                    sql_database.insert_black_list_from_server(username_in: blacks)
+                    writed_row += 1
+                    print_writed_row_present()
+                }
+                for my_topic_id_s in my_topic_list{
+                    sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
+                    writed_row += 1
+                    print_writed_row_present()
+                }
+                for recent_datas in recent_list{
+                    sql_database.insert_recent_topic(input_dic: recent_datas)
+                    writed_row += 1
+                }
+                sql_database.calculate_ignore_list()
+                print("更新完成！！！")
+            }
+        }
+    }
 }
 
 

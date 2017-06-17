@@ -74,6 +74,7 @@ class MyTopicTableViewModel{
         }
     }
     func get_detail_cell_from_local_v2(){
+        secTopic = [:]
         for cells in mytopic{
             if cells.dataType == "title"{
                 if let temp_topic_id = cells.topicId_title{
@@ -305,6 +306,20 @@ class MyTopicTableViewModel{
                     }
                     self.reload_all_cell()
                 }
+            }
+        }
+    }
+    func remove_sec_topic_data(client_id:String){
+        for topic_ids in secTopic.keys{
+            var r_list:Array<Int> = []
+            for data_index in 0..<secTopic[topic_ids]!.count{
+                if secTopic[topic_ids]![data_index].clientId_detial == client_id{
+                    r_list.append(data_index)
+                }
+            }
+            r_list.sort(by: >)
+            for r_index in r_list{
+                secTopic[topic_ids]!.remove(at: r_index)
             }
         }
     }
