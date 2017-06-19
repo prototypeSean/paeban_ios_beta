@@ -221,13 +221,13 @@ func check_online(in vc:UIViewController, with original_func:@escaping ()->Void)
         original_func()
     }
     else{
-        let alert = UIAlertController(title: "警告", message: "網路尚未連線", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler:{ (act) in
+        let alert = UIAlertController(title: "警告".localized(withComment: "ToolsFunction"), message: "網路尚未連線".localized(withComment: "ToolsFunction"), preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "確認".localized(withComment: "ToolsFunction"), style: UIAlertActionStyle.default, handler:{ (act) in
             if let main_vc = vc as? ViewController{
                 main_vc.remove_loading_view()
             }
         }))
-        alert.addAction(UIAlertAction(title: "重試", style: UIAlertActionStyle.default, handler: { (act) in
+        alert.addAction(UIAlertAction(title: "重試".localized(withComment: "ToolsFunction"), style: UIAlertActionStyle.default, handler: { (act) in
             check_online(in: vc, with: original_func)
         }))
         vc.present(alert, animated: true, completion: nil)
@@ -240,7 +240,7 @@ func fast_alter(inviter:String,nav_controller:UINavigationController){
     let nav = nav_controller
     let alert = UILabel()
     alert.backgroundColor = UIColor.gray
-    alert.text = "\(inviter) 邀請你為好友"
+    alert.text = String(format: NSLocalizedString("%@ 向您送出好友邀請", comment: "ToolsFunction"), inviter)
     alert.textColor = UIColor.white
     alert.textAlignment = NSTextAlignment.center
     alert.frame = CGRect(x: 0, y: -60, width: nav.view.frame.width, height: 60)
@@ -297,8 +297,8 @@ func leapToPage(segueInf:Dictionary<String,String>) -> Int?{
 
 // 簡易版alert
 func simpoAlert2(view:UIViewController , reason:String){
-    let mailAlert = UIAlertController(title: "錯誤", message: reason, preferredStyle: UIAlertControllerStyle.alert)
-    mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+    let mailAlert = UIAlertController(title: "錯誤".localized(withComment: "ToolsFunction"), message: reason, preferredStyle: UIAlertControllerStyle.alert)
+    mailAlert.addAction(UIAlertAction(title: "確認".localized(withComment: "ToolsFunction"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
         //code
     }))
     view.present(mailAlert, animated: true, completion: {

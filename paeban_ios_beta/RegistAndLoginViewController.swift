@@ -47,9 +47,9 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
             login_paeban_obj.get_cookie_by_IDPW(id: id, pw: pw)
         }
         else{
-            let alert = UIAlertController(title: "警告", message: "帳號或密碼未輸入", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "警告".localized(withComment: "RegistAndLoginViewController"), message: "帳號或密碼未輸入".localized(withComment: "RegistAndLoginViewController"), preferredStyle: UIAlertControllerStyle.alert)
             
-            alert.addAction(UIAlertAction(title:"確認",style: UIAlertActionStyle.default, handler: { (target) in
+            alert.addAction(UIAlertAction(title:"確認".localized(withComment: "RegistAndLoginViewController"),style: UIAlertActionStyle.default, handler: { (target) in
                 //code
             }))
             self.present(alert, animated: true, completion: {
@@ -115,11 +115,11 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
     func get_cookie_by_IDPW_report(state:String,setcookie:String){
         if state == "timeout"{
             DispatchQueue.main.async {
-                let alert = UIAlertController(title: "錯誤", message: "連線逾時，是否重新連線", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "是", style: UIAlertActionStyle.default, handler: { (target) in
+                let alert = UIAlertController(title: "錯誤".localized(withComment: "RegistAndLoginViewController"), message: "連線逾時，是否重新連線".localized(withComment: "RegistAndLoginViewController"), preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "是".localized(withComment: "RegistAndLoginViewController"), style: UIAlertActionStyle.default, handler: { (target) in
                     self.paeban_login_with_IDPW(id:self.loginId.text!,pw:self.logInPw.text!)
                 }))
-                alert.addAction(UIAlertAction(title:"否",style: UIAlertActionStyle.default, handler: { (target) in
+                alert.addAction(UIAlertAction(title:"否".localized(withComment: "RegistAndLoginViewController"),style: UIAlertActionStyle.default, handler: { (target) in
                     //code
                 }))
                 self.present(alert, animated: true, completion: {
@@ -138,8 +138,8 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
         else{
             print("登入失敗")
             DispatchQueue.main.async {
-                let alert = UIAlertController(title: "錯誤", message: "帳號或密碼錯誤", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (target) in
+                let alert = UIAlertController(title: "錯誤".localized(withComment: "RegistAndLoginViewController"), message: "帳號或密碼錯誤".localized(withComment: "RegistAndLoginViewController"), preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "確認".localized(withComment: "RegistAndLoginViewController"), style: UIAlertActionStyle.default, handler: { (target) in
                     self.logInPw.text = ""
                     self.loginId.becomeFirstResponder()
                 }))

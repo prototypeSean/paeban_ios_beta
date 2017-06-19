@@ -16,7 +16,7 @@ import CoreLocation
 // init config     --  named by DK
 public var my_blur_img_level_dic = [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 8:3, 9:0]
 public let version = "1.1.4.0"
-public let reset_database = false
+public let reset_database = true
 public let unlock_img_exp = 7
 public let private_msg_update = true
 public let topic_msg_update = true
@@ -186,9 +186,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         if !check_version(ver_local:version, ver_server: rturn_dic!["version"] as! String){
                             let version_at_least = rturn_dic!["version_at_least"] as! String
                             if !check_version(ver_local:version, ver_server: version_at_least){
-                                let alert_msg = "您的版本\(version)過舊無法服務\n請更新到最新版本\(rturn_dic!["version"]! as! String)"
-                                let alert = UIAlertController(title: "錯誤", message: alert_msg, preferredStyle: .alert)
-                                alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+                                let alert_msg = String(format: NSLocalizedString("您的版本 %@ 過舊無法服務\n請更新到最新版本 %@", comment: "ViewController"), version, rturn_dic!["version"]! as! String)
+                                let alert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: alert_msg, preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "確定".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                                     // 聽說ios10以前有問題？
                                     UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
                                 }))

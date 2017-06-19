@@ -197,8 +197,8 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     func show_leave_topic_master_alert(){
         if self.rTVModel.chat_view == nil{
             for alert_data in self.rTVModel.leave_topic_master_list{
-                let alert = UIAlertController(title: "通知", message: "用戶 \(alert_data["owner_name"]!) 已將您移出話題 \(alert_data["topic_title"]!)", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+                let alert = UIAlertController(title: "通知".localized(withComment: "RecentTableViewController"), message: String(format: NSLocalizedString("用戶%@ 已將您移出話題%@", comment: "RecentTableViewController"), alert_data["owner_name"]!, alert_data["topic_title"]!), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "確認".localized(withComment: "RecentTableViewController"), style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
             self.rTVModel.leave_topic_master_list = []

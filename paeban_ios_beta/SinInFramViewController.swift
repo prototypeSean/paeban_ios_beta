@@ -93,8 +93,8 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     
     // internal func
     func simpoAlert(reason:String){
-        let mailAlert = UIAlertController(title: "錯誤", message: reason, preferredStyle: UIAlertControllerStyle.alert)
-        mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+        let mailAlert = UIAlertController(title: "錯誤".localized(withComment: "SinInFramViewController"), message: reason, preferredStyle: UIAlertControllerStyle.alert)
+        mailAlert.addAction(UIAlertAction(title: "確認".localized(withComment: "SinInFramViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
             //code
         }))
         self.present(mailAlert, animated: true, completion: {
@@ -208,8 +208,8 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
                 let result = returnDic["result"] as! String
                 DispatchQueue.main.async(execute: {
                     if result == "check_success"{
-                        let mailAlert = UIAlertController(title: "成功", message: "已發送註冊信", preferredStyle: UIAlertControllerStyle.alert)
-                        mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+                        let mailAlert = UIAlertController(title: "成功".localized(withComment: "SinInFramViewController"), message: "已發送註冊信,請至您的註冊信箱點擊啟動連結".localized(withComment: "SinInFramViewController"), preferredStyle: UIAlertControllerStyle.alert)
+                        mailAlert.addAction(UIAlertAction(title: "確認".localized(withComment: "SinInFramViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
                             self.jump_to_prev_view()
                             
                         }))
@@ -218,7 +218,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
                         })
                     }
                     else{
-                        self.simpoAlert(reason: "email已被註冊")
+                        self.simpoAlert(reason: "email已被註冊".localized(withComment: "SinInFramViewController"))
                     }
                     loading_vc.removeFromSuperview()
                 })

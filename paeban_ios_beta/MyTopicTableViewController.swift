@@ -355,8 +355,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     func show_leave_topic_alert(){
         if self.model.chat_view == nil{
             for alert_data in self.model.topic_leave_list{
-                let alert = UIAlertController(title: "通知", message: "用戶 \(alert_data["client_name"]!) 已離開您的話題 \(alert_data["topic_title"]!)", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+                let alert = UIAlertController(title: "通知".localized(withComment: "MyTopicTableViewController"), message: String(format: NSLocalizedString("用戶%@ 已離開您的話題%@", comment: "MyTopicTableViewController"), alert_data["client_name"]!, alert_data["topic_title"]!), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "確認".localized(withComment: "MyTopicTableViewController"), style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
             self.model.topic_leave_list = []
@@ -544,9 +544,9 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             "block_id":block_id,
             "topic_id":topic_id
         ]
-        let confirm = UIAlertController(title: "封鎖", message: "封鎖  \(client_name) ? 本話題不會再出現此用戶", preferredStyle: UIAlertControllerStyle.alert)
-        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
-        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+        let confirm = UIAlertController(title: "封鎖".localized(withComment: "MyTopicTableViewController"), message: String(format: NSLocalizedString("封鎖%@ ? 本話題不會再出現此用戶", comment: "MyTopicTableViewController"), client_name), preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
             self.model.remove_detail_cell(by: block_id)
             HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
                 if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
@@ -569,29 +569,29 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             "report_id":client_id,
             "topic_id":topic_id
         ]
-        let confirm = UIAlertController(title: "舉報", message: "向管理員反應收到  \(client_name) 的騷擾內容", preferredStyle: UIAlertControllerStyle.alert)
-        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
-        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction_void) in
+        let confirm = UIAlertController(title: "舉報".localized(withComment: "MyTopicTableViewController"), message: String(format: NSLocalizedString("向管理員反應收到%@ 的騷擾內容", comment: "MyTopicTableViewController"), client_name), preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction_void) in
             HttpRequestCenter().privacy_function(msg_type: "report_topic", send_dic: sendDic, inViewAct: { (Dictionary) in
                 let msg_type = Dictionary["msg_type"] as! String
                 let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
                 if msg_type == "success"{
-                    alert.title = "舉報"
-                    alert.message = "感謝您的回報，我們將儘速處理"
+                    alert.title = "舉報".localized(withComment: "MyTopicTableViewController")
+                    alert.message = "感謝您的回報，我們將儘速處理".localized(withComment: "MyTopicTableViewController")
                     
                 }
                 else if msg_type == "user_not_exist"{
-                    alert.title = "錯誤"
-                    alert.message = "用戶不存在"
+                    alert.title = "錯誤".localized(withComment: "MyTopicTableViewController")
+                    alert.message = "用戶不存在".localized(withComment: "MyTopicTableViewController")
                 }
                 else if msg_type == "topic_not_exist"{
-                    alert.title = "錯誤"
-                    alert.message = "話題不存在"
+                    alert.title = "錯誤".localized(withComment: "MyTopicTableViewController")
+                    alert.message = "話題不存在".localized(withComment: "MyTopicTableViewController")
                 }
                 else if msg_type == "unknown_error"{
-                    alert.title = "錯誤"
-                    alert.message = "未知的錯誤"
+                    alert.title = "錯誤".localized(withComment: "MyTopicTableViewController")
+                    alert.message = "未知的錯誤".localized(withComment: "MyTopicTableViewController")
                 }
                 DispatchQueue.main.async {
                     self.present(alert, animated: true, completion: nil)
@@ -858,23 +858,23 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         HttpRequestCenter().privacy_function(msg_type: "report_topic", send_dic: sendDic, inViewAct: { (Dictionary) in
             let msg_type = Dictionary["msg_type"] as! String
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
             if msg_type == "success"{
-                alert.title = "舉報"
-                alert.message = "感謝您的回報，我們將儘速處理"
+                alert.title = "舉報".localized(withComment: "MyTopicTableViewController")
+                alert.message = "感謝您的回報，我們將儘速處理".localized(withComment: "MyTopicTableViewController")
                 
             }
             else if msg_type == "user_not_exist"{
-                alert.title = "錯誤"
-                alert.message = "用戶不存在"
+                alert.title = "錯誤".localized(withComment: "MyTopicTableViewController")
+                alert.message = "用戶不存在".localized(withComment: "MyTopicTableViewController")
             }
             else if msg_type == "topic_not_exist"{
-                alert.title = "錯誤"
-                alert.message = "話題不存在"
+                alert.title = "錯誤".localized(withComment: "MyTopicTableViewController")
+                alert.message = "話題不存在".localized(withComment: "MyTopicTableViewController")
             }
             else if msg_type == "unknown_error"{
-                alert.title = "錯誤"
-                alert.message = "未知的錯誤"
+                alert.title = "錯誤".localized(withComment: "MyTopicTableViewController")
+                alert.message = "未知的錯誤".localized(withComment: "MyTopicTableViewController")
             }
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
@@ -960,8 +960,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     func conform_excute(title:String, msg:String, yes_func:@escaping ()->Void){
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
-        alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (_) in
+        alert.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
+        alert.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: .default, handler: { (_) in
             yes_func()
         }))
         self.present(alert, animated: true, completion: nil)

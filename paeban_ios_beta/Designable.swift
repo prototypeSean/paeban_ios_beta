@@ -12,7 +12,7 @@ import UIKit
 @IBDesignable class DesignableButton:UIButton { }
 @IBDesignable class DesignableTextField:UITextField { }
 
-// 本地化的東西沒地方放暫放在這
+// 整個app本地化的工具沒地方放暫放在這
 // 用法：self.title = "設定".localized(withComment: "設定->導覽頁左上角文字")
 extension String {
     func localized(withComment:String) -> String {
