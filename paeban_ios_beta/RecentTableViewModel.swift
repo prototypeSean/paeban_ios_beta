@@ -80,6 +80,7 @@ class RecentTableViewModel{
         
         // 發話人標籤
         var lastSpeakerName:String?
+        
         if topicWriteToRow.lastSpeaker_detial! == userData.id{
             lastSpeakerName = userData.name
             cell.lastLine.textColor = UIColor(red:0.30, green:0.30, blue:0.30, alpha:1.0)
@@ -123,7 +124,10 @@ class RecentTableViewModel{
         if topicWriteToRow.battery != nil{
             letoutBattery(battery: cell.battery, batteryLeft: topicWriteToRow.battery!)
         }
-        
+        // 飛行
+        print("-----+------")
+        print(cell.ownerName)
+        print(topicWriteToRow.lastLine_detial)
         return cell
     }
     func letoutBattery(battery:UIImageView, batteryLeft:Int){
@@ -331,7 +335,8 @@ class RecentTableViewModel{
             }
             return false
         }){
-            recentDataBase[cell_index].clientName_detial = input_dic["client_name"] as? String
+            //飛行 unlocak
+            //recentDataBase[cell_index].clientName_detial = input_dic["client_name"] as? String
             recentDataBase[cell_index].clientPhoto_detial = base64ToImage(input_dic["img"] as! String)
             recentDataBase[cell_index].clientSex_detial = input_dic["sex"] as? String
             recentDataBase[cell_index].clientIsRealPhoto_detial = input_dic["is_real_pic"] as? Bool

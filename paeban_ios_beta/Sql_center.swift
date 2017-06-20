@@ -1101,7 +1101,7 @@ public class SQL_center{
         do{
             print("========================")
             for c in try sql_db!.prepare(recent_topic){
-                print(c[topic_title])
+                print("\(c[topic_title])   \(c[client_id])")
             }
             print("=====================")
         }
