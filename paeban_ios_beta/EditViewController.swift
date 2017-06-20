@@ -35,8 +35,8 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
             }
         }
         else{
-            let alert = UIAlertController(title: "錯誤", message: "標題不可為空白，或只有hashtag", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+            let alert = UIAlertController(title: "錯誤".localized(withComment: "EditVC"), message: "標題不可為空白，或只有hashtag".localized(withComment: "EditVC"), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "確認".localized(withComment: "EditVC"), style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
         
@@ -63,9 +63,9 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
                     self.jump_tp_my_topic()
                 }
                 else{
-                    let alert = UIAlertController(title: "開啟新話題", message: "同時只能有一個話題，確定要開啟新的話題並刪除目前的所有對話？", preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction(title: "取消", style: .default, handler: nil))
-                    alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (alert_pa) in
+                    let alert = UIAlertController(title: "開啟新話題".localized(withComment: "EditVC"), message: "同時只能有一個話題，確定要開啟新的話題並刪除目前的所有對話？".localized(withComment: "EditVC"), preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "取消".localized(withComment: "EditVC"), style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: "確定".localized(withComment: "EditVC"), style: .default, handler: { (alert_pa) in
                         self.send_new_topic_msg_to_server_old_ver()
                         self.editText.text! = ""
                         self.collapseInputBox()
@@ -80,9 +80,9 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
     func check_if_has_old_topic_from_local(text:String){
         let old_topic_count = sql_database.check_old_topic_count()
         if old_topic_count > 0{
-            let alert = UIAlertController(title: "開啟新話題", message: "同時只能有一個話題，確定要開啟新的話題並刪除目前的所有對話？", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (alert_pa) in
+            let alert = UIAlertController(title: "開啟新話題".localized(withComment: "EditVC"), message: "同時只能有一個話題，確定要開啟新的話題並刪除目前的所有對話？".localized(withComment: "EditVC"), preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "取消".localized(withComment: "EditVC"), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "確定".localized(withComment: "EditVC"), style: .default, handler: { (alert_pa) in
                 self.send_new_topic_to_server(new_topic_title:text)
             }))
             self.present(alert, animated: true, completion: nil)
@@ -119,11 +119,11 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
                         }
                         else{
                             load_view?.removeFromSuperview()
-                            let alert = UIAlertController(title: "錯誤", message: "開啟話題失敗，是否重新傳送資料？", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "否", style: .default, handler: { (action) in
+                            let alert = UIAlertController(title: "錯誤".localized(withComment: "EditVC"), message: "開啟話題失敗，是否重新傳送資料？".localized(withComment: "EditVC"), preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "否".localized(withComment: "EditVC"), style: .default, handler: { (action) in
                                 sql_database.delete_all_my_topic()
                             }))
-                            alert.addAction(UIAlertAction(title: "是", style: .default, handler: { (action) in
+                            alert.addAction(UIAlertAction(title: "是".localized(withComment: "EditVC"), style: .default, handler: { (action) in
                                 send()
                             }))
                             self.present(alert, animated: true, completion: nil)
@@ -136,8 +136,8 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
             send()
         }
         else{
-            let alert = UIAlertController(title: "錯誤", message: "資料庫錯誤", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (action) in
+            let alert = UIAlertController(title: "錯誤".localized(withComment: "EditVC"), message: "資料庫錯誤".localized(withComment: "EditVC"), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "確定".localized(withComment: "EditVC"), style: .default, handler: { (action) in
                 //pass
             }))
             self.present(alert, animated: true, completion: nil)

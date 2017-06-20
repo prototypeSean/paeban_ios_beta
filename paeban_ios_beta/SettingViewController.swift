@@ -9,6 +9,7 @@
 import UIKit
 import Starscream
 
+
 class SettingViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var isTruePhotoSwitch: UISwitch!
 
@@ -265,6 +266,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     // override
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "設定".localized(withComment: "設定->導覽頁左上角文字")
         pencilIcon.image = UIImage(named:"pencil")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         pencilIcon.tintColor = UIColor.orange
         pencilIcon.layer.shadowColor = UIColor.black.cgColor

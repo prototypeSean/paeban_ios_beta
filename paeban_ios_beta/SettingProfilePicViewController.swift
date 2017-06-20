@@ -21,7 +21,7 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
     @IBOutlet weak var profilePicShadow: UIView!
     @IBAction func change_btn(_ sender: AnyObject) {
 //        addImgBtn()
-        let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let alert:UIAlertController=UIAlertController(title: "選取照片".localized(withComment: "SettingProfilePicViewController"), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
 //        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default)
 //        {
@@ -29,18 +29,18 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
 //            self.openCamera()
 //            
 //        }
-        let gallaryAction = UIAlertAction(title: "Gallary", style: UIAlertActionStyle.default)
+        let gallaryAction = UIAlertAction(title: "相簿".localized(withComment: "SettingProfilePicViewController"), style: UIAlertActionStyle.default)
         {
             UIAlertAction in
             self.openGallary()
         }
-        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default)
+        let cameraAction = UIAlertAction(title: "相機".localized(withComment: "SettingProfilePicViewController"), style: UIAlertActionStyle.default)
         {
             UIAlertAction in
             self.openCamera()
             
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
+        let cancelAction = UIAlertAction(title: "取消".localized(withComment: "SettingProfilePicViewController"), style: UIAlertActionStyle.cancel)
         {
             UIAlertAction in
             

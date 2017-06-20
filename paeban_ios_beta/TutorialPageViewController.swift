@@ -16,6 +16,7 @@ class TutorialPageViewController: UIPageViewController, UIPageViewControllerData
                 self.getViewController(indentifier: "TPage_2ViewController"),
                 self.getViewController(indentifier: "TPage_3ViewController"),
                 self.getViewController(indentifier: "TPage_4ViewController"),
+                self.getViewController(indentifier: "TPage_5ViewController"),
                 self.getViewController(indentifier: "EULAViewController")
         ]
     }()

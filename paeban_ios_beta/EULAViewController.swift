@@ -37,6 +37,7 @@ class EULAViewController: UIViewController {
                            self.getViewController(indentifier: "TPage_2ViewController"),
                            self.getViewController(indentifier: "TPage_3ViewController"),
                            self.getViewController(indentifier: "TPage_4ViewController"),
+                           self.getViewController(indentifier: "TPage_5ViewController"),
                            self.getViewController(indentifier: "EULAViewController")
             ]
             for vc_s in vc_list{

@@ -227,8 +227,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func check_announcement(){
         HttpRequestCenter().request_user_data("check_announcement", send_dic: [:]) { (return_dic) in
             let text = return_dic["announcement"] as! String
-            let alert = UIAlertController(title: "公告", message: text, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+            let alert = UIAlertController(title: "公告".localized(withComment: "TopicTableViewController"), message: text, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "確認".localized(withComment: "TopicTableViewController"), style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
     }
@@ -446,23 +446,23 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         HttpRequestCenter().privacy_function(msg_type: "report_topic_title", send_dic: sendDic, inViewAct: { (Dictionary) in
             let msg_type = Dictionary["msg_type"] as! String
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "確認".localized(withComment: "TopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
             if msg_type == "success"{
-                alert.title = "舉報"
-                alert.message = "感謝您的回報，我們將儘速處理"
+                alert.title = "舉報".localized(withComment: "TopicTableViewController")
+                alert.message = "感謝您的回報，我們將儘速處理".localized(withComment: "TopicTableViewController")
                 
             }
             else if msg_type == "user_not_exist"{
-                alert.title = "錯誤"
-                alert.message = "用戶不存在"
+                alert.title = "錯誤".localized(withComment: "TopicTableViewController")
+                alert.message = "用戶不存在".localized(withComment: "TopicTableViewController")
             }
             else if msg_type == "topic_not_exist"{
-                alert.title = "錯誤"
-                alert.message = "話題不存在"
+                alert.title = "錯誤".localized(withComment: "TopicTableViewController")
+                alert.message = "話題不存在".localized(withComment: "TopicTableViewController")
             }
             else if msg_type == "unknown_error"{
-                alert.title = "錯誤"
-                alert.message = "未知的錯誤"
+                alert.title = "錯誤".localized(withComment: "TopicTableViewController")
+                alert.message = "未知的錯誤".localized(withComment: "TopicTableViewController")
             }
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
@@ -472,8 +472,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     func conform_excute(title:String, msg:String, yes_func:@escaping ()->Void){
         let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
-        alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (_) in
+        alert.addAction(UIAlertAction(title: "取消".localized(withComment: "TopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
+        alert.addAction(UIAlertAction(title: "確認".localized(withComment: "TopicTableViewController"), style: .default, handler: { (_) in
             yes_func()
         }))
         self.present(alert, animated: true, completion: nil)

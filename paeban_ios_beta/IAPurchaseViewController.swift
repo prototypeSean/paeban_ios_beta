@@ -59,14 +59,14 @@ class IAPurchaseViewController: UIViewController, UITableViewDataSource,UITableV
     }
     func buyActions(selectedProduct:SKProduct) {
         
-        let actionSheetController = UIAlertController(title: "確認購買", message: "購買\(selectedProduct.localizedTitle) ?", preferredStyle: UIAlertControllerStyle.actionSheet)
+        let actionSheetController = UIAlertController(title: "確認購買".localized(withComment: "IAPurchaseViewController"), message: String(format: NSLocalizedString("購買%@ ?", comment: "IAPurchaseViewController"), selectedProduct.localizedTitle), preferredStyle: UIAlertControllerStyle.actionSheet)
         
-        let buyAction = UIAlertAction(title: "Buy", style: UIAlertActionStyle.default) { (action) -> Void in
+        let buyAction = UIAlertAction(title: "購買".localized(withComment: "IAPurchaseViewController"), style: UIAlertActionStyle.destructive) { (action) -> Void in
             let payment = SKPayment(product: selectedProduct)
             SKPaymentQueue.default().add(payment)
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { (action) -> Void in
+        let cancelAction = UIAlertAction(title: "取消".localized(withComment: "IAPurchaseViewController"), style: UIAlertActionStyle.cancel) { (action) -> Void in
             
         }
         

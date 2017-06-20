@@ -138,7 +138,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 // get user img from server
                 // and write into database
                 
-                set_loading_view_title(title: "正在請求資料庫更新")
+                set_loading_view_title(title: "正在更新資料庫")
                 update_database(reset_db: "1")
             }
             else{
@@ -184,20 +184,20 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         if !check_version(ver_local:version, ver_server: rturn_dic!["version"] as! String){
                             let version_at_least = rturn_dic!["version_at_least"] as! String
                             if !check_version(ver_local:version, ver_server: version_at_least){
-                                let alert_msg = "您的版本\(version)過舊無法服務\n請更新到最新版本\(rturn_dic!["version"]! as! String)"
-                                let alert = UIAlertController(title: "錯誤", message: alert_msg, preferredStyle: .alert)
-                                alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+                                let alert_msg = String(format: NSLocalizedString("您的版本 %@ 過舊無法服務\n請更新到最新版本 %@", comment: "ViewController"), version, rturn_dic!["version"]! as! String)
+                                let alert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: alert_msg, preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "確定".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                                     // 聽說ios10以前有問題？
                                     UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
                                 }))
                                 self.present(alert, animated: true, completion: nil)
                             }
                             else{
-                                let alert = UIAlertController(title: "通知", message: "版本 \(rturn_dic!["version"]! as! String) 已發布\n請盡快更新\n您現在的版本是\(version)", preferredStyle: .alert)
-                                alert.addAction(UIAlertAction(title: "更新", style: .default, handler: { (act) in
+                                let alert = UIAlertController(title: "通知".localized(withComment: "ViewController"), message:String(format: NSLocalizedString("版本 %@ 已發布\n請盡快更新\n您現在的版本是 %@ ", comment: "ViewController"), rturn_dic!["version"]! as! String, version), preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "更新".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                                     UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
                                 }))
-                                alert.addAction(UIAlertAction(title: "稍後", style: .default, handler: { (act) in
+                                alert.addAction(UIAlertAction(title: "稍後".localized(withComment: "ViewController"), style: .destructive, handler: { (act) in
                                     check_user_id(input_dic: rturn_dic!)
                                 }))
                                 self.present(alert, animated: true, completion: nil)
@@ -210,11 +210,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 }
                 else{
                     DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "錯誤", message: "登入失敗，是否重試", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "是", style: .default, handler: { (act) in
+                        let alert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: "登入失敗，是否重試".localized(withComment: "ViewController"), preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "是".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                             get_user_info()
                         }))
-                        alert.addAction(UIAlertAction(title: "否", style: .default, handler: { (act) in
+                        alert.addAction(UIAlertAction(title: "否".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                             HttpRequestCenter().request_user_data("log_out", send_dic: [:]) { (element) in
                                 //nil
                             }
@@ -236,7 +236,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 }
             }
         }
-        set_loading_view_title(title: "正在確認版本")
+        set_loading_view_title(title: "正在確認版本".localized(withComment: "ViewController"))
         get_user_info()
         //===================
 //        if version_in_db != version || reset_database{
@@ -340,11 +340,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         else{
             DispatchQueue.main.async {
-                let alert = UIAlertController(title: "錯誤", message: "網路異常，是否嘗試重新連線", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "是", style: .default, handler: { (act) in
+                let alert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: "網路異常，是否嘗試重新連線".localized(withComment: "ViewController"), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "是".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                     self.login_paeban_obj.get_cookie_csrf()
                 }))
-                alert.addAction(UIAlertAction(title: "否", style: .default, handler: { (act) in
+                alert.addAction(UIAlertAction(title: "否".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                     self.show_items()
                 }))
             }
@@ -426,11 +426,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if state == "net_fail"{
             DispatchQueue.main.async {
                 self.remove_loading_view()
-                let alert = UIAlertController(title: "錯誤", message: "網路錯誤，是否嘗試重新登入", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "是", style: .default, handler: { (act) in
+                let alert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: "網路錯誤，是否嘗試重新登入".localized(withComment: "ViewController"), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "是".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                     self.paeban_login()
                 }))
-                alert.addAction(UIAlertAction(title: "否", style: .default, handler: { (act) in
+                alert.addAction(UIAlertAction(title: "否".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                     self.show_items()
                     self.remove_loading_view()
                 }))
@@ -461,9 +461,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             login_paeban_obj.get_cookie_by_IDPW(id: id, pw: pw)
         }
         else{
-            let alert = UIAlertController(title: "警告", message: "帳號或密碼未輸入", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "警告".localized(withComment: "ViewController"), message: "帳號或密碼未輸入".localized(withComment: "ViewController"), preferredStyle: UIAlertControllerStyle.alert)
             
-            alert.addAction(UIAlertAction(title:"確認",style: UIAlertActionStyle.default, handler: { (target) in
+            alert.addAction(UIAlertAction(title:"確認".localized(withComment: "ViewController"),style: UIAlertActionStyle.default, handler: { (target) in
                 //code
             }))
             self.present(alert, animated: true, completion: {
@@ -478,10 +478,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             DispatchQueue.main.async {
                 self.remove_loading_view()
                 print("tout2")
-                let alert = UIAlertController(title: "錯誤", message: "連線逾時，是否重新連線", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "是", style: UIAlertActionStyle.default, handler: { (target) in
+                let alert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: "連線逾時，是否重新連線".localized(withComment: "ViewController"), preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "是".localized(withComment: "ViewController"), style: UIAlertActionStyle.default, handler: { (target) in
                     self.hide_items()
-                    self.set_loading_view_title(title: "登入中")
+                    self.set_loading_view_title(title: "登入中".localized(withComment: "ViewController"))
                     self.loginId.resignFirstResponder()
                     self.logInPw.resignFirstResponder()
                     check_online(in: self) {
@@ -489,7 +489,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         //self.logInPw.text = ""
                     }
                 }))
-                alert.addAction(UIAlertAction(title:"否",style: UIAlertActionStyle.default, handler: { (target) in
+                alert.addAction(UIAlertAction(title:"否".localized(withComment: "ViewController"),style: UIAlertActionStyle.default, handler: { (target) in
                     //code
                 }))
                 self.present(alert, animated: true, completion: {
@@ -511,8 +511,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             print("登入失敗")
             DispatchQueue.main.async {
                 self.remove_loading_view()
-                let alert = UIAlertController(title: "錯誤", message: "帳號或密碼錯誤", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (target) in
+                let alert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: "帳號或密碼錯誤".localized(withComment: "ViewController"), preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "確認".localized(withComment: "ViewController"), style: UIAlertActionStyle.default, handler: { (target) in
                     self.logInPw.text = ""
                     self.loginId.becomeFirstResponder()
                     self.show_items()
@@ -529,8 +529,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             DispatchQueue.main.async {
                 self.remove_loading_view()
                 print("tout1")
-                let alert = UIAlertController(title: "錯誤", message: "連線逾時，是否重新連線", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "是", style: UIAlertActionStyle.default, handler: { (target) in
+                let alert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: "連線逾時，是否重新連線".localized(withComment: "ViewController"), preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "是".localized(withComment: "ViewController"), style: UIAlertActionStyle.default, handler: { (target) in
                     self.hide_items()
                     self.set_loading_view_title(title: "登入中")
                     self.loginId.resignFirstResponder()
@@ -540,7 +540,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         //self.logInPw.text = ""
                     }
                 }))
-                alert.addAction(UIAlertAction(title:"否",style: UIAlertActionStyle.default, handler: { (target) in
+                alert.addAction(UIAlertAction(title:"否".localized(withComment: "ViewController"),style: UIAlertActionStyle.default, handler: { (target) in
                     //code
                 }))
                 self.present(alert, animated: true, completion: {
@@ -690,8 +690,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     let list_len = ver_local_list.count
                     for ver_list_index in 0..<list_len{
                         if ver_server_list[ver_list_index] > ver_local_list[ver_list_index]{
-                            let alert = UIAlertController(title: "更新通知", message: "版本 \(version_server!) 已發布，請盡快更新，您現在的版本是\(version)", preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "確認", style: .default, handler: { (action) in
+                            let alert = UIAlertController(title: "更新通知".localized(withComment: "ViewController"), message: String(format: NSLocalizedString("版本 %@ 已發布\n請盡快更新\n您現在的版本是 %@ ", comment: "ViewController"), version_server as! String, version), preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "確認".localized(withComment: "ViewController"), style: .default, handler: { (action) in
                                 //pass
                             }))
                             self.present(alert, animated: true, completion: nil)
@@ -704,8 +704,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             }
             else if msgtype == "announcement"{
                 let text = msgPack["announcement"] as! String
-                let alert = UIAlertController(title: "公告", message: text, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+                let alert = UIAlertController(title: "公告".localized(withComment: "ViewController"), message: text, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "確認".localized(withComment: "ViewController"), style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
         }
@@ -752,8 +752,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     
     func simpoAlert(reason:String){
-        let mailAlert = UIAlertController(title: "錯誤", message: reason, preferredStyle: UIAlertControllerStyle.alert)
-        mailAlert.addAction(UIAlertAction(title: "確認", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+        let mailAlert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: reason, preferredStyle: UIAlertControllerStyle.alert)
+        mailAlert.addAction(UIAlertAction(title: "確認".localized(withComment: "ViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
             //code
         }))
         self.present(mailAlert, animated: true, completion: {

@@ -132,6 +132,14 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         topicInfoBG.layer.addSublayer(gradientLayer)
         
 //      MARK: 設定按鈕
+        // 設定自動調整按鈕文字大小
+        btnAddFriend.titleLabel?.adjustsFontSizeToFitWidth = true
+        btnAddFriend.titleLabel?.minimumScaleFactor = 0.7
+        btnIgnroe.titleLabel?.adjustsFontSizeToFitWidth = true
+        btnIgnroe.titleLabel?.minimumScaleFactor = 0.7
+        btnBlock.titleLabel?.adjustsFontSizeToFitWidth = true
+        btnBlock.titleLabel?.minimumScaleFactor = 0.7
+        
         // 按下按鈕文字回白
         btnAddFriend.setTitleColor(UIColor.white, for: .highlighted)
         btnIgnroe.setTitleColor(UIColor.white, for: .highlighted)
@@ -159,7 +167,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
 
     }
     func alertTopicClosed(){
-        let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.alert)
+        let refreshAlert = UIAlertController(title: "提示".localized(withComment: "MyTopicViewController"), message: "此話題已關閉".localized(withComment: "MyTopicViewController"), preferredStyle: UIAlertControllerStyle.alert)
         
         refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
             self.dismiss(animated: true, completion: {
@@ -181,9 +189,9 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
 //            "block_id":setID!,
 //            "topic_id":topicId!
 //        ]
-        let confirm = UIAlertController(title: "封鎖", message: "封鎖  \(setName!) ? 將再也無法聯繫他", preferredStyle: UIAlertControllerStyle.alert)
-        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
-        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+        let confirm = UIAlertController(title: "封鎖", message: String(format: NSLocalizedString("封鎖%@ ? 將再也無法聯繫他", comment: "FriendChatUpVC"),setName!) , preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicViewController"), style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
             Block_list_center().add_user_to_block_list(client_id: self.setID!)
 //            HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
 //                if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
@@ -207,29 +215,29 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
             "report_id":setID!,
             "topic_id":topicId!
         ]
-        let confirm = UIAlertController(title: "舉報", message: "向管理員反應收到  \(setName!) 的騷擾內容", preferredStyle: UIAlertControllerStyle.alert)
-        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
-        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction_void) in
+        let confirm = UIAlertController(title: "舉報".localized(withComment: "MyTopicViewController"), message: String(format: NSLocalizedString("向管理員反應收到%@ 的騷擾內容", comment: "MyTopicViewController"), setName!), preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicViewController"), style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction_void) in
             HttpRequestCenter().privacy_function(msg_type: "report_topic", send_dic: sendDic, inViewAct: { (Dictionary) in
                 let msg_type = Dictionary["msg_type"] as! String
                 let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+                alert.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicViewController"), style: UIAlertActionStyle.default, handler: nil))
                 if msg_type == "success"{
-                    alert.title = "舉報"
-                    alert.message = "感謝您的回報，我們將儘速處理"
+                    alert.title = "舉報".localized(withComment: "MyTopicViewController")
+                    alert.message = "感謝您的回報，我們將儘速處理".localized(withComment: "MyTopicViewController")
                     
                 }
                 else if msg_type == "user_not_exist"{
-                    alert.title = "錯誤"
-                    alert.message = "用戶不存在"
+                    alert.title = "錯誤".localized(withComment: "MyTopicViewController")
+                    alert.message = "用戶不存在".localized(withComment: "MyTopicViewController")
                 }
                 else if msg_type == "topic_not_exist"{
-                    alert.title = "錯誤"
-                    alert.message = "話題不存在"
+                    alert.title = "錯誤".localized(withComment: "MyTopicViewController")
+                    alert.message = "話題不存在".localized(withComment: "MyTopicViewController")
                 }
                 else if msg_type == "unknown_error"{
-                    alert.title = "錯誤"
-                    alert.message = "未知的錯誤"
+                    alert.title = "錯誤".localized(withComment: "MyTopicViewController")
+                    alert.message = "未知的錯誤".localized(withComment: "MyTopicViewController")
                 }
                 DispatchQueue.main.async {
                     self.present(alert, animated: true, completion: nil)
@@ -241,8 +249,8 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         
     }
     func addFriend(){
-        let alert = UIAlertController(title: "好友邀請", message: "已送出好友邀請", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "確認", style: .default, handler: nil))
+        let alert = UIAlertController(title: "好友邀請".localized(withComment: "MyTopicViewController"), message: "已送出好友邀請".localized(withComment: "MyTopicViewController"), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "確認".localized(withComment: "MyTopicViewController"), style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
         let sendDic:NSDictionary = [
             "msg_type":"add_friend",
@@ -267,7 +275,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     }
     override func viewDidAppear(_ animated: Bool) {
         //pass lord img
-        setImage()
+//        setImage()
         re_new_my_img()
         client_data_obj?.get_client_img { (return_img:UIImage?) in
             if return_img != nil{
@@ -276,8 +284,9 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         }
     }
     override func viewDidLayoutSubviews() {
-        
+        setImage()
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let chatViewCon = segue.destination as! ChatViewController
         chatViewCon.setID = userData.id
@@ -368,8 +377,8 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
             }
         }
         else if msgType == "has_been_friend"{
-            let alert = UIAlertController(title: "好友", message: "已經是好友了", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: nil))
+            let alert = UIAlertController(title: "好友".localized(withComment: "MyTopicViewController"), message: "已經是好友了".localized(withComment: "MyTopicViewController"), preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicViewController"), style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
         else if msgType == "leave_topic_owner"{

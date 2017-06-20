@@ -1,0 +1,293 @@
+/* 
+  Localizable.strings
+  paeban_ios_beta
+
+  Created by 高尚義 on 2017/6/15.
+  Copyright © 2017年 尚義 高. All rights reserved.
+  ！！！！！此檔案中的註解不可更改！！！！！有讓本地化code辨識用途
+   String(format: NSLocalizedString("向管理員反應收到%@ 的騷擾內容", comment: "MyTopicTableViewController"), client_name)
+*/
+
+/*設定->導覽頁左上角文字*/
+"設定" = "Setting";
+
+/*EditVC*/
+"錯誤" = "Opps!";
+
+
+"標題不可為空白，或只有hashtag" = "The title can't be empty, nor hashtag only";
+
+"確認" = "OK";
+
+"開啟新話題" = "New Topic";
+
+"同時只能有一個話題，確定要開啟新的話題並刪除目前的所有對話？" = "You can have 1 topic at the same time for now, are you sure you want to replace current topic with new Topic?";
+
+"取消" = "Cancel";
+
+"確定" = "Confirm";
+
+"開啟話題失敗，是否重新傳送資料？" = "Starting new topic fail, retry?";
+
+"否" = "No";
+
+"是" = "Yes";
+
+"資料庫錯誤" = "DB error";
+
+/*FriendChatUpVC*/
+"封鎖" = "Block";
+
+"封鎖%@? 將再也無法聯繫他" = "Block%@? you'll never able to reach this person anymore";
+
+"取消" = "Cancel";
+
+"確定" = "Confirm";
+
+"舉報" = "Report";
+
+"向管理員反應收到%@ 的騷擾內容" = "Report abusive user %@ to GM";
+
+"感謝您的回報，我們將儘速處理" = "Thanks for your report, we'll review your report ASAP";
+
+"錯誤" = "Error";
+
+"用戶不存在" = "User not found";
+
+"話題不存在" = "Topic not found";
+
+"未知的錯誤" = "Unknown Topic";
+
+
+/*IAPurchaseViewController*/
+"確認購買" = "Purchase Confirm";
+
+"購買" = "Buy";
+
+"取消" = "Cancel";
+
+/*MyTopicTableViewController*/
+"通知" = "Notify";
+
+"用戶%@ 已離開您的話題%@" = "User %@ have left your topic %@";
+
+"確認" = "Confirm";
+
+"封鎖" = "Block";
+
+"取消" = "Cancel";
+
+"確定" = "Confirm";
+
+"封鎖%@ ? 本話題不會再出現此用戶" = "Block%@ ? you won't see him/her in this topic again";
+
+"舉報" = "Report";
+
+"向管理員反應收到%@ 的騷擾內容" = "Report abusive user %@ to GM";
+
+"感謝您的回報，我們將儘速處理" = "Thanks for your report, we'll review your report ASAP";
+
+"錯誤" = "Error";
+
+"用戶不存在" = "User not found";
+
+"話題不存在" = "Topic not found";
+
+"未知的錯誤" = "Unknown Topic";
+
+/*MyTopicViewController*/
+"提示" = "Message";
+
+"此話題已關閉" = "This topic just closed";
+
+"封鎖" = "Block";
+
+"封鎖%@ ? 將再也無法聯繫他" = "Bolck%@ ?, you'll never able to reach this person any more.";
+
+"取消" = "Cancel";
+
+"確定" = "Confirm";
+
+"舉報" = "Report";
+
+"向管理員反應收到%@ 的騷擾內容" = "Report abusive user %@ to GM";
+
+"感謝您的回報，我們將儘速處理" = "Thanks for your report, we'll review your report ASAP";
+
+"錯誤" = "Error";
+
+"用戶不存在" = "User not found";
+
+"話題不存在" = "Topic not found";
+
+"未知的錯誤" = "Unknown Topic";
+
+"好友邀請" = "Add friend";
+
+"已送出好友邀請" = "invitation sended";
+
+"好友" = "Friends";
+
+"已經是好友了" = "Already friends";
+
+
+/*RecentTableViewController*/
+"通知" = "Message";
+
+"用戶%@ 已將您移出話題%@" = "%@ removed from you Topic %@";
+
+"確認" = "Confirm";
+
+/*RegistAndLoginViewController*/
+"警告" = "Alert";
+
+"帳號或密碼未輸入" = "Please enter your account and password";
+
+"確認" = "Confirm";
+
+"錯誤" = "Error";
+
+"連線逾時，是否重新連線" = "connection time out, retry?";
+
+"是" = "Yes";
+
+"否" = "No";
+
+"帳號或密碼錯誤" = "Account or Password invalid";
+
+/*SettingProfilePicViewController*/
+"選取照片" = "Choose Image";
+
+"相簿" = "Gallary";
+
+"相機" = "Camera";
+
+"取消" = "Cancel";
+
+/*SinInFramViewController*/
+"錯誤" = "Error";
+
+"確認" = "Confirm";
+
+"成功" = "Success";
+
+"已發送註冊信,請至您的註冊信箱點擊啟動連結" = "A confirmation email has been sent, please check your email to valid account";
+
+"email已被註冊" = "This email has been registered";
+
+
+/*ToolsFunction*/
+"警告" = "Message";
+
+"網路尚未連線" = "No network connection";
+
+"重試" = "Retry";
+
+"錯誤" = "Error";
+
+"確認" = "Confirm";
+
+"%@ 向您送出好友邀請" = "%@ add you to friends";
+
+/*TopicTableViewController*/
+"公告" = "Message";
+
+"舉報" = "Report";
+
+"確認" = "Confirm";
+
+"錯誤" = "Error";
+
+"用戶不存在" = "User not found";
+
+"話題不存在" = "Topic not found";
+
+"未知的錯誤" = "Unknown Error";
+
+"取消" = "Cancel";
+
+
+/*TopicViewController*/
+"提示" = "Message";
+
+"話題已關閉" = "This topic is closed";
+
+"封鎖" = "Block";
+
+"封鎖%@ ? 將再也無法聯繫他" = "Bolck%@ ?, you'll never able to reach this person any more.";
+
+"取消" = "Cancel";
+
+"確定" = "Confirm";
+
+"確認" = "Confirm";
+
+"舉報" = "Report";
+
+"向管理員反應收到%@ 的騷擾內容" = "Report abusive user %@ to GM";
+
+"感謝您的回報，我們將儘速處理" = "Thanks for your report, we'll review your report ASAP";
+
+"錯誤" = "Error";
+
+"用戶不存在" = "User not found";
+
+"話題不存在" = "Topic not found";
+
+"未知的錯誤" = "Unknown Error";
+
+"好友邀請" = "Add friend";
+
+"已送出好友邀請" = "invitation sended";
+
+"好友" = "Friends";
+
+"已經是好友了" = "Already friends";
+
+"通知" = "Message";
+
+"用戶%@ 已將您移出話題%@" = "%@ removed from you Topic %@";
+
+
+/*ViewController*/
+"您的版本 %@ 過舊無法服務\n請更新到最新版本 %@" = "Your versio %@ is expired, please update to latest version %@";
+
+"取消" = "Cancel";
+
+"確定" = "Confirm";
+
+"確認" = "Confirm";
+
+"舉報" = "Report";
+
+"錯誤" = "Error";
+
+"版本 %@ 已發布\n請盡快更新\n您現在的版本是 %@ " = "Version %@ has been released, please update. your current version is %@";
+
+"更新" = "Update";
+
+"稍後" = "Later";
+
+"登入失敗，是否重試" = "Login fail, retry?";
+
+"是" = "Yes";
+
+"否" = "No";
+
+"正在確認版本" = "Checking version";
+
+"網路異常，是否嘗試重新連線" = "Network error, reconnect?";
+
+"網路錯誤，是否嘗試重新登入" = "Network error, reconnect?";
+
+"警告" = "Message";
+
+"帳號或密碼未輸入" = "Please enter your account and password";
+
+"連線逾時，是否重新連線" = "connection time out, retry?";
+
+"登入中" = "loading...";
+
+"帳號或密碼錯誤" = "Account or Password invalid";
+
+"公告" = "Message";

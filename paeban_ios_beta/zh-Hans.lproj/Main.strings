@@ -1,0 +1,246 @@
+
+/* Class = "UIButton"; normalTitle = "封鎖"; ObjectID = "1iA-d0-HvN"; */
+"1iA-d0-HvN.normalTitle" = "封鎖";
+
+/* Class = "UITabBarItem"; title = "話題"; ObjectID = "47K-Ip-kFa"; */
+"47K-Ip-kFa.title" = "話題";
+
+/* Class = "UILabel"; text = "漸"; ObjectID = "4Jc-HU-kXp"; */
+"4Jc-HU-kXp.text" = "漸";
+
+/* Class = "UIButton"; normalTitle = "Facebook登入"; ObjectID = "4Qt-oe-Dwj"; */
+"4Qt-oe-Dwj.normalTitle" = "Facebook登入";
+
+/* Class = "UILabel"; text = "漸漸的 , 認識你"; ObjectID = "5gl-mS-DqF"; */
+"5gl-mS-DqF.text" = "漸漸的 , 認識你";
+
+/* Class = "UIButton"; normalTitle = "登入"; ObjectID = "62m-hP-tO8"; */
+"62m-hP-tO8.normalTitle" = "登入";
+
+/* Class = "UILabel"; text = "好友暱稱"; ObjectID = "6QX-Mm-cIz"; */
+"6QX-Mm-cIz.text" = "好友暱稱";
+
+/* Class = "UILabel"; text = "最後一句對話"; ObjectID = "6q6-cM-8k4"; */
+"6q6-cM-8k4.text" = "最後一句對話";
+
+/* Class = "UITextField"; placeholder = "輸入＃後的文字會轉為標籤"; ObjectID = "7CP-7u-68c"; */
+"7CP-7u-68c.placeholder" = "輸入＃後的文字會轉為標籤";
+
+/* Class = "UIButton"; normalTitle = "更換照片"; ObjectID = "7Fx-D8-EXR"; */
+"7Fx-D8-EXR.normalTitle" = "更換照片";
+
+/* Class = "UITextField"; placeholder = "密碼"; ObjectID = "8BY-go-BQQ"; */
+"8BY-go-BQQ.placeholder" = "密碼";
+
+/* Class = "UILabel"; text = "話題標題"; ObjectID = "AFM-PV-tWI"; */
+"AFM-PV-tWI.text" = "話題標題";
+
+/* Class = "UILabel"; text = "暱稱"; ObjectID = "Age-uM-Snv"; */
+"Age-uM-Snv.text" = "暱稱";
+
+/* Class = "UILabel"; text = "感謝您加入漸漸"; ObjectID = "CMQ-B7-DCc"; */
+"CMQ-B7-DCc.text" = "感謝您加入漸漸";
+
+/* Class = "UILabel"; text = "最後一句對話"; ObjectID = "FgJ-mn-PIa"; */
+"FgJ-mn-PIa.text" = "最後一句對話";
+
+/* Class = "UILabel"; text = "回覆"; ObjectID = "G7c-JF-Jmy"; */
+"G7c-JF-Jmy.text" = "回覆";
+
+/* Class = "UIButton"; normalTitle = "舉報"; ObjectID = "HJT-Pq-Enr"; */
+"HJT-Pq-Enr.normalTitle" = "舉報";
+
+/* Class = "UILabel"; text = "km"; ObjectID = "IIc-iW-Uqw"; */
+"IIc-iW-Uqw.text" = "km";
+
+/* Class = "UITextField"; placeholder = "帳號"; ObjectID = "IdW-vY-5mm"; */
+"IdW-vY-5mm.placeholder" = "帳號";
+
+/* Class = "UILabel"; text = "為了讓所有使用者都能輕鬆自然的在漸漸認識朋友，請了解我們以下的安全須知。"; ObjectID = "IiC-uN-zR8"; */
+"IiC-uN-zR8.text" = "為了讓所有使用者都能輕鬆自然的在漸漸認識朋友，請了解我們以下的安全須知。";
+
+/* Class = "UILabel"; text = "發話者："; ObjectID = "KNy-ul-90h"; */
+"KNy-ul-90h.text" = "發話者：";
+
+/* Class = "UIButton"; normalTitle = "登入"; ObjectID = "KaK-oj-Drk"; */
+"KaK-oj-Drk.normalTitle" = "登入";
+
+/* Class = "UILabel"; text = "漸漸的 , 認識你"; ObjectID = "KaX-dN-TuG"; */
+"KaX-dN-TuG.text" = "漸漸的 , 認識你";
+
+/* Class = "UILabel"; text = "ownerName"; ObjectID = "LPO-18-ITR"; */
+"LPO-18-ITR.text" = "ownerName";
+
+/* Class = "UIButton"; normalTitle = "   導 覽  ➜"; ObjectID = "M6n-vc-KN0"; */
+"M6n-vc-KN0.normalTitle" = "   導 覽  ➜";
+
+/* Class = "UINavigationItem"; title = "跟誰的話題"; ObjectID = "Mdc-ig-F3R"; */
+"Mdc-ig-F3R.title" = "跟誰的話題";
+
+/* Class = "UILabel"; text = "lastline"; ObjectID = "MhD-FL-UGt"; */
+"MhD-FL-UGt.text" = "lastline";
+
+/* Class = "UINavigationItem"; title = "參與中"; ObjectID = "MhI-zc-ri9"; */
+"MhI-zc-ri9.title" = "參與中";
+
+/* Class = "UITabBarItem"; title = "參與中"; ObjectID = "Mxd-tt-wyN"; */
+"Mxd-tt-wyN.title" = "參與中";
+
+/* Class = "UITabBarItem"; title = "好友"; ObjectID = "N6e-fC-bcv"; */
+"N6e-fC-bcv.title" = "好友";
+
+/* Class = "UIButton"; normalTitle = "導 覽"; ObjectID = "OPR-5y-zZh"; */
+"OPR-5y-zZh.normalTitle" = "導 覽";
+
+/* Class = "UILabel"; text = "/20"; ObjectID = "OQY-K7-R9L"; */
+"OQY-K7-R9L.text" = "/20";
+
+/* Class = "UILabel"; text = "漸漸的 , 認識你"; ObjectID = "Q7X-UM-B9v"; */
+"Q7X-UM-B9v.text" = "漸漸的 , 認識你";
+
+/* Class = "UILabel"; text = "漸"; ObjectID = "QPt-Xh-WCZ"; */
+"QPt-Xh-WCZ.text" = "漸";
+
+/* Class = "UIButton"; normalTitle = "封鎖"; ObjectID = "QUY-fi-OOz"; */
+"QUY-fi-OOz.normalTitle" = "封鎖";
+
+/* Class = "UILabel"; text = "照片中是我本人"; ObjectID = "RPJ-la-eJ1"; */
+"RPJ-la-eJ1.text" = "照片中是我本人";
+
+/* Class = "UILabel"; text = "照片中是我本人"; ObjectID = "Rj6-p8-jHS"; */
+"Rj6-p8-jHS.text" = "照片中是我本人";
+
+/* Class = "UINavigationItem"; title = "加入的話題"; ObjectID = "RxV-1u-lES"; */
+"RxV-1u-lES.title" = "加入的話題";
+
+/* Class = "UIButton"; normalTitle = "登出"; ObjectID = "SbO-DT-2Sj"; */
+"SbO-DT-2Sj.normalTitle" = "登出";
+
+/* Class = "UIButton"; normalTitle = "舉報"; ObjectID = "Vtf-7y-si7"; */
+"Vtf-7y-si7.normalTitle" = "舉報";
+
+/* Class = "UIButton"; normalTitle = "設定"; ObjectID = "Wcu-iW-4Fs"; */
+"Wcu-iW-4Fs.normalTitle" = "設定";
+
+/* Class = "UITabBarItem"; title = "我的"; ObjectID = "YHq-LB-c79"; */
+"YHq-LB-c79.title" = "我的";
+
+/* Class = "UITextField"; placeholder = "帳號"; ObjectID = "ZcH-yC-Ffy"; */
+"ZcH-yC-Ffy.placeholder" = "帳號";
+
+/* Class = "UIButton"; normalTitle = "註冊"; ObjectID = "acq-1n-1J6"; */
+"acq-1n-1J6.normalTitle" = "註冊";
+
+/* Class = "UIButton"; normalTitle = "RESET"; ObjectID = "ba9-Z2-XU2"; */
+"ba9-Z2-XU2.normalTitle" = "RESET";
+
+/* Class = "UIButton"; normalTitle = "我已閱讀並了解使用者須知"; ObjectID = "eVe-03-SoK"; */
+"eVe-03-SoK.normalTitle" = "我已閱讀並了解使用者須知";
+
+/* Class = "UILabel"; text = "我的話題標題"; ObjectID = "eYJ-3A-UKG"; */
+"eYJ-3A-UKG.text" = "我的話題標題";
+
+/* Class = "UITextField"; placeholder = "選擇性別"; ObjectID = "faT-OG-VF9"; */
+"faT-OG-VF9.placeholder" = "選擇性別";
+
+/* Class = "UIButton"; normalTitle = "舉報"; ObjectID = "fky-ei-yvH"; */
+"fky-ei-yvH.normalTitle" = "舉報";
+
+/* Class = "UIButton"; normalTitle = "好友"; ObjectID = "hQM-93-MHZ"; */
+"hQM-93-MHZ.normalTitle" = "好友";
+
+/* Class = "UILabel"; text = "⬅︎"; ObjectID = "hgJ-4f-gGF"; */
+"hgJ-4f-gGF.text" = "⬅︎";
+
+/* Class = "UINavigationItem"; title = "好友"; ObjectID = "i5i-Ra-d6o"; */
+"i5i-Ra-d6o.title" = "好友";
+
+/* Class = "UINavigationItem"; title = "我的話題"; ObjectID = "im4-xl-3t6"; */
+"im4-xl-3t6.title" = "我的話題";
+
+/* Class = "UILabel"; text = "房主的暱稱"; ObjectID = "jPN-A9-vyF"; */
+"jPN-A9-vyF.text" = "房主的暱稱";
+
+/* Class = "UILabel"; text = "  Copyright © 2016年 Paeban studio. All rights reserved."; ObjectID = "k3S-xV-Nns"; */
+"k3S-xV-Nns.text" = "  Copyright © 2016年 Paeban studio. All rights reserved.";
+
+/* Class = "UILabel"; text = "  Copyright © 2016年 Paeban studio. All rights reserved."; ObjectID = "k86-cw-gLM"; */
+"k86-cw-gLM.text" = "  Copyright © 2016年 Paeban studio. All rights reserved.";
+
+/* Class = "UIButton"; normalTitle = "儲存"; ObjectID = "kAN-Oz-kIi"; */
+"kAN-Oz-kIi.normalTitle" = "儲存";
+
+/* Class = "UIButton"; normalTitle = "選擇照片"; ObjectID = "kHw-e0-giL"; */
+"kHw-e0-giL.normalTitle" = "選擇照片";
+
+/* Class = "UILabel"; text = "lastspeaker"; ObjectID = "nAC-0n-7G7"; */
+"nAC-0n-7G7.text" = "lastspeaker";
+
+/* Class = "UILabel"; text = "滑開確認"; ObjectID = "qMq-Xg-dce"; */
+"qMq-Xg-dce.text" = "滑開確認";
+
+/* Class = "UIButton"; normalTitle = "好友"; ObjectID = "qQl-5h-cVE"; */
+"qQl-5h-cVE.normalTitle" = "好友";
+
+/* Class = "UILabel"; text = "發話人："; ObjectID = "qe8-9p-RhF"; */
+"qe8-9p-RhF.text" = "發話人：";
+
+/* Class = "UILabel"; text = "暱稱"; ObjectID = "qg2-3t-lER"; */
+"qg2-3t-lER.text" = "暱稱";
+
+/* Class = "UITextField"; placeholder = "請輸入信箱"; ObjectID = "quN-lh-j3J"; */
+"quN-lh-j3J.placeholder" = "請輸入信箱";
+
+/* Class = "UINavigationItem"; title = "好友"; ObjectID = "ryK-Qb-FG4"; */
+"ryK-Qb-FG4.title" = "好友";
+
+/* Class = "UITextField"; placeholder = "密碼"; ObjectID = "sHx-mL-Hbr"; */
+"sHx-mL-Hbr.placeholder" = "密碼";
+
+/* Class = "UIButton"; normalTitle = "        Facebook 登入"; ObjectID = "soN-PW-0RB"; */
+"soN-PW-0RB.normalTitle" = "        Facebook 登入";
+
+/* Class = "UILabel"; text = "喵喵"; ObjectID = "ssQ-Mf-2P6"; */
+"ssQ-Mf-2P6.text" = "喵喵";
+
+/* Class = "UILabel"; text = "使用者須知"; ObjectID = "t75-Wg-olW"; */
+"t75-Wg-olW.text" = "使用者須知";
+
+/* Class = "UIButton"; normalTitle = "註冊"; ObjectID = "tAR-u1-Ad2"; */
+"tAR-u1-Ad2.normalTitle" = "註冊";
+
+/* Class = "UILabel"; text = "  Copyright © 2016年 Paeban studio. All rights reserved."; ObjectID = "tar-Vk-qX6"; */
+"tar-Vk-qX6.text" = "  Copyright © 2016年 Paeban studio. All rights reserved.";
+
+/* Class = "UINavigationItem"; title = "話題"; ObjectID = "vG6-IY-Ij6"; */
+"vG6-IY-Ij6.title" = "話題";
+
+/* Class = "UIButton"; normalTitle = "送出"; ObjectID = "vMp-Yc-AJ0"; */
+"vMp-Yc-AJ0.normalTitle" = "送出";
+
+/* Class = "UITextField"; placeholder = "顯示的暱稱"; ObjectID = "vMr-H9-ucp"; */
+"vMr-H9-ucp.placeholder" = "顯示的暱稱";
+
+/* Class = "UITextField"; placeholder = "再次輸入密碼"; ObjectID = "vmP-a2-gea"; */
+"vmP-a2-gea.placeholder" = "再次輸入密碼";
+
+/* Class = "UITextField"; placeholder = "密碼"; ObjectID = "w75-ck-nEY"; */
+"w75-ck-nEY.placeholder" = "密碼";
+
+/* Class = "UILabel"; text = "中文 En"; ObjectID = "wb4-kw-iy4"; */
+"wb4-kw-iy4.text" = "中文 En";
+
+/* Class = "UIButton"; normalTitle = "開新話題"; ObjectID = "x93-Oe-SOH"; */
+"x93-Oe-SOH.normalTitle" = "開新話題";
+
+/* Class = "UIButton"; normalTitle = "封鎖"; ObjectID = "xhT-9v-FIc"; */
+"xhT-9v-FIc.normalTitle" = "封鎖";
+
+/* Class = "UILabel"; text = "好友邀請"; ObjectID = "yJ2-ED-08G"; */
+"yJ2-ED-08G.text" = "好友邀請";
+
+/* Class = "UILabel"; text = "5"; ObjectID = "ySV-ty-GPB"; */
+"ySV-ty-GPB.text" = "5";
+
+/* Class = "UILabel"; text = "話題標題"; ObjectID = "yud-7a-qK2"; */
+"yud-7a-qK2.text" = "話題標題";
