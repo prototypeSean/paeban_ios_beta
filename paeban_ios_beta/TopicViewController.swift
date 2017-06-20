@@ -70,7 +70,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
                 }
             }
         }
-        setImage()
+//        setImage()
+    // 2017_06_11 setImage()移動到viewDidLayoutSubviews測試
+//        setImage()
         re_new_client_img()
         my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
         re_new_my_img()
@@ -142,9 +144,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             get_client_img(owner: ownerId!, topic_id: topicId!)
         }
     }
-    
-    func alertTopicClosed(topic_id_ins:String){
-        let refreshAlert = UIAlertController(title: "提示", message: "話題已關閉", preferredStyle: UIAlertControllerStyle.alert)
+    func alertTopicClosed(){
+        let refreshAlert = UIAlertController(title: "提示".localized(withComment: "TopicViewController"), message: "話題已關閉".localized(withComment: "TopicViewController"), preferredStyle: UIAlertControllerStyle.alert)
         
         refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
             let nav_vc = self.parent as! UINavigationController

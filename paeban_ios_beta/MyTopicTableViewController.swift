@@ -537,10 +537,14 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         return tempMytopicList
     }
     
-    func block(block_id:String, client_name:String){
-        let confirm = UIAlertController(title: "封鎖", message: "封鎖  \(client_name) ? 本話題不會再出現此用戶", preferredStyle: UIAlertControllerStyle.alert)
-        confirm.addAction(UIAlertAction(title: "取消", style: UIAlertActionStyle.default, handler: nil))
-        confirm.addAction(UIAlertAction(title: "確定", style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+    func block(topic_id:String, block_id:String, client_name:String){
+        let data:NSDictionary = [
+            "block_id":block_id,
+            "topic_id":topic_id
+        ]
+        let confirm = UIAlertController(title: "封鎖".localized(withComment: "MyTopicTableViewController"), message: String(format: NSLocalizedString("封鎖%@ ? 本話題不會再出現此用戶", comment: "MyTopicTableViewController"), client_name), preferredStyle: UIAlertControllerStyle.alert)
+        confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
+        confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
             self.model.remove_detail_cell(by: block_id)
             self.model.remove_sec_topic_data(client_id:block_id)
             Block_list_center().add_user_to_block_list(client_id: block_id)
