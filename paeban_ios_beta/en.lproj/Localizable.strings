@@ -249,9 +249,7 @@
 "用戶%@ 已將您移出話題%@" = "%@ removed from you Topic %@";
 
 
-/*ViewController
-.localized(withComment: "ViewController")
- */
+/*ViewController*/
 "您的版本 %@ 過舊無法服務\n請更新到最新版本 %@" = "Your versio %@ is expired, please update to latest version %@";
 
 "取消" = "Cancel";
@@ -264,50 +262,32 @@
 
 "錯誤" = "Error";
 
+"版本 %@ 已發布\n請盡快更新\n您現在的版本是 %@ " = "Version %@ has been released, please update. your current version is %@";
 
-"" = "";
+"更新" = "Update";
 
-"" = "";
+"稍後" = "Later";
 
-"" = "";
+"登入失敗，是否重試" = "Login fail, retry?";
 
-"" = "";
+"是" = "Yes";
 
-"" = "";
+"否" = "No";
 
-"" = "";
+"正在確認版本" = "Checking version";
 
-"" = "";
+"網路異常，是否嘗試重新連線" = "Network error, reconnect?";
 
-"" = "";
+"網路錯誤，是否嘗試重新登入" = "Network error, reconnect?";
 
-"" = "";
+"警告" = "Message";
 
-"" = "";
+"帳號或密碼未輸入" = "Please enter your account and password";
 
-"" = "";
+"連線逾時，是否重新連線" = "connection time out, retry?";
 
-"" = "";
+"登入中" = "loading...";
 
-"" = "";
+"帳號或密碼錯誤" = "Account or Password invalid";
 
-"" = "";
-
-"" = "";
-
-"" = "";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+"公告" = "Message";
