@@ -9,7 +9,7 @@
 import UIKit
 import JSQMessagesViewController
 protocol TopicViewControllerDelegate {
-    func reLoadTopic(_ topicID:String)
+    func topic_has_been_closed(_ topicID:String)
 }
 
 class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
@@ -46,8 +46,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        wsActive.wasd_ForTopicViewController = self
-        getHttpData()
+        //getHttpData()
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -118,49 +117,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         block()
     }
     
-    
-    // MARK: internal func
-    func getHttpData() {
-        // woking 檢查必要性
-        DispatchQueue.global(qos:DispatchQoS.QoSClass.default).async{ () -> Void in
-            let httpObj = HttpRequestCenter()
-            httpObj.getTopicContentHistory(self.ownerId!,topicId: self.topicId!, InViewAct: { (returnData2) in
-//                returnData2:
-//                unblock_level
-//                img
-//                my_img
-//                msg
-                
-                let checkMsgType = returnData2.index(where: { (msg_type, _) -> Bool in
-                    if msg_type == "msg_type"{
-                        //話題已關閉
-                        return true
-                    }
-                    else{
-                        return false
-                    }
-                })
-                
-                if checkMsgType == nil{
-                    let myImg = base64ToImage(returnData2["my_img"] as! String)
-                    
-                    let msg = returnData2["msg"] as! Dictionary<String,AnyObject>
-                    DispatchQueue.main.async(execute: {
-                        self.myPhotoSave = myImg
-                        //self.myPhotoImg.image = self.myPhotoSave
-                        //let chatViewCon = self.contanterView
-                        
-                        self.msg = msg
-                    })
-                }
-                else{
-                    DispatchQueue.main.async(execute: {
-                        self.alertTopicClosed()
-                    })
-                }
-            })
-        }
-    }
+
     func get_client_img(owner:String,topic_id:String){
         // old
 //        let httpSendDic = ["client_id":owner,
@@ -187,8 +144,14 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             nav_vc.popToRootViewController(animated: true)
         }))
         
-        self.delegate?.reLoadTopic(self.topicId!)
-        self.present(refreshAlert, animated: true, completion: nil)
+        self.delegate?.topic_has_been_closed(topic_id_ins)
+        sql_database.delete_topic_content(topic_id_ins:topic_id_ins)
+        print("-----------------")
+        print(topic_id_ins)
+        print(topicId)
+        if topic_id_ins == topicId{
+            self.present(refreshAlert, animated: true, completion: nil)
+        }
     }
         // 設置照片+按鈕外觀
     func setImage(){
@@ -381,37 +344,10 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     // MARK: delegate -> websocket
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
-        if msgType == "topic_msg"{
-//            let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
-//            if msg["img"] as? String != nil && msg["img"] as? String != ""{
-//                let imgStr = msg["img"] as? String
-//                let tempImg = updateImg(imgStr)
-//                if tempImg != nil{
-//                    //print("updateImg")
-//                    
-//                    for dicKey in resultDic{
-//                        let msgData = dicKey.1 as! Dictionary<String,AnyObject>
-//                        let sender = msgData["sender"] as! String
-//                        let receiver = msgData["receiver"] as! String
-//                        if sender == userData.id && receiver == ownerId{
-//                            myPhotoImg.image = tempImg
-//                            myPhotoSave = tempImg
-//                        }
-//                        else if receiver == userData.id && sender == ownerId{
-//                            guestPhotoImg.image = tempImg
-//                            ownerImg = tempImg
-//                        }
-//                        break
-//                    }
-//                }
-//            }
-        }
-        else if msgType == "topic_closed"{
-            let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
-            if closeTopicIdList != nil{
-                if closeTopicIdList?.index(of: self.topicId!) != nil{
-                    self.alertTopicClosed()
-                }
+        if msgType == "topic_closed"{
+            let closeTopicId = msg["topic_id"] as? String
+            if closeTopicId != nil{
+                self.alertTopicClosed(topic_id_ins: closeTopicId!)
             }
         }
         else if msgType == "has_been_friend"{
@@ -476,6 +412,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             instantiateViewController(withIdentifier: "\(indentifier)")
     }
     private func check_is_friend(){
+        //working
         if let _ = myFriendsList.index(where: { (element) -> Bool in
             if element.id == ownerId{
                 return true

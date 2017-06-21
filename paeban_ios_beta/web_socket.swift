@@ -63,9 +63,9 @@ open class webSocketActiveCenter{
 
     var test_List = [""]
     var wsad_ForTopicTableViewController:webSocketActiveCenterDelegate?
-    let wsad_ForTopicTableViewControllerList = ["topic_msg","off_line","new_member","topic_closed","search_topic", "friend_confirm"]
+    let wsad_ForTopicTableViewControllerList = ["topic_msg","off_line","new_member","search_topic", "friend_confirm"]
     var wasd_ForTopicViewController:webSocketActiveCenterDelegate?
-    let wasd_ForTopicViewControllerList = ["topic_msg","topic_closed","has_been_friend","has_been_block","leave_topic_master_client"]
+    let wasd_ForTopicViewControllerList = ["topic_closed","topic_msg","topic_closed","has_been_friend","has_been_block","leave_topic_master_client"]
     var wasd_ForChatViewController:webSocketActiveCenterDelegate?
     let wasd_ForChatViewControllerList = ["topic_msg","topic_content_been_read","enter_topic"]
     var wasd_ForMyTopicTableViewController:webSocketActiveCenterDelegate?
@@ -96,29 +96,10 @@ open class webSocketActiveCenter{
                     userData.id = msg["user_id"] as? String
                     userData.name = msg["user_name"] as? String
                     userData.is_real_photo = msg["user_is_real_photo"] as? Bool
-                    let url = "http://www.paeban.com/media/\(msg["user_pic"] as! String)"
+                    let url = "\(local_host)media/\(msg["user_pic"] as! String)"
                     HttpRequestCenter().getHttpImg(url){(img:UIImage) -> Void in
                         userData.img = img
                     }
-                    //寫入好友清單
-//                    let friends_id_list = msg["friends_id_list"] as! Array<String>
-//                    let friends_name_list = msg["friends_name_list"] as! Array<String>
-//                    let friends_pic_list = msg["friends_pic_list"] as! Array<String>
-//                    let friends_sex_list = msg["friends_sex_list"] as! Array<String>
-//                    let friends_isme_list = msg["friends_isme_list"] as! Array<Bool>
-//                    let friends_online_list = msg["friends_online_list"] as! Array<Bool>
-//                    if myFriendsList.isEmpty{
-//                        for listIndex in 0 ..< friends_id_list.count{
-//                            let insertObj = turnToFriendStanderType(
-//                                friends_id_list[listIndex],
-//                                name: friends_name_list[listIndex],
-//                                sex: friends_sex_list[listIndex],
-//                                isRealPhoto: friends_isme_list[listIndex],
-//                                online: friends_online_list[listIndex],
-//                                photoString: friends_pic_list[listIndex])
-//                            myFriendsList.append(insertObj)
-//                        }
-//                    }
                 }
                 else if msgtypeString == "topic_msg"{
                     topic_msg_factory(msg: msg)
@@ -170,16 +151,19 @@ open class webSocketActiveCenter{
         wsad_ForTopicTableViewController?.wsReconnected()
         wasd_ForRecentTableViewController?.wsReconnected()
         wasd_ForMyTopicTableViewController?.wsReconnected()
+        re_connect_check_SOP()
     }
     // internal func
+    func re_connect_check_SOP(){
+        HttpRequestCenter().send_delete_recent_topic()
+        HttpRequestCenter().send_close_my_topic()
+    }
     func topic_msg_factory(msg:Dictionary<String,AnyObject>){
         let resultDic:Dictionary<String,AnyObject> = msg["result_dic_v2"] as! Dictionary
         if userData.id != nil{
             let sender = resultDic["sender"] as! String
             if sender == userData.id!{
                 // 自己說的
-                //飛行
-                print(resultDic["sender"] as Any)
                 DispatchQueue.main.async {
                     sql_database.insert_self_topic_content(input_dic: resultDic, option: .sended)
                     if self.wasd_ForChatViewController?.new_my_topic_msg != nil{

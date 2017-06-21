@@ -304,16 +304,14 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         ]
         //sql_database.inser_date_to_topic_content(input_dic: dataDic)
         sql_database.insert_self_topic_content(input_dic: dataDic, option: .new_msg)
-        if !sql_database.check_is_in_mytopic(check_topic_id: topicId!) &&
-            !sql_database.check_is_in_recent_topic(check_topic_id: topicId!){
+        if !sql_database.check_is_in_mytopic(check_topic_id: topicId!){
             let insert_dic = [
                 "topic_title": topic_title_var!,
                 "topic_id": topicId!,
                 "client_id": clientID!,
-                "tags":tags!
+                "tags":tags
             ]
             sql_database.insert_recent_topic(input_dic: insert_dic)
-            sql_database.print_recent_db()
         }
         send_all_msg()
     }

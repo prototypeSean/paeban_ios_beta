@@ -150,8 +150,8 @@ public class SQL_center{
         self.establish_version(version: version)
         self.establish_private_msg_table()
         self.establish_topic_content_table()
-        self.establish_leave_topic_table()
-        self.establish_leave_topic_master_table()
+        //self.establish_leave_topic_table()
+        //self.establish_leave_topic_master_table()
         self.establish_black_list()
         self.establish_friend_list()
         self.establish_my_topic()
@@ -321,6 +321,38 @@ public class SQL_center{
             print("ERROR!!! get_ignore_client_id_list")
             print(error)
             return [:]
+        }
+        
+    }
+    func calculate_ignore_list(){
+        let my_topic_id_list = get_my_topics_server_id()
+        let topic_content_topic_ids_query = topic_content.filter(!my_topic_id_list.contains(topic_id)).select(distinct: topic_id)
+        var topic_content_topic_ids_list:Array<String> = []
+        do{
+            for topic_content_topic_ids in try sql_db!.prepare(topic_content_topic_ids_query){
+                topic_content_topic_ids_list.append(topic_content_topic_ids[topic_id]!)
+            }
+            if !topic_content_topic_ids_list.isEmpty{
+                for topic_id_s in topic_content_topic_ids_list{
+                    if !check_is_in_recent_topic(check_topic_id: topic_id_s){
+                        let temp_topic_content_obj_query = topic_content.filter(topic_id == topic_id_s).order(id.asc).limit(1)
+                        if try sql_db!.scalar(temp_topic_content_obj_query.count) > 0{
+                            let temp_topic_content_obj = try sql_db!.prepare(temp_topic_content_obj_query).first(where: { (row) -> Bool in
+                                return true
+                            })
+                            var client_id_ins = temp_topic_content_obj![sender]!
+                            if client_id_ins == userData.id{
+                                client_id_ins = temp_topic_content_obj![receiver]!
+                            }
+                            add_ignore_list(topic_id_in: topic_id_s, client_id: client_id_ins)
+                        }
+                    }
+                }
+            }
+        }
+        catch{
+            print("ERROR!!! calculate_ignore_list")
+            print(error)
         }
         
     }
@@ -544,7 +576,7 @@ public class SQL_center{
             try sql_db!.run(insert)
         }
         catch{
-            print("資料庫錯誤")
+            print("資料庫錯誤insert_black_list")
             print(error)
         }
     }
@@ -632,6 +664,18 @@ public class SQL_center{
             print(error)
         }
     }
+    func print_block(){
+        do{
+            print("---print_block----")
+            for c in try sql_db!.prepare(black_list_table){
+                print(c[username])
+            }
+            
+        }
+        catch{
+            //pass
+        }
+    }
     
     // mytopic
     func establish_my_topic(){
@@ -640,8 +684,9 @@ public class SQL_center{
                 t.column(id, primaryKey: true)
                 t.column(topic_title)
                 t.column(topic_id)
-                t.column(is_send)
+                t.column(is_send) // 開房有沒有開成功
                 t.column(tags)
+                t.column(active) // 是否準備關房  ＝false就是要關了  關成功整筆資料會殺掉
             })
             print("表單建立成功")
         }
@@ -655,7 +700,8 @@ public class SQL_center{
             let insert = my_topic.insert(
                 topic_id <- topic_id_in,
                 topic_title <- topic_title_in,
-                is_send <- true
+                is_send <- true,
+                active <- true
             )
             try sql_db?.run(insert)
         }
@@ -670,7 +716,8 @@ public class SQL_center{
             let insert = my_topic.insert(
                 topic_title <- topic_title_in,
                 is_send <- false,
-                tags <- topic_tag_string_in
+                tags <- topic_tag_string_in,
+                active <- true
             )
             try sql_db!.run(insert)
             let query = my_topic.order(id.desc).limit(1)
@@ -719,6 +766,17 @@ public class SQL_center{
             print(error)
         }
     }
+    func turn_my_topic_active_state_to_false(topic_id_ins:String){
+        let query = my_topic.filter(topic_id == topic_id_ins)
+        let update = query.update(active <- false)
+        do{
+            try sql_db!.run(update)
+        }
+        catch{
+            print("ERROR turn_my_topic_active_state_to_false")
+            print(error)
+        }
+    }
     func delete_my_topic(local_id:String?,topic_id_in:String?){
         do{
             if local_id != nil{
@@ -736,6 +794,29 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
+    }
+    func delete_my_topic_by_list(topic_id_list:Array<String>){
+        let query = my_topic.filter(topic_id_list.contains(topic_id))
+        do{
+            try sql_db!.run(query.delete())
+        }
+        catch{
+            print("ERROR delete_my_topic_by_list")
+            print(error)
+        }
+    }
+    func get_inactive_my_topic() -> Array<String>{
+        let query = my_topic.filter(active == false)
+        var return_list:Array<String> = []
+        do{
+            for datas in try sql_db!.prepare(query){
+                return_list.append(datas[topic_id]!)
+            }
+        }
+        catch{
+            print("ERROR!! get_inactive_my_topic")
+        }
+        return return_list
     }
     func check_old_topic_count() -> Int{
         do{
@@ -854,7 +935,7 @@ public class SQL_center{
             try sql_db?.run(recent_topic.create { t in
                 t.column(id, primaryKey: true)
                 t.column(topic_title)
-                t.column(topic_id)
+                t.column(topic_id, unique: true)
                 t.column(client_id)
                 t.column(tags)
                 t.column(active)
@@ -866,12 +947,12 @@ public class SQL_center{
             print(error)
         }
     }
-    func insert_recent_topic(input_dic:Dictionary<String,String>){
+    func insert_recent_topic(input_dic:Dictionary<String,String?>){
         let insert = recent_topic.insert(
-            topic_title <- input_dic["topic_title"],
-            topic_id <- input_dic["topic_id"],
-            client_id <- input_dic["client_id"],
-            tags <- input_dic["tags"],
+            topic_title <- input_dic["topic_title"]!,
+            topic_id <- input_dic["topic_id"]!,
+            client_id <- input_dic["client_id"]!,
+            tags <- input_dic["tags"]!,
             active <- true
         )
         do{
@@ -896,16 +977,32 @@ public class SQL_center{
             return false
         }
     }
+    func get_recent_topic_list() -> Array<String>{
+        var recent_topic_list:Array<String> = []
+        do{
+            for topic_ids in try sql_db!.prepare(recent_topic){
+                recent_topic_list.append(topic_ids[topic_id]!)
+            }
+            return recent_topic_list
+        }
+        catch{
+            print("ERROR!!! get_recent_topic_list")
+            print(error)
+        }
+        return []
+    }
     func get_recent_last_line() -> Dictionary<String,AnyObject>{
         do{
-            let black_list = get_black_list()
-            let ignore_list = get_ignore_topic_id_list()
+            let black_list = get_black_list()   
             var return_dic:Dictionary<String,AnyObject> = [:]
-            let query_recent = recent_topic.filter(
-                active == true &&
-                !ignore_list.contains(topic_id)
-            )
-            for recent_datas in try sql_db!.prepare(query_recent){
+            //let ignore_topic_list = get_ignore_topic_id_list()
+            let recent_topic_list = get_recent_topic_list()
+            
+            //let my_topic_id_list = get_my_topics_server_id()
+            let query_recent_topic_list_v2 = topic_content.filter(
+                    recent_topic_list.contains(topic_id)
+                ).select(distinct: topic_id)
+            for recent_datas in try sql_db!.prepare(query_recent_topic_list_v2){
                 let query = topic_content.filter(
                     topic_id == recent_datas[topic_id]! &&
                     !black_list.contains(sender) &&
@@ -914,16 +1011,33 @@ public class SQL_center{
                 if let topic_content_obj = try sql_db!.prepare(query.order(id.desc).limit(1)).first(where: { (row) -> Bool in
                     return true
                 }){
-                    if !check_is_in_ignore_list(topic_id_in: topic_content_obj[topic_id]!, client_id: recent_datas[client_id]!){
-                        let level = get_level(topic_id_in: recent_datas[topic_id]!, client_id: recent_datas[client_id]!)
+                    if check_is_in_recent_topic(check_topic_id: topic_content_obj[topic_id]!){
+                        var client_id_ins = userData.id!
+                        if topic_content_obj[sender]! == client_id_ins{
+                            client_id_ins = topic_content_obj[receiver]!
+                        }
+                        let level = get_level(topic_id_in: recent_datas[topic_id]!, client_id: client_id_ins)
+                        let recent_topic_query = recent_topic.filter(topic_id == recent_datas[topic_id]!).limit(1)
+                        var tag_list_ins:Array<String> = []
+                        var topic_title_ins = ""
+                        if let recent_topic_query_result = try sql_db!.prepare(recent_topic_query).first(where: { (row) -> Bool in
+                            return true
+                        }){
+                            // working
+                            tag_list_ins = turn_tag_string_to_tag_list(tag_string: recent_topic_query_result[tags]!)
+                            topic_title_ins = recent_topic_query_result[topic_title]!
+                        }
+                        print ("tag_list_ins-----------")
+                        print (tag_list_ins)
+                        print (topic_title_ins)
                         var temp_dic:Dictionary<String,AnyObject> = [
-                            "owner": recent_datas[client_id]! as AnyObject,
+                            "owner": client_id_ins as AnyObject,
                             "last_line": topic_content_obj[topic_text]! as AnyObject,
                             "topic_content_id": String(topic_content_obj[id]) as AnyObject,
                             "last_speaker": topic_content_obj[sender]! as AnyObject,
                             "is_read": topic_content_obj[is_read]! as AnyObject,
-                            "tag_list": turn_tag_string_to_tag_list(tag_string: recent_datas[tags]!) as AnyObject,
-                            "topic_title": recent_datas[topic_title]! as AnyObject,
+                            "tag_list": tag_list_ins as AnyObject,
+                            "topic_title": topic_title_ins as AnyObject,
                             "time": topic_content_obj[time] as AnyObject,
                             "level": String(level) as AnyObject
                         ]
@@ -936,6 +1050,7 @@ public class SQL_center{
                         }
                         return_dic[recent_datas[topic_id]!] = temp_dic as AnyObject
                     }
+                    
                 }
             }
             return return_dic
@@ -948,18 +1063,47 @@ public class SQL_center{
     }
     func delete_recent_topic(topic_id_in:String){
         do{
-            let delete = recent_topic.filter(topic_id == topic_id_in).delete()
-            try sql_db!.run(delete)
+            let update = recent_topic.filter(topic_id == topic_id_in).update(active <- false)
+            try sql_db!.run(update)
+            HttpRequestCenter().send_delete_recent_topic()
         }
         catch{
             print("delete_recent_topic資料庫錯誤")
             print(error)
         }
     }
+    func get_unsend_recent_topic_list() -> Array<String>{
+        let query = recent_topic.filter(active == false)
+        var return_list:Array<String> = []
+        do{
+            for datas in try sql_db!.prepare(query){
+                return_list.append(datas[topic_id]!)
+            }
+            return return_list
+        }
+        catch{
+            print("ERROR get_unsend_recent_topic_list")
+            print(error)
+        }
+        return []
+    }
+    func delete_recent_topic_complete(return_recent_topic_list:Array<String>){
+        let query = recent_topic.filter(return_recent_topic_list.contains(topic_id))
+        do{
+            try sql_db!.run(query.delete())
+        }
+        catch{
+            print("ERROR delete_recent_topic_complete")
+            print(error)
+        }
+    }
     func print_recent_db(){
         do{
-            let sss = try sql_db?.scalar(recent_topic.count)
-            print(sss as Any)
+            print("========================")
+            for c in try sql_db!.prepare(recent_topic){
+                print("\(c[topic_title])   \(c[client_id])")
+            }
+            print("=====================")
         }
         catch{
             
@@ -997,127 +1141,127 @@ public class SQL_center{
     }
     
     // leave_topic
-    func establish_leave_topic_table(){
-        do{
-            try sql_db?.run(leave_topic.create { t in
-                t.column(id, primaryKey: true)
-                t.column(topic_id)
-            })
-            print("表單建立成功")
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-    }
-    func add_topic_to_topic_table(topic_id_input:String){
-        let insert = leave_topic.insert(
-            topic_id <- topic_id_input
-        )
-        do{
-            try sql_db!.run(insert)
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-    }
-    func remove_topic_from_topic_table(topic_id_input:String){
-        let query = leave_topic.filter(topic_id == topic_id_input)
-        
-        do{
-            try sql_db!.run(query.delete())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-    }
-    func get_topic_table_list() -> Array<String>{
-        var return_list:Array<String> = []
-        do{
-            for topic_c in try sql_db!.prepare(leave_topic) {
-                return_list.append(topic_c[topic_id]!)
-            }
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        return return_list
-    }
-    func print_topic_table(){
-        print("print_topic_table=====op")
-        do{
-            for topic_c in try sql_db!.prepare(leave_topic) {
-                print("topic_id: \(topic_c[topic_id])")
-                // id: 1, email: alice@mac.com, name: Optional("Alice")
-            }
-            print("print_topic_table=====ed")
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-    }
+//    func establish_leave_topic_table(){
+//        do{
+//            try sql_db?.run(leave_topic.create { t in
+//                t.column(id, primaryKey: true)
+//                t.column(topic_id)
+//            })
+//            print("表單建立成功")
+//        }
+//        catch{
+//            print("資料庫錯誤")
+//            print(error)
+//        }
+//    }
+//    func add_topic_to_topic_table(topic_id_input:String){
+//        let insert = leave_topic.insert(
+//            topic_id <- topic_id_input
+//        )
+//        do{
+//            try sql_db!.run(insert)
+//        }
+//        catch{
+//            print("資料庫錯誤")
+//            print(error)
+//        }
+//    }
+//    func remove_topic_from_topic_table(topic_id_input:String){
+//        let query = leave_topic.filter(topic_id == topic_id_input)
+//        
+//        do{
+//            try sql_db!.run(query.delete())
+//        }
+//        catch{
+//            print("資料庫錯誤")
+//            print(error)
+//        }
+//    }
+//    func get_topic_table_list() -> Array<String>{
+//        var return_list:Array<String> = []
+//        do{
+//            for topic_c in try sql_db!.prepare(leave_topic) {
+//                return_list.append(topic_c[topic_id]!)
+//            }
+//        }
+//        catch{
+//            print("資料庫錯誤")
+//            print(error)
+//        }
+//        return return_list
+//    }
+//    func print_topic_table(){
+//        print("print_topic_table=====op")
+//        do{
+//            for topic_c in try sql_db!.prepare(leave_topic) {
+//                print("topic_id: \(topic_c[topic_id])")
+//                // id: 1, email: alice@mac.com, name: Optional("Alice")
+//            }
+//            print("print_topic_table=====ed")
+//        }
+//        catch{
+//            print("資料庫錯誤")
+//            print(error)
+//        }
+//    }
     
     
     // leave_topic_master
-    func establish_leave_topic_master_table(){
-        do{
-            try sql_db?.run(leave_topic_master.create { t in
-                t.column(id, primaryKey: true)
-                t.column(topic_id)
-                t.column(client_id)
-            })
-            print("表單建立成功")
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-    }
-    func add_topic_to_leave_topic_master_table(topic_id_input:String, client_id_input:String){
-        let insert = leave_topic_master.insert(
-            topic_id <- topic_id_input,
-            client_id <- client_id_input
-        )
-        do{
-            try sql_db!.run(insert)
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-    }
-    func remove_topic_from_leave_topic_master_table(topic_id_input:String, client_id_input:String){
-        let query = leave_topic_master.filter(topic_id == topic_id_input && client_id == client_id_input)
-        
-        do{
-            try sql_db!.run(query.delete())
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-    }
-    func get_leave_topic_master_table_list() -> Array<Dictionary<String,String>>{
-        var return_list:Array<Dictionary<String,String>> = []
-        do{
-            for topic_c in try sql_db!.prepare(leave_topic_master) {
-                let temp_dic:Dictionary<String,String> = [
-                    "topic_id":topic_c[topic_id]!,
-                    "client_id":topic_c[client_id]!
-                ]
-                return_list.append(temp_dic)
-            }
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-        }
-        return return_list
-    }
+//    func establish_leave_topic_master_table(){
+//        do{
+//            try sql_db?.run(leave_topic_master.create { t in
+//                t.column(id, primaryKey: true)
+//                t.column(topic_id)
+//                t.column(client_id)
+//            })
+//            print("表單建立成功")
+//        }
+//        catch{
+//            print("資料庫錯誤")
+//            print(error)
+//        }
+//    }
+//    func add_topic_to_leave_topic_master_table(topic_id_input:String, client_id_input:String){
+//        let insert = leave_topic_master.insert(
+//            topic_id <- topic_id_input,
+//            client_id <- client_id_input
+//        )
+//        do{
+//            try sql_db!.run(insert)
+//        }
+//        catch{
+//            print("資料庫錯誤")
+//            print(error)
+//        }
+//    }
+//    func remove_topic_from_leave_topic_master_table(topic_id_input:String, client_id_input:String){
+//        let query = leave_topic_master.filter(topic_id == topic_id_input && client_id == client_id_input)
+//        
+//        do{
+//            try sql_db!.run(query.delete())
+//        }
+//        catch{
+//            print("資料庫錯誤")
+//            print(error)
+//        }
+//    }
+//    func get_leave_topic_master_table_list() -> Array<Dictionary<String,String>>{
+//        var return_list:Array<Dictionary<String,String>> = []
+//        do{
+//            for topic_c in try sql_db!.prepare(leave_topic_master) {
+//                let temp_dic:Dictionary<String,String> = [
+//                    "topic_id":topic_c[topic_id]!,
+//                    "client_id":topic_c[client_id]!
+//                ]
+//                return_list.append(temp_dic)
+//            }
+//        }
+//        catch{
+//            print("資料庫錯誤")
+//            print(error)
+//        }
+//        return return_list
+//    }
     
     
     // private func
@@ -1881,21 +2025,6 @@ public class SQL_center{
                     try sql_db?.run(query2.update(is_read <- true))
                 }
             }
-            // MARK: 飛行
-            
-            let query2 = sql_database.topic_content.filter(
-                id == id_local_int!
-            )
-            let sss = try sql_db?.prepare(query2).first(where: { (row) -> Bool in
-                return true
-            })
-            print(sss?[is_read])
-            
-            
-//            var receiver_input:String
-//            for query_s in try sql_db!.prepare(query){
-//                receiver_input =
-//            }
         }
         catch{
             print("資料庫錯誤")
@@ -1967,6 +2096,7 @@ public class SQL_center{
     }
         // 輸入話題ID,取得一個字典是跟誰的對話，還有最後一句話的狀態
     func get_last_line(topic_id_in:String) -> Dictionary<String,Dictionary<String,AnyObject>>?{
+        print("---get_last_line----")
         do{
             let black_list:Array<String> = get_black_list()
             var return_dic:Dictionary<String,Dictionary<String,AnyObject>> = [:]
@@ -2086,6 +2216,15 @@ public class SQL_center{
             print(error)
         }
         return 0
+    }
+    func delete_topic_content(topic_id_ins:String){
+        do{
+            try sql_db!.run(topic_content.filter(topic_id == topic_id_ins).delete())
+        }
+        catch{
+            print("error delete_topic_content")
+            print(error)
+        }
     }
     
     // user_data

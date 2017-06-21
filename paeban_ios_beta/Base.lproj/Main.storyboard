@@ -955,7 +955,7 @@
                                 <rect key="frame" x="20" y="108" width="91" height="58"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.55417786229999999" green="1" blue="0.97652398090000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="RESET"/>
+                                <state key="normal" title="server_cmd"/>
                                 <connections>
                                     <action selector="reset_act:" destination="fKg-5c-ll5" eventType="touchUpInside" id="Dak-hF-Vfr"/>
                                 </connections>
@@ -1040,9 +1040,11 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="cmd_line" destination="Xhc-ch-ZVI" id="peH-K4-BiZ"/>
                         <outlet property="isTruePhoto" destination="uRi-2o-6l1" id="D8K-u4-xwb"/>
                         <outlet property="isTruePhotoSwitch" destination="fYH-Co-Mvs" id="QHd-P7-bCR"/>
                         <outlet property="is_true_photo_switch" destination="fYH-Co-Mvs" id="YMk-bn-Qeq"/>
+                        <outlet property="local_cmd_line" destination="qx6-Rq-CTS" id="skU-7l-9O3"/>
                         <outlet property="name_btn_obj" destination="32V-73-tmZ" id="a7l-1q-qVy"/>
                         <outlet property="name_text" destination="S25-om-PzD" id="ph7-Ac-cCn"/>
                         <outlet property="pencilIcon" destination="6PF-TS-XGb" id="UbZ-aO-djp"/>

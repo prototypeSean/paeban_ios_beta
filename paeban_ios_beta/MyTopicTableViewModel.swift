@@ -74,6 +74,7 @@ class MyTopicTableViewModel{
         }
     }
     func get_detail_cell_from_local_v2(){
+        secTopic = [:]
         for cells in mytopic{
             if cells.dataType == "title"{
                 if let temp_topic_id = cells.topicId_title{
@@ -148,13 +149,7 @@ class MyTopicTableViewModel{
                     client_list_for_request.append(temp_dic)
                 }
             }
-        }
-        // MARK:飛行前移除
-//        print("跟server要使用者資料")
-//        for cxz in client_list_for_request{
-//            print(cxz["client_id"])
-//        }
-        
+        }        
         return ["client_list_for_request":client_list_for_request as AnyObject,
                 "prepare_check_img_name":prepare_check_img_name as AnyObject]
     }
@@ -314,6 +309,20 @@ class MyTopicTableViewModel{
             }
         }
     }
+    func remove_sec_topic_data(client_id:String){
+        for topic_ids in secTopic.keys{
+            var r_list:Array<Int> = []
+            for data_index in 0..<secTopic[topic_ids]!.count{
+                if secTopic[topic_ids]![data_index].clientId_detial == client_id{
+                    r_list.append(data_index)
+                }
+            }
+            r_list.sort(by: >)
+            for r_index in r_list{
+                secTopic[topic_ids]!.remove(at: r_index)
+            }
+        }
+    }
     // ====controller func 2.0 ====
     
     
@@ -406,7 +415,7 @@ class MyTopicTableViewModel{
         let topic_id = mytopic[index].topicId_title!
         self.remove_list_cell(topic_id: topic_id)
         self.remove_topic_detail_data_from_local(topic_id: topic_id)
-        self.sent_close_topic_cmd_to_server(topic_id: topic_id)
+        self.close_topic_process(topic_id: topic_id)
         //send mgs to server
     }
     func delete_detail_cell(index:Int){
@@ -557,20 +566,20 @@ class MyTopicTableViewModel{
             
         }
     }
-    func send_leave_topic_master(){
-        let data_list = sql_database.get_leave_topic_master_table_list()
-        for send_data in data_list{
-            let temp_dic:NSDictionary = [
-                "topic_id": send_data["topic_id"]!,
-                "client_id": send_data["client_id"]!
-            ]
-            let temp_dic2:NSDictionary = [
-                "msg_type": "leave_topic_master",
-                "msg": temp_dic
-            ]
-            socket.write(data: json_dumps(temp_dic2))
-        }
-    }
+//    func send_leave_topic_master(){
+//        let data_list = sql_database.get_leave_topic_master_table_list()
+//        for send_data in data_list{
+//            let temp_dic:NSDictionary = [
+//                "topic_id": send_data["topic_id"]!,
+//                "client_id": send_data["client_id"]!
+//            ]
+//            let temp_dic2:NSDictionary = [
+//                "msg_type": "leave_topic_master",
+//                "msg": temp_dic
+//            ]
+//            socket.write(data: json_dumps(temp_dic2))
+//        }
+//    }
     
     // ======施工中=====
     
@@ -618,12 +627,9 @@ class MyTopicTableViewModel{
             any_func(detail_cell_obj)
         })
     }
-    private func sent_close_topic_cmd_to_server(topic_id:String){
-        let send_dic:NSDictionary = [
-            "msg_type": "close_topic",
-            "topic_id": topic_id
-        ]
-        socket.write(data: json_dumps(send_dic))
+    private func close_topic_process(topic_id:String){
+        sql_database.turn_my_topic_active_state_to_false(topic_id_ins: topic_id)
+        HttpRequestCenter().send_close_my_topic()
     }
     
         // ====check func

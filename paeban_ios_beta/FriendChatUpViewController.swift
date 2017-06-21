@@ -27,7 +27,6 @@ class FriendChatUpViewController: UIViewController {
     }
     
     
-    //var delegate:TopicViewControllerDelegate?
     var setID:String?
     var setName:String?
     var setImg:UIImage?

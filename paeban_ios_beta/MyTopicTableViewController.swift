@@ -219,10 +219,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let data = self.model.mytopic[IndexPath_parameter.row]
-//            sql_database.add_topic_to_leave_topic_master_table(topic_id_input: data.topicId_title!, client_id_input: data.clientId_detial!)
-//            self.model.send_leave_topic_master()
             Ignore_list_center().add_ignore_list(topic_id_in: data.topicId_title!, client_id: data.clientId_detial!)
-            //sql_database.add_ignore_list(topic_id_in: data.topicId_title!, client_id: data.clientId_detial!)
             self.model.delete_detail_cell(index: IndexPath_parameter.row)
             self.update_badges()
         }
@@ -235,10 +232,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         let block = UITableViewRowAction(style: .default, title: "封鎖") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
 //            let topic_id = data.topicId_title!
-//            let client_name = data.clientName_detial!
-//            self.block(topic_id: topic_id, block_id: block_id, client_name: client_name)
-            Block_list_center().add_user_to_block_list(client_id: block_id)
-            
+            let client_name = data.clientName_detial!
+            self.block(block_id: block_id, client_name: client_name)
+            // working  下面搬到上面的內部
+            // 飛行
+            print(block_id)
+            //Block_list_center().add_user_to_block_list(client_id: block_id)
         }
         block.backgroundColor = UIColor.red
         close_topic_btn.backgroundColor = UIColor.black
@@ -272,11 +271,10 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             }
         }
         else if msg["msg_type"] as! String == "topic_closed"{
-            let topic_id_list = msg["topic_id"] as! Array<String>
-            for topic_id in topic_id_list{
-                model.topic_closed(topic_id:topic_id)
+            let topic_id = msg["topic_id"] as? String
+            if topic_id != nil{
+                model.topic_closed(topic_id:topic_id!)
             }
-            
         }
         else if msg["msg_type"] as! String == "off_line"{
             model.socket_client_OFF_line_signal(msg: msg)
@@ -295,12 +293,12 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             model.main_loading()
             update_badges()
         }
-        else if msg["msg_type"] as! String == "leave_topic_master"{
-            let topic_id = msg["topic_id"] as! String
-            let client_id = msg["client_id"] as! String
-            sql_database.remove_topic_from_leave_topic_master_table(topic_id_input: topic_id, client_id_input: client_id)
-            
-        }
+//        else if msg["msg_type"] as! String == "leave_topic_master"{
+//            let topic_id = msg["topic_id"] as! String
+//            let client_id = msg["client_id"] as! String
+//            sql_database.remove_topic_from_leave_topic_master_table(topic_id_input: topic_id, client_id_input: client_id)
+//            
+//        }
     }
 //    func new_my_topic_msg(sender:String, id_local:String){
 //        print("==new_my_topic_msg==")
@@ -312,7 +310,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     
     func wsReconnected(){
-        self.model.send_leave_topic_master()
+        //self.model.send_leave_topic_master()
         model.main_loading_v2()
         update_badges()
     }
@@ -362,17 +360,17 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             self.model.topic_leave_list = []
         }
     }
-    func send_leave_topic_master(){
-        let send_list = sql_database.get_leave_topic_master_table_list()
-        for send_data in send_list{
-            let send_dic:NSDictionary = [
-                "msg_type": "leave_topic_master",
-                "topic_id": send_data["topic_id"]!,
-                "client_id": send_data["client_id"]!
-            ]
-            socket.write(data: json_dumps(send_dic))
-        }
-    }
+//    func send_leave_topic_master(){
+//        let send_list = sql_database.get_leave_topic_master_table_list()
+//        for send_data in send_list{
+//            let send_dic:NSDictionary = [
+//                "msg_type": "leave_topic_master",
+//                "topic_id": send_data["topic_id"]!,
+//                "client_id": send_data["client_id"]!
+//            ]
+//            socket.write(data: json_dumps(send_dic))
+//        }
+//    }
     
     // ===施工中===
     func update_badges(){

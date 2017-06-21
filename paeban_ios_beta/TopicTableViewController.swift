@@ -478,7 +478,17 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }))
         self.present(alert, animated: true, completion: nil)
     }
-    
+    func remove_cell_by_tpoic_id(topic_id:String){
+        if let closeTopicIndex = topics.index(where: { (Topic) -> Bool in
+            if Topic.topicID == topic_id{
+                return true
+            }
+            else{return false}
+        }){
+            topics.remove(at: closeTopicIndex)
+            topicList.reloadData()
+        }
+    }
     
     // socket
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>) {
@@ -528,101 +538,51 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             }
                 
             //關閉話題
-            else if msg_type == "topic_closed"{
-                let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
-                
-                if closeTopicIdList != nil{
-                    // 更新本頁資料
-                    var removeTopicIndexList:Array<Int> = []
-                    for closeTopicId in closeTopicIdList!{
-                        let closeTopicIndex = topics.index(where: { (Topic) -> Bool in
-                            if Topic.topicID == closeTopicId{
-                                return true
-                            }
-                            else{return false}
-                        })
-                        if closeTopicIndex != nil{
-                            removeTopicIndexList.append(closeTopicIndex! as Int)
-                        }
-                    }
-                    removeTopicIndexList = removeTopicIndexList.sorted(by: >)
-                    for removeTopicIndex in removeTopicIndexList{
-                        topics.remove(at: removeTopicIndex)
-                    }
-                    topicList.reloadData()
-                    
-                    //更新recenttopic資料
-                    var removeTopicIndexList2:Array<Int> = []
-                    for closeTopicId in closeTopicIdList!{
-                        let closeTopicIndex = nowTopicCellList.index(where: { (target) -> Bool in
-                            if target.topicId_title == closeTopicId{
-                                return true
-                            }
-                            else{return false}
-                        })
-                        if closeTopicIndex != nil{
-                            removeTopicIndexList2.append(closeTopicIndex! as Int)
-                        }
-                    }
-                    removeTopicIndexList2 = removeTopicIndexList2.sorted(by: >)
-                    for removeTopicIndex in removeTopicIndexList2{
-                        nowTopicCellList.remove(at: removeTopicIndex)
-                    }
-                }
-                
-                
-                
-            }
-            
-            //接收到訊息
-            else if msg_type == "topic_msg"{
-                let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary
-                
-                //=====topic_msg=====
-                // msg -- msg_type:"topic_msg"
-                //     -- img:Dtring
-                //     -- result_dic -- sender:String
-                //                   -- temp_topic_msg_id
-                //                   -- topic_content
-                //                   -- receiver
-                //                   -- topic_id
-                
-                //更新最後說話
-                
-                func updataLastList(_ dataBase:Array<MyTopicStandardType>,newDic:Dictionary<String,AnyObject>) -> Array<MyTopicStandardType>?{
-                    var topicWho = newDic["sender"] as! String
-                    var returnData = dataBase
-                    if topicWho == userData.id{
-                        topicWho = newDic["receiver"] as! String
-                    }
-                    
-                    if let dataIndex = returnData.index(where: { (target) -> Bool in
-                        
-                        if target.clientId_detial! == topicWho
-                            && target.topicId_title! == newDic["topic_id"] as! String{
-                            return true
-                        }
-                        else{return false}
-                    }){
-                        returnData[dataIndex].lastLine_detial = newDic["topic_content"] as? String
-                        returnData[dataIndex].lastSpeaker_detial = newDic["sender"] as? String
-                        let tempData = returnData[dataIndex]
-                        returnData.remove(at: dataIndex)
-                        returnData.insert(tempData, at: 0)
-                        
-                        return returnData
-                    }
-                    else{return nil}
-                }
-                for resultDic_s in resultDic{
-                    if let newDB = updataLastList(nowTopicCellList,newDic: resultDic_s.1 as! Dictionary<String,AnyObject>){
-                        nowTopicCellList = newDB
-                    }
-                }
-                
-                
-            }
-            
+//            else if msg_type == "topic_closed"{
+//                let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
+//                
+//                if closeTopicIdList != nil{
+//                    // 更新本頁資料
+//                    var removeTopicIndexList:Array<Int> = []
+//                    for closeTopicId in closeTopicIdList!{
+//                        let closeTopicIndex = topics.index(where: { (Topic) -> Bool in
+//                            if Topic.topicID == closeTopicId{
+//                                return true
+//                            }
+//                            else{return false}
+//                        })
+//                        if closeTopicIndex != nil{
+//                            removeTopicIndexList.append(closeTopicIndex! as Int)
+//                        }
+//                    }
+//                    removeTopicIndexList = removeTopicIndexList.sorted(by: >)
+//                    for removeTopicIndex in removeTopicIndexList{
+//                        topics.remove(at: removeTopicIndex)
+//                    }
+//                    topicList.reloadData()
+//                    
+//                    //更新recenttopic資料
+//                    var removeTopicIndexList2:Array<Int> = []
+//                    for closeTopicId in closeTopicIdList!{
+//                        let closeTopicIndex = nowTopicCellList.index(where: { (target) -> Bool in
+//                            if target.topicId_title == closeTopicId{
+//                                return true
+//                            }
+//                            else{return false}
+//                        })
+//                        if closeTopicIndex != nil{
+//                            removeTopicIndexList2.append(closeTopicIndex! as Int)
+//                        }
+//                    }
+//                    removeTopicIndexList2 = removeTopicIndexList2.sorted(by: >)
+//                    for removeTopicIndex in removeTopicIndexList2{
+//                        nowTopicCellList.remove(at: removeTopicIndex)
+//                    }
+//                }
+//
+//                
+//                
+//            }
             //接收新搜尋
             else if msg_type == "search_topic"{
                 
@@ -787,18 +747,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     func hideKeybroad() {
         topicSearchController?.customSearchBar.resignFirstResponder()
     }
-    func reLoadTopic(_ topicId:String){
-        let removeTopicPosition = topics.index { (Topic) -> Bool in
-            if Topic.topicID == topicId{
-                return true
-            }
-            else{return false}
-        }
-        if removeTopicPosition != nil{
-            topics.remove(at: removeTopicPosition! as Int)
-            topicList.reloadData()
-        }
-    }
     func turnTopicDataType(_ inputData:Topic) -> MyTopicStandardType{
         let returnData = MyTopicStandardType(dataType: "detail")
         returnData.topicTitle_title = inputData.title
@@ -815,6 +763,9 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         
 
         return returnData
+    }
+    func topic_has_been_closed(_ topic_id:String){
+        remove_cell_by_tpoic_id(topic_id: topic_id)
     }
 }
 

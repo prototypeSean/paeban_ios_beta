@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "paeban_ios_beta/&#xff28;ttpRequestCenter.swift"
-            timestampString = "518335328.429537"
+            filePath = "paeban_ios_beta/RecentTableViewModel.swift"
+            timestampString = "519571888.159073"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-            landmarkName = "get_my_topic_title(_:)"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
+            landmarkName = "update_cells(input_dic:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
