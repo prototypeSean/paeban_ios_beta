@@ -539,31 +539,42 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         return tempMytopicList
     }
     
-    func block(topic_id:String, block_id:String, client_name:String){
-        let data:NSDictionary = [
-            "block_id":block_id,
-            "topic_id":topic_id
-        ]
+    func block(block_id:String, client_name:String){
         let confirm = UIAlertController(title: "封鎖".localized(withComment: "MyTopicTableViewController"), message: String(format: NSLocalizedString("封鎖%@ ? 本話題不會再出現此用戶", comment: "MyTopicTableViewController"), client_name), preferredStyle: UIAlertControllerStyle.alert)
         confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
         confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
             self.model.remove_detail_cell(by: block_id)
-            HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
-                if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
-                    if key == "msgtype"{
-                        return true
-                    }
-                    else{return false}
-                }){
-                    if Dictionary["msgtype"] as! String == "block_success"{
-                        //code
-                    }
-                }
-            }
+            self.model.remove_sec_topic_data(client_id:block_id)
+            Block_list_center().add_user_to_block_list(client_id: block_id)
         }))
         self.present(confirm, animated: true, completion: nil)
         
     }
+//    func block(topic_id:String, block_id:String, client_name:String){
+//        let data:NSDictionary = [
+//            "block_id":block_id,
+//            "topic_id":topic_id
+//        ]
+//        let confirm = UIAlertController(title: "封鎖".localized(withComment: "MyTopicTableViewController"), message: String(format: NSLocalizedString("封鎖%@ ? 本話題不會再出現此用戶", comment: "MyTopicTableViewController"), client_name), preferredStyle: UIAlertControllerStyle.alert)
+//        confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
+//        confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+//            self.model.remove_detail_cell(by: block_id)
+//            HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
+//                if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
+//                    if key == "msgtype"{
+//                        return true
+//                    }
+//                    else{return false}
+//                }){
+//                    if Dictionary["msgtype"] as! String == "block_success"{
+//                        //code
+//                    }
+//                }
+//            }
+//        }))
+//        self.present(confirm, animated: true, completion: nil)
+//        
+//    }
     func reportAbuse(topic_id:String, client_id:String, client_name:String){
         let sendDic:NSDictionary = [
             "report_id":client_id,
