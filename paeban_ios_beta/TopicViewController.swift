@@ -51,7 +51,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        wsActive.wasd_ForTopicViewController = self
         topicTitleContent.text = topicTitle
         check_is_friend()
         client_data_obj = Client_detail_data(topic_id: topicId!, client_id: ownerId!)
@@ -63,7 +63,13 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-    // 2017_06_11 setImage()移動到viewDidLayoutSubviews測試
+        HttpRequestCenter().check_topic_alive(topic_id: topicId!) { (result:Bool, topic_id_ins:String) in
+            DispatchQueue.main.async {
+                if !result{
+                    self.alertTopicClosed(topic_id_ins: topic_id_ins)
+                }
+            }
+        }
 //        setImage()
         re_new_client_img()
         my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
@@ -136,7 +142,8 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             get_client_img(owner: ownerId!, topic_id: topicId!)
         }
     }
-    func alertTopicClosed(){
+    
+    func alertTopicClosed(topic_id_ins:String){
         let refreshAlert = UIAlertController(title: "提示".localized(withComment: "TopicViewController"), message: "話題已關閉".localized(withComment: "TopicViewController"), preferredStyle: UIAlertControllerStyle.alert)
         
         refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in

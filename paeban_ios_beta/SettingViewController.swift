@@ -9,7 +9,6 @@
 import UIKit
 import Starscream
 
-
 class SettingViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var isTruePhotoSwitch: UISwitch!
 
