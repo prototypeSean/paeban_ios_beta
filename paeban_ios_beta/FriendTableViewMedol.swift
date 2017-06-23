@@ -138,7 +138,10 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
     func update_online_state(){
         var client_id_list:Array<String> = []
         for cell_datas in friendsList{
-            client_id_list.append(cell_datas.id!)
+            if cell_datas.cell_type == "friend"{
+                client_id_list.append(cell_datas.id!)
+            }
+            
         }
         HttpRequestCenter().inquire_online_state(client_id_list: client_id_list) { (return_dic:Dictionary<String, AnyObject>) in
             if !return_dic.isEmpty{
