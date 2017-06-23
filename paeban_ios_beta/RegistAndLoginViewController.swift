@@ -37,6 +37,11 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
         super.viewDidLoad()
     }
 
+    override func viewWillLayoutSubviews() {
+        fbButtonOutlet.titleLabel?.adjustsFontSizeToFitWidth = true
+        fbButtonOutlet.titleLabel?.minimumScaleFactor = 0.3
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

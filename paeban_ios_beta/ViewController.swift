@@ -75,7 +75,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBAction func logIn(_ sender: AnyObject) {
         if self.loginId.text! != "" && self.logInPw.text! != ""{
             self.hide_items()
-            set_loading_view_title(title: "登入中")
+            set_loading_view_title(title: "登入中".localized(withComment: "ViewController"))
             loginId.resignFirstResponder()
             logInPw.resignFirstResponder()
             check_online(in: self) {
@@ -138,7 +138,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 // get user img from server
                 // and write into database
                 
-                set_loading_view_title(title: "正在更新資料庫")
+                set_loading_view_title(title: "正在更新資料庫".localized(withComment: "ViewController"))
                 update_database(reset_db: "1")
             }
             else{
@@ -409,7 +409,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     func paeban_login(){
         hide_items()
         if let fb_session = FBSDKAccessToken.current(){
-            set_loading_view_title(title: "正在使用facebook帳號登入")
+            set_loading_view_title(title: "正在使用facebook帳號登入".localized(withComment: "ViewController"))
 //            if loading_view == nil{
 //                loading_view = add_loading_view()
 //            }
@@ -776,7 +776,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             loading_title_lable?.sizeToFit()
             loading_title_lable?.center = CGPoint(
                 x: (loading_view?.frame.width)!/2,
-                y: ((loading_view?.frame.height)!/2 + 60)
+                y: ((loading_view?.frame.height)!/2 + 180)
             )
         }
         else{
@@ -784,7 +784,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             loading_title_lable?.sizeToFit()
             loading_title_lable?.center = CGPoint(
                 x: (loading_view?.frame.width)!/2,
-                y: ((loading_view?.frame.height)!/2 + 60)
+                y: ((loading_view?.frame.height)!/2 + 180)
             )
         }
     }
@@ -828,7 +828,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             load_simbol.activityIndicatorViewStyle = .whiteLarge
             load_view.alpha = 0.7
             self.view.addSubview(load_view)
-            load_simbol.center = CGPoint(x: self.view.frame.width/2, y: height/2)
+            load_simbol.center = CGPoint(x: self.view.frame.width/2, y: (height/2)+120)
             load_view.addSubview(load_simbol)
             load_simbol.startAnimating()
             loading_title_lable = UILabel()
@@ -881,7 +881,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     if temp_present > writed_row_present{
                         writed_row_present = temp_present
                         DispatchQueue.main.async {
-                            self.set_loading_view_title(title: "正在同步資料庫: \(temp_present)%")
+                            self.set_loading_view_title(title: String(format: NSLocalizedString("正在同步資料庫: %d %%", comment: "ViewController"), temp_present))
                             self.set_persent_lable(persent: temp_present_double)
                         }
                     }

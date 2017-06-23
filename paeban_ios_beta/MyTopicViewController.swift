@@ -189,7 +189,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
 //            "block_id":setID!,
 //            "topic_id":topicId!
 //        ]
-        let confirm = UIAlertController(title: "封鎖", message: String(format: NSLocalizedString("封鎖%@ ? 將再也無法聯繫他", comment: "FriendChatUpVC"),setName!) , preferredStyle: UIAlertControllerStyle.alert)
+        let confirm = UIAlertController(title: "封鎖".localized(withComment: "MyTopicViewController"), message: String(format: NSLocalizedString("封鎖 %@ ? 將再也無法聯繫他", comment: "FriendChatUpVC"),setName!) , preferredStyle: UIAlertControllerStyle.alert)
         confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicViewController"), style: UIAlertActionStyle.default, handler: nil))
         confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
             Block_list_center().add_user_to_block_list(client_id: self.setID!)

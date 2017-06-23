@@ -102,7 +102,7 @@
 
 "封鎖" = "Block";
 
-"封鎖%@ ? 將再也無法聯繫他" = "Bolck%@ ?, you'll never able to reach this person any more.";
+"封鎖 %@ ? 將再也無法聯繫他" = "Bolck%@ ?, you'll never able to reach this person any more.";
 
 "取消" = "Cancel";
 
@@ -291,3 +291,11 @@
 "帳號或密碼錯誤" = "Account or Password invalid";
 
 "公告" = "Message";
+
+"正在更新資料庫" = "Loading Data...";
+
+"登入中" = "logging";
+
+"正在同步資料庫: %d %%" = "Synchronizing: %d %%";
+
+"正在使用facebook帳號登入" = "Logging from Facebook...";
