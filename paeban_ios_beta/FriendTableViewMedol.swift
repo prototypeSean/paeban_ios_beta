@@ -141,14 +141,15 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             if cell_datas.cell_type == "friend"{
                 client_id_list.append(cell_datas.id!)
             }
-            
         }
         HttpRequestCenter().inquire_online_state(client_id_list: client_id_list) { (return_dic:Dictionary<String, AnyObject>) in
             if !return_dic.isEmpty{
                 let return_dic_copy = return_dic as! Dictionary<String,Bool>
                 for cell_datas in self.friendsList{
-                    if let online_state = return_dic_copy[cell_datas.id!]{
-                        cell_datas.online = online_state
+                    if cell_datas.cell_type == "friend"{
+                        if let online_state = return_dic_copy[cell_datas.id!]{
+                            cell_datas.online = online_state
+                        }
                     }
                 }
                 DispatchQueue.main.async {
