@@ -1012,8 +1012,8 @@ public class SQL_center{
                     return true
                 }){
                     if check_is_in_recent_topic(check_topic_id: topic_content_obj[topic_id]!){
-                        var client_id_ins = userData.id!
-                        if topic_content_obj[sender]! == client_id_ins{
+                        var client_id_ins = topic_content_obj[sender]!
+                        if client_id_ins == userData.id!{
                             client_id_ins = topic_content_obj[receiver]!
                         }
                         let level = get_level(topic_id_in: recent_datas[topic_id]!, client_id: client_id_ins)

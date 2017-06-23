@@ -60,6 +60,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBOutlet weak var local_cmd_line: UITextField!
+    
     @IBAction func local_cmd(_ sender: Any) {
         let cmd_line = local_cmd_line.text!
         if cmd_line  == "recent_db"{
