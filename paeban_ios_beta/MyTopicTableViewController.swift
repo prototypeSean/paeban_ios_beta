@@ -217,19 +217,19 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         let close_topic_btn = UITableViewRowAction(style: .default, title: "全部關閉") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             self.model.close_topic(index: IndexPath_parameter.row)
         }
-        let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let delete = UITableViewRowAction(style: .default, title: "踢出".localized(withComment: "MyTopicTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let data = self.model.mytopic[IndexPath_parameter.row]
             Ignore_list_center().add_ignore_list(topic_id_in: data.topicId_title!, client_id: data.clientId_detial!)
             self.model.delete_detail_cell(index: IndexPath_parameter.row)
             self.update_badges()
         }
-        let report = UITableViewRowAction(style: .default, title: "舉報") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let report = UITableViewRowAction(style: .default, title: "舉報".localized(withComment: "MyTopicTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
             let topic_id = data.topicId_title!
             let client_name = data.clientName_detial!
             self.reportAbuse(topic_id: topic_id, client_id: block_id, client_name: client_name)
         }
-        let block = UITableViewRowAction(style: .default, title: "封鎖") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let block = UITableViewRowAction(style: .default, title: "封鎖".localized(withComment: "MyTopicTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
 //            let topic_id = data.topicId_title!
             let client_name = data.clientName_detial!

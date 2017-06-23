@@ -71,6 +71,8 @@
 
 "用戶%@ 已離開您的話題%@" = "User %@ have left your topic %@";
 
+"踢出" = "Kick Out";
+
 "確認" = "Confirm";
 
 "封鎖" = "Block";
