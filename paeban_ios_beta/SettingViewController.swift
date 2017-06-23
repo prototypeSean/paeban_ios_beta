@@ -74,11 +74,15 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
             sql_database.establish_all_table(version: version)
             update_database(reset_db: "1")
         }
+        else if cmd_line == "print_ig"{
+            sql_database.print_ig()
+        }
         else if cmd_line == "help"{
             let help_list = [
                 "recent_db       列印recent_topic",
                 "print_block     列印封鎖清單",
-                "reset_db        重置資料庫"
+                "reset_db        重置資料庫",
+                "print_ig        列印ignore list"
             ]
             print("----cmd line----")
             for cmd_lines in help_list{

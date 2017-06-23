@@ -313,6 +313,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             ]
             sql_database.insert_recent_topic(input_dic: insert_dic)
         }
+        //sql_database.delete_ignore_list(topic_id_ins: topicId!)
         send_all_msg()
     }
     // websocket delegate

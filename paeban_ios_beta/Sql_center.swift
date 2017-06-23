@@ -219,6 +219,7 @@ public class SQL_center{
         }
     }
     // ignore_list
+    // 給my topic專用  recrnt 的資料  用 recent topic控制
     func establish_ignore_list(){
         do{
             try sql_db?.run(ignore_list.create { t in
@@ -323,6 +324,21 @@ public class SQL_center{
             return [:]
         }
         
+    }
+    func delete_ignore_list(topic_id_ins:String){
+        do{
+            if !check_is_in_mytopic(check_topic_id: topic_id_ins){
+                try sql_db!.run(ignore_list.filter(topic_id == topic_id_ins).delete())
+            }
+        }
+        catch{
+            print("ERROR delete_ignore_list")
+            print(error)
+        }
+    }
+    func print_ig(){
+        let sss = get_ignore_topic_id_list()
+        print(sss)
     }
     func calculate_ignore_list(){
         let my_topic_id_list = get_my_topics_server_id()
@@ -980,7 +996,7 @@ public class SQL_center{
     func get_recent_topic_list() -> Array<String>{
         var recent_topic_list:Array<String> = []
         do{
-            for topic_ids in try sql_db!.prepare(recent_topic){
+            for topic_ids in try sql_db!.prepare(recent_topic.filter(active == true)){
                 recent_topic_list.append(topic_ids[topic_id]!)
             }
             return recent_topic_list
@@ -1000,7 +1016,8 @@ public class SQL_center{
             
             //let my_topic_id_list = get_my_topics_server_id()
             let query_recent_topic_list_v2 = topic_content.filter(
-                    recent_topic_list.contains(topic_id)
+                    recent_topic_list.contains(topic_id) //&&
+                    //!ignore_topic_list.contains(topic_id)
                 ).select(distinct: topic_id)
             for recent_datas in try sql_db!.prepare(query_recent_topic_list_v2){
                 let query = topic_content.filter(
@@ -1027,9 +1044,7 @@ public class SQL_center{
                             tag_list_ins = turn_tag_string_to_tag_list(tag_string: recent_topic_query_result[tags]!)
                             topic_title_ins = recent_topic_query_result[topic_title]!
                         }
-                        print ("tag_list_ins-----------")
-                        print (tag_list_ins)
-                        print (topic_title_ins)
+                        
                         var temp_dic:Dictionary<String,AnyObject> = [
                             "owner": client_id_ins as AnyObject,
                             "last_line": topic_content_obj[topic_text]! as AnyObject,

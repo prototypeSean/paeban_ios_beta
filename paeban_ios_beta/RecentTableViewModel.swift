@@ -124,10 +124,6 @@ class RecentTableViewModel{
         if topicWriteToRow.battery != nil{
             letoutBattery(battery: cell.battery, batteryLeft: topicWriteToRow.battery!)
         }
-        // 飛行
-//        print("-----+------")
-//        print(cell.ownerName)
-//        print(topicWriteToRow.lastLine_detial)
         return cell
     }
     func letoutBattery(battery:UIImageView, batteryLeft:Int){
@@ -311,8 +307,6 @@ class RecentTableViewModel{
     }
     private func get_recent_data(){
         let result_data = sql_database.get_recent_last_line()
-        // 飛行  移除print
-        print(result_data)
         let client_list_for_request = draw_basic_cell(input_dic: result_data)
         get_client_data_from_server(client_list_for_request: client_list_for_request)
         self.sort_recent_db_by_time()
@@ -337,11 +331,6 @@ class RecentTableViewModel{
             }
             return false
         }){
-            // 飛行
-            print("ID: \(input_dic["client_id"])  name: \(input_dic["client_name"])")
-            print(recentDataBase[cell_index].lastLine_detial)
-            print("+++++++")
-            //飛行 unlocak
             recentDataBase[cell_index].clientName_detial = input_dic["client_name"] as? String
             recentDataBase[cell_index].clientPhoto_detial = base64ToImage(input_dic["img"] as! String)
             recentDataBase[cell_index].clientSex_detial = input_dic["sex"] as? String
