@@ -221,6 +221,7 @@ open class webSocketActiveCenter{
             let time_input = result_dic["time"] as! String
             let id_server_input = result_dic["id_server"] as! String
             sql_database.update_private_msg_time(id_local: id_local, time_input: time_input, id_server_input: id_server_input)
+            self.wasd_ForFriendChatViewController?.new_my_topic_msg!(sender: sender, id_local: id_local)
         }
         else{
             let private_content_last_id = msg["private_content_last_checked_server_id"] as! String
