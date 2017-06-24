@@ -26,6 +26,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
     }
     // code 2.0
     func getFrientList(){
+        friendsList = []
+        friend_list_database = []
         let result_dic = sql_database.get_friend_list()
         let new_table_data = turnToFriendStanderType_v3(friend_list:result_dic)
         renew_friend_list_database(input_list: new_table_data)
@@ -109,32 +111,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             cell_index += 1
         }
     }
-    func synchronize_friend_table(){
-        let local_friend_datas = sql_database.get_friend_list()
-        var check_dic:Dictionary<String,AnyObject> = [:]
-        for friends in local_friend_datas{
-            let temp_dic = [
-                "client_id": friends["client_id"]! as! String,
-                "client_name": friends["client_name"]! as! String,
-                "img_name": friends["img_name"]! as! String
-            ]
-            check_dic[friends["client_id"]! as! String] = temp_dic as AnyObject
-        }
-        HttpRequestCenter().request_user_data_v2("synchronize_friend_table", send_dic: ["local_friend_dic":check_dic as AnyObject]) { (return_dic:Dictionary<String, AnyObject>?) in
-            if return_dic != nil{
-                for return_list_data in return_dic!["return_list"] as! Array<Dictionary<String,AnyObject>>{
-                    sql_database.insert_friend(input_dic: return_list_data)
-                }
-                if !(return_dic!["return_list"] as! Array<Dictionary<String,AnyObject>>).isEmpty{
-                    //飛行
-                    print("重新載入好友清單．．．")
-                    let delegate_list = [wsActive.wasd_FriendTableViewMedol]
-                    update_private_mag(delegate_target_list: delegate_list)
-                }
-                
-            }
-        }
-    }
+    
     func update_online_state(){
         var client_id_list:Array<String> = []
         for cell_datas in friendsList{

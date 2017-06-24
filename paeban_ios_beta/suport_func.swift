@@ -93,7 +93,35 @@ class Ignore_list_center{
     }
 }
 
-
+func synchronize_friend_table(){
+    let local_friend_datas = sql_database.get_friend_list()
+    var check_dic:Dictionary<String,AnyObject> = [:]
+    for friends in local_friend_datas{
+        let temp_dic = [
+            "client_id": friends["client_id"]! as! String,
+            "client_name": friends["client_name"]! as! String,
+            "img_name": friends["img_name"]! as! String
+        ]
+        check_dic[friends["client_id"]! as! String] = temp_dic as AnyObject
+    }
+    let send_dic = [
+        "local_friend_dic":check_dic as AnyObject,
+        "inactive_list":sql_database.get_inactive_friend_list() as AnyObject
+    ]
+    HttpRequestCenter().request_user_data_v2("synchronize_friend_table", send_dic: send_dic) { (return_dic:Dictionary<String, AnyObject>?) in
+        if return_dic != nil{
+            for return_list_data in return_dic!["return_list"] as! Array<Dictionary<String,AnyObject>>{
+                sql_database.insert_friend(input_dic: return_list_data)
+            }
+            if !(return_dic!["return_list"] as! Array<Dictionary<String,AnyObject>>).isEmpty{
+                let delegate_list = [wsActive.wasd_FriendTableViewMedol]
+                update_private_mag(delegate_target_list: delegate_list)
+            }
+            let comlete_delete_list = return_dic!["inactive_list"] as! Array<String>
+            sql_database.remove_friend_complete(complete_list: comlete_delete_list)
+        }
+    }
+}
 
 
 

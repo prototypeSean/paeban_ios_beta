@@ -24,6 +24,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         model = FriendTableViewMedol(with: self)
         //self.tableView.gestureRecognizerShouldBegin(self.tableView.gestureRecognizers) = false
         // 讓整個VIEW往上縮起tabbar的高度
+        //model?.synchronize_friend_table()
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -31,7 +32,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         self.tableView.reloadData()
         model?.chat_view = nil
         model?.getFrientList()
-        model?.synchronize_friend_table()
+        synchronize_friend_table()
         getInviteList()
         self.update_badges()
     }
@@ -167,7 +168,6 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             ok_btn.backgroundColor = UIColor(red:0.00, green:0.67, blue:0.52, alpha:1.0)
             
             let del_btn = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "\u{2715}\n刪除") { (UITableViewRowAction, IndexPath) in
-                print("no")
                 self.friend_confirm(answer: "no", friend_id: (self.model?.friendsList[IndexPath.row].id)!)
                 self.model?.remove_cell_enforce(with: (self.model?.friendsList[IndexPath.row].id)!)
             }
@@ -177,7 +177,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         else if model?.friendsList[indexPath.row].cell_type == "friend"{
             let delete_btn = UITableViewRowAction(style: .default, title: "刪除", handler: { (action, index_path) in
                 let friend_id = self.model?.friendsList[indexPath.row].id
-                self.send_server_delete_friend(friend_id: friend_id!)
+                sql_database.remove_friend_process(username_in: friend_id!)
                 self.model?.remove_friend(id: friend_id!)
             })
             return [delete_btn]
@@ -251,14 +251,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         let tab_bar = self.parent?.parent as! TabBarController
         tab_bar.update_badges()
     }
-    func send_server_delete_friend(friend_id:String){
-        let send_data:NSDictionary = [
-            "friend_id": friend_id
-        ]
-        HttpRequestCenter().friend_function(msg_type: "delete_friend", send_dic: send_data) { (return_dic) in
-            //cdoe
-        }
-    }
+    
     
     
     // MARK: event for cell button

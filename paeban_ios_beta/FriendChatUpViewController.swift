@@ -141,6 +141,7 @@ class FriendChatUpViewController: UIViewController {
             let nav = self.parent as! UINavigationController
             nav.popViewController(animated: true)
             Block_list_center().add_user_to_block_list(client_id: self.clientId!)
+            
 //            HttpRequestCenter().privacy_function(msg_type:"block", send_dic: data) { (Dictionary) in
 //                if let _ = Dictionary.index(where: { (key: String, value: AnyObject) -> Bool in
 //                    if key == "msgtype"{

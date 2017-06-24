@@ -77,12 +77,19 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         else if cmd_line == "print_ig"{
             sql_database.print_ig()
         }
+        else if cmd_line == "print_fl"{
+            sql_database.print_fl()
+        }
+        else if cmd_line == "test_del"{
+            sql_database.test_del()
+        }
         else if cmd_line == "help"{
             let help_list = [
                 "recent_db       列印recent_topic",
                 "print_block     列印封鎖清單",
                 "reset_db        重置資料庫",
-                "print_ig        列印ignore list"
+                "print_ig        列印ignore list",
+                "print_fl        print friend list"
             ]
             print("----cmd line----")
             for cmd_lines in help_list{

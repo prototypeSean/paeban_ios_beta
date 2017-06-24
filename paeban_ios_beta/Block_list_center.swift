@@ -11,6 +11,7 @@ import Foundation
 class Block_list_center{
     func add_user_to_block_list(client_id:String){
         sql_database.insert_black_list(username_in: client_id)
+        sql_database.remove_friend_process(username_in: client_id)
         upload_data_to_synchronize_server_block_list()
     }
     func ckeck_user_is_blocked(client_id:String) -> Bool{

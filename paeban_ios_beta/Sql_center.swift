@@ -378,12 +378,13 @@ public class SQL_center{
         do{
             try sql_db?.run(friend_list_table.create { t in
                 t.column(id, primaryKey: true)
-                t.column(username)
+                t.column(username, unique:true)
                 t.column(user_full_name)
                 t.column(friend_image)
                 t.column(friend_image_file_name)
                 t.column(tmp_client_real_pic)
                 t.column(tmp_client_sex)
+                t.column(active)
             })
             print("表單建立成功friend_list_table")
         }
@@ -395,31 +396,35 @@ public class SQL_center{
     func insert_friend(input_dic:Dictionary<String,AnyObject>){
         do{
             let client_id_var = input_dic["client_id"] as! String
-            if (try sql_db!.scalar(friend_list_table.filter(username == client_id_var).count)) == 0{
-                // 是全新資料
-                let insert = friend_list_table.insert(
-                    username <- input_dic["client_id"] as! String,
-                    user_full_name <- input_dic["client_name"] as! String,
-                    friend_image_file_name <- input_dic["img_name"] as? String,
-                    tmp_client_real_pic <- input_dic["is_real_pic"] as? Bool,
-                    tmp_client_sex <- input_dic["sex"] as? String
-                )
-                try sql_db!.run(insert)
-            }
-            else{
-                let target_obj = try sql_db!.prepare(friend_list_table.filter(username == client_id_var)).first(where: { (row) -> Bool in
-                    return true
-                })
-                if (input_dic["client_name"] as! String) != target_obj![user_full_name]{
-                    try sql_db!.run(friend_list_table.filter(username == client_id_var).update(user_full_name <- input_dic["client_name"] as! String))
-                }
-                if (input_dic["img_name"] as! String) != target_obj![friend_image_file_name]{
-                    try sql_db!.run(friend_list_table.filter(username == client_id_var).update(
+            if !ckeck_user_is_blocked(client_id_in: client_id_var){
+                if (try sql_db!.scalar(friend_list_table.filter(username == client_id_var).count)) == 0{
+                    // 是全新資料
+                    let insert = friend_list_table.insert(
+                        username <- input_dic["client_id"] as! String,
+                        user_full_name <- input_dic["client_name"] as! String,
                         friend_image_file_name <- input_dic["img_name"] as? String,
-                        friend_image <- nil
-                    ))
+                        tmp_client_real_pic <- input_dic["is_real_pic"] as? Bool,
+                        tmp_client_sex <- input_dic["sex"] as? String,
+                        active <- true
+                    )
+                    try sql_db!.run(insert)
+                }
+                else{
+                    let target_obj = try sql_db!.prepare(friend_list_table.filter(username == client_id_var)).first(where: { (row) -> Bool in
+                        return true
+                    })
+                    if (input_dic["client_name"] as! String) != target_obj![user_full_name]{
+                        try sql_db!.run(friend_list_table.filter(username == client_id_var).update(user_full_name <- input_dic["client_name"] as! String))
+                    }
+                    if (input_dic["img_name"] as! String) != target_obj![friend_image_file_name]{
+                        try sql_db!.run(friend_list_table.filter(username == client_id_var).update(
+                            friend_image_file_name <- input_dic["img_name"] as? String,
+                            friend_image <- nil
+                        ))
+                    }
                 }
             }
+            
         }
         catch{
             print("資料庫錯誤")
@@ -508,10 +513,10 @@ public class SQL_center{
         }
         return false
     }
-    func remove_friend(username_in:String){
+    func remove_friend_process(username_in:String){
         do{
-            let query = friend_list_table.filter(username == username_in)
-            try sql_db!.run(query.delete())
+            try sql_db!.run(friend_list_table.filter(username == username_in).update(active <- false))
+            synchronize_friend_table()
         }
         catch{
             print("資料庫錯誤")
@@ -519,12 +524,19 @@ public class SQL_center{
         }
         
     }
+    func remove_friend_complete(complete_list:Array<String>){
+        do{
+            try sql_db!.run(friend_list_table.filter(complete_list.contains(username)).delete())
+        }
+        catch{
+            print("ERROR remove_friend_complete")
+            print(error)
+        }
+    }
     func get_friend_list() -> Array<Dictionary<String,AnyObject>>{
         do{
             var return_list:Array<Dictionary<String,AnyObject>> = []
-            let black_list = get_black_list()
-            print(black_list)
-            let query = friend_list_table.filter(!black_list.contains(username))
+            let query = friend_list_table.filter(active == true)
             for friend_datas in try sql_db!.prepare(query){
                 print(friend_datas[username])
                 var temp_dic:Dictionary<String,AnyObject> = [
@@ -564,6 +576,37 @@ public class SQL_center{
             print(error)
         }
         return []
+    }
+    func get_inactive_friend_list() -> Array<String>{
+        var result_list:Array<String> = []
+        do{
+            for friend_datas in try sql_db!.prepare(friend_list_table.filter(active == false)){
+                result_list.append(friend_datas[username])
+            }
+        }
+        catch{
+            print("ERROR get_inactive_friend_list")
+            print(error)
+        }
+        return result_list
+    }
+    func print_fl(){
+        var sss:Array<String> = []
+        do{
+            for c in try sql_db!.prepare(friend_list_table){
+                sss.append(c[user_full_name])
+            }
+        }
+        catch{
+            print(error)
+        }
+        print(sss)
+    }
+    func test_del(){
+        do{
+            try sql_db!.run(friend_list_table.filter(username == "6").delete())
+        }
+        catch{}
     }
     
     
