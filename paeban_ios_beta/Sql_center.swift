@@ -1408,12 +1408,17 @@ public class SQL_center{
     }
     func get_friend_badges() -> Int{
         let black_list:Array<String> = get_black_list()
+        var friend_list:Array<String> = []
         do{
+            for friend_rows in try sql_db!.prepare(friend_list_table.filter(active == true)){
+                friend_list.append(friend_rows[username])
+            }
             if userData.id != nil{
             let query = private_table.filter(
                 sender != userData.id &&
                 is_read == false &&
-                black_list.contains(sender) == false
+                black_list.contains(sender) == false &&
+                friend_list.contains(sender)
                 )
                 let query_count = try sql_db?.scalar(query.count)
                 return query_count!
