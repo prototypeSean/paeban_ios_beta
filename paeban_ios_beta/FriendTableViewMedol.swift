@@ -679,7 +679,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 add_singo_invite_cell(msg: msg)
                 fast_alter(inviter: (msg["sender_name"] as? String)!, nav_controller: targetVC.parent as! UINavigationController)
             }
-            else if msg_type == "priv_msg"{
+            else if msg_type == "priv_msg" && false{
                 // working 改成從本地資料庫讀取  從另一個delegate
                 let resultDic:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary<String,AnyObject>
                 let sender_name = resultDic["sender_name"] as! String

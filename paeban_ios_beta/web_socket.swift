@@ -232,9 +232,13 @@ open class webSocketActiveCenter{
                 if self.wasd_ForFriendChatViewController?.new_client_topic_msg != nil{
                     self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)
                 }
+                if self.wasd_FriendTableViewMedol?.new_client_topic_msg != nil
+                {
+                    self.wasd_FriendTableViewMedol?.new_client_topic_msg!(sender: sender)
+                }
             }
             else{
-                let delegate_list = [self.wasd_ForFriendChatViewController]
+                let delegate_list = [self.wasd_ForFriendChatViewController, self.wasd_FriendTableViewMedol]
                 update_private_mag(delegate_target_list: delegate_list)
             }
         }
