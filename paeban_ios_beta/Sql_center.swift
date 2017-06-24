@@ -2135,7 +2135,7 @@ public class SQL_center{
     func get_recent_badges() -> Int{
         let myTopicIds:Array<String> = get_my_topics_server_id()
         let black_list:Array<String> = get_black_list()
-        let ignore_list = get_ignore_topic_id_list()
+        let recent_topic_list = get_recent_topic_list()
         do{
             if userData.id != nil{
                 // 抓所有的recentTopic的topic_id  只是我的話題的反向布林操作
@@ -2144,7 +2144,7 @@ public class SQL_center{
                     sender != userData.id &&
                     is_read == false &&
                     !black_list.contains(sender) &&
-                    !ignore_list.contains(topic_id)
+                    recent_topic_list.contains(topic_id)
                 )
                 let query_count = try sql_db?.scalar(query.count)
                 return query_count!
