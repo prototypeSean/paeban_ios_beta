@@ -52,7 +52,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
                     case 3:
                         let target_VC_transform = target_VC as! FriendTableViewController
                         
-                        target_VC_transform.autoLeap()
+                        //target_VC_transform.autoLeap()
                     default:
                         print("targetClassName is nil")
                     }
