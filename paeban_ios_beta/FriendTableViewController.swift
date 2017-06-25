@@ -191,9 +191,13 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     
     // MARk: internal func
     func autoLeap(){
+        // 飛行
+        print(self.childViewControllers)
+        print("+++---+++---+++---+++")
+        print(self.parent)
         if notificationSegueInf != [:] && recive_apns_switch{
             let parent = self.parent as! UINavigationController
-            parent.popToRootViewController(animated: false)
+            //parent.popToRootViewController(animated: false)
             let segue_user_id = notificationSegueInf["user_id"]
             var targetData_Dickey:Array<FriendStanderType>.Index?
             
