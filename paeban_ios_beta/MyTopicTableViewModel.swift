@@ -516,12 +516,13 @@ class MyTopicTableViewModel{
         
     }
     func prepare_auto_leap(topic_id:String, client_id:String){
-        
-        self.auto_leap_data_dic = [
-            "topic_id":topic_id,
-            "client_id":client_id
-        ]
-        self.check_if_need_to_auto_leap()
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 3){
+            self.auto_leap_data_dic = [
+                "topic_id":topic_id,
+                "client_id":client_id
+            ]
+            self.check_if_need_to_auto_leap()
+        }
     }
     func topic_closed(topic_id:String){
         self.remove_list_cell(topic_id: topic_id)
@@ -710,6 +711,11 @@ class MyTopicTableViewModel{
         if !self.auto_leap_data_dic.isEmpty{
             let topic_id = self.auto_leap_data_dic["topic_id"]!
             let client_id = self.auto_leap_data_dic["client_id"]!
+            // 飛行
+            print("---check_if_need_to_auto_leap---")
+            print(topic_id)
+            print(client_id)
+            
             if secTopic[topic_id] != nil{
                 if let detail_obj_index = secTopic[topic_id]!.index(where: { (element) -> Bool in
                     if element.clientId_detial == client_id{

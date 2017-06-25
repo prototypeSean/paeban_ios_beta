@@ -38,11 +38,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     
     //========收到推播=========
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        
-        if logInState && application.applicationState == UIApplicationState.background{
+        print("---didReceiveRemoteNotification---")
+        //print(logInState)
+        if logInState && (application.applicationState == UIApplicationState.inactive){
             if let segue_inf = userInfo["segue_inf"] as? Dictionary<String,String>{
                 print("========segue_inf=========")
-                //print(segue_inf)
+                print(segue_inf)
                 notificationSegueInf = segue_inf
             }
         }

@@ -71,7 +71,11 @@ public class SQL_center{
     //recent
     // ignore_list
     let ignore_list = Table("ignore_list")
-
+    //app_log
+    let app_log = Table("app_log")
+    let log_text = Expression<String?>("log_text")
+    
+    
     func insert_private_msg_mega_ver(input_list:Array<Dictionary<String, AnyObject>>, persent_report:@escaping ()->Void){
         do{
             try sql_db?.transaction {
@@ -159,6 +163,7 @@ public class SQL_center{
         self.establish_recent_topic()
         self.establish_user_data()
         self.establish_ignore_list()
+        establish_app_log()
     }
     func remove_all_table(){
         let table_list = [
@@ -174,6 +179,7 @@ public class SQL_center{
             recent_topic,
             user_data_table,
             recent_topic,
+            //app_log,
             ignore_list
         ]
         for tables in table_list{
@@ -2525,5 +2531,44 @@ public class SQL_center{
         }
     }
     
+    func establish_app_log(){
+        do{
+            try sql_db?.run(app_log.create { t in
+                t.column(id, primaryKey: true)
+                t.column(log_text)
+            })
+            print("表單建立成功")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
+    }
+    func insert_app_log(log:String){
+        do{
+            try sql_db!.run(app_log.insert(log_text <- log))
+        }
+        catch{
+            print("ERROR insert_app_log")
+            print(error)
+        }
+    }
+    func print_log(){
+        do{
+            for c in try sql_db!.prepare(app_log){
+                print([c[log_text]])
+            }
+        }
+        catch{
+            print(error)
+        }
+    }
+    
 }
+
+
+
+
+
+
 

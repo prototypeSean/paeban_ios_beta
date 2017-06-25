@@ -102,7 +102,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if let msg_type:String = msg["msg_type"] as? String{
             
-            if msg_type == "topic_msg"{
+            if msg_type == "topic_msg" && false{
                 rTVModel.recive_topic_msg(msg:msg)
             }
             else if msg_type == "new_member"{
@@ -142,6 +142,10 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     func wsReconnected(){
         self.rTVModel.reCheckDataBase()
         //self.rTVModel.send_leave_topic()
+        self.update_badges()
+    }
+    func new_client_topic_msg(sender: String) {
+        rTVModel.reCheckDataBase()
         self.update_badges()
     }
     func model_relodata(){

@@ -106,43 +106,12 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         tatal_badge += Int(return_dic["recent_badge"]!)!
         tatal_badge += Int(return_dic["friend_badge"]!)!
         app_instence?.applicationIconBadgeNumber = tatal_badge
-        
-        
-//        HttpRequestCenter().request_user_data("get_badges", send_dic: [:]) { (return_dic) in
-//            DispatchQueue.main.async {
-//                print("==update_badges==")
-//                if return_dic["my_topic_badge"] as? String == "0"{
-//                    self.tabBar.items?[1].badgeValue = nil
-//                }
-//                else{
-//                    self.tabBar.items?[1].badgeValue = return_dic["my_topic_badge"] as? String
-//                }
-//                
-//                if return_dic["recent_badge"] as? String == "0"{
-//                    self.tabBar.items?[2].badgeValue = nil
-//                }
-//                else{
-//                    self.tabBar.items?[2].badgeValue = return_dic["recent_badge"] as? String
-//                }
-//                
-//                if return_dic["friend_badge"] as? String == "0"{
-//                    self.tabBar.items?[3].badgeValue = nil
-//                }
-//                else{
-//                    self.tabBar.items?[3].badgeValue = return_dic["friend_badge"] as? String
-//                }
-//                var tatal_badge = 0
-//                tatal_badge += Int(return_dic["my_topic_badge"] as! String)!
-//                tatal_badge += Int(return_dic["recent_badge"] as! String)!
-//                tatal_badge += Int(return_dic["friend_badge"] as! String)!
-//                app_instence?.applicationIconBadgeNumber = tatal_badge
-//            }
-//        }
     }
     func wsOnMsg(_ msg: Dictionary<String, AnyObject>) {
         self.update_badges()
     }
     func wsReconnected(){
+        //self.update_badges()
     }
 }
 

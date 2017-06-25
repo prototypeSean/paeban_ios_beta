@@ -148,6 +148,7 @@ open class webSocketActiveCenter{
     }
     
     func wsReConnect(){
+        //wasd_ForTabBarController?.wsReconnected()
         wsad_ForTopicTableViewController?.wsReconnected()
         wasd_ForRecentTableViewController?.wsReconnected()
         wasd_ForMyTopicTableViewController?.wsReconnected()
@@ -189,7 +190,8 @@ open class webSocketActiveCenter{
                 let delegate_list:Array<webSocketActiveCenterDelegate?> = [
                     self.wasd_ForChatViewController,
                     self.wasd_ForMyTopicTableViewController,
-                    self.wasd_ForTopicViewController
+                    self.wasd_ForTopicViewController,
+                    self.wasd_ForRecentTableViewController
                 ]
 //                print("id_pre_s: \(previous_receiver_topic_content_id) /// id_pre_l: \(topic_content_last_checked_server_id)")
                 if Int(previous_receiver_topic_content_id)! == Int(topic_content_last_checked_server_id)!{
