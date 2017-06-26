@@ -10,8 +10,15 @@ import UIKit
 import Starscream
 
 class SettingViewController: UIViewController, UITextFieldDelegate {
+    
+    @IBAction func openFB(_ sender: UIBarButtonItem) {
+        UIApplication.shared.openURL(URL(string: "https://www.facebook.com/meetgently/")!)
+    }
+//    @IBAction func openFB(_ sender: UIButton) {
+//        UIApplication.shared.openURL(URL(string: "https://www.facebook.com/meetgently/")!)
+//    }
+//    @IBOutlet weak var openFBOutlet: UIButton!
     @IBOutlet weak var isTruePhotoSwitch: UISwitch!
-
     @IBOutlet weak var isTruePhoto: UIImageView!
     @IBAction func logOutBtn(_ sender: AnyObject) {
         logOut()
@@ -280,7 +287,6 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         name_btn_obj.setTitle(userData.name!, for: UIControlState.normal)
 //        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingViewController.dismissKeyboard))
 //        view.addGestureRecognizer(tap)
-        
         find_user_kb_height()
     }
     

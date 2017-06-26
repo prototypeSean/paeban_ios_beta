@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "漸漸_導覽P1_1-1.pdf",
+      "filename" : "facebook_25x25_ffffff@1x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "facebook_50x50_ffffff@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "facebook_75x75_ffffff@3x.png",
       "scale" : "3x"
     }
   ],
