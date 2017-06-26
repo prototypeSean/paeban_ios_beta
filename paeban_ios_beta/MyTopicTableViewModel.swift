@@ -517,11 +517,13 @@ class MyTopicTableViewModel{
     }
     func prepare_auto_leap(topic_id:String, client_id:String){
         DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1){
-            self.auto_leap_data_dic = [
-                "topic_id":topic_id,
-                "client_id":client_id
-            ]
-            self.check_if_need_to_auto_leap()
+            DispatchQueue.main.async {
+                self.auto_leap_data_dic = [
+                    "topic_id":topic_id,
+                    "client_id":client_id
+                ]
+                self.check_if_need_to_auto_leap()
+            }
         }
     }
     func topic_closed(topic_id:String){

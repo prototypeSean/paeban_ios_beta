@@ -47,6 +47,7 @@ class FriendChatUpViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
+        guestPhotoImg.image = sql_database.get_friend_img(friend_id: clientId!)
         setImage()
         setButton()
     }
@@ -88,8 +89,9 @@ class FriendChatUpViewController: UIViewController {
         guestPhoto.addSubview(guetsborderView)
         
         // add any other subcontent that you want clipped 最上層才放圖片進去
-        
-        guestPhotoImg.image = clientImg
+        if clientImg != nil{
+            guestPhotoImg.image = clientImg
+        }
         guestPhotoImg.frame = guetsborderView.bounds
         guetsborderView.addSubview(guestPhotoImg)
         

@@ -792,10 +792,14 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.endUpdates()
         
     }
+    func pop_to_root_view(){
+        let parent = self.parent as! UINavigationController
+        print("pop_to_root_view")
+        print(parent)
+        parent.popToRootViewController(animated: false)
+    }
     func autoLeap(segeu_data:Dictionary<String,String>){
         if !segeu_data.isEmpty{
-            let parent = self.parent as! UINavigationController
-            parent.popToRootViewController(animated: false)
             let segue_topic_id = segeu_data["topic_id"]
             let segue_user_id = segeu_data["user_id"]
             

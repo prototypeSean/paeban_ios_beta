@@ -596,6 +596,20 @@ public class SQL_center{
         }
         return result_list
     }
+    func get_friend_img(friend_id:String) -> UIImage?{
+        do{
+            if let friend_obj = try sql_db!.prepare(friend_list_table.filter(username == friend_id)).first(where: { (row) -> Bool in
+                return true
+            }){
+                return base64ToImage(friend_obj[friend_image]!)
+            }
+        }
+        catch{
+            print("ERROR get_friend_img")
+            print(error)
+        }
+        return nil
+    }
     func print_fl(){
         var sss:Array<String> = []
         do{

@@ -292,6 +292,8 @@ func leapToPage(segueInf:Dictionary<String,String>) -> Int?{
             returnInt = nil
         }
     }
+    print("555555555555555555555555555555")
+    print (returnInt)
     return returnInt
 }
 

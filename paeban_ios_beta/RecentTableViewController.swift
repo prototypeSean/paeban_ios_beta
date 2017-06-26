@@ -168,12 +168,14 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     
     
     // internal func
-    func autoLeap(){
-        if notificationSegueInf != [:]{
-            let parent = self.parent as! UINavigationController
-            parent.popToRootViewController(animated: false)
-            let segue_topic_id = notificationSegueInf["topic_id"]
-            let segue_user_id = notificationSegueInf["user_id"]
+    func pop_to_root_view(){
+        let parent = self.parent as! UINavigationController
+        parent.popToRootViewController(animated: false)
+    }
+    func autoLeap(segeu_data:Dictionary<String,String>){
+        if !segeu_data.isEmpty{
+            let segue_topic_id = segeu_data["topic_id"]
+            let segue_user_id = segeu_data["user_id"]
             
             var targetData_Dickey:Array<MyTopicStandardType>.Index?
             

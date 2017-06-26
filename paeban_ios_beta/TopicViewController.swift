@@ -55,11 +55,6 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         topicTitleContent.text = topicTitle
         check_is_friend()
         client_data_obj = Client_detail_data(topic_id: topicId!, client_id: ownerId!)
-        //get_client_img(owner: ownerId!, topic_id: topicId!)
-        
-//        re_new_client_img()
-//        my_img_level = sql_database.get_level_my(topic_id_in: topicId!, client_id: ownerId!)
-//        re_new_my_img()
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
