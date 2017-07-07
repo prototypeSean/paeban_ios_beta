@@ -215,13 +215,21 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let data = model.mytopic[indexPath.row]
         let close_topic_btn = UITableViewRowAction(style: .default, title: "全部關閉") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            self.model.close_topic(index: IndexPath_parameter.row)
+            let alert = UIAlertController(title: "警告", message: "即將關閉話題，並移除所有參加者", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+                self.model.close_topic(index: IndexPath_parameter.row)
+            }))
         }
         let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            let data = self.model.mytopic[IndexPath_parameter.row]
-            Ignore_list_center().add_ignore_list(topic_id_in: data.topicId_title!, client_id: data.clientId_detial!)
-            self.model.delete_detail_cell(index: IndexPath_parameter.row)
-            self.update_badges()
+            let alert = UIAlertController(title: "警告", message: "將用戶踢出話題？", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+                let data = self.model.mytopic[IndexPath_parameter.row]
+                Ignore_list_center().add_ignore_list(topic_id_in: data.topicId_title!, client_id: data.clientId_detial!)
+                self.model.delete_detail_cell(index: IndexPath_parameter.row)
+                self.update_badges()
+            }))
         }
         let report = UITableViewRowAction(style: .default, title: "舉報") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
