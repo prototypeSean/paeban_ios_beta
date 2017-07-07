@@ -220,6 +220,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
                 self.model.close_topic(index: IndexPath_parameter.row)
             }))
+            self.present(alert, animated: true, completion: nil)
         }
         let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let alert = UIAlertController(title: "警告", message: "將用戶踢出話題？", preferredStyle: .alert)
@@ -230,6 +231,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 self.model.delete_detail_cell(index: IndexPath_parameter.row)
                 self.update_badges()
             }))
+            self.present(alert, animated: true, completion: nil)
         }
         let report = UITableViewRowAction(style: .default, title: "舉報") { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
