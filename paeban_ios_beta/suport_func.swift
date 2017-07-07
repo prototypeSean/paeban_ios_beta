@@ -52,9 +52,7 @@ func update_private_mag(delegate_target_list:Array<webSocketActiveCenterDelegate
                 sql_database.inser_date_to_private_msg(input_dic: private_msg_data_s)
                 let sender = private_msg_data_s["sender_id"] as! String
                 for delegate_s in delegate_target_list{
-                    if delegate_s?.new_client_topic_msg != nil{
-                        delegate_s?.new_client_topic_msg!(sender: sender)
-                    }
+                    delegate_s?.new_client_topic_msg!(sender: sender)
                 }
             }
             

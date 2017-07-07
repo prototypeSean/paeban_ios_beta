@@ -81,7 +81,6 @@ open class webSocketActiveCenter{
     var wasd_ForTabBarController:webSocketActiveCenterDelegate?
     let wasd_ForTabBarController_list = ["topic_msg", "priv_msg"]
     
-    
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
             let msgtypeString = msgtype as! String
@@ -226,21 +225,21 @@ open class webSocketActiveCenter{
             self.wasd_ForFriendChatViewController?.new_my_topic_msg!(sender: sender, id_local: id_local)
         }
         else{
+            // server 驗證碼有問題
+            //ids:25514  idl:25440
+            //ids:25514  idl:25440
             let private_content_last_id = msg["private_content_last_checked_server_id"] as! String
             let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
-            //print("ids:\(private_content_last_checked_server_id)  idl:\(private_content_last_id)")
+            print("ids:\(private_content_last_checked_server_id)  idl:\(private_content_last_id)")
             if Int(private_content_last_checked_server_id)! == Int(private_content_last_id)!{
                 sql_database.inser_date_to_private_msg(input_dic: result_dic)
-                if self.wasd_ForFriendChatViewController?.new_client_topic_msg != nil{
-                    self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)
-                }
-                if self.wasd_FriendTableViewMedol?.new_client_topic_msg != nil
-                {
-                    self.wasd_FriendTableViewMedol?.new_client_topic_msg!(sender: sender)
-                }
+                print("test point")
+                self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)
+                self.wasd_FriendTableViewMedol?.new_client_topic_msg!(sender: sender)
+                self.wasd_ForTabBarController?.new_client_topic_msg!(sender: sender)
             }
             else{
-                let delegate_list = [self.wasd_ForFriendChatViewController, self.wasd_FriendTableViewMedol]
+                let delegate_list = [self.wasd_ForFriendChatViewController, self.wasd_FriendTableViewMedol, self.wasd_ForTabBarController]
                 update_private_mag(delegate_target_list: delegate_list)
             }
         }

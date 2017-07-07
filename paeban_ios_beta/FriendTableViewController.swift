@@ -22,6 +22,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         model = FriendTableViewMedol(with: self)
+        //wsActive.wasd_FriendTableViewMedol = model
         //self.tableView.gestureRecognizerShouldBegin(self.tableView.gestureRecognizers) = false
         // 讓整個VIEW往上縮起tabbar的高度
         //model?.synchronize_friend_table()
@@ -29,6 +30,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     }
     override func viewWillAppear(_ animated: Bool) {
         //autoLeap()
+        //wsActive.wasd_FriendTableViewMedol = model
         self.tableView.reloadData()
         model?.chat_view = nil
         model?.getFrientList()
@@ -259,7 +261,9 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     }
     func update_badges(){
         let tab_bar = self.parent?.parent as! TabBarController
-        tab_bar.update_badges()
+        DispatchQueue.main.async {
+            tab_bar.update_badges()
+        }
     }
     
     

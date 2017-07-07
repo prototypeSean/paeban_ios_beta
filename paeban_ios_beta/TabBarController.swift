@@ -115,10 +115,13 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         app_instence?.applicationIconBadgeNumber = tatal_badge
     }
     func wsOnMsg(_ msg: Dictionary<String, AnyObject>) {
-        self.update_badges()
+        //self.update_badges()
     }
     func wsReconnected(){
-        //self.update_badges()
+        self.update_badges()
+    }
+    func new_client_topic_msg(sender: String) {
+        self.update_badges()
     }
 }
 

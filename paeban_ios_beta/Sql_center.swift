@@ -1416,7 +1416,7 @@ public class SQL_center{
                     print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]) ms: \(topic_c[private_text])")
                     // id: 1, email: alice@mac.com, name: Optional("Alice")
                 }
-                print("========")
+                print("==1======")
             }
             catch{
                 print("資料庫錯誤")
@@ -1533,7 +1533,7 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
-        //self.print_all()
+        print("SQLDONE")
     }
     func get_unsend_private_data(client_id:String) -> Array<NSDictionary>?{
         do{
@@ -1835,7 +1835,7 @@ public class SQL_center{
             print(error)
         }
         // MARK:test print
-        print_part_topic_content()
+        //print_part_topic_content()
     }
     enum Topic_content_insert_option:String{
         case new_msg = "new_msg"
@@ -1910,7 +1910,7 @@ public class SQL_center{
         //Check_state = readed
             //找到該條資料升級成已讀
         // MARK:test print
-        print_part_topic_content()
+        //print_part_topic_content()
     }
     func check_id_server(id_server_input:String) -> Bool{
         let query = topic_content.filter(id_server == id_server_input)
@@ -1931,7 +1931,7 @@ public class SQL_center{
             for topic_c in try sql_db!.prepare(topic_content) {
                 print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]), text: \(topic_c[topic_text]), time:\(topic_c[time])")
             }
-            print("========")
+            print("===2=====")
         }
         catch{
             print("資料庫錯誤")
@@ -1945,7 +1945,7 @@ public class SQL_center{
                 for topic_c in try sql_db!.prepare(query.order(id.asc)) {
                     print("id_s: \(topic_c[id_server]), id_l: \(topic_c[id]), re: \(topic_c[receiver]!), se:\(topic_c[sender]!) , is_s:\(topic_c[is_send]) , is_r\(topic_c[is_read]), text: \(topic_c[topic_text]), time:\(topic_c[time])")
                 }
-                print("========")
+                print("===3=====")
             }
             catch{
                 print("資料庫錯誤")
