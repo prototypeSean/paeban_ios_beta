@@ -501,10 +501,7 @@ class MyTopicTableViewModel{
                             if self.check_if_detail_cell_is_extended(topic_id: topic_id){
                                 self.add_new_detail_cell_to_table(detail_cell: cell_obj)
                             }
-                            
                         }
-                        
-                        
                     })
                 }
             }
@@ -517,7 +514,7 @@ class MyTopicTableViewModel{
     }
     func prepare_auto_leap(topic_id:String, client_id:String){
         // 移除delay
-        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1){
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now()){
             DispatchQueue.main.async {
                 self.auto_leap_data_dic = [
                     "topic_id":topic_id,
