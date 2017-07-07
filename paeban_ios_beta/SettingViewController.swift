@@ -86,6 +86,9 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         else if cmd_line == "print_log"{
             sql_database.print_log()
         }
+        else if cmd_line == "print_prmsg"{
+            sql_database.print_all2()
+        }
         else if cmd_line == "help"{
             let help_list = [
                 "recent_db       列印recent_topic",

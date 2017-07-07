@@ -516,6 +516,7 @@ class MyTopicTableViewModel{
         
     }
     func prepare_auto_leap(topic_id:String, client_id:String){
+        // 移除delay
         DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1){
             DispatchQueue.main.async {
                 self.auto_leap_data_dic = [

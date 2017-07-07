@@ -10,7 +10,7 @@ import Foundation
 import SQLite
 
 public class SQL_center{
-    let print_part_log_switch = false
+    let print_part_log_switch = true
     var sql_db:Connection?
     // private var
     let private_text = Expression<String?>("private_text")
