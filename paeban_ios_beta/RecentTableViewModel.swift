@@ -27,6 +27,7 @@ class RecentTableViewModel{
     func reCheckDataBase() {
         get_recent_data()
         updata_online_state()
+        update_battery_state()
     }
     func recive_topic_msg(msg:Dictionary<String,AnyObject>){
         update_last_line(msg: msg)
@@ -244,7 +245,26 @@ class RecentTableViewModel{
             }
         }
     }
-    
+    func update_battery_state(){
+        var topic_id_list:Array<String> = []
+        for cells in recentDataBase{
+            if cells.topicId_title != nil{
+                topic_id_list.append(cells.topicId_title!)
+            }
+        }
+        HttpRequestCenter().updata_battery_state(topic_id_list: topic_id_list) { (return_dic:Dictionary<String, AnyObject>) in
+            DispatchQueue.main.async {
+                for cells in self.recentDataBase{
+                    if cells.topicId_title != nil{
+                        if return_dic[cells.topicId_title!] != nil{
+                            cells.battery = Int(return_dic[cells.topicId_title!]! as! String)
+                        }
+                    }
+                }
+                self.delegate?.model_relodata()
+            }
+        }
+    }
     // 施工中
     
     

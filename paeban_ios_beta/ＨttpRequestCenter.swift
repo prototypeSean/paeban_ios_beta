@@ -259,6 +259,14 @@ class HttpRequestCenter{
         }
     }
     
+    func updata_battery_state(topic_id_list:Array<String>, after:@escaping (Dictionary<String, AnyObject>)->Void){
+        request_user_data_v2("request_battery_state", send_dic: ["topic_id_list":topic_id_list as AnyObject]) { (return_dic:Dictionary<String, AnyObject>?) in
+            if return_dic != nil{
+                after(return_dic!)
+            }
+        }
+    }
+    
     func request_user_data_v2(_ mode:String, send_dic:Dictionary<String,AnyObject>,InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>?)->Void){
         let url = "\(local_host)request_user_data/"
         let jsonData = json_dumps2(send_dic as NSDictionary)

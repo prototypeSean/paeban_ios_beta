@@ -230,17 +230,20 @@ class MyTopicTableViewModel{
     
     }
     func topic_title_cell_add(new_cell:MyTopicStandardType){
-        if let _ = mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
-            if ele.topicId_title == new_cell.topicId_title{
-                return true
-            }
-            return false
-        }){
-            //pass
-        }
-        else{
-            mytopic.append(new_cell)
-        }
+        //插入防閃爍函數
+//        if let _ = mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
+//            if ele.topicId_title == new_cell.topicId_title{
+//                return true
+//            }
+//            return false
+//        }){
+//            //pass
+//        }
+//        else{
+//            mytopic.append(new_cell)
+//        }
+        mytopic = []
+        mytopic.append(new_cell)
     }
     func reflash_detail_cell(){
         var remove_list:Array<Int> = []
