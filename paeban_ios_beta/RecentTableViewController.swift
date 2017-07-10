@@ -131,7 +131,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     }
     func new_client_topic_msg(sender: String) {
         rTVModel.reCheckDataBase()
-        self.update_badges()
+        //self.update_badges()
     }
     func model_relodata(){
         self.tableView.reloadData()

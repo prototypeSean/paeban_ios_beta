@@ -190,7 +190,8 @@ open class webSocketActiveCenter{
                     self.wasd_ForChatViewController,
                     self.wasd_ForMyTopicTableViewController,
                     self.wasd_ForTopicViewController,
-                    self.wasd_ForRecentTableViewController
+                    self.wasd_ForRecentTableViewController,
+                    self.wasd_ForTabBarController
                 ]
 //                print("id_pre_s: \(previous_receiver_topic_content_id) /// id_pre_l: \(topic_content_last_checked_server_id)")
                 if Int(previous_receiver_topic_content_id)! == Int(topic_content_last_checked_server_id)!{
