@@ -20,6 +20,7 @@ protocol MyTopicTableViewModelDelegate {
 class MyTopicTableViewModel{
     // 主table顯示用清單
     var mytopic:Array<MyTopicStandardType> = []
+    var new_mytopic:Array<MyTopicStandardType> = []
     var secTopic:Dictionary<String,Array<MyTopicStandardType>> = [:]
     var delegate:MyTopicTableViewModelDelegate?
     var topic_id_wait_to_extend_detail_cell:String?
@@ -31,11 +32,53 @@ class MyTopicTableViewModel{
     func main_loading_v2(){
         get_title_cell_from_local_v2()
         get_detail_cell_from_local_v2()
-        let need_update_obj_dic = get_client_data_from_temp_client_table()
-        get_client_data_from_server(input_dic: need_update_obj_dic)
+        // == new process ==
+        // get detail client data for DB
+        // updata mytopic list state
+        // compare 2 mytopic list
+        // reload
+        // get detail client data for table + reload
+        
+        
+        //let need_update_obj_dic = get_client_data_from_temp_client_table()
+        //get_client_data_from_server(input_dic: need_update_obj_dic)
+        
         reload_all_cell()
         updata_online_state()
-        //sql_database.print_all()
+    }
+    enum work_mode {
+        case for_table
+        // need reload interface
+        case for_database
+        // NO need reload
+    }
+    func get_client_detail_data_for_sec_topic(for_ target_topic_list:Array<MyTopicStandardType>, mode:work_mode){
+        for sec_topic_datas in secTopic.values{
+            for client_datas in sec_topic_datas{
+                let client_data_obj = Client_detail_data(topic_id: client_datas.topicId_title!, client_id: client_datas.clientId_detial!)
+                client_data_obj.get_client_data(act: { (data_dic:Dictionary<String, AnyObject>) in
+                    if let cell_index = target_topic_list.index(where: { (ele:MyTopicStandardType) -> Bool in
+                        //mytopic[0].topicId_title
+                        if ele.topicId_title! == client_datas.topicId_title! &&
+                            ele.clientId_detial! == data_dic["client_id"] as! String{
+                            return true
+                        }
+                        return false
+                    }){
+                        target_topic_list[cell_index].clientName_detial = data_dic["client_name"] as? String
+                        target_topic_list[cell_index].clientName_detial = data_dic["client_name"] as? String
+                        target_topic_list[cell_index].clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
+                        target_topic_list[cell_index].level = data_dic["level"] as? Int
+                        target_topic_list[cell_index].clientSex_detial = data_dic["sex"] as? String
+                        target_topic_list[cell_index].clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
+                        if mode == work_mode.for_table{
+                            // replace cell
+                            
+                        }
+                    }
+                })
+            }
+        }
     }
     func get_title_cell_from_local_v2(){
         var data_dic:Dictionary<String,AnyObject> = [:]
@@ -45,7 +88,7 @@ class MyTopicTableViewModel{
             data_dic[topic_id] = temp_dic as AnyObject?
         }
         let title_cells = transferToStandardType_title(data_dic)
-        remove_expired_cell(title_cells: title_cells)
+        //remove_expired_cell(title_cells: title_cells)
         for new_cell in title_cells{
             topic_title_cell_add(new_cell: new_cell)
             //self.replace_or_add_title_cell_with_new(new_title_cell: new_cell)
@@ -75,7 +118,7 @@ class MyTopicTableViewModel{
     }
     func get_detail_cell_from_local_v2(){
         secTopic = [:]
-        for cells in mytopic{
+        for cells in new_mytopic{
             if cells.dataType == "title"{
                 if let temp_topic_id = cells.topicId_title{
                     if let basic_cell_list = get_detail_basic_list_from_local_v2(topic_id_in: temp_topic_id, topic_title_in: cells.topicTitle_title!){
@@ -242,8 +285,7 @@ class MyTopicTableViewModel{
 //        else{
 //            mytopic.append(new_cell)
 //        }
-        mytopic = []
-        mytopic.append(new_cell)
+        new_mytopic.append(new_cell)
     }
     func reflash_detail_cell(){
         var remove_list:Array<Int> = []
