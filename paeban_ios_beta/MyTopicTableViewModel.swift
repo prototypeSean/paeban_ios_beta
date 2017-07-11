@@ -249,16 +249,19 @@ class MyTopicTableViewModel{
                         }
                         return false
                     }){
-                        target_topic_list[cell_index].clientName_detial = data_dic["client_name"] as? String
-                        target_topic_list[cell_index].clientName_detial = data_dic["client_name"] as? String
-                        target_topic_list[cell_index].clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
-                        target_topic_list[cell_index].level = data_dic["level"] as? Int
-                        target_topic_list[cell_index].clientSex_detial = data_dic["sex"] as? String
-                        target_topic_list[cell_index].clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
-                        if mode == work_mode.for_table{
-                            DispatchQueue.main.async {
-                                let index_path = IndexPath(row: cell_index, section: 0)
-                                self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+                        if target_topic_list[cell_index].clientPhoto_detial == nil ||
+                            target_topic_list[cell_index].level != data_dic["level"] as? Int{
+                            target_topic_list[cell_index].clientName_detial = data_dic["client_name"] as? String
+                            target_topic_list[cell_index].clientName_detial = data_dic["client_name"] as? String
+                            target_topic_list[cell_index].clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
+                            target_topic_list[cell_index].level = data_dic["level"] as? Int
+                            target_topic_list[cell_index].clientSex_detial = data_dic["sex"] as? String
+                            target_topic_list[cell_index].clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
+                            if mode == work_mode.for_table{
+                                DispatchQueue.main.async {
+                                    let index_path = IndexPath(row: cell_index, section: 0)
+                                    self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+                                }
                             }
                         }
                     }
