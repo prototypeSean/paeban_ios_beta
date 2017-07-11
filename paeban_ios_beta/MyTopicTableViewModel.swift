@@ -40,8 +40,8 @@ class MyTopicTableViewModel{
         // get detail client data for table + reload
         
         
-        //let need_update_obj_dic = get_client_data_from_temp_client_table()
-        //get_client_data_from_server(input_dic: need_update_obj_dic)
+        let need_update_obj_dic = get_client_data_from_temp_client_table()
+        get_client_data_from_server(input_dic: need_update_obj_dic)
         
         reload_all_cell()
         updata_online_state()
