@@ -2578,7 +2578,31 @@ public class SQL_center{
         }
     }
     
+    func get_battery(topic_id_ins:String)->Int{
+        let all_msg_count = topic_content.filter(
+            topic_id == topic_id_ins &&
+            receiver == userData.id!
+            ).select(distinct: sender).count
+        let un_read_count = topic_content.filter(
+            topic_id == topic_id_ins &&
+                receiver == userData.id! &&
+            is_read == false
+            ).select(distinct: sender).count
+        do{
+            let c1 = try sql_db!.scalar(all_msg_count)
+            let c2 = try sql_db!.scalar(un_read_count)
+            return Int((Double(c2-c1)*100)/Double(c1))
+        }
+        catch{
+            print("ERROR!!! get_battery")
+            print(error)
+        }
+        return 0
+    }
 }
+
+
+
 
 
 

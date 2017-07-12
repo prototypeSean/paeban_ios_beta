@@ -27,29 +27,35 @@ class MyTopicTableViewModel{
     var auto_leap_data_dic:Dictionary<String,String> = [:]
     var chat_view:MyTopicViewController?
     var topic_leave_list:Array<Dictionary<String,String>> = []
+    var online_state_dic:Dictionary<String,Bool> = [:]
     
     // ====controller func 2.0 ====
     func main_loading_v2(){
+        print("******reload******")
         get_title_cell_from_local_v2()
         get_detail_cell_from_local_v2()
-        //get_client_detail_data_for_sec_topic(for_: new_mytopic, mode: .for_database)
-        if is_my_topic_empty(){
-            mytopic = new_mytopic
-            new_mytopic = []
-            reload_all_cell()
-        }
-        else{
-            replace_my_topic_list()
-        }
+        updata_online_state()
         get_client_detail_data_for_my_topic(for_: mytopic, mode: .for_table)
+        //get_client_detail_data_for_sec_topic(for_: new_mytopic, mode: .for_database)
+        DispatchQueue.global(qos: .default).async {
+            if self.is_my_topic_empty(){
+                self.mytopic = self.new_mytopic
+                self.new_mytopic = []
+                self.reload_all_cell()
+            }
+            else{
+                self.replace_my_topic_list()
+            }
+        }
+        
+        
         // == new process ==
         // get detail client data for DB
         // updata mytopic list state
         // compare 2 mytopic list
         // reload
         // get detail client data for table + reload
-
-        updata_online_state()
+        update_battery_state()
     }
     enum work_mode {
         case for_table
@@ -100,7 +106,9 @@ class MyTopicTableViewModel{
             let index_path = IndexPath(row: del_index, section: 0)
             del_index_path.append(index_path)
         }
-        delegate?.model_delete_row(index_path_list: del_index_path, option: .none)
+        DispatchQueue.main.async {
+            self.delegate?.model_delete_row(index_path_list: del_index_path, option: .none)
+        }
         
         
         // save topic id of extend cell
@@ -115,6 +123,7 @@ class MyTopicTableViewModel{
         }
         
         // append detail cell to new_my_topic
+        print("rrrrr")
         var temp_detail_list:Array<MyTopicStandardType> = []
         if extened_topic_id != nil && secTopic[extened_topic_id!] != nil && firest_detail_cell_index! >= 0{
             temp_detail_list = secTopic[extened_topic_id!]!
@@ -128,7 +137,6 @@ class MyTopicTableViewModel{
                 new_mytopic.insert(temp_cell_data, at: firest_detail_cell_index!)
             }
         }
-        
         // compare new and old my_topic_list
             // 1. cmpare detail cell number
         var old_detail_count:Int = 0
@@ -167,7 +175,10 @@ class MyTopicTableViewModel{
                         replace_cell_index! += 1
                     }
                 }
-                delegate?.model_relod_row(index_path_list: index_path_list, option: .none)
+                DispatchQueue.main.async {
+                    self.delegate?.model_relod_row(index_path_list: index_path_list, option: .none)
+                }
+                
             }
             if old_list_add_cell_count > 0{
                 replace_cells(count_basic: old_detail_count)
@@ -178,7 +189,9 @@ class MyTopicTableViewModel{
                     index_path_list.append(index_path)
                     replace_cell_index! += 1
                 }
-                delegate?.model_insert_row(index_path_list: index_path_list, option: .none)
+                DispatchQueue.main.async {
+                    self.delegate?.model_insert_row(index_path_list: index_path_list, option: .none)
+                }
             }
             else if old_list_add_cell_count < 0{
                 replace_cells(count_basic: new_detail_count)
@@ -189,7 +202,10 @@ class MyTopicTableViewModel{
                     index_path_list.append(index_path)
                     replace_cell_index! += 1
                 }
-                delegate?.model_delete_row(index_path_list: index_path_list, option: .none)
+                DispatchQueue.main.async {
+                    self.delegate?.model_delete_row(index_path_list: index_path_list, option: .none)
+                }
+                
             }
             else{
                 replace_cells(count_basic: old_detail_count)
@@ -231,16 +247,19 @@ class MyTopicTableViewModel{
                     client_id: secTopic[sec_topic_keys]![client_datas_index].clientId_detial!
                 )
                 client_data_obj.get_client_data(act: { (data_dic:Dictionary<String, AnyObject>) in
-                    // update for sec topic
-                    self.secTopic[sec_topic_keys]![client_datas_index].clientName_detial = data_dic["client_name"] as? String
-                    self.secTopic[sec_topic_keys]![client_datas_index].clientName_detial = data_dic["client_name"] as? String
-                    self.secTopic[sec_topic_keys]![client_datas_index].clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
-                    self.secTopic[sec_topic_keys]![client_datas_index].level = data_dic["level"] as? Int
-                    self.secTopic[sec_topic_keys]![client_datas_index].clientSex_detial = data_dic["sex"] as? String
-                    self.secTopic[sec_topic_keys]![client_datas_index].clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
-                    
+                    DispatchQueue.main.async {
+                        // update for sec topic
+                        self.secTopic[sec_topic_keys]![client_datas_index].clientName_detial = data_dic["client_name"] as? String
+                        self.secTopic[sec_topic_keys]![client_datas_index].clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
+                        self.secTopic[sec_topic_keys]![client_datas_index].level = data_dic["level"] as? Int
+                        self.secTopic[sec_topic_keys]![client_datas_index].clientSex_detial = data_dic["sex"] as? String
+                        self.secTopic[sec_topic_keys]![client_datas_index].clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
+                        self.secTopic[sec_topic_keys]![client_datas_index].clientOnline_detial = self.online_state_dic[self.secTopic[sec_topic_keys]![client_datas_index].clientId_detial!]
+                    }
                     // updata for table
-                    if let cell_index = target_topic_list.index(where: { (ele:MyTopicStandardType) -> Bool in
+                    
+                    
+                    if let cell_index = self.mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
                         //mytopic[0].topicId_title
                         if ele.dataType == "detail" &&
                             ele.topicId_title! == self.secTopic[sec_topic_keys]![client_datas_index].topicId_title! &&
@@ -249,21 +268,41 @@ class MyTopicTableViewModel{
                         }
                         return false
                     }){
-                        if target_topic_list[cell_index].clientPhoto_detial == nil ||
-                            target_topic_list[cell_index].level != data_dic["level"] as? Int{
-                            target_topic_list[cell_index].clientName_detial = data_dic["client_name"] as? String
-                            target_topic_list[cell_index].clientName_detial = data_dic["client_name"] as? String
-                            target_topic_list[cell_index].clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
-                            target_topic_list[cell_index].level = data_dic["level"] as? Int
-                            target_topic_list[cell_index].clientSex_detial = data_dic["sex"] as? String
-                            target_topic_list[cell_index].clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
-                            if mode == work_mode.for_table{
+                        if mode == work_mode.for_table{
+                            if self.mytopic[cell_index].clientPhoto_detial == nil ||
+                                self.mytopic[cell_index].level != data_dic["level"] as? Int{
+                                let new_cell_obj = self.mytopic[cell_index]
+                                new_cell_obj.clientName_detial = data_dic["client_name"] as? String
+                                new_cell_obj.clientName_detial = data_dic["client_name"] as? String
+                                new_cell_obj.clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
+                                new_cell_obj.level = data_dic["level"] as? Int
+                                new_cell_obj.clientSex_detial = data_dic["sex"] as? String
+                                new_cell_obj.clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
+                                self.mytopic[cell_index] = new_cell_obj
                                 DispatchQueue.main.async {
+                                    self.mytopic[cell_index] = new_cell_obj
                                     let index_path = IndexPath(row: cell_index, section: 0)
                                     self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
                                 }
                             }
+                            //self.delegate?.model_relodata()
                         }
+                        else{
+                            if self.new_mytopic[cell_index].clientPhoto_detial == nil ||
+                                self.new_mytopic[cell_index].level != data_dic["level"] as? Int{
+                                let new_cell_obj = self.new_mytopic[cell_index]
+                                print(data_dic)
+                                new_cell_obj.clientName_detial = data_dic["client_name"] as? String
+                                new_cell_obj.clientName_detial = data_dic["client_name"] as? String
+                                new_cell_obj.clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
+                                new_cell_obj.level = data_dic["level"] as? Int
+                                new_cell_obj.clientSex_detial = data_dic["sex"] as? String
+                                new_cell_obj.clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
+                                 self.new_mytopic[cell_index] = new_cell_obj
+                            }
+                           
+                        }
+                        
                     }
                 })
             }
@@ -279,6 +318,10 @@ class MyTopicTableViewModel{
         else if ele_old.clientId_detial != ele_new.clientId_detial{
             return true
         }
+        else if ele_old.read_detial != ele_new.read_detial{
+            return true
+        }
+        // fly    change to return false
         return false
     }
     func get_title_cell_from_local_v2(){
@@ -346,7 +389,7 @@ class MyTopicTableViewModel{
                 temp_unit.time = data_s.value["time"] as? Double
                 temp_unit.level = data_s.value["level"] as? Int
                 temp_unit.topicTitle_title = topic_title_in
-                temp_unit.clientOnline_detial = false
+                temp_unit.clientOnline_detial = data_s.value["online"] as? Bool
                 temp_unit.lastSpeaker_id_detial = data_s.value["sender"] as? String
                 if temp_unit.lastSpeaker_id_detial == userData.id{
                     temp_unit.lastSpeaker_detial = userData.name
@@ -545,21 +588,23 @@ class MyTopicTableViewModel{
                     let return_dic_copy = return_dic as! Dictionary<String,Bool>
                     for sec_topic_datas in self.secTopic.values{
                         for client_objs in sec_topic_datas{
+                            
                             if let online_state = return_dic_copy[client_objs.clientId_detial!]{
+                                self.online_state_dic[client_objs.clientId_detial!] = return_dic_copy[client_objs.clientId_detial!]
                                 client_objs.clientOnline_detial = online_state
                             }
-                            if let index = self.mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
-                                if client_objs.clientId_detial == ele.clientId_detial &&
-                                    client_objs.topicId_title == ele.topicId_title &&
-                                    client_objs.clientOnline_detial != ele.clientOnline_detial{
-                                    return true
-                                }
-                                return false
-                            }){
-                                let index_path = IndexPath(row: index, section: 0)
-                                self.mytopic[index].clientOnline_detial = client_objs.clientOnline_detial
-                                self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
-                            }
+//                            if let index = self.mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
+//                                if client_objs.clientId_detial == ele.clientId_detial &&
+//                                    client_objs.topicId_title == ele.topicId_title &&
+//                                    client_objs.clientOnline_detial != ele.clientOnline_detial{
+//                                    return true
+//                                }
+//                                return false
+//                            }){
+//                                let index_path = IndexPath(row: index, section: 0)
+//                                self.mytopic[index].clientOnline_detial = client_objs.clientOnline_detial
+//                                self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+//                            }
                         }
                     }
                 }
@@ -806,7 +851,25 @@ class MyTopicTableViewModel{
             remove_single_cell(at: index)
         }
     }
-    
+    func update_battery_state(){
+        var dic:Dictionary<String,Int> = [:]
+        for cells in mytopic{
+            if cells.dataType == "title" && cells.topicId_title != nil{
+                let battery_val = sql_database.get_battery(topic_id_ins: cells.topicId_title!)
+                dic[cells.topicId_title!] = battery_val
+            }
+        }
+        
+        for cells_index in 0..<self.mytopic.count{
+            if self.mytopic[cells_index].dataType == "title" && self.mytopic[cells_index].topicId_title != nil{
+                if dic[self.mytopic[cells_index].topicId_title!] != nil{
+                    self.mytopic[cells_index].battery = dic[self.mytopic[cells_index].topicId_title!]
+                    let index_path = IndexPath(row: cells_index, section: 0)
+                    self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+                }
+            }
+        }
+    }
     // ======施工中=====
     func add_topic_closed_list(topic_id:String, client_name:String){
         if let topic_index = mytopic.index(where: { (element) -> Bool in
