@@ -11,6 +11,11 @@ import UIKit
 // 我的話題清單
 class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDelegate,webSocketActiveCenterDelegate_re ,MyTopicTableViewModelDelegate{
 
+    @IBAction func test_msg(_ sender: Any) {
+        //socket.write(data: json_dumps(["msg_type":"cmd", "text": "revers_online_state"]))
+        let dic = ["msg_type":"cmd", "text": "test_msg"]
+        socket.write(data: json_dumps(dic as NSDictionary))
+    }
 
     // MARK: Properties
     var model = MyTopicTableViewModel()

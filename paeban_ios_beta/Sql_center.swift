@@ -2261,7 +2261,7 @@ public class SQL_center{
                 ).count
             let count = try sql_db!.scalar(query)
             let level:Int = count/unlock_img_exp
-            print("get_level:\(level)")
+            //print("get_level:\(level)")
             if level >= 0 && level <= 9{
                 return level
             }

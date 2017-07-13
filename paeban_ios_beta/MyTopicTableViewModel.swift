@@ -35,17 +35,17 @@ class MyTopicTableViewModel{
         get_title_cell_from_local_v2()
         get_detail_cell_from_local_v2()
         updata_online_state()
-        get_client_detail_data_for_my_topic(for_: mytopic, mode: .for_table)
+        self.get_client_detail_data_for_my_topic(for_: self.mytopic, mode: .for_table)
+        
+        print("----c2")
         //get_client_detail_data_for_sec_topic(for_: new_mytopic, mode: .for_database)
-        DispatchQueue.global(qos: .default).async {
-            if self.is_my_topic_empty(){
-                self.mytopic = self.new_mytopic
-                self.new_mytopic = []
-                self.reload_all_cell()
-            }
-            else{
-                self.replace_my_topic_list()
-            }
+        if self.is_my_topic_empty(){
+            self.mytopic = self.new_mytopic
+            self.new_mytopic = []
+            self.reload_all_cell()
+        }
+        else{
+            self.replace_my_topic_list()
         }
         
         
@@ -246,9 +246,8 @@ class MyTopicTableViewModel{
                     topic_id: secTopic[sec_topic_keys]![client_datas_index].topicId_title!,
                     client_id: secTopic[sec_topic_keys]![client_datas_index].clientId_detial!
                 )
-                client_data_obj.get_client_data(act: { (data_dic:Dictionary<String, AnyObject>) in
-                    DispatchQueue.main.async {
-                        // update for sec topic
+                if client_data_obj.local_data_test(){
+                    if let data_dic = client_data_obj.get_data_from_local(){
                         self.secTopic[sec_topic_keys]![client_datas_index].clientName_detial = data_dic["client_name"] as? String
                         self.secTopic[sec_topic_keys]![client_datas_index].clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
                         self.secTopic[sec_topic_keys]![client_datas_index].level = data_dic["level"] as? Int
@@ -256,57 +255,71 @@ class MyTopicTableViewModel{
                         self.secTopic[sec_topic_keys]![client_datas_index].clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
                         self.secTopic[sec_topic_keys]![client_datas_index].clientOnline_detial = self.online_state_dic[self.secTopic[sec_topic_keys]![client_datas_index].clientId_detial!]
                     }
-                    // updata for table
-                    
-                    
-                    if let cell_index = self.mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
-                        //mytopic[0].topicId_title
-                        if ele.dataType == "detail" &&
-                            ele.topicId_title! == self.secTopic[sec_topic_keys]![client_datas_index].topicId_title! &&
-                            ele.clientId_detial! == data_dic["client_id"] as! String{
-                            return true
+                }
+                else{
+                    client_data_obj.get_client_data(act: { (data_dic:Dictionary<String, AnyObject>) in
+                        DispatchQueue.main.async {
+                            // update for sec topic
+                            self.secTopic[sec_topic_keys]![client_datas_index].clientName_detial = data_dic["client_name"] as? String
+                            self.secTopic[sec_topic_keys]![client_datas_index].clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
+                            self.secTopic[sec_topic_keys]![client_datas_index].level = data_dic["level"] as? Int
+                            self.secTopic[sec_topic_keys]![client_datas_index].clientSex_detial = data_dic["sex"] as? String
+                            self.secTopic[sec_topic_keys]![client_datas_index].clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
+                            self.secTopic[sec_topic_keys]![client_datas_index].clientOnline_detial = self.online_state_dic[self.secTopic[sec_topic_keys]![client_datas_index].clientId_detial!]
                         }
-                        return false
-                    }){
-                        if mode == work_mode.for_table{
-                            if self.mytopic[cell_index].clientPhoto_detial == nil ||
-                                self.mytopic[cell_index].level != data_dic["level"] as? Int{
-                                let new_cell_obj = self.mytopic[cell_index]
-                                new_cell_obj.clientName_detial = data_dic["client_name"] as? String
-                                new_cell_obj.clientName_detial = data_dic["client_name"] as? String
-                                new_cell_obj.clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
-                                new_cell_obj.level = data_dic["level"] as? Int
-                                new_cell_obj.clientSex_detial = data_dic["sex"] as? String
-                                new_cell_obj.clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
-                                self.mytopic[cell_index] = new_cell_obj
-                                DispatchQueue.main.async {
-                                    self.mytopic[cell_index] = new_cell_obj
-                                    let index_path = IndexPath(row: cell_index, section: 0)
-                                    self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
-                                }
-                            }
-                            //self.delegate?.model_relodata()
-                        }
-                        else{
-                            if self.new_mytopic[cell_index].clientPhoto_detial == nil ||
-                                self.new_mytopic[cell_index].level != data_dic["level"] as? Int{
-                                let new_cell_obj = self.new_mytopic[cell_index]
-                                print(data_dic)
-                                new_cell_obj.clientName_detial = data_dic["client_name"] as? String
-                                new_cell_obj.clientName_detial = data_dic["client_name"] as? String
-                                new_cell_obj.clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
-                                new_cell_obj.level = data_dic["level"] as? Int
-                                new_cell_obj.clientSex_detial = data_dic["sex"] as? String
-                                new_cell_obj.clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
-                                 self.new_mytopic[cell_index] = new_cell_obj
-                            }
-                           
-                        }
+                        // updata for table
                         
-                    }
-                })
+                        
+                        if let cell_index = self.mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
+                            //mytopic[0].topicId_title
+                            if ele.dataType == "detail" &&
+                                ele.topicId_title! == self.secTopic[sec_topic_keys]![client_datas_index].topicId_title! &&
+                                ele.clientId_detial! == data_dic["client_id"] as! String{
+                                return true
+                            }
+                            return false
+                        }){
+                            if mode == work_mode.for_table{
+                                if self.mytopic[cell_index].clientPhoto_detial == nil ||
+                                    self.mytopic[cell_index].level != data_dic["level"] as? Int{
+                                    let new_cell_obj = self.mytopic[cell_index]
+                                    new_cell_obj.clientName_detial = data_dic["client_name"] as? String
+                                    new_cell_obj.clientName_detial = data_dic["client_name"] as? String
+                                    new_cell_obj.clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
+                                    new_cell_obj.level = data_dic["level"] as? Int
+                                    new_cell_obj.clientSex_detial = data_dic["sex"] as? String
+                                    new_cell_obj.clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
+                                    self.mytopic[cell_index] = new_cell_obj
+                                    DispatchQueue.main.async {
+                                        self.mytopic[cell_index] = new_cell_obj
+                                        let index_path = IndexPath(row: cell_index, section: 0)
+                                        self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+                                    }
+                                }
+                                //self.delegate?.model_relodata()
+                            }
+                            else{
+                                if self.new_mytopic[cell_index].clientPhoto_detial == nil ||
+                                    self.new_mytopic[cell_index].level != data_dic["level"] as? Int{
+                                    let new_cell_obj = self.new_mytopic[cell_index]
+                                    print(data_dic)
+                                    new_cell_obj.clientName_detial = data_dic["client_name"] as? String
+                                    new_cell_obj.clientName_detial = data_dic["client_name"] as? String
+                                    new_cell_obj.clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
+                                    new_cell_obj.level = data_dic["level"] as? Int
+                                    new_cell_obj.clientSex_detial = data_dic["sex"] as? String
+                                    new_cell_obj.clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
+                                    self.new_mytopic[cell_index] = new_cell_obj
+                                }
+                                
+                            }
+                        }
+                    })
+                }
+                
             }
         }
+        print("-----c1")
     }
     func is_detial_cell_need_to_reload(ele_old:MyTopicStandardType, ele_new:MyTopicStandardType)->Bool{
         if ele_old.lastLine_detial != ele_new.lastLine_detial{

@@ -94,7 +94,16 @@ class Client_detail_data{
             }
         }
     }
-    
+    func local_data_test() -> Bool{
+        if let _ = sql_database.tmp_client_search(searchByClientId: client_id, level: level){
+            // 本地有
+            return true
+        }
+        return false
+    }
+    func get_data_from_local() -> Dictionary<String, AnyObject>?{
+        return sql_database.tmp_client_search(searchByClientId: client_id, level: level)
+    }
 }
 
 
