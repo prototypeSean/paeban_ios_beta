@@ -215,7 +215,7 @@ class MyTopicTableViewModel{
                     replace_cell_index! += 1
                 }
                 DispatchQueue.main.async {
-                    self.delegate?.model_delete_row(index_path_list: index_path_list, option: .none)
+                    self.delegate?.model_relodata()
                 }
                 
             }
@@ -305,7 +305,7 @@ class MyTopicTableViewModel{
                                     DispatchQueue.main.async {
                                         self.mytopic[cell_index] = new_cell_obj
                                         let index_path = IndexPath(row: cell_index, section: 0)
-                                        self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+                                        self.delegate?.model_relodata()
                                     }
                                 }
                                 //self.delegate?.model_relodata()
@@ -890,7 +890,7 @@ class MyTopicTableViewModel{
                 if dic[self.mytopic[cells_index].topicId_title!] != nil{
                     self.mytopic[cells_index].battery = dic[self.mytopic[cells_index].topicId_title!]
                     let index_path = IndexPath(row: cells_index, section: 0)
-                    self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+                    self.delegate?.model_relodata()
                 }
             }
         }
