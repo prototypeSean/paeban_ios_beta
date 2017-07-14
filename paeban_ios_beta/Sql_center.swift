@@ -2591,7 +2591,10 @@ public class SQL_center{
         do{
             let c1 = try sql_db!.scalar(all_msg_count)
             let c2 = try sql_db!.scalar(un_read_count)
-            return Int((Double(c2-c1)*100)/Double(c1))
+            if c1 != 0{
+                return Int((Double(c2-c1)*100)/Double(c1))
+            }
+            return 0
         }
         catch{
             print("ERROR!!! get_battery")

@@ -55,6 +55,7 @@ class MyTopicTableViewModel{
         // compare 2 mytopic list
         // reload
         // get detail client data for table + reload
+        
         update_battery_state()
     }
     enum work_mode {
@@ -73,6 +74,7 @@ class MyTopicTableViewModel{
     }
     func replace_my_topic_list(){
         // check all title cells are effective
+            // remove old topic
         var del_topic_id:String? = nil
         var del_detail_cell_switch = false
         var del_cells_list:Array<Int> = []
@@ -107,9 +109,16 @@ class MyTopicTableViewModel{
             del_index_path.append(index_path)
         }
         DispatchQueue.main.async {
-            self.delegate?.model_delete_row(index_path_list: del_index_path, option: .none)
+            //self.delegate?.model_delete_row(index_path_list: del_index_path, option: .none)
+            self.delegate?.model_relodata()
         }
-        
+            // insert new topic
+        if mytopic.count == 0{
+            mytopic = new_mytopic
+            DispatchQueue.main.async {
+                self.delegate?.model_relodata()
+            }
+        }
         
         // save topic id of extend cell
         var extened_topic_id:String? = nil
@@ -176,7 +185,8 @@ class MyTopicTableViewModel{
                     }
                 }
                 DispatchQueue.main.async {
-                    self.delegate?.model_relod_row(index_path_list: index_path_list, option: .none)
+                    //self.delegate?.model_relod_row(index_path_list: index_path_list, option: .none)
+                    self.delegate?.model_relodata()
                 }
                 
             }
@@ -190,7 +200,9 @@ class MyTopicTableViewModel{
                     replace_cell_index! += 1
                 }
                 DispatchQueue.main.async {
-                    self.delegate?.model_insert_row(index_path_list: index_path_list, option: .none)
+                    // fly
+                    //self.delegate?.model_insert_row(index_path_list: index_path_list, option: .none)
+                    self.delegate?.model_relodata()
                 }
             }
             else if old_list_add_cell_count < 0{
@@ -210,9 +222,9 @@ class MyTopicTableViewModel{
             else{
                 replace_cells(count_basic: old_detail_count)
             }
-            new_mytopic = []
+            
         }
-        
+        new_mytopic = []
     }
     func get_client_detail_data_for_sec_topic(for_ target_topic_list:Array<MyTopicStandardType>){
         for sec_topic_datas in secTopic.values{

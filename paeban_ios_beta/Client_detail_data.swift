@@ -79,6 +79,8 @@ class Client_detail_data{
                 let send_dic2 = [
                     "client_list_for_request":client_list_for_request
                 ]
+                // fly:
+                
                 HttpRequestCenter().request_user_data_v2("request_client_detail", send_dic: send_dic2 as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
                     if return_dic != nil{
                         let return_list = return_dic!["return_list"]! as! Array<Dictionary<String,AnyObject>>
