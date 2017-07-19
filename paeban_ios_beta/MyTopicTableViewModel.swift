@@ -37,7 +37,6 @@ class MyTopicTableViewModel{
         updata_online_state()
         self.get_client_detail_data_for_my_topic(for_: self.mytopic, mode: .for_table)
         
-        print("----c2")
         //get_client_detail_data_for_sec_topic(for_: new_mytopic, mode: .for_database)
         if self.is_my_topic_empty(){
             self.mytopic = self.new_mytopic
@@ -331,7 +330,6 @@ class MyTopicTableViewModel{
                 
             }
         }
-        print("-----c1")
     }
     func is_detial_cell_need_to_reload(ele_old:MyTopicStandardType, ele_new:MyTopicStandardType)->Bool{
         if ele_old.lastLine_detial != ele_new.lastLine_detial{
@@ -889,11 +887,11 @@ class MyTopicTableViewModel{
             if self.mytopic[cells_index].dataType == "title" && self.mytopic[cells_index].topicId_title != nil{
                 if dic[self.mytopic[cells_index].topicId_title!] != nil{
                     self.mytopic[cells_index].battery = dic[self.mytopic[cells_index].topicId_title!]
-                    let index_path = IndexPath(row: cells_index, section: 0)
-                    self.delegate?.model_relodata()
+                    //let index_path = IndexPath(row: cells_index, section: 0)
                 }
             }
         }
+        self.delegate?.model_relodata()
     }
     // ======施工中=====
     func add_topic_closed_list(topic_id:String, client_name:String){

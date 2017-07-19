@@ -3,6 +3,11 @@ import UIKit
 class RecentTableViewController: UITableViewController, webSocketActiveCenterDelegate, RecentTableViewModelDelegate, TopicViewControllerDelegate{
     var rTVModel = RecentTableViewModel()
     
+
+    @IBAction func master_test_msg(_ sender: Any) {
+        let send_dic = ["msg_type":"cmd","text":"master_test_msg"]
+        socket.write(data: json_dumps(send_dic as NSDictionary))
+    }
     // data source
     override func viewDidLoad() {
         super.viewDidLoad()

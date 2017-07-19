@@ -10,7 +10,7 @@ import UIKit
 
 // 我的話題清單
 class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDelegate,webSocketActiveCenterDelegate_re ,MyTopicTableViewModelDelegate{
-
+    // fly 移除
     @IBAction func test_msg(_ sender: Any) {
         //socket.write(data: json_dumps(["msg_type":"cmd", "text": "revers_online_state"]))
         let dic = ["msg_type":"cmd", "text": "test_msg"]
@@ -81,7 +81,10 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             
             // 給ET：之後要加入電池的選項CASE對應參數
             
-            letoutBattery(battery: cell.myTopicbattery, batteryLeft: readRate)
+            //letoutBattery(battery: cell.myTopicbattery, batteryLeft: readRate)
+            if topicWriteToRow.battery != nil{
+                letoutBattery(battery: cell.myTopicbattery, batteryLeft: topicWriteToRow.battery!)
+            }
             
             return cell
         }

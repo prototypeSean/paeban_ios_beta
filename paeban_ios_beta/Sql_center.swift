@@ -1120,12 +1120,12 @@ public class SQL_center{
                             "level": String(level) as AnyObject
                         ]
                         
-                        if let temp_data = tmp_client_search(searchByClientId: recent_datas[topic_id]!, level: level){
-                            temp_dic["owner_name"] = temp_data["client_name"]
-                            temp_dic["owner_is_real_img"] = temp_data["is_real_pic"]
-                            temp_dic["owner_sex"] = temp_data["sex"]
-                            temp_dic["img"] = temp_data["img"]
-                        }
+//                        if let temp_data = tmp_client_search(searchByClientId: recent_datas[topic_id]!, level: level){
+//                            temp_dic["owner_name"] = temp_data["client_name"]
+//                            temp_dic["owner_is_real_img"] = temp_data["is_real_pic"]
+//                            temp_dic["owner_sex"] = temp_data["sex"]
+//                            temp_dic["img"] = temp_data["img"]
+//                        }
                         return_dic[recent_datas[topic_id]!] = temp_dic as AnyObject
                     }
                     
@@ -2582,18 +2582,21 @@ public class SQL_center{
         let all_msg_count = topic_content.filter(
             topic_id == topic_id_ins &&
             receiver == userData.id!
-            ).select(distinct: sender).count
+            )
         let un_read_count = topic_content.filter(
             topic_id == topic_id_ins &&
-                receiver == userData.id! &&
+            receiver == userData.id! &&
             is_read == false
-            ).select(distinct: sender).count
+            )
         do{
-            let c1 = try sql_db!.scalar(all_msg_count)
-            let c2 = try sql_db!.scalar(un_read_count)
+            //let cmd1 = "SELECT COUNT(DISTINCT sender) FROM topic_content WHERE topic_id=\(topic_id_ins) AND receiver=\(userData.id!);"
+            let c1 = try sql_db!.scalar(all_msg_count.select(sender.distinct.count))
+            let c2 = try sql_db!.scalar(un_read_count.select(sender.distinct.count))
             if c1 != 0{
-                return Int((Double(c2-c1)*100)/Double(c1))
+                return Int((Double(c1-c2)*100)/Double(c1))
             }
+            //let ccc = try sql_db!.scalar(cmd1) as! Int64
+            print(ccc)
             return 0
         }
         catch{

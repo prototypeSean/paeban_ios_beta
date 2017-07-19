@@ -327,9 +327,39 @@ class RecentTableViewModel{
     }
     private func get_recent_data(){
         let result_data = sql_database.get_recent_last_line()
-        let client_list_for_request = draw_basic_cell(input_dic: result_data)
-        get_client_data_from_server(client_list_for_request: client_list_for_request)
+        draw_basic_cell(input_dic: result_data)
         self.sort_recent_db_by_time()
+        get_client_data()
+        //get_client_data_from_server(client_list_for_request: client_list_for_request)
+        //self.delegate?.model_relodata()
+    }
+    private func get_client_data(){
+        for cells_index in 0..<recentDataBase.count{
+            let topic_id = recentDataBase[cells_index].topicId_title!
+            let client_id = recentDataBase[cells_index].clientId_detial!
+            let client_data_obj = Client_detail_data(topic_id: topic_id, client_id: client_id)
+            if client_data_obj.local_data_test(){
+                // fly
+                let client_datas = client_data_obj.get_data_from_local()
+                recentDataBase[cells_index].clientName_detial = client_datas?["client_name"] as? String
+                recentDataBase[cells_index].clientPhoto_detial = base64ToImage(client_datas!["img"] as! String)
+                recentDataBase[cells_index].level = client_datas?["level"] as? Int
+                recentDataBase[cells_index].clientSex_detial = client_datas?["sex"] as? String
+                recentDataBase[cells_index].clientIsRealPhoto_detial = client_datas?["is_real_pic"] as? Bool
+            }
+            else{
+                client_data_obj.get_client_data(act: { (client_datas:Dictionary<String, AnyObject>) in
+                    if self.recentDataBase.count > cells_index && self.recentDataBase[cells_index].clientId_detial == client_datas["client_id"] as? String{
+                        self.recentDataBase[cells_index].clientName_detial = client_datas["client_name"] as? String
+                        self.recentDataBase[cells_index].clientPhoto_detial = base64ToImage(client_datas["img"] as! String)
+                        self.recentDataBase[cells_index].level = client_datas["level"] as? Int
+                        self.recentDataBase[cells_index].clientSex_detial = client_datas["sex"] as? String
+                        self.recentDataBase[cells_index].clientIsRealPhoto_detial = client_datas["is_real_pic"] as? Bool
+                        self.delegate?.model_relodata()
+                    }
+                })
+            }
+        }
         self.delegate?.model_relodata()
     }
     private func get_client_data_from_server(client_list_for_request:Array<Dictionary<String,AnyObject>>){
@@ -356,8 +386,6 @@ class RecentTableViewModel{
             recentDataBase[cell_index].clientSex_detial = input_dic["sex"] as? String
             recentDataBase[cell_index].clientIsRealPhoto_detial = input_dic["is_real_pic"] as? Bool
             recentDataBase[cell_index].level = input_dic["level"] as? Int
-            print("-----data_from_server--------")
-            print(input_dic["level"])
         }
     }
     private func remove_out_off_data(data:Dictionary<String,AnyObject>){
@@ -426,23 +454,11 @@ class RecentTableViewModel{
     
     
     // transform
-    func draw_basic_cell(input_dic:Dictionary<String,AnyObject>) -> Array<Dictionary<String,AnyObject>>{
-        recentDataBase = []
-        var client_list_for_request:Array<Dictionary<String,AnyObject>> = []
+    func draw_basic_cell(input_dic:Dictionary<String,AnyObject>){
         for datas in input_dic{
             // 工作2 if no key "img"  add to request_img_list
-            let datas_val = datas.value as! Dictionary<String,AnyObject>
-            if datas_val["img"] == nil{
-                let temp_dic = [
-                    "level": datas_val["level"] as! String,
-                    "topic_id": datas.key,
-                    "client_id":datas_val["owner"] as! String,
-                ]
-                client_list_for_request.append(temp_dic as [String : AnyObject])
-            }
             self.transformStaticType(datas.0, inputData: datas.1 as! Dictionary<String,AnyObject>)
         }
-        return client_list_for_request
     }
     func transformStaticType(_ inputKey:String,inputData:Dictionary<String,AnyObject>){
         if let recentDataBaseIndex = recentDataBase.index(where: { (target) -> Bool in
