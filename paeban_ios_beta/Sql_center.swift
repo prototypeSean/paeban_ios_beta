@@ -423,17 +423,34 @@ public class SQL_center{
                         try sql_db!.run(friend_list_table.filter(username == client_id_var).update(user_full_name <- input_dic["client_name"] as! String))
                     }
                     if (input_dic["img_name"] as! String) != target_obj![friend_image_file_name]{
+                        // GET HTTP IMG
                         try sql_db!.run(friend_list_table.filter(username == client_id_var).update(
                             friend_image_file_name <- input_dic["img_name"] as? String,
                             friend_image <- nil
                         ))
+                    }
+                    if target_obj![friend_image] == nil && input_dic["img_name"] != nil{
+                        let url = "\(local_host)media/\(input_dic["img_name"] as! String)"
+                        
+                        HttpRequestCenter().getHttpImg(url, getImg: { (return_img) in
+                            let img_str = imageToBase64(image: return_img, optional: "withHeader")
+                            do{
+                                try self.sql_db!.run(self.friend_list_table.filter(self.username == client_id_var).update(
+                                    self.friend_image <- img_str
+                                ))
+                            }
+                            catch{
+                                print("資料庫錯誤 insert_friend#2")
+                                print(error)
+                            }
+                        })
                     }
                 }
             }
             
         }
         catch{
-            print("資料庫錯誤")
+            print("資料庫錯誤 insert_friend")
             print(error)
         }
         
@@ -522,7 +539,7 @@ public class SQL_center{
     func remove_friend_process(username_in:String){
         do{
             try sql_db!.run(friend_list_table.filter(username == username_in).update(active <- false))
-            synchronize_friend_table()
+            synchronize_friend_table(after: nil)
         }
         catch{
             print("資料庫錯誤")
@@ -544,6 +561,7 @@ public class SQL_center{
             var return_list:Array<Dictionary<String,AnyObject>> = []
             let query = friend_list_table.filter(active == true)
             for friend_datas in try sql_db!.prepare(query){
+                // fly remove print
                 print(friend_datas[username])
                 var temp_dic:Dictionary<String,AnyObject> = [
                     "client_id": friend_datas[username] as AnyObject,
@@ -614,7 +632,11 @@ public class SQL_center{
         var sss:Array<String> = []
         do{
             for c in try sql_db!.prepare(friend_list_table){
-                sss.append(c[user_full_name])
+                var pppic = "False"
+                if c[friend_image] != nil{
+                    pppic = "True"
+                }
+                sss.append("\(c[user_full_name])  pic: \(pppic)")
             }
         }
         catch{

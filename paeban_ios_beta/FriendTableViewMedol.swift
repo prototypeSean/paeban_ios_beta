@@ -31,7 +31,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         let result_dic = sql_database.get_friend_list()
         let new_table_data = turnToFriendStanderType_v3(friend_list:result_dic)
         renew_friend_list_database(input_list: new_table_data)
-        update_imgs_from_server()
+        //update_imgs_from_server()
         update_online_state()
     }
     func renew_friend_list_database(input_list:Array<FriendStanderType>){
@@ -56,6 +56,12 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             temp_cell.photoHttpStr = friend_data["img_name"] as? String
             temp_cell.sex = friend_data["sex"] as? String
             temp_cell.read_msg = friend_data["is_read"] as? Bool
+            // fly
+            print("----img_test----")
+            print(friend_data["img"])
+            if friend_data["img"] != nil{
+                temp_cell.photo = base64ToImage(friend_data["img"] as! String)
+            }
             let lastLine = friend_data["lastLine"] as? String
             let last_speaker_name = friend_data["last_speaker_name"] as? String
             if last_speaker_name != nil && lastLine != nil{
@@ -143,6 +149,8 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         if data.cell_type == "friend"{
             let cell2 = cell as! FriendTableViewCell
             if data.photo == nil{
+                // fly
+                print("NILLLLLLLLL")
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
                     if data.photoHttpStr != nil && data.photoHttpStr != ""{
                         let url = "\(local_host)media/\(data.photoHttpStr!)"
@@ -716,7 +724,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                     self.targetVC.tableView.reloadData()
                 }
                 else{
-                    synchronize_friend_table()
+                    synchronize_friend_table(after: nil)
                 }
                 getFrientList()
                 

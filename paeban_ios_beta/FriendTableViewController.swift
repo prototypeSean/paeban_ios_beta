@@ -16,6 +16,10 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         let indexPath = self.tableView.indexPath(for: cell)
         ok_btn_click(click_row: indexPath!.row)
     }
+    @IBAction func test_priv_msg(_ sender: Any) {
+        let cmd_dic = ["msg_type":"cmd", "text":"test_priv_msg"]
+        socket.write(data: json_dumps(cmd_dic as NSDictionary))
+    }
     var delete_alot_switch = false
     
     
@@ -34,7 +38,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         self.tableView.reloadData()
         model?.chat_view = nil
         model?.getFrientList()
-        synchronize_friend_table()
+        synchronize_friend_table(after: nil)
         getInviteList()
         self.update_badges()
     }

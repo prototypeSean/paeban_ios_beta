@@ -91,15 +91,18 @@ class Ignore_list_center{
     }
 }
 
-func synchronize_friend_table(){
+func synchronize_friend_table(after:(()->Void)?){
     let local_friend_datas = sql_database.get_friend_list()
     var check_dic:Dictionary<String,AnyObject> = [:]
     for friends in local_friend_datas{
-        let temp_dic = [
+        var temp_dic = [
             "client_id": friends["client_id"]! as! String,
             "client_name": friends["client_name"]! as! String,
             "img_name": friends["img_name"]! as! String
         ]
+        if friends["img"] == nil{
+            temp_dic["img_name"] = ""
+        }
         check_dic[friends["client_id"]! as! String] = temp_dic as AnyObject
     }
     let send_dic = [
@@ -117,6 +120,7 @@ func synchronize_friend_table(){
             }
             let comlete_delete_list = return_dic!["inactive_list"] as! Array<String>
             sql_database.remove_friend_complete(complete_list: comlete_delete_list)
+            after?()
         }
     }
 }

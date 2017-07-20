@@ -2054,6 +2054,16 @@
                                 <segue destination="fKg-5c-ll5" kind="show" identifier="friendToSetting" id="l0w-d5-79K"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="IY9-PZ-P1D">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zfu-Mt-1Re">
+                                <rect key="frame" x="302" y="7" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="test_priv_msg:" destination="H5q-Ep-Az3" eventType="touchUpInside" id="7gy-oi-2db"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKc-e9-cMH" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -120,6 +120,7 @@ func base64ToImage(_ encodedImageData:String) -> UIImage?{
 }
 
 func imageToBase64(image:UIImage, optional:String) -> String{
+    // optional: withHeader, none
     let imageData = UIImagePNGRepresentation(image)
     // data:image/jpeg;base64,
     let base64String = imageData?.base64EncodedString(options: Data.Base64EncodingOptions.endLineWithLineFeed)
