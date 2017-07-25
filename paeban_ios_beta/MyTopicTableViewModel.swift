@@ -131,7 +131,6 @@ class MyTopicTableViewModel{
         }
         
         // append detail cell to new_my_topic
-        print("rrrrr")
         var temp_detail_list:Array<MyTopicStandardType> = []
         if extened_topic_id != nil && secTopic[extened_topic_id!] != nil && firest_detail_cell_index! >= 0{
             temp_detail_list = secTopic[extened_topic_id!]!
@@ -345,7 +344,7 @@ class MyTopicTableViewModel{
             return true
         }
         // fly    change to return false
-        return false
+        return true
     }
     func get_title_cell_from_local_v2(){
         var data_dic:Dictionary<String,AnyObject> = [:]
