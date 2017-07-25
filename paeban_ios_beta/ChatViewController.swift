@@ -105,7 +105,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         super.viewDidAppear(animated)
         update_database()
         update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
-        
+        // fly
+        print("viewDidAppear-------++++++++")
     }
 
         // 下面兩個負責讀取訊息

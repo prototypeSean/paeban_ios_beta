@@ -13,7 +13,7 @@ import FBSDKShareKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegate{
-
+    var app_event_delegate:app_event?
     var window: UIWindow?
     
     //========deviceToken=======
@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         registerForPushNotifications(application: application)
         //===========================
-        
+        app_instence = application
         
         if ((launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification]) != nil){
             let nts = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as! Dictionary<String,AnyObject>
@@ -76,7 +76,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         // Override point for customization after application launch.
-        
         
         
         return true
@@ -130,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
             notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
             notificationSegueInf = [:]
         }
-        
+        app_event_delegate?.app_did_active()
         
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }

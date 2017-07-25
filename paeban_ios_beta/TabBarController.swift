@@ -121,7 +121,9 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         self.update_badges()
     }
     func new_client_topic_msg(sender: String) {
-        self.update_badges()
+        DispatchQueue.main.async {
+            self.update_badges()
+        }
     }
 }
 
