@@ -74,8 +74,11 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                 readRate = Int((1-(unredMsg/allMsg))*100)
             }
             cell.topicTitle.text = topicWriteToRow.topicTitle_title
-            cell.unReadM.text = String(readRate)+"%"
-//            cell.unReadS.text = String(topicWriteToRow.unReadMsg_title)
+            //cell.unReadM.text = String(readRate)+"%"
+            if topicWriteToRow.battery != nil{
+                cell.unReadM.text = "\(topicWriteToRow.battery!)%"
+            }
+            
             cell.myTopicHashtag.tagListInContorller = topicWriteToRow.tag_detial
             cell.myTopicHashtag.drawButton()
             

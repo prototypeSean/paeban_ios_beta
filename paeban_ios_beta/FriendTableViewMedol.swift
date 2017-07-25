@@ -56,9 +56,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             temp_cell.photoHttpStr = friend_data["img_name"] as? String
             temp_cell.sex = friend_data["sex"] as? String
             temp_cell.read_msg = friend_data["is_read"] as? Bool
-            // fly
-            print("----img_test----")
-            print(friend_data["img"])
             if friend_data["img"] != nil{
                 temp_cell.photo = base64ToImage(friend_data["img"] as! String)
             }
