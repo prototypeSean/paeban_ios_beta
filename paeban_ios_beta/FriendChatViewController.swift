@@ -160,6 +160,9 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         self.dismiss(animated: false, completion: nil)
         wsActive.wasd_ForFriendChatViewController = nil
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
     // 下面兩個負責讀取訊息
     // JSQ的列表顯示view, 在物件索引位至的訊息
     override func collectionView(_ collectionView: JSQMessagesCollectionView!,
@@ -279,7 +282,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         self.collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
         //      上面要留白多高
         //      self.topContentAdditionalInset = 90
-        wsActive.wasd_ForChatViewController = self
         
         //MARK: 跟自定義的泡泡關聯
         self.outgoingCellIdentifier = CustomMessagesCollectionViewCellOutgoing.cellReuseIdentifier()
@@ -549,6 +551,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         
     }
     func update_database(){
+        print("----------******==== update_database ====**********-------")
         messages = new_data()
         self.collectionView.reloadData()
         self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)

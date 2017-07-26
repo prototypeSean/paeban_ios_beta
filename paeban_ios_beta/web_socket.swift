@@ -251,10 +251,9 @@ open class webSocketActiveCenter:app_event {
             //ids:25514  idl:25440
             let private_content_last_id = msg["private_content_last_checked_server_id"] as! String
             let private_content_last_checked_server_id = sql_database.get_private_msg_last_checked_server_id()
-            print("ids:\(private_content_last_checked_server_id)  idl:\(private_content_last_id)")
+            //print("ids:\(private_content_last_checked_server_id)  idl:\(private_content_last_id)")
             if Int(private_content_last_checked_server_id)! == Int(private_content_last_id)!{
                 sql_database.inser_date_to_private_msg(input_dic: result_dic)
-                print("test point")
                 self.wasd_ForFriendChatViewController?.new_client_topic_msg!(sender: sender)
                 self.wasd_FriendTableViewMedol?.new_client_topic_msg!(sender: sender)
                 self.wasd_ForTabBarController?.new_client_topic_msg!(sender: sender)
