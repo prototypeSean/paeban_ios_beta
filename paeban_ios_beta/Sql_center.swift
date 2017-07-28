@@ -2132,7 +2132,36 @@ public class SQL_center{
             }
         }
         catch{
-            print("資料庫錯誤")
+            print("資料庫錯誤  update_topic_content_read")
+            print(error)
+        }
+        
+    }
+    func update_topic_content_read_with_server_id(id_server_ins:String){
+        do{
+            let query = topic_content.filter(id_server == id_server_ins)
+            let topic_content_obj = try sql_db?.prepare(query).first(where: { (row) -> Bool in
+                return true
+            })
+            if topic_content_obj != nil{
+                let receiver_input = topic_content_obj![receiver]!
+                let topic_id_obj = topic_content_obj![topic_id]!
+                let query2 = topic_content.filter(
+                    sender == userData.id! &&
+                        receiver == receiver_input &&
+                        is_read == false &&
+                        topic_id == topic_id_obj &&
+                        id_server <= id_server_ins
+                )
+                let query_count = try sql_db?.scalar(query2.count)
+                if query_count! > 0 {
+                    try sql_db?.run(query2.update(is_read <- true))
+                }
+            }
+            print("update_topic_content_read_with_server_id -- DONE")
+        }
+        catch{
+            print("資料庫錯誤  update_topic_content_read_with_server_id")
             print(error)
         }
         

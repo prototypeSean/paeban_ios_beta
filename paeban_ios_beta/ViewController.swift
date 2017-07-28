@@ -597,20 +597,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         socket.headers["Cookie"] = cookie_new.get_cookie()
         socket.delegate = self
         ws_connect_fun(socket)
-//        if reConnectCount < 10000000{
-//            wsTimer?.invalidate()
-//        }
         wsTimer?.invalidate()
     }
-//    func check_sql_state(){
-//        let send_dic = [
-//            "last_topic_local_id":"",
-//            "last_private_local_id":"",
-//        ]
-//        
-//    }
     public func websocketDidConnect(socket: WebSocket){
-        
         socketState = true
         reConnectCount = 0
         //print(NSDate())

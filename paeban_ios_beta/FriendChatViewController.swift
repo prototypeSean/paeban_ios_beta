@@ -123,9 +123,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //collectionView.register(UINib(nibName:"132"), forCellWithReuseIdentifier: "CustomMessagesCollectionViewCellOutgoing")
-        //tableView.register(UINib(nibName: "NameInput", bundle: nil), forCellReuseIdentifier: "Cell")
-        
         title = "好友"
         setupBubbles()
         //移除迴紋針按鈕
@@ -134,19 +131,11 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         //MARK:自己的參數
         senderId = setID
         senderDisplayName = setName
-        
         dennis_kao_s_fucking_trash()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.add_tap()
-//        DispatchQueue.global(qos: .background).async {
-//            usleep(50)
-//            DispatchQueue.main.async {
-//                self.scroll(to: IndexPath(row: self.messages.count, section: 0), animated: false)
-//                self.get_history_new_from_server()
-//            }
-//        }
         wsActive.wasd_ForFriendChatViewController = self
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -551,7 +540,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         
     }
     func update_database(){
-        print("----------******==== update_database ====**********-------")
         messages = new_data()
         self.collectionView.reloadData()
         self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)

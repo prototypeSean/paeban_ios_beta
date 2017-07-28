@@ -61,24 +61,10 @@ public protocol app_event{
 
 //MARK:webSocket 資料接收中心
 open class webSocketActiveCenter:app_event {
-    init() {
+    init(){
         let sss = app_instence?.delegate as! AppDelegate
         sss.app_event_delegate = self
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            print("11111+111111+111111")
-            let delegate_list = [self.wasd_ForFriendChatViewController, self.wasd_FriendTableViewMedol, self.wasd_ForTabBarController]
-            update_private_mag(delegate_target_list: delegate_list)
-            let delegate_list2:Array<webSocketActiveCenterDelegate?> = [
-                self.wasd_ForChatViewController,
-                self.wasd_ForMyTopicTableViewController,
-                self.wasd_ForTopicViewController,
-                self.wasd_ForRecentTableViewController,
-                self.wasd_ForTabBarController
-            ]
-            update_topic_content_from_server(delegate_target_list: delegate_list2)
-        }
     }
-    
     let mainWorkList = ["online","off_line","new_member","update_version","topic_msg","priv_msg"]
 
     var test_List = [""]
@@ -265,7 +251,21 @@ open class webSocketActiveCenter:app_event {
         }
         
     }
-    
+    func update_databese(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            print("11111+111111+111111")
+            let delegate_list = [self.wasd_ForFriendChatViewController, self.wasd_FriendTableViewMedol, self.wasd_ForTabBarController]
+            update_private_mag(delegate_target_list: delegate_list)
+            let delegate_list2:Array<webSocketActiveCenterDelegate?> = [
+                self.wasd_ForChatViewController,
+                self.wasd_ForMyTopicTableViewController,
+                self.wasd_ForTopicViewController,
+                self.wasd_ForRecentTableViewController,
+                self.wasd_ForTabBarController
+            ]
+            update_topic_content_from_server(delegate_target_list: delegate_list2)
+        }
+    }
     public func app_did_active(){
         let delegate_list = [self.wasd_ForFriendChatViewController, self.wasd_FriendTableViewMedol, self.wasd_ForTabBarController]
         update_private_mag(delegate_target_list: delegate_list)

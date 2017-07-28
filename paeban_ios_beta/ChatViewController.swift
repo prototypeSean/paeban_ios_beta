@@ -105,8 +105,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         super.viewDidAppear(animated)
         update_database()
         update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
-        // fly
-        print("viewDidAppear-------++++++++")
+        request_last_read_id_from_server()
     }
 
         // 下面兩個負責讀取訊息
@@ -534,6 +533,28 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             }
         }
         print(sending_dic)
+    }
+    func request_last_read_id_from_server(){
+        if topicId != nil && clientID != nil{
+            let send_dic = [
+                "topic_id":topicId!,
+                "client_id":clientID!
+            ]
+            HttpRequestCenter().request_user_data_v2("request_last_read_id_from_server", send_dic: send_dic as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                if return_dic != nil{
+                    let last_id_server = return_dic!["last_id_server"] as! String
+                    DispatchQueue.main.async {
+                        sql_database.update_topic_content_read_with_server_id(id_server_ins: last_id_server)
+                        self.update_database()
+                        
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                        
+                        
+                    })
+                }
+            })
+        }
     }
     func make_JSQMessage2(input_dic:Dictionary<String,AnyObject>) -> JSQMessage2{
         let msgToJSQ = JSQMessage2(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["topic_content"] as? String)

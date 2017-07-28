@@ -343,7 +343,6 @@ class MyTopicTableViewModel{
         else if ele_old.read_detial != ele_new.read_detial{
             return true
         }
-        // fly    change to return false
         return true
     }
     func get_title_cell_from_local_v2(){
