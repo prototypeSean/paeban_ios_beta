@@ -10,7 +10,11 @@ import UIKit
 import JSQMessagesViewController
 
 class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenterDelegate{
-
+    // config
+    let buff_msg_number = 15
+    let max_load_msg_number = 50
+    // config
+    
     var messages = [JSQMessage3]()
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
@@ -21,7 +25,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     var loadHistorySwitch = false
     var workList:Array<Dictionary<String,AnyObject>> = []
     var sending_dic:Dictionary<String,Int> = [:]
-    
+    var scroll_point_save:CGPoint = CGPoint(x: 0, y: 0)
     
     //collectionView(_:attributedTextForMessageBubbleTopLabelAtIndexPath:)
     //MARK:讀入歷史訊息
@@ -140,7 +144,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        update_database()
+        update_database(mode: .initial)
         let delegate_list = [wsActive.wasd_ForFriendChatViewController]
         update_private_mag(delegate_target_list: delegate_list)
     }
@@ -253,17 +257,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     // MARK:滾動中
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //print(self.collectionView.contentOffset.y)
-        if scrollView.contentOffset.y <= -5 && loadHistorySwitch == true{
-            loadHistorySwitch = false
-            if let minMsgId = messages.first?.topicId{
-                let sendDic:Dictionary = ["msg_type":"request_history_priv_msg",
-                                          "receiver_id":clientId!,
-                                          "last_id_of_msg":minMsgId]
-                //print("add")
-                addRequestMission("request_history_priv_msg", data: sendDic as AnyObject)
-            }
+        if scrollView.contentOffset.y <= 0 && loadHistorySwitch == true{
+            // page up
+            //self.update_database(mode: .page_up)
         }
+        print(scrollView.contentSize.height - self.collectionView.frame.height - 44)
+        print(scrollView.contentOffset.y)
     }
     func dennis_kao_s_fucking_trash(){
         // No avatars
@@ -302,7 +301,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             "is_send":false as AnyObject
         ]
         sql_database.inser_date_to_private_msg(input_dic: dataDic)
-        self.update_database()
+        self.update_database(mode: .new_client_msg)
         self.send_all_msg()
         
         
@@ -318,126 +317,11 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     // MARK:ws回傳信號
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
-        
-        if msgType == "priv_msg" && false{
-            // 代碼移到web socket center運行
-            let resultDic_msg_id:Dictionary<String,AnyObject> = msg["result_dic"] as! Dictionary<String,AnyObject>
-            for resultDic in resultDic_msg_id.values{
-                if (resultDic["sender_id"] as? String)! == userData.id!
-                    && (resultDic["receiver_id"] as? String)! == clientId{
-                    let id_local = resultDic["id_local"] as! String
-                    let time_input = resultDic["time"] as! String
-                    let id_server_input = resultDic["id_server"] as! String
-                    sql_database.update_private_msg_time(id_local: id_local, time_input: time_input, id_server_input: id_server_input)
-                    sending_dic.removeValue(forKey: id_local)
-                    self.update_database()
-                    //update_database()
-                    //                if let _ = messages.index(where: { (msgTarget) -> Bool in
-                    //                    if msgTarget.topicTempid! == msg["temp_priv_msg_id"] as? String{
-                    //                        return true
-                    //                    }
-                    //                    else{return false}
-                    //                }){
-                    //                    if let msgIndex = messages.index(where: { (target) -> Bool in
-                    //                        if target.topicTempid == msg["temp_priv_msg_id"] as? String{
-                    //                            return true
-                    //                        }
-                    //                        else{return false}
-                    //                    }){
-                    //                        messages[msgIndex].topicId = msg["msg_id"] as? String
-                    //                    }
-                    //
-                    //                    removeWorkList("priv_msg", data: msg as AnyObject?)
-                    //                }
-                    
-                }
-                else if (resultDic["sender_id"] as? String)! == clientId
-                    && (resultDic["receiver_id"] as? String)! == userData.id!{
-                    print(resultDic)
-                    self.get_history_new_from_server()
-                    
-                    // 別人說的
-                    //                let msgObj = JSQMessage3(senderId: msg["sender_id"] as! String,
-                    //                                         displayName: msg["sender_name"] as! String,
-                    //                                         text: msg["msg"] as! String)
-                    //                msgObj?.isRead = false
-                    //                msgObj?.topicId = msg["msg_id"] as? String
-                    //                msgObj?.topicTempid = ""
-                    //                self.messages += [msgObj!]
-                    //                self.collectionView.reloadData()
-                    //                scrollToBottom()
-                    //跟server說 已讀
-                    let sendData = ["msg_type":"priv_msg_been_read",
-                                    "msg_id":resultDic["id_server"] as! String]
-                    var addDic:Dictionary<String,AnyObject> = [:]
-                    addDic["missionType"] = "priv_msg_been_read" as AnyObject?
-                    addDic["data"] = sendData as AnyObject?
-                    executeWork(addDic)
-                }
-            }
-            
-        }
-        else if msgType == "history_priv_msg"{
-            func turnToMessage3(_ inputDic:Dictionary<String,AnyObject>) -> JSQMessage3{
-                let returnObj = JSQMessage3(senderId: inputDic["senderId"] as! String,
-                                            displayName: inputDic["displayName"] as! String,
-                                            text: inputDic["text"] as! String)
-                returnObj?.topicId = inputDic["topicId"] as? String
-                returnObj?.topicTempid = inputDic["topicTempid"] as? String
-                returnObj?.isRead = inputDic["isRead"] as? Bool
-                return returnObj!
-            }
-            self.removeWorkList("request_history_priv_msg", data: nil)
-            var tempMsgList:Array<JSQMessage3> = []
-            let history_msg_names_list = msg["history_msg_names_list"] as! Array<String>
-            let history_msg_userid_list = msg["history_msg_userid_list"] as! Array<String>
-            let history_msg_list = msg["history_msg_list"] as! Array<String>
-            let history_msg_id_list = msg["history_msg_id_list"] as! Array<Int>
-            let been_read_list = msg["been_read_list"] as! Array<String>
-            for datasIndex in 0..<history_msg_names_list.count{
-                var tempDic:Dictionary<String,AnyObject> = [:]
-                tempDic["senderId"] = history_msg_userid_list[datasIndex] as AnyObject?
-                tempDic["displayName"] = history_msg_names_list[datasIndex] as AnyObject?
-                tempDic["text"] = history_msg_list[datasIndex] as AnyObject?
-                tempDic["topicId"] = String(history_msg_id_list[datasIndex]) as AnyObject?
-                tempDic["topicTempid"] = "" as AnyObject?
-                if been_read_list[datasIndex] == "0" || history_msg_userid_list[datasIndex] != userData.id{
-                    tempDic["isRead"] = false as AnyObject?
-                }
-                else{
-                    tempDic["isRead"] = true as AnyObject?
-                }
-                tempMsgList.insert(turnToMessage3(tempDic), at: 0)
-            }
-            let msgCountBefore = messages.count
-            self.messages = tempMsgList + self.messages
-            self.collectionView?.reloadData()
-            self.collectionView?.layoutIfNeeded()
-            
-            let msgCountAfte = messages.count
-            
-            // 滾輪位置校正
-            if msgCountBefore <= 0{
-                scrollToBottom()
-                //self.loadHistorySwitch = true
-            }
-            else{
-                let lastItemIndex = IndexPath(row: msgCountAfte - msgCountBefore, section: 0)
-                self.collectionView.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.top, animated: false)
-                
-                if msgCountAfte - msgCountBefore != 0{
-                    self.loadHistorySwitch = true
-                }
-            }
-            
-            
-            
-        }
-        else if msgType == "priv_msg_been_read"{
+        if msgType == "priv_msg_been_read"{
             //let msgId = String(msg["msg_id"] as! Int)
             let id_loacal = msg["id_local"] as! String
             sql_database.update_private_msg_read(id_local: id_loacal)
-            update_database()
+            update_database(mode: .change_read_state)
             
             
 //            if let msgIndex = messages.index(where: { (target) -> Bool in
@@ -476,52 +360,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     func new_client_topic_msg(sender: String) {
         if clientId == sender{
-            update_database()
+            update_database(mode: .new_client_msg)
         }
     }
     func new_my_topic_msg(sender: String, id_local: String) {
         sending_dic.removeValue(forKey: id_local)
-        update_database()
     }
-    func get_history_new_from_server(){
-        print("get_history_new_from_server")
-        let last_id_server:String = sql_database.get_private_msg_last_id_server(client_id_input:clientId!)
-        
-        var init_sql_state = "0"
-        if init_sql{
-            init_sql_state = "1"
-            init_sql = false
-        }
-        print(last_id_server)
-        let request_dic:Dictionary<String,String> = [
-            "last_id_server":last_id_server,
-            "client_id":clientId!,
-            "init_sql":init_sql_state
-        ]
-        HttpRequestCenter().request_user_data("history_private_msg_new", send_dic: request_dic) { (return_dic) in
-            print(return_dic)
-            if return_dic["result"] as! String == "not_exist"{
-                //close window
-            }
-            else if return_dic["result"] as! String == "no_new_data"{
-                DispatchQueue.main.async {
-                    self.update_database()
-                }
-            }
-            else if return_dic["result"] as! String == "success"{
-                let data_list:Array<Dictionary<String,AnyObject>> = return_dic["data_list"]! as! Array<Dictionary<String, AnyObject>>
-                
-                for data in data_list{
-                    sql_database.inser_date_to_private_msg(input_dic: data)
-                }
-                DispatchQueue.main.async {
-                    self.update_database()
-                }
-            }
-            
-        }
-    }
-    
     func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
         
         for resultDicData in resultDic{
@@ -539,12 +383,25 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
         
     }
-    func update_database(){
-        messages = new_data()
+    func update_database(mode:load_data_mode){
+        messages = new_data(mode: mode)
         self.collectionView.reloadData()
-        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
+        if mode == load_data_mode.initial{
+            self.scrollToBottom(animated: false)
+        }
+        else if mode == load_data_mode.new_client_msg{
+            self.scrollToBottom(animated: true)
+        }
     }
-    func new_data() -> Array<JSQMessage3>{
+    enum load_data_mode {
+        case initial
+        case page_up
+        case page_down
+        case change_read_state
+        case new_client_msg
+    }
+    func new_data(mode:load_data_mode) -> Array<JSQMessage3>{
+        // 檢查 sending_dic
         var new_message_list:Array<JSQMessage3> = []
         let data_dic = sql_database.get_private_histopry_msg(client_id: clientId!)
         var last_read_id:String?
@@ -607,7 +464,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
         return msgToJSQ!
     }
-    func scrollToBottom(){
+    func scroll_ToBottom(){
         if self.messages.count > 0 {
             let lastItemIndex = IndexPath(row: self.messages.count-1, section: 0)
             self.collectionView.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: false)
@@ -636,7 +493,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
     }
     func reload_after_5_sec(){
-        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.update_database), userInfo: nil, repeats: false)
+        // 檢查未送出訊息
     }
     func reset_sending_dic_after_5_sec(){
         Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reset_sending_dic), userInfo: nil, repeats: false)
@@ -660,8 +517,8 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
         reset_sending_dic_after_5_sec()
         reload_after_5_sec()
-        update_database()
-        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
+        //update_database()
+        //self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
     }
     
 }

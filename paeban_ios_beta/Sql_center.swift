@@ -1602,7 +1602,7 @@ public class SQL_center{
         let query = private_table.filter(
             (sender == userData.id! && receiver == client_id) ||
                 (sender == client_id && receiver == userData.id!)
-            ).order(time.asc)
+            ).order(time.desc)
         var return_list:Array<Dictionary<String,AnyObject>> = []
         do{
             let query_server = query.filter(id_server != nil)
@@ -1648,7 +1648,7 @@ public class SQL_center{
                     ]
                 return_list.append(return_dic)
             }
-            return return_list
+            return return_list.reversed()
         }
         catch{
             print("資料庫錯誤")
