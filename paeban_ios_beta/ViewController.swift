@@ -16,7 +16,7 @@ import CoreLocation
 // init config     --  named by DK
 public var my_blur_img_level_dic = [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 8:3, 9:0]
 public let version = "1.1.4.0"
-public let reset_database = true
+public let reset_database = false
 public let unlock_img_exp = 7
 public let local_host = "http://www.paeban.com/"
 // init config
@@ -880,12 +880,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                     print_writed_row_present()
                 })
                 // fly remove =============
-                for _ in 0..<50{
-                    sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
-                        writed_row += 1
-                        print_writed_row_present()
-                    })
-                }
+//                for _ in 0..<50{
+//                    sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
+//                        //writed_row += 1
+//                        //print_writed_row_present()
+//                    })
+//                }
                 // ============
                 sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
                     writed_row += 1

@@ -1598,64 +1598,94 @@ public class SQL_center{
             return "0"
         }
     }
-    func get_private_histopry_msg(client_id:String) -> Array<Dictionary<String,AnyObject>>{
-        let query = private_table.filter(
-            (sender == userData.id! && receiver == client_id) ||
-                (sender == client_id && receiver == userData.id!)
-            ).order(time.desc)
+    func get_private_histopry_msg(mark_id:Int64, buff_num:Int, max_num:Int, client_id:String, mode:load_data_mode) -> Array<Dictionary<String,AnyObject>>{
+        // suport func
+        func add_query_result(query_ins:Table, is_reverse:Bool) -> Array<Dictionary<String,AnyObject>>{
+            // 把query資料轉換成字典, 以便之後做成cell
+            do{
+                var temp_return_list:Array<Dictionary<String,AnyObject>> = []
+                let query_server = query_ins.filter(id_server != nil)
+                for query_s in try sql_db!.prepare(query_server){
+                    var is_resd_input = false
+                    if query_s[is_read] != nil{
+                        is_resd_input = query_s[is_read]!
+                    }
+                    let id_local:Int64 = query_s[id]
+                    let write_time:Double = query_s[time]!
+                    let return_dic:Dictionary<String,AnyObject> = [
+                        "sender":query_s[sender]! as AnyObject,
+                        "private_text":query_s[private_text]! as AnyObject,
+                        "is_read":is_resd_input as AnyObject,
+                        "is_send":query_s[is_send] as AnyObject,
+                        "write_time":write_time as AnyObject,
+                        "id_local":id_local as AnyObject,
+                        "id_server":query_s[id_server] as AnyObject
+                    ]
+                    temp_return_list.append(return_dic)
+                    if query_s[sender]! != userData.id{
+                        // update private msg to readed
+                        let query_s_local_id = query_s[id]
+                        let update = private_table.filter(id == query_s_local_id).update(is_read <- true)
+                        try sql_db!.run(update)
+                    }
+                }
+                let query_local = query_ins.filter(id_server == nil)
+                for query_s in try sql_db!.prepare(query_local){
+                    var is_resd_input = false
+                    if query_s[is_read] != nil{
+                        is_resd_input = query_s[is_read]!
+                    }
+                    let id_local:Int64 = query_s[id]
+                    let write_time:Double = query_s[time]!
+                    let return_dic:Dictionary<String,AnyObject> = [
+                        "sender":query_s[sender]! as AnyObject,
+                        "private_text":query_s[private_text]! as AnyObject,
+                        "is_read":is_resd_input as AnyObject,
+                        "is_send":query_s[is_send] as AnyObject,
+                        "write_time":write_time as AnyObject,
+                        "id_local":id_local as AnyObject
+                    ]
+                    temp_return_list.append(return_dic)
+                }
+                if is_reverse{
+                    return temp_return_list.reversed()
+                }
+                return temp_return_list
+            }
+            catch{
+                print("資料庫錯誤")
+                print(error)
+                return []
+            }
+        }
+        var query:Table
         var return_list:Array<Dictionary<String,AnyObject>> = []
-        do{
-            let query_server = query.filter(id_server != nil)
-            for query_s in try sql_db!.prepare(query_server){
-                var is_resd_input = false
-                if query_s[is_read] != nil{
-                    is_resd_input = query_s[is_read]!
-                }
-                let id_local:Int64 = query_s[id]
-                let write_time:Double = query_s[time]!
-                let return_dic:Dictionary<String,AnyObject> = [
-                    "sender":query_s[sender]! as AnyObject,
-                    "private_text":query_s[private_text]! as AnyObject,
-                    "is_read":is_resd_input as AnyObject,
-                    "is_send":query_s[is_send] as AnyObject,
-                    "write_time":write_time as AnyObject,
-                    "id_local":id_local as AnyObject,
-                    "id_server":query_s[id_server] as AnyObject
-                    ]
-                return_list.append(return_dic)
-                if query_s[sender]! != userData.id{
-                    // update private msg to readed
-                    let query_s_local_id = query_s[id]
-                    let update = private_table.filter(id == query_s_local_id).update(is_read <- true)
-                    try sql_db!.run(update)
-                }
-            }
-            let query_local = query.filter(id_server == nil)
-            for query_s in try sql_db!.prepare(query_local){
-                var is_resd_input = false
-                if query_s[is_read] != nil{
-                    is_resd_input = query_s[is_read]!
-                }
-                let id_local:Int64 = query_s[id]
-                let write_time:Double = query_s[time]!
-                let return_dic:Dictionary<String,AnyObject> = [
-                    "sender":query_s[sender]! as AnyObject,
-                    "private_text":query_s[private_text]! as AnyObject,
-                    "is_read":is_resd_input as AnyObject,
-                    "is_send":query_s[is_send] as AnyObject,
-                    "write_time":write_time as AnyObject,
-                    "id_local":id_local as AnyObject
-                    ]
-                return_list.append(return_dic)
-            }
-            return return_list.reversed()
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-            return []
-        }
         
+        // main query
+        if mode == load_data_mode.initial{
+            query = private_table.filter(
+                (sender == userData.id! && receiver == client_id) ||
+                    (sender == client_id && receiver == userData.id!)
+                ).order(time.desc).limit(max_num)
+            return_list = add_query_result(query_ins: query, is_reverse: true)
+        }
+        else if mode == load_data_mode.page_up{
+            query = private_table.filter(
+                (sender == userData.id! && receiver == client_id) ||
+                    (sender == client_id && receiver == userData.id!)
+                )
+            let query_new = query.filter(id > mark_id).order(id.asc).limit(buff_num)
+            let query_older = query.filter(id <= mark_id).order(id.desc).limit(max_num-buff_num)
+            return_list = add_query_result(query_ins: query_older, is_reverse: true) + add_query_result(query_ins: query_new, is_reverse: false)
+            
+//            query = private_table.filter(
+//                (sender == userData.id! && receiver == client_id) ||
+//                    (sender == client_id && receiver == userData.id!) &&
+//                    id > mark_id
+//                ).order(id.asc).limit(buff_num)
+//            return_list += add_query_result(query_ins: query, is_reverse: false)
+        }
+        return return_list
     }
     func update_private_msg_time(id_local:String,time_input:String,id_server_input:String){
         do{

@@ -126,4 +126,11 @@ func synchronize_friend_table(after:(()->Void)?){
 }
 
 
+enum load_data_mode {
+    case initial
+    case page_up
+    case page_down
+    case change_read_state
+    case new_client_msg
+}
 
