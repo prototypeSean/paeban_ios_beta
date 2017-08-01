@@ -11,8 +11,8 @@ import JSQMessagesViewController
 
 class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenterDelegate{
     // config
-    let buff_msg_number = 15
-    let max_load_msg_number = 30
+    let buff_msg_number = 20
+    let max_load_msg_number = 50
     // config
     
     var messages = [JSQMessage3]()
@@ -28,7 +28,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     var scroll_point_save:CGPoint = CGPoint(x: 0, y: 0)
     var page_up_point:Int?
     var page_down_point:Int?
-    var save_decelerationRate:CGFloat?
     
     //collectionView(_:attributedTextForMessageBubbleTopLabelAtIndexPath:)
     //MARK:讀入歷史訊息
@@ -262,16 +261,25 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     // MARK:滾動中
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if page_up_point != nil{
-            let page_up_point = self.collectionView.cellForItem(at: IndexPath(row: self.page_up_point!, section:0))?.bounds.height
-            if page_up_point != nil{
-                self.save_decelerationRate = scrollView.decelerationRate
+            let page_up_point_check = self.collectionView.cellForItem(at: IndexPath(row: self.page_up_point!, section:0))?.bounds.height
+            if page_up_point_check != nil{
                 self.update_database(mode: .page_up)
             }
         }
-
-        // sss = nil 等於已消失
-        //print(scrollView.contentSize.height - self.collectionView.frame.height - 44)
         //print(scrollView.contentOffset.y)
+        if page_down_point != nil{
+            let page_down_point_cjeck = self.collectionView.cellForItem(at: IndexPath(row: self.page_down_point!, section:0))?.bounds.height
+            if page_down_point_cjeck != nil{
+                //print(scrollView.contentOffset.y)
+                self.update_database(mode: .page_down)
+                //scrollView.contentOffset.y -= 20
+                //let sss:UICollectionViewScrollPosition = UICollectionViewScrollPosition.
+            }
+        }
+        // sss = nil 等於已消失
+        //print(self.collectionView.cellForItem(at: IndexPath(row: self.messages.count - 1, section:0))?.bounds.height)
+//        print(scrollView.contentSize.height - self.collectionView.frame.height)
+//        print(scrollView.contentOffset.y)
     }
     func dennis_kao_s_fucking_trash(){
         // No avatars
@@ -398,20 +406,45 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 self.page_up_point = 0
             }
         }
+        func set_page_down_point(){
+            if messages.count >= max_load_msg_number{
+                self.page_down_point = messages.count - 1
+            }
+        }
         if mode == load_data_mode.initial{
             messages = new_data(mode: mode)
             self.collectionView.reloadData()
-            self.scroll_ToBottom()
+            //self.collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            
+            self.scrollToBottom(animated: false)
+            
             set_page_up_point()
         }
         else if mode == .page_up{
             if messages.count >= page_up_point! + 2{
+                self.collectionView.contentInset.bottom = 44
                 let locked_point_id = messages[page_up_point! + 1].id_local!
                 self.page_up_point = nil
                 messages = new_data(mode: mode)
                 self.collectionView.reloadData()
                 scroll_locked_point_to_top(locked_id: locked_point_id)
                 set_page_up_point()
+                set_page_down_point()
+            }
+        }
+        else if mode == .page_down{
+            if messages.count >= page_down_point!{
+                let locked_point_id = messages[page_down_point! - 2].id_local!
+                self.page_down_point = nil
+                messages = new_data(mode: mode)
+                print("messages.count:")
+                print(messages.count)
+                self.collectionView.reloadData()
+                self.collectionView.contentInset.bottom = 64
+                scroll_locked_point_to_bottom(locked_id: locked_point_id)
+                self.collectionView.contentInset.bottom = 44
+                set_page_up_point()
+                set_page_down_point()
             }
         }
     }
@@ -433,7 +466,16 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             data_dic = sql_database.get_private_histopry_msg(mark_id: target_id, buff_num: buff_msg_number , max_num: max_load_msg_number, client_id: clientId!, mode: mode)
             print("*********************id_local111")
             for c in data_dic{
-                print(c["id_local"]!)
+                print(c["id_local"])
+            }
+        }
+        else if mode == .page_down{
+            let target_id = messages[messages.count - 1].id_local!
+            print("target_id: \(target_id)")
+            data_dic = sql_database.get_private_histopry_msg(mark_id: target_id, buff_num: buff_msg_number , max_num: max_load_msg_number, client_id: clientId!, mode: mode)
+            print("*********************id_local111")
+            for c in data_dic{
+                print(c["id_local"])
             }
         }
         
@@ -468,6 +510,21 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             print("scroll_locked_point_to_top")
             print(index)
             self.collectionView.scrollToItem(at: IndexPath(row:index, section:0), at: .top, animated: false)
+        }
+    }
+    func scroll_locked_point_to_bottom(locked_id:Int64){
+        print("===")
+        print(locked_id)
+        if let index = messages.index(where: { (ele:JSQMessage3) -> Bool in
+            if ele.id_local == locked_id{
+                return true
+            }
+            return false
+        }){
+            
+            print("scroll_locked_point_to_top")
+            print(index)
+            self.collectionView.scrollToItem(at: IndexPath(row:index, section:0), at: .bottom, animated: false)
         }
     }
     func make_JSQMessage2(input_dic:Dictionary<String,AnyObject>) -> JSQMessage2{
@@ -516,7 +573,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     func scroll_ToBottom(){
         if self.messages.count > 0 {
-            let lastItemIndex = IndexPath(row: self.messages.count-2, section: 0)
+            let lastItemIndex = IndexPath(row: self.messages.count-1, section: 0)
             self.collectionView.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: false)
             self.loadHistorySwitch = true
         }

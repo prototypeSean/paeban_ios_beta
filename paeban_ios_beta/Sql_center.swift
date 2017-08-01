@@ -1674,16 +1674,40 @@ public class SQL_center{
                 (sender == userData.id! && receiver == client_id) ||
                     (sender == client_id && receiver == userData.id!)
                 )
-            let query_new = query.filter(id > mark_id).order(id.asc).limit(buff_num)
             let query_older = query.filter(id <= mark_id).order(id.desc).limit(max_num-buff_num)
+            var query_new = query.filter(id > mark_id).order(id.asc).limit(buff_num)
+            do{
+                let older_count = try sql_db!.scalar(query_older.count)
+                if older_count < max_num-buff_num{
+                    query_new = query.filter(id > mark_id).order(id.asc).limit(max_num - older_count)
+                }
+            }
+            catch{
+                print("ERROR query_older")
+                print(error)
+            }
             return_list = add_query_result(query_ins: query_older, is_reverse: true) + add_query_result(query_ins: query_new, is_reverse: false)
             
-//            query = private_table.filter(
-//                (sender == userData.id! && receiver == client_id) ||
-//                    (sender == client_id && receiver == userData.id!) &&
-//                    id > mark_id
-//                ).order(id.asc).limit(buff_num)
-//            return_list += add_query_result(query_ins: query, is_reverse: false)
+
+        }
+        else if mode == .page_down{
+            query = private_table.filter(
+                (sender == userData.id! && receiver == client_id) ||
+                    (sender == client_id && receiver == userData.id!)
+            )
+            var query_older = query.filter(id <= mark_id).order(id.desc).limit(buff_num)
+            let query_new = query.filter(id > mark_id).order(id.asc).limit(max_num-buff_num)
+            do{
+                let new_count = try sql_db!.scalar(query_new.count)
+                if new_count < max_num-buff_num{
+                    query_older = query.filter(id <= mark_id).order(id.desc).limit(max_num - new_count)
+                }
+            }
+            catch{
+                print("ERROR query_older2")
+                print(error)
+            }
+            return_list = add_query_result(query_ins: query_older, is_reverse: true) + add_query_result(query_ins: query_new, is_reverse: false)
         }
         return return_list
     }
