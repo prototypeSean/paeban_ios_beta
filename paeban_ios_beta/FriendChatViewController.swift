@@ -140,6 +140,8 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         senderId = setID
         senderDisplayName = setName
         dennis_kao_s_fucking_trash()
+        
+        // 監聽 contentSize 的變化
         self.collectionView?.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -287,13 +289,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     func scroll_recover(){
         if old_height != nil && old_position != nil{
             let new_height = self.collectionView.contentSize.height
-            print("---+++---")
-            print(self.collectionView.contentOffset.y)
-            let point = CGPoint(x: self.collectionView.contentOffset.x, y: new_height - old_height! + old_position!)
-            //scroll_view.setContentOffset(point, animated: false)
-            //scroll_view.contentOffset.y = new_height - old_height! + old_position!
-            self.collectionView.setContentOffset(point, animated: false)
-            print(self.collectionView.contentOffset.y)
+            self.collectionView.contentOffset.y = new_height - old_height! + old_position!
             old_height = nil
             old_position = nil
         }
@@ -336,7 +332,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             "is_send":false as AnyObject
         ]
         sql_database.inser_date_to_private_msg(input_dic: dataDic)
-        self.update_database(mode: .initial)
+        self.update_database(mode: .new_client_msg)
         self.send_all_msg()
         
         
@@ -432,7 +428,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
         else if mode == .page_up{
             if messages.count >= page_up_point! + 2{
-                self.collectionView.contentInset.bottom = 0
                 //let locked_point_id = messages[page_up_point! + 1].id_local!
                 self.page_up_point = nil
                 let new_datas = new_data(mode: mode)
@@ -444,6 +439,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 }
             }
         }
+        else if mode == .new_client_msg{
+            messages += new_data(mode: mode)
+            self.collectionView.reloadData()
+            self.scrollToBottom(animated: true)
+            set_page_up_point()
+        }
     }
     func new_data(mode:load_data_mode) -> Array<JSQMessage3>{
         // 檢查 sending_dic
@@ -451,21 +452,15 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         var data_dic:Array<Dictionary<String, AnyObject>> = []
         if mode == .initial{
             data_dic = sql_database.get_private_histopry_msg(mark_id: 0, buff_num: buff_msg_number , max_num: max_load_msg_number, client_id: clientId!, mode: mode)
-            print("*********************id_local000")
-            for c in data_dic{
-                print(c["id_local"]!)
-            }
-            
         }
         else if mode == .page_up{
             let target_id = messages[0].id_local!
             data_dic = sql_database.get_private_histopry_msg(mark_id: target_id, buff_num: buff_msg_number , max_num: max_load_msg_number, client_id: clientId!, mode: mode)
-            print("*********************id_local111")
-            for c in data_dic{
-                print(c["id_local"])
-            }
         }
-        
+        else if mode == .new_client_msg{
+            let target_id = messages[messages.count - 1].id_local!
+            data_dic = sql_database.get_private_histopry_msg(mark_id: target_id, buff_num: buff_msg_number , max_num: max_load_msg_number, client_id: clientId!, mode: mode)
+        }
         
         var last_read_id:String?
         for data_s in data_dic{

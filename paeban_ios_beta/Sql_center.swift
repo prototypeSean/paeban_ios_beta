@@ -1662,7 +1662,7 @@ public class SQL_center{
         var return_list:Array<Dictionary<String,AnyObject>> = []
         
         // main query
-        if mode == load_data_mode.initial{
+        if mode == .initial{
             query = private_table.filter(
                 (sender == userData.id! && receiver == client_id) ||
                     (sender == client_id && receiver == userData.id!)
@@ -1676,8 +1676,14 @@ public class SQL_center{
                 )
             let query_older = query.filter(id < mark_id).order(id.desc).limit(max_num-buff_num)
             return_list = add_query_result(query_ins: query_older, is_reverse: true)
-            
-
+        }
+        else if mode == .new_client_msg{
+            query = private_table.filter(
+                (sender == userData.id! && receiver == client_id) ||
+                    (sender == client_id && receiver == userData.id!)
+            )
+            let query_new = query.filter(id > mark_id).order(id.asc)
+            return_list = add_query_result(query_ins: query_new, is_reverse: false)
         }
         
         return return_list
