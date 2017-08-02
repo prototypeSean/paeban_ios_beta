@@ -152,9 +152,8 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         update_database(mode: .initial)
-        // fly unlock
-        //let delegate_list = [wsActive.wasd_ForFriendChatViewController]
-        //update_private_mag(delegate_target_list: delegate_list)
+        let delegate_list = [wsActive.wasd_ForFriendChatViewController]
+        update_private_mag(delegate_target_list: delegate_list)
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -444,6 +443,44 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             self.collectionView.reloadData()
             self.scrollToBottom(animated: true)
             set_page_up_point()
+        }
+        else if mode == .change_read_state{
+            for invers_index in 0..<messages.count{
+                let index = messages.count - invers_index - 1
+                if messages[index].isRead != true{
+                    messages[index].isRead = sql_database.request_msg_read_state(id_local: messages[index].id_local!)
+                }
+                else{
+                    break
+                }
+            }
+            self.collectionView.reloadData()
+        }
+        else if mode == .change_resend_btn{
+            for invers_index in 0..<messages.count{
+                let index = messages.count - invers_index - 1
+                if let data = sql_database.request_msg_sending_state(id_local: messages[index].id_local!){
+                    if data["is_send"] == nil || data["is_send"] as! Bool == false{
+                        let time_now = Double(Date().timeIntervalSince1970)
+                        let time_send = data["send_time"] as! Double
+                        if time_now - time_send > 4{
+                            messages[index].show_resend_btn = true
+                            if let _ = sending_dic.index(where: { (element) -> Bool in
+                                if element.key == String(messages[index].id_local!) {
+                                    return true
+                                }
+                                return false
+                            }){
+                                messages[index].is_resending = true
+                            }
+                        }
+                    }
+                    else{
+                        break
+                    }
+                }
+            }
+            self.collectionView.reloadData()
         }
     }
     func new_data(mode:load_data_mode) -> Array<JSQMessage3>{

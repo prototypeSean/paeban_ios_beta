@@ -132,5 +132,6 @@ enum load_data_mode {
     case page_down
     case change_read_state
     case new_client_msg
+    case change_resend_btn
 }
 

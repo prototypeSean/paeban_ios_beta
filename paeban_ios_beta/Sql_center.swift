@@ -1724,6 +1724,38 @@ public class SQL_center{
         }
         
     }
+    func request_msg_read_state(id_local:Int64) -> Bool?{
+        do{
+            let query = private_table.filter(id == id_local)
+            return try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            })?[is_read]
+        }
+        catch{
+            print("ERROR request_msg_read_state")
+            print(error)
+            return nil
+        }
+    }
+    func request_msg_sending_state(id_local:Int64) -> Dictionary<String,AnyObject>?{
+        do{
+            let query = private_table.filter(id == id_local)
+            if let obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            }){
+                return [
+                    "is_send":obj[is_send] as AnyObject,
+                    "send_time":obj[time] as AnyObject
+                ]
+            }
+            return nil
+        }
+        catch{
+            print("ERROR request_msg_read_state")
+            print(error)
+            return nil
+        }
+    }
     func get_private_msg_last_checked_server_id() -> String{
         do{
             let query = private_table.filter(receiver == userData.id!).order(id.desc)
