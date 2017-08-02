@@ -12,7 +12,7 @@ import JSQMessagesViewController
 class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenterDelegate{
     // config
     let buff_msg_number = 0
-    let max_load_msg_number = 50
+    let max_load_msg_number = 20
     // config
     
     var messages = [JSQMessage3]()
@@ -417,10 +417,13 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 self.collectionView.contentInset.bottom = 0
                 let locked_point_id = messages[page_up_point! + 1].id_local!
                 self.page_up_point = nil
-                messages = new_data(mode: mode) + messages
-                self.collectionView.reloadData()
-                scroll_locked_point_to_top(locked_id: locked_point_id)
-                set_page_up_point()
+                let new_datas = new_data(mode: mode)
+                if !new_datas.isEmpty{
+                    messages = new_data(mode: mode) + messages
+                    self.collectionView.reloadData()
+                    scroll_locked_point_to_top(locked_id: locked_point_id)
+                    set_page_up_point()
+                }
             }
         }
     }
