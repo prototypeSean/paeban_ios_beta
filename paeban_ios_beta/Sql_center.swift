@@ -1710,9 +1710,10 @@ public class SQL_center{
             if private_table_obj != nil{
                 let receiver_input = private_table_obj![receiver]!
                 let query2 = private_table.filter(
+                    id <= private_table_obj![id] &&
                     sender == userData.id! &&
-                        receiver == receiver_input &&
-                        is_read == false
+                    receiver == receiver_input &&
+                    is_read == false
                 )
                 try sql_db?.run(query2.update(is_read <- true))
             }
@@ -1723,6 +1724,29 @@ public class SQL_center{
             print(error)
         }
         
+    }
+    func update_private_msg_read_with_server_id(id_server_ins:String){
+        do{
+            let query = private_table.filter(id_server == id_server_ins)
+            let private_table_obj = try sql_db?.prepare(query).first(where: { (row) -> Bool in
+                return true
+            })
+            if private_table_obj != nil{
+                let receiver_input = private_table_obj![receiver]!
+                let query2 = private_table.filter(
+                    id <= private_table_obj![id] &&
+                    sender == userData.id! &&
+                    receiver == receiver_input &&
+                    is_read == false
+                )
+                try sql_db?.run(query2.update(is_read <- true))
+            }
+            
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
     }
     func request_msg_read_state(id_local:Int64) -> Bool?{
         do{

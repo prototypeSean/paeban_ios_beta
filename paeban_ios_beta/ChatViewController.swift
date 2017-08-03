@@ -541,7 +541,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 "client_id":clientID!
             ]
             HttpRequestCenter().request_user_data_v2("request_last_read_id_from_server", send_dic: send_dic as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
-                if return_dic != nil{
+                if return_dic != nil && !(return_dic?.isEmpty)!{
                     let last_id_server = return_dic!["last_id_server"] as! String
                     DispatchQueue.main.async {
                         sql_database.update_topic_content_read_with_server_id(id_server_ins: last_id_server)

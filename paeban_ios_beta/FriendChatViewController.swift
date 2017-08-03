@@ -506,13 +506,26 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 last_read_id = data_s["id_server"] as? String
             }
         }
-        if last_read_id != nil{
-            let sendData = ["msg_type":"priv_msg_been_read",
-                            "msg_id":last_read_id!]
-            var addDic:Dictionary<String,AnyObject> = [:]
-            addDic["missionType"] = "priv_msg_been_read" as AnyObject?
-            addDic["data"] = sendData as AnyObject?
-            executeWork(addDic)
+        // 發送已讀訊號
+        if mode == .initial{
+            if last_read_id != nil{
+                let sendData = ["msg_type":"priv_msg_been_read",
+                                "msg_id":last_read_id!]
+                var addDic:Dictionary<String,AnyObject> = [:]
+                addDic["missionType"] = "priv_msg_been_read" as AnyObject?
+                addDic["data"] = sendData as AnyObject?
+                executeWork(addDic)
+            }
+        }
+        else if mode == .new_client_msg{
+            if last_read_id != nil{
+                let sendData = ["msg_type":"priv_msg_been_read",
+                                "msg_id":last_read_id!]
+                var addDic:Dictionary<String,AnyObject> = [:]
+                addDic["missionType"] = "priv_msg_been_read" as AnyObject?
+                addDic["data"] = sendData as AnyObject?
+                executeWork(addDic)
+            }
         }
         return new_message_list
     }
@@ -608,6 +621,23 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
         self.view.addGestureRecognizer(tap_event)
         
+    }
+    func request_last_read_id_from_server_private(){
+        if clientId != nil{
+            let send_dic = [
+                "client_id":clientId!
+            ]
+            HttpRequestCenter().request_user_data_v2("request_last_read_id_from_server_private", send_dic: send_dic as Dictionary<String, AnyObject>, InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                if return_dic != nil && !(return_dic?.isEmpty)!{
+                    let last_id_server = return_dic!["last_id_server"] as! String
+                    DispatchQueue.main.async {
+                        sql_database.update_private_msg_read_with_server_id(id_server_ins: last_id_server)
+                            self.update_database(mode: .change_read_state)
+                    }
+                    
+                }
+            })
+        }
     }
     var aspectRatioConstraint: NSLayoutConstraint? {
         willSet {
