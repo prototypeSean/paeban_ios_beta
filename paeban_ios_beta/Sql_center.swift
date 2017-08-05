@@ -1496,6 +1496,25 @@ public class SQL_center{
             return "new_local_msg"
         }
     }
+    func request_topic_msg_sending_state(id_local:Int64) -> Dictionary<String,AnyObject>?{
+        do{
+            let query = topic_content.filter(id == id_local)
+            if let obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            }){
+                return [
+                    "is_send":obj[is_send] as AnyObject,
+                    "send_time":obj[time] as AnyObject
+                ]
+            }
+            return nil
+        }
+        catch{
+            print("ERROR request_msg_read_state")
+            print(error)
+            return nil
+        }
+    }
     // working (暫緩 好像目前沒問題)我的client的訊息分開寫入  改成兩個函數
     func inser_date_to_private_msg(input_dic:Dictionary<String,AnyObject>){
         do{

@@ -500,7 +500,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         else if mode == .change_resend_btn{
             for invers_index in 0..<messages.count{
                 let index = messages.count - invers_index - 1
-                if let data = sql_database.request_msg_sending_state(id_local: messages[index].id_local!){
+                if let data = sql_database.request_topic_msg_sending_state(id_local: messages[index].id_local!){
                     if data["is_send"] == nil || data["is_send"] as! Bool == false{
                         let time_now = Double(Date().timeIntervalSince1970)
                         let time_send = data["send_time"] as! Double
