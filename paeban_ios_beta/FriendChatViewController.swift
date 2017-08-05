@@ -477,6 +477,9 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                             }){
                                 messages[index].is_resending = true
                             }
+                            else{
+                                messages[index].is_resending = false
+                            }
                         }
                     }
                     else{
