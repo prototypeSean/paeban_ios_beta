@@ -654,17 +654,17 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         let time_now = Int(Date().timeIntervalSince1970)
         let id_local = input_dic["id_local"] as! Int64
         msgToJSQ?.id_local = id_local
-        if is_send == false && time_now - write_time >= 4 {
-            msgToJSQ?.show_resend_btn = true
-            if let _ = sending_dic.index(where: { (element) -> Bool in
-                if element.key == String(id_local) {
-                    return true
-                }
-                return false
-            }){
-                msgToJSQ?.is_resending = true
-            }
-        }
+//        if is_send == false && time_now - write_time >= 4 {
+//            msgToJSQ?.show_resend_btn = true
+//            if let _ = sending_dic.index(where: { (element) -> Bool in
+//                if element.key == String(id_local) {
+//                    return true
+//                }
+//                return false
+//            }){
+//                msgToJSQ?.is_resending = true
+//            }
+//        }
         return msgToJSQ!
     }
 }
