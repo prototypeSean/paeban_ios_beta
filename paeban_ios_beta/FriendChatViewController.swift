@@ -394,6 +394,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     func new_my_topic_msg(sender: String, id_local: String) {
         sending_dic.removeValue(forKey: id_local)
+        update_database(mode: .change_resend_btn)
     }
     func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
         
@@ -479,7 +480,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                         }
                     }
                     else{
-                        break
+                        if messages[index].show_resend_btn{
+                            messages[index].show_resend_btn = false
+                        }
+                        else{
+                            break
+                        }
                     }
                 }
             }
@@ -680,6 +686,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                 socket.write(data: json_dumps(send_data))
             }
         }
+        update_database(mode: .change_resend_btn)
         reset_sending_dic_after_5_sec()
         reload_after_5_sec()
     }
