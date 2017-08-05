@@ -431,12 +431,16 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             if messages.count >= page_up_point! + 2{
                 //let locked_point_id = messages[page_up_point! + 1].id_local!
                 self.page_up_point = nil
-                let new_datas = new_data(mode: mode)
-                if !new_datas.isEmpty{
-                    messages = new_data(mode: mode) + messages
-                    save_scroll_data()
-                    self.collectionView.reloadData()
-                    set_page_up_point()
+                DispatchQueue.global(qos: .default).async {
+                    let new_datas = self.new_data(mode: mode)
+                    if !new_datas.isEmpty{
+                        self.messages = self.new_data(mode: mode) + self.messages
+                        DispatchQueue.main.async {
+                            self.save_scroll_data()
+                            self.collectionView.reloadData()
+                            set_page_up_point()
+                        }
+                    }
                 }
             }
         }
