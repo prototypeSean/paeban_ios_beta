@@ -160,6 +160,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         super.viewDidDisappear(animated)
         self.dismiss(animated: false, completion: nil)
         wsActive.wasd_ForFriendChatViewController = nil
+        self.collectionView?.removeObserver(self, forKeyPath: "contentSize")
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

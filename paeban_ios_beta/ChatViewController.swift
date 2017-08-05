@@ -78,6 +78,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         super.viewDidDisappear(animated)
         self.dismiss(animated: false, completion: nil)
         wsActive.wasd_ForChatViewController = nil
+        self.collectionView?.removeObserver(self, forKeyPath: "contentSize")
     }
     
     // MARK: 設定訊息顏色，用JSQ的套件
