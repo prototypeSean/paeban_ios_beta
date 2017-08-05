@@ -237,9 +237,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             
             let tap_event = UITapGestureRecognizer(target: self, action: #selector(self.dissmis_leybroad))
             cell.addGestureRecognizer(tap_event)
-            
-            
-            
             return cell
         }
         else{

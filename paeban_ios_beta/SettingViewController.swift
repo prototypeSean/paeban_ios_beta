@@ -98,7 +98,10 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
                 "print_block     列印封鎖清單",
                 "reset_db        重置資料庫",
                 "print_ig        列印ignore list",
-                "print_fl        print friend list"
+                "print_fl        print friend list",
+                "print_prmsg     列印好友對話紀錄",
+                "print_msg       列印topicContent",
+                "print_log       列印log紀錄"
             ]
             print("----cmd line----")
             for cmd_lines in help_list{

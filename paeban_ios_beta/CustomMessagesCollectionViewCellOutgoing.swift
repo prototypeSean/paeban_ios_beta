@@ -22,7 +22,6 @@ class CustomMessagesCollectionViewCellOutgoing: CustomMessagesCollectionViewCell
     @IBOutlet weak var reSending: UIActivityIndicatorView!
 
     @IBAction func resend_action(_ sender: Any) {
-        print("XXXXX9999")
         if chat_view_controller != nil{
             chat_view_controller?.send_all_msg()
         }
