@@ -433,9 +433,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 socket.write(data: json_dumps(unsend_list_s))
             }
         }
+        update_database(mode: .change_resend_btn)
         reset_sending_dic_after_5_sec()
         reload_after_5_sec()
-        update_database(mode: .new_client_msg)
     }
     func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
         for resultDicData in resultDic{
@@ -513,10 +513,18 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                             }){
                                 messages[index].is_resending = true
                             }
+                            else{
+                                messages[index].is_resending = false
+                            }
                         }
                     }
                     else{
-                        break
+                        if messages[index].show_resend_btn{
+                            messages[index].show_resend_btn = false
+                        }
+                        else{
+                            break
+                        }
                     }
                 }
             }
@@ -599,7 +607,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingMediaCellIdentifier)
     }
     func reload_after_5_sec(){
-//        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.update_database), userInfo: nil, repeats: false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.update_database(mode: .change_resend_btn)
+        }
     }
     func reset_sending_dic_after_5_sec(){
         Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reset_sending_dic), userInfo: nil, repeats: false)
