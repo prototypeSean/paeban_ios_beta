@@ -22,6 +22,9 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegate {
     @IBOutlet weak var topicTitle: UILabelPadding!
+    // config
+    let max_load_msg_number = 100
+    // config
     
         // MARK: Properties
     var messages = [JSQMessage2]()
@@ -37,6 +40,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     var sending_dic:Dictionary<String,Int> = [:]
     var topic_title_var:String?
     var tags:String?
+    var page_up_point:Int?
+    var old_height:CGFloat?
+    var old_position:CGFloat?
     
     //collectionView(_:attributedTextForMessageBubbleTopLabelAtIndexPath:)
     //MARK:讀入歷史訊息
@@ -94,6 +100,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         senderId = setID
         senderDisplayName = setName
         dennis_kao_s_fucking_trash()
+        
+        // 監聽 contentSize 的變化
+        self.collectionView?.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -103,7 +112,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        update_database()
+        update_database(mode: .initial)
         update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
         request_last_read_id_from_server()
     }
@@ -127,7 +136,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             return incomingBubbleImageView
         }
     }
-    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let observedObject = object as? UICollectionView, observedObject == self.collectionView {
+            scroll_recover()
+        }
+    }
     // 原本套件在每個信息前面有照片，這邊把他取消
     override func collectionView(_ collectionView: JSQMessagesCollectionView!,
                                  avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
@@ -232,9 +245,21 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         let message = JSQMessage2(senderId: id, displayName: "", text: text)
         messages.append(message!)
     }
-    func renew_data() -> Array<JSQMessage2>{
+    func renew_data(mode:load_data_mode) -> Array<JSQMessage2>{
         var new_message_list:Array<JSQMessage2> = []
-        let data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!)
+        var data_dic:Array<Dictionary<String, AnyObject>> = []
+        if mode == .initial{
+            data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!, max_msg_long: max_load_msg_number, reference_point_local_id: 0, mode: mode)
+        }
+        else if mode == .page_up{
+            let reference_point_local_id = messages[0].id_local!
+            data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!, max_msg_long: max_load_msg_number, reference_point_local_id: reference_point_local_id, mode: mode)
+        }
+        else if mode == .new_client_msg{
+            let reference_point_local_id = messages[messages.count - 1].id_local!
+            data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!, max_msg_long: max_load_msg_number, reference_point_local_id: reference_point_local_id, mode: mode)
+        }
+        
         for data_s in data_dic{
             new_message_list.append(make_JSQMessage2(input_dic: data_s))
         }
@@ -307,6 +332,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         //sql_database.delete_ignore_list(topic_id_ins: topicId!)
         send_all_msg()
     }
+    // 滾動中
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if page_up_point != nil{
+            let page_up_point_check = self.collectionView.cellForItem(at: IndexPath(row: self.page_up_point!, section:0))?.bounds.height
+            if page_up_point_check != nil{
+                self.update_database(mode: .page_up)
+            }
+        }
+    }
+    
     // websocket delegate
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
@@ -341,21 +376,21 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             let id_local_input = msg["id_local"] as! String
             print("topic_content_been_read \(id_local_input)")
             sql_database.update_topic_content_read(id_local: id_local_input)
-            update_database()
+            update_database(mode: .change_read_state)
         }
-        else if msgType == "enter_topic"{
-            let topic_id_input = msg["topic_id"] as! String
-            let client_id_input = msg["client_id"] as! String
-            if topic_id_input == topicId && client_id_input == clientID{
-                self.get_last_read_id(topic_id_input: topicId!, client_id_input: clientID!)
-            }
-        }
+//        else if msgType == "enter_topic"{
+//            let topic_id_input = msg["topic_id"] as! String
+//            let client_id_input = msg["client_id"] as! String
+//            if topic_id_input == topicId && client_id_input == clientID{
+//                self.get_last_read_id(topic_id_input: topicId!, client_id_input: clientID!)
+//            }
+//        }
     
     }
     func new_client_topic_msg(sender: String) {
         print("new_client_topic_msg")
         if sender == clientID{
-            update_database()
+            update_database(mode: .new_client_msg)
             if topicId != nil && clientID != nil{
                 let last_id = sql_database.get_topic_content_last_id_server(topic_id_input: topicId!, client_id_input: clientID!)
                 print("new_client_topic_msg2")
@@ -373,7 +408,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             if sender == userData.id{
                 print("===new_my_topic_msg===")
                 self.sending_dic.removeValue(forKey: id_local)
-                self.update_database()
+                self.update_database(mode: .change_resend_btn)
             }
         }
     }
@@ -381,6 +416,14 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     
     // internal func
+    func scroll_recover(){
+        if old_height != nil && old_position != nil{
+            let new_height = self.collectionView.contentSize.height
+            self.collectionView.contentOffset.y = new_height - old_height! + old_position!
+            old_height = nil
+            old_position = nil
+        }
+    }
     func send_all_msg(){
         let unsend_list = sql_database.get_unsend_topic_data(topic_id_input: topicId!, client_id: ownerId!)
         for unsend_list_s in unsend_list!{
@@ -391,8 +434,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
         reset_sending_dic_after_5_sec()
         reload_after_5_sec()
-        update_database()
-        self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
+        update_database(mode: .new_client_msg)
     }
     func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
         for resultDicData in resultDic{
@@ -410,48 +452,84 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
         
     }
-    func update_database(){
-        messages = renew_data()
+    func update_database(mode:load_data_mode){
+        func set_page_up_point(){
+            if messages.count >= max_load_msg_number{
+                self.page_up_point = max_load_msg_number/3
+            }
+        }
+        if mode == load_data_mode.initial{
+            messages = renew_data(mode: mode)
+            self.collectionView.reloadData()
+            self.scrollToBottom(animated: false)
+            set_page_up_point()
+        }
+        else if mode == .page_up{
+            if messages.count >= page_up_point! + 2{
+                //let locked_point_id = messages[page_up_point! + 1].id_local!
+                self.page_up_point = nil
+                let new_datas = renew_data(mode: mode)
+                if !new_datas.isEmpty{
+                    messages = renew_data(mode: mode) + messages
+                    save_scroll_data()
+                    self.collectionView.reloadData()
+                    set_page_up_point()
+                }
+            }
+        }
+        else if mode == .new_client_msg{
+            messages += renew_data(mode: mode)
+            self.collectionView.reloadData()
+            self.scrollToBottom(animated: true)
+            set_page_up_point()
+        }
+        else if mode == .change_read_state{
+            for invers_index in 0..<messages.count{
+                let index = messages.count - invers_index - 1
+                if messages[index].isRead != true{
+                    messages[index].isRead = sql_database.request_msg_read_state(id_local: messages[index].id_local!)
+                }
+                else{
+                    break
+                }
+            }
+            self.collectionView.reloadData()
+        }
+        else if mode == .change_resend_btn{
+            for invers_index in 0..<messages.count{
+                let index = messages.count - invers_index - 1
+                if let data = sql_database.request_msg_sending_state(id_local: messages[index].id_local!){
+                    if data["is_send"] == nil || data["is_send"] as! Bool == false{
+                        let time_now = Double(Date().timeIntervalSince1970)
+                        let time_send = data["send_time"] as! Double
+                        if time_now - time_send > 4{
+                            messages[index].show_resend_btn = true
+                            if let _ = sending_dic.index(where: { (element) -> Bool in
+                                if element.key == String(messages[index].id_local!) {
+                                    return true
+                                }
+                                return false
+                            }){
+                                messages[index].is_resending = true
+                            }
+                        }
+                    }
+                    else{
+                        break
+                    }
+                }
+            }
+            self.collectionView.reloadData()
+        }
+    }
+    func save_scroll_data(){
+        old_height = self.collectionView.contentSize.height
+        old_position = self.collectionView.contentOffset.y
+    }
+    func update_database_old(){
+        //messages = renew_data()
         self.collectionView.reloadData()
         self.scroll(to: IndexPath(row: messages.count, section: 0), animated: false)
-    }
-    func get_history_new(){
-        let last_id_server:String = sql_database.get_topic_content_last_id_server(topic_id_input: topicId!, client_id_input: clientID!)
-        var init_sql_state = "0"
-        if init_sql{
-            init_sql_state = "1"
-            init_sql = false
-        }
-        let request_dic:Dictionary<String,String> = [
-            "last_id_server":last_id_server,
-            "client_id":clientID!,
-            "topic_id":topicId!,
-            "init_sql":init_sql_state
-        ]
-        HttpRequestCenter().request_user_data("history_topic_msg_new", send_dic: request_dic) { (return_dic) in
-            if return_dic["result"] as! String == "not_exist"{
-                //close topic
-            }
-            else if return_dic["result"] as! String == "no_new_data"{
-                DispatchQueue.main.async {
-                    self.update_database()
-                    self.enter_topic_signal()
-                }
-            }
-            else if return_dic["result"] as! String == "success"{
-                let data_list:Array<Dictionary<String,AnyObject>> = return_dic["data_list"]! as! Array<Dictionary<String, AnyObject>>
-                
-                for data in data_list{
-                    sql_database.inser_date_to_topic_content(input_dic: data)
-                    //sql_database.print_all()
-                }
-                DispatchQueue.main.async {
-                    self.update_database()
-                    self.enter_topic_signal()
-                }
-            }
-            
-        }
     }
     func get_last_read_id(topic_id_input:String, client_id_input:String){
         var init_sql_state = "0"
@@ -470,23 +548,23 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             if last_local_id != "0"{
                 sql_database.update_topic_content_read(id_local: last_local_id)
                 DispatchQueue.main.async {
-                    self.update_database()
+                    self.update_database(mode: .change_read_state)
                 }
             }
             
         }
         
     }
-    func enter_topic_signal(){
-        if topicId != nil && clientID != nil{
-            let sen_dic:NSDictionary = [
-                "msg_type":"enter_topic",
-                "topic_id":topicId!,
-                "client_id":clientID!
-            ]
-            socket.write(data: json_dumps(sen_dic))
-        }
-    }
+//    func enter_topic_signal(){
+//        if topicId != nil && clientID != nil{
+//            let sen_dic:NSDictionary = [
+//                "msg_type":"enter_topic",
+//                "topic_id":topicId!,
+//                "client_id":clientID!
+//            ]
+//            socket.write(data: json_dumps(sen_dic))
+//        }
+//    }
     var aspectRatioConstraint: NSLayoutConstraint? {
         willSet {
             if let existingConstraint = aspectRatioConstraint {
@@ -520,7 +598,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingMediaCellIdentifier)
     }
     func reload_after_5_sec(){
-        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.update_database), userInfo: nil, repeats: false)
+//        Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.update_database), userInfo: nil, repeats: false)
     }
     func reset_sending_dic_after_5_sec(){
         Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reset_sending_dic), userInfo: nil, repeats: false)
@@ -545,7 +623,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                     let last_id_server = return_dic!["last_id_server"] as! String
                     DispatchQueue.main.async {
                         sql_database.update_topic_content_read_with_server_id(id_server_ins: last_id_server)
-                        self.update_database()
+                        self.update_database(mode: .change_read_state)
                         
                     }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
@@ -562,7 +640,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         let is_send = input_dic["is_send"] as? Bool
         let write_time = Int(input_dic["write_time"] as! Double)
         let time_now = Int(Date().timeIntervalSince1970)
-        let id_local = String(describing: input_dic["id_local"] as! Int64)
+        let id_local = input_dic["id_local"] as! Int64
+        msgToJSQ?.id_local = id_local
         if is_send == false && time_now - write_time >= 4 {
             msgToJSQ?.show_resend_btn = true
             if let _ = sending_dic.index(where: { (element) -> Bool in
@@ -586,6 +665,7 @@ class JSQMessage2:JSQMessage{
     var isRead:Bool?
     var show_resend_btn = false
     var is_resending = false
+    var id_local:Int64?
 }
 
 

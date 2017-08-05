@@ -2108,55 +2108,78 @@ public class SQL_center{
             return nil
         }
     }
-    func get_histopry_msg(topic_id_input:String,client_id:String) -> Array<Dictionary<String,AnyObject>>{
-        let query = topic_content.filter(topic_id == topic_id_input).filter(
-            (sender == userData.id! && receiver == client_id) ||
-            (sender == client_id && receiver == userData.id!)
-            ).order(time.asc)
-        var return_list:Array<Dictionary<String,AnyObject>> = []
-        do{
-            let query_server = query.filter(id_server != nil)
-            for query_s in try sql_db!.prepare(query_server){
-                var is_resd_input = false
-                if query_s[is_read] != nil{
-                    is_resd_input = query_s[is_read]!
-                }
-                let return_dic:Dictionary<String,AnyObject> = [
-                    "sender":query_s[sender]! as AnyObject,
-                    "topic_content":query_s[topic_text]! as AnyObject,
-                    "is_read":is_resd_input as AnyObject,
-                    "write_time":query_s[time] as AnyObject,
-                    "is_send":query_s[is_send] as AnyObject,
-                    "id_local":query_s[id] as AnyObject
-                ]
-                return_list.append(return_dic)
-            }
-            send_read_to_server(topic_id_input: topic_id_input, client_id: client_id)
-            try sql_db?.run(query_server.filter(receiver == userData.id!).update(is_read <- true))
-            let query_local = query.filter(id_server == nil)
-            for query_s in try sql_db!.prepare(query_local){
-                var is_resd_input = false
-                if query_s[is_read] != nil{
-                    is_resd_input = query_s[is_read]!
-                }
-                let return_dic:Dictionary<String,AnyObject> = [
-                    "sender":query_s[sender]! as AnyObject,
-                    "topic_content":query_s[topic_text]! as AnyObject,
-                    "is_read":is_resd_input as AnyObject,
-                    "write_time":query_s[time] as AnyObject,
-                    "is_send":query_s[is_send] as AnyObject,
-                    "id_local":query_s[id] as AnyObject
+    func get_histopry_msg(topic_id_input:String,client_id:String, max_msg_long:Int,
+                          reference_point_local_id:Int64, mode:load_data_mode) -> Array<Dictionary<String,AnyObject>>{
+        // 輔助用函數
+        func made_query_to_output_list(query_ins:Table, reverse:Bool) -> Array<Dictionary<String,AnyObject>>{
+            do{
+                var temp_return_list:Array<Dictionary<String,AnyObject>> = []
+                let query_server = query_ins.filter(id_server != nil)
+                for query_s in try sql_db!.prepare(query_server){
+                    var is_resd_input = false
+                    if query_s[is_read] != nil{
+                        is_resd_input = query_s[is_read]!
+                    }
+                    let return_dic:Dictionary<String,AnyObject> = [
+                        "sender":query_s[sender]! as AnyObject,
+                        "topic_content":query_s[topic_text]! as AnyObject,
+                        "is_read":is_resd_input as AnyObject,
+                        "write_time":query_s[time] as AnyObject,
+                        "is_send":query_s[is_send] as AnyObject,
+                        "id_local":query_s[id] as AnyObject
                     ]
-                return_list.append(return_dic)
+                    temp_return_list.append(return_dic)
+                }
+                try sql_db?.run(query_server.filter(receiver == userData.id!).update(is_read <- true))
+                let query_local = query_ins.filter(id_server == nil)
+                for query_s in try sql_db!.prepare(query_local){
+                    var is_resd_input = false
+                    if query_s[is_read] != nil{
+                        is_resd_input = query_s[is_read]!
+                    }
+                    let return_dic:Dictionary<String,AnyObject> = [
+                        "sender":query_s[sender]! as AnyObject,
+                        "topic_content":query_s[topic_text]! as AnyObject,
+                        "is_read":is_resd_input as AnyObject,
+                        "write_time":query_s[time] as AnyObject,
+                        "is_send":query_s[is_send] as AnyObject,
+                        "id_local":query_s[id] as AnyObject
+                    ]
+                    temp_return_list.append(return_dic)
+                }
+                if reverse{
+                    return temp_return_list.reversed()
+                }
+                return temp_return_list
             }
-            return return_list
-        }
-        catch{
-            print("資料庫錯誤")
-            print(error)
-            return []
+            catch{
+                print("資料庫錯誤")
+                print(error)
+                return []
+            }
         }
         
+        
+        // 主要邏輯區
+        var return_list:Array<Dictionary<String,AnyObject>> = []
+        let basic_query = topic_content.filter(topic_id == topic_id_input).filter(
+            (sender == userData.id! && receiver == client_id) ||
+            (sender == client_id && receiver == userData.id!)
+            )
+        if mode == .initial{
+            let query = basic_query.order(id.desc).limit(max_msg_long)
+            return_list = made_query_to_output_list(query_ins: query, reverse: true)
+        }
+        else if mode == .page_up{
+            let query = basic_query.filter(id < reference_point_local_id).order(id.desc).limit(max_msg_long)
+            return_list = made_query_to_output_list(query_ins: query, reverse: true)
+        }
+        else if mode == .new_client_msg{
+            let query = basic_query.filter(id > reference_point_local_id).order(id.asc)
+            return_list = made_query_to_output_list(query_ins: query, reverse: false)
+        }
+        //send_read_to_server(topic_id_input: topic_id_input, client_id: client_id)
+        return return_list
     }
     func send_read_to_server(topic_id_input:String,client_id:String){
         let query = topic_content.filter(topic_id == topic_id_input).filter(

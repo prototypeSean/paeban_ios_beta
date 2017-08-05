@@ -654,6 +654,9 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     func reload_after_5_sec(){
         // 檢查未送出訊息
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { 
+            self.update_database(mode: .change_resend_btn)
+        }
     }
     func reset_sending_dic_after_5_sec(){
         Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.reset_sending_dic), userInfo: nil, repeats: false)
@@ -677,8 +680,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
         reset_sending_dic_after_5_sec()
         reload_after_5_sec()
-        //update_database()
-        //self.scroll(to: IndexPath(row: messages.count, section: 0), animated: true)
     }
     
 }
