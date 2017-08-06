@@ -114,6 +114,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         update_database(mode: .initial)
+        update_database(mode: .change_resend_btn)
         update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
         request_last_read_id_from_server()
     }
@@ -649,9 +650,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     func make_JSQMessage2(input_dic:Dictionary<String,AnyObject>) -> JSQMessage2{
         let msgToJSQ = JSQMessage2(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["topic_content"] as? String)
         msgToJSQ?.isRead = input_dic["is_read"] as? Bool
-        let is_send = input_dic["is_send"] as? Bool
-        let write_time = Int(input_dic["write_time"] as! Double)
-        let time_now = Int(Date().timeIntervalSince1970)
+        //let is_send = input_dic["is_send"] as? Bool
+        //let write_time = Int(input_dic["write_time"] as! Double)
+        //let time_now = Int(Date().timeIntervalSince1970)
         let id_local = input_dic["id_local"] as! Int64
         msgToJSQ?.id_local = id_local
 //        if is_send == false && time_now - write_time >= 4 {

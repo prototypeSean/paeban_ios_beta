@@ -152,6 +152,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         update_database(mode: .initial)
+        update_database(mode: .change_resend_btn)
         let delegate_list = [wsActive.wasd_ForFriendChatViewController]
         update_private_mag(delegate_target_list: delegate_list)
         request_last_read_id_from_server_private()
@@ -597,14 +598,14 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     func make_JSQMessage3(input_dic:Dictionary<String,AnyObject>) -> JSQMessage3{
         let msgToJSQ = JSQMessage3(senderId: input_dic["sender"] as? String, displayName: "non", text: input_dic["private_text"] as? String)
         msgToJSQ?.isRead = input_dic["is_read"] as? Bool
-        let is_send = input_dic["is_send"] as? Bool
-        let write_time_db = input_dic["write_time"]!
-        let write_time_db2:Double = write_time_db as! Double
-        let write_time = Int(write_time_db2)
-        let time_now = Int(Date().timeIntervalSince1970)
+        //let is_send = input_dic["is_send"] as? Bool
+        //let write_time_db = input_dic["write_time"]!
+        //let write_time_db2:Double = write_time_db as! Double
+        //let write_time = Int(write_time_db2)
+        //let time_now = Int(Date().timeIntervalSince1970)
         let id_local_db = input_dic["id_local"]! as! Int64
         msgToJSQ?.id_local = id_local_db
-        let id_local = String(describing: id_local_db)
+        //let id_local = String(describing: id_local_db)
 //        if is_send == false && time_now - write_time >= 4 {
 //            msgToJSQ?.show_resend_btn = true
 //            if let _ = sending_dic.index(where: { (element) -> Bool in
