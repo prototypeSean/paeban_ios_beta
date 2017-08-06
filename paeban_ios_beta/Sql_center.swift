@@ -1627,12 +1627,17 @@ public class SQL_center{
                 
                 var temp_return_list:Array<Dictionary<String,AnyObject>> = []
                 
-                
-                let query_server = all_query_data.filter({ (row:Row) -> Bool in
-                    if row[id_server] != nil{
-                        return true
+                let query_server = all_query_data.sorted(by: { (row1, row2) -> Bool in
+                    if row1[id_server] != nil && row2[id_server] == nil{
+                        return false
                     }
-                    return false
+                    else if row1[time]! > row2[time]!{
+                        if (row1[id_server] == nil && row2[id_server] == nil) ||
+                            (row1[id_server] != nil && row2[id_server] != nil){
+                            return false
+                        }
+                    }
+                    return true
                 })
                 for query_s in query_server{
                     var is_resd_input = false
@@ -1658,39 +1663,7 @@ public class SQL_center{
                         try sql_db!.run(update)
                     }
                 }
-                
-                let query_local = all_query_data.filter({ (row:Row) -> Bool in
-                    if row[id_server] == nil{
-                        return true
-                    }
-                    return false
-                })
-                for query_s in query_local {
-                    var is_resd_input = false
-                    if query_s[is_read] != nil{
-                        is_resd_input = query_s[is_read]!
-                    }
-                    let id_local:Int64 = query_s[id]
-                    let write_time:Double = query_s[time]!
-                    let return_dic:Dictionary<String,AnyObject> = [
-                        "sender":query_s[sender]! as AnyObject,
-                        "private_text":query_s[private_text]! as AnyObject,
-                        "is_read":is_resd_input as AnyObject,
-                        "is_send":query_s[is_send] as AnyObject,
-                        "write_time":write_time as AnyObject,
-                        "id_local":id_local as AnyObject
-                    ]
-                    if is_reverse{
-                        temp_return_list.insert(return_dic, at: 0)
-                    }
-                    else{
-                        temp_return_list.append(return_dic)
-                    }
-                    
-                }
-                if is_reverse{
-                    return temp_return_list.reversed()
-                }
+
                 return temp_return_list
                 // test area
                 
