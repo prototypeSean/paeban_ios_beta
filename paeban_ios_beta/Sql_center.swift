@@ -1628,7 +1628,7 @@ public class SQL_center{
                 var temp_return_list:Array<Dictionary<String,AnyObject>> = []
                 
                 let query_server = all_query_data.sorted(by: { (row1, row2) -> Bool in
-                    if row1[id_server] != nil && row2[id_server] == nil{
+                    if row1[id_server] == nil && row2[id_server] != nil{
                         return false
                     }
                     else if row1[time]! > row2[time]!{
@@ -1639,7 +1639,9 @@ public class SQL_center{
                     }
                     return true
                 })
+                print("----------*****")
                 for query_s in query_server{
+                    print(query_s[id])
                     var is_resd_input = false
                     if query_s[is_read] != nil{
                         is_resd_input = query_s[is_read]!
