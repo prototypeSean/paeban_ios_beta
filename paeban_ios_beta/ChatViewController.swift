@@ -258,7 +258,10 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!, max_msg_long: max_load_msg_number, reference_point_local_id: reference_point_local_id, mode: mode)
         }
         else if mode == .new_client_msg{
-            let reference_point_local_id = messages[messages.count - 1].id_local!
+            var reference_point_local_id:Int64 = 0
+            if messages.count > 0{
+                reference_point_local_id = messages[messages.count - 1].id_local!
+            }
             data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!, max_msg_long: max_load_msg_number, reference_point_local_id: reference_point_local_id, mode: mode)
         }
         

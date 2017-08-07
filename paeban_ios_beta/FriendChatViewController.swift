@@ -508,8 +508,20 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             data_dic = sql_database.get_private_histopry_msg(mark_id: target_id, buff_num: buff_msg_number , max_num: max_load_msg_number, client_id: clientId!, mode: mode)
         }
         else if mode == .new_client_msg{
-            let target_id = messages[messages.count - 1].id_local!
+            var target_id:Int64 = 0
+            if messages.count > 0{
+                target_id = messages[messages.count - 1].id_local!
+            }
             data_dic = sql_database.get_private_histopry_msg(mark_id: target_id, buff_num: buff_msg_number , max_num: max_load_msg_number, client_id: clientId!, mode: mode)
+            if data_dic.count > 1{
+                var target_id_2:Int64 = 0
+                for message_index in 0..<messages.count{
+                    if messages[messages.count - message_index - 1].id_local! > target_id_2{
+                        target_id_2 = messages[messages.count - message_index - 1].id_local!
+                    }
+                }
+                data_dic = sql_database.get_private_histopry_msg(mark_id: target_id_2, buff_num: buff_msg_number , max_num: max_load_msg_number, client_id: clientId!, mode: mode)
+            }
         }
         
         var last_read_id:String?
