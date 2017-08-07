@@ -845,80 +845,84 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             "last_topic_content_id":"0",
             "last_private_id":"0"
         ]
-        HttpRequestCenter().request_user_data("update_database", send_dic: send_dic) { (return_dic) in
-            DispatchQueue.global(qos: .default).async {
-                init_sql = false
-                var topic_content_data = return_dic["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
-                var private_msg_data = return_dic["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
-                let friend_list_data = return_dic["friend_list"] as! Array<Dictionary<String,AnyObject>>
-                let black_list_data = return_dic["black_list"] as! Array<String>
-                let my_topic_list = return_dic["my_topic_list"] as! Array<Dictionary<String,String>>
-                let recent_list = return_dic["recent_list"] as! Array<Dictionary<String,String>>
-                var tatle_row_count = 0
-                
-                tatle_row_count += topic_content_data.count
-                tatle_row_count += private_msg_data.count
-                tatle_row_count += friend_list_data.count
-                tatle_row_count += black_list_data.count
-                tatle_row_count += my_topic_list.count
-                tatle_row_count += recent_list.count
-                var writed_row = 0
-                var writed_row_present = 0
-                func print_writed_row_present(){
-                    let temp_present_double = Double(writed_row) / Double(tatle_row_count)
-                    let temp_present = Int(temp_present_double * 100)
-                    if temp_present > writed_row_present{
-                        writed_row_present = temp_present
-                        DispatchQueue.main.async {
-                            self.set_loading_view_title(title: "正在同步資料庫: \(temp_present)%")
-                            self.set_persent_lable(persent: temp_present_double)
+        HttpRequestCenter().request_user_data_v2("update_database", send_dic: send_dic as Dictionary<String, AnyObject>) { (return_dic) in
+            if return_dic != nil{
+                DispatchQueue.global(qos: .default).async {
+                    init_sql = false
+                    var topic_content_data = return_dic?["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
+                    var private_msg_data = return_dic?["private_msg_data"] as! Array<Dictionary<String,AnyObject>>
+                    let friend_list_data = return_dic?["friend_list"] as! Array<Dictionary<String,AnyObject>>
+                    let black_list_data = return_dic?["black_list"] as! Array<String>
+                    let my_topic_list = return_dic?["my_topic_list"] as! Array<Dictionary<String,String>>
+                    let recent_list = return_dic?["recent_list"] as! Array<Dictionary<String,String>>
+                    var tatle_row_count = 0
+                    
+                    tatle_row_count += topic_content_data.count
+                    tatle_row_count += private_msg_data.count
+                    tatle_row_count += friend_list_data.count
+                    tatle_row_count += black_list_data.count
+                    tatle_row_count += my_topic_list.count
+                    tatle_row_count += recent_list.count
+                    var writed_row = 0
+                    var writed_row_present = 0
+                    func print_writed_row_present(){
+                        let temp_present_double = Double(writed_row) / Double(tatle_row_count)
+                        let temp_present = Int(temp_present_double * 100)
+                        if temp_present > writed_row_present{
+                            writed_row_present = temp_present
+                            DispatchQueue.main.async {
+                                self.set_loading_view_title(title: "正在同步資料庫: \(temp_present)%")
+                                self.set_persent_lable(persent: temp_present_double)
+                            }
                         }
                     }
-                }
-                sql_database.insert_topic_msg_mega_ver(input_list: topic_content_data,persent_report:{() in
-                    writed_row += 1
-                    print_writed_row_present()
-                })
-                // fly remove =============
-//                for _ in 0..<50{
-//                    sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
-//                        //writed_row += 1
-//                        //print_writed_row_present()
-//                    })
-//                }
-                // ============
-                sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
-                    writed_row += 1
-                    print_writed_row_present()
-                })
-                for friends in friend_list_data{
-                    sql_database.insert_friend(input_dic: friends)
-                    writed_row += 1
-                    print_writed_row_present()
-                }
-                for blacks in black_list_data{
-                    sql_database.insert_black_list_from_server(username_in: blacks)
-                    writed_row += 1
-                    print_writed_row_present()
-                }
-                for my_topic_id_s in my_topic_list{
-                    sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
-                    writed_row += 1
-                    print_writed_row_present()
-                }
-                for recent_datas in recent_list{
-                    sql_database.insert_recent_topic(input_dic: recent_datas)
-                    writed_row += 1
-                }
-                sql_database.calculate_ignore_list()
-                print("更新完成！！！")
-                DispatchQueue.main.async {
-                    self.remove_loading_view()
-                    self.show_items()
-                    self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+                    sql_database.insert_topic_msg_mega_ver(input_list: topic_content_data,persent_report:{() in
+                        writed_row += 1
+                        print_writed_row_present()
+                    })
+                    // fly remove =============
+                    //                for _ in 0..<50{
+                    //                    sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
+                    //                        //writed_row += 1
+                    //                        //print_writed_row_present()
+                    //                    })
+                    //                }
+                    // ============
+                    sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
+                        writed_row += 1
+                        print_writed_row_present()
+                    })
+                    for friends in friend_list_data{
+                        sql_database.insert_friend(input_dic: friends)
+                        writed_row += 1
+                        print_writed_row_present()
+                    }
+                    for blacks in black_list_data{
+                        sql_database.insert_black_list_from_server(username_in: blacks)
+                        writed_row += 1
+                        print_writed_row_present()
+                    }
+                    for my_topic_id_s in my_topic_list{
+                        sql_database.insert_my_topic_from_server(topic_id_in: my_topic_id_s["topic_id"]!, topic_title_in: my_topic_id_s["topic_title"]!)
+                        writed_row += 1
+                        print_writed_row_present()
+                    }
+                    for recent_datas in recent_list{
+                        sql_database.insert_recent_topic(input_dic: recent_datas)
+                        writed_row += 1
+                    }
+                    sql_database.calculate_ignore_list()
+                    print("更新完成！！！")
+                    DispatchQueue.main.async {
+                        self.remove_loading_view()
+                        self.show_items()
+                        self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+                    }
                 }
             }
-            
+            else{
+                // 重新請求
+            }
         }
     }
 }

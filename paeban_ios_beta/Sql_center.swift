@@ -1639,9 +1639,7 @@ public class SQL_center{
                     }
                     return true
                 })
-                print("----------*****")
                 for query_s in query_server{
-                    print(query_s[id])
                     var is_resd_input = false
                     if query_s[is_read] != nil{
                         is_resd_input = query_s[is_read]!
@@ -2180,9 +2178,22 @@ public class SQL_center{
         // 輔助用函數
         func made_query_to_output_list(query_ins:Table, reverse:Bool) -> Array<Dictionary<String,AnyObject>>{
             do{
+                let all_query_data = try sql_db!.prepare(query_ins)
                 var temp_return_list:Array<Dictionary<String,AnyObject>> = []
-                let query_server = query_ins.filter(id_server != nil)
-                for query_s in try sql_db!.prepare(query_server){
+                
+                let query_server = all_query_data.sorted(by: { (row1, row2) -> Bool in
+                    if row1[id_server] == nil && row2[id_server] != nil{
+                        return false
+                    }
+                    else if row1[time]! > row2[time]!{
+                        if (row1[id_server] == nil && row2[id_server] == nil) ||
+                            (row1[id_server] != nil && row2[id_server] != nil){
+                            return false
+                        }
+                    }
+                    return true
+                })
+                for query_s in query_server{
                     var is_resd_input = false
                     if query_s[is_read] != nil{
                         is_resd_input = query_s[is_read]!
@@ -2197,26 +2208,27 @@ public class SQL_center{
                     ]
                     temp_return_list.append(return_dic)
                 }
-                try sql_db?.run(query_server.filter(receiver == userData.id!).update(is_read <- true))
-                let query_local = query_ins.filter(id_server == nil)
-                for query_s in try sql_db!.prepare(query_local){
-                    var is_resd_input = false
-                    if query_s[is_read] != nil{
-                        is_resd_input = query_s[is_read]!
-                    }
-                    let return_dic:Dictionary<String,AnyObject> = [
-                        "sender":query_s[sender]! as AnyObject,
-                        "topic_content":query_s[topic_text]! as AnyObject,
-                        "is_read":is_resd_input as AnyObject,
-                        "write_time":query_s[time] as AnyObject,
-                        "is_send":query_s[is_send] as AnyObject,
-                        "id_local":query_s[id] as AnyObject
-                    ]
-                    temp_return_list.append(return_dic)
-                }
-                if reverse{
-                    return temp_return_list.reversed()
-                }
+                
+                try sql_db?.run(query_ins.filter(receiver == userData.id!).update(is_read <- true))
+//                let query_local = query_ins.filter(id_server == nil)
+//                for query_s in try sql_db!.prepare(query_local){
+//                    var is_resd_input = false
+//                    if query_s[is_read] != nil{
+//                        is_resd_input = query_s[is_read]!
+//                    }
+//                    let return_dic:Dictionary<String,AnyObject> = [
+//                        "sender":query_s[sender]! as AnyObject,
+//                        "topic_content":query_s[topic_text]! as AnyObject,
+//                        "is_read":is_resd_input as AnyObject,
+//                        "write_time":query_s[time] as AnyObject,
+//                        "is_send":query_s[is_send] as AnyObject,
+//                        "id_local":query_s[id] as AnyObject
+//                    ]
+//                    temp_return_list.append(return_dic)
+//                }
+//                if reverse{
+//                    return temp_return_list.reversed()
+//                }
                 return temp_return_list
             }
             catch{
