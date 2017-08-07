@@ -440,6 +440,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
         update_database(mode: .change_resend_btn)
         reset_sending_dic_after_5_sec()
+        reload_agter_2_sec()
         reload_after_5_sec()
     }
     func updataNowTopicCellList(_ resultDic:Dictionary<String,AnyObject>){
@@ -508,7 +509,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                     if data["is_send"] == nil || data["is_send"] as! Bool == false{
                         let time_now = Double(Date().timeIntervalSince1970)
                         let time_send = data["send_time"] as! Double
-                        if time_now - time_send > 4{
+                        if time_now - time_send >= 2{
                             messages[index].show_resend_btn = true
                             if let _ = sending_dic.index(where: { (element) -> Bool in
                                 if element.key == String(messages[index].id_local!) {
@@ -610,6 +611,11 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         
         self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingCellIdentifier)
         self.collectionView.register(CustomMessagesCollectionViewCellIncoming.nib(), forCellWithReuseIdentifier: self.incomingMediaCellIdentifier)
+    }
+    func reload_agter_2_sec(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.update_database(mode: .change_resend_btn)
+        }
     }
     func reload_after_5_sec(){
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
