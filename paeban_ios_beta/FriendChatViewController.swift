@@ -391,6 +391,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     func new_client_topic_msg(sender: String) {
         if clientId == sender{
             update_database(mode: .new_client_msg)
+            update_database(mode: .change_read_state)
         }
     }
     func new_my_topic_msg(sender: String, id_local: String) {
