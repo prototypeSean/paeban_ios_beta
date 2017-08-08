@@ -305,10 +305,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     //MARK:送出按鈕按下後
     override func didPressSend(_ button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: Date?) {
         //送出WS訊息
-        // fly remove
-        if text == "stop"{
-            print("stop")
-        }
         self.finishSendingMessage(animated: true)
         let timeNow = Int(Date().timeIntervalSince1970)
         let tempTopicMsgId = String(timeNow)
@@ -499,12 +495,10 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             for invers_index in 0..<messages.count{
                 let index = messages.count - invers_index - 1
                 if messages[index].isRead != true{
-                    print(messages[index].id_local!)
-                    print(sql_database.request_msg_read_state(id_local: messages[index].id_local!))
                     messages[index].isRead = sql_database.request_msg_read_state(id_local: messages[index].id_local!)
                 }
                 else{
-                    //break
+                    break
                 }
             }
             self.collectionView.reloadData()
