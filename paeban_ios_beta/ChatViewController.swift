@@ -305,6 +305,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     //MARK:送出按鈕按下後
     override func didPressSend(_ button: UIButton?, withMessageText text: String?, senderId: String?, senderDisplayName: String?, date: Date?) {
         //送出WS訊息
+        if text == "stop"{
+            print("stop")
+        }
         self.finishSendingMessage(animated: true)
         let timeNow = Int(Date().timeIntervalSince1970)
         let tempTopicMsgId = String(timeNow)
