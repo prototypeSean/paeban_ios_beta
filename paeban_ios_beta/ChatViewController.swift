@@ -494,13 +494,16 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             set_page_up_point()
         }
         else if mode == .change_read_state{
+            print("change_read_state")
             for invers_index in 0..<messages.count{
                 let index = messages.count - invers_index - 1
                 if messages[index].isRead != true{
+                    print(messages[index].id_local!)
+                    print(sql_database.request_msg_read_state(id_local: messages[index].id_local!))
                     messages[index].isRead = sql_database.request_msg_read_state(id_local: messages[index].id_local!)
                 }
                 else{
-                    break
+                    //break
                 }
             }
             self.collectionView.reloadData()
