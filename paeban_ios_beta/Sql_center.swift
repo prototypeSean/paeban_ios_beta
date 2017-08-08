@@ -1815,7 +1815,7 @@ public class SQL_center{
     }
     func request_msg_read_state(id_local:Int64) -> Bool?{
         do{
-            let query = private_table.filter(id == id_local)
+            let query = topic_content.filter(id == id_local)
             return try sql_db!.prepare(query).first(where: { (row) -> Bool in
                 return true
             })?[is_read]
