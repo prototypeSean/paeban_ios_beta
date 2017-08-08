@@ -2845,6 +2845,30 @@ public class SQL_center{
         }
         return 0
     }
+    
+    
+    
+    // test_func
+    func change_send_state(){
+        do{
+            let query = topic_content.order(id.desc).limit(1)
+            let query_obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            })
+            let id_local = query_obj?[id]
+            let query2 = topic_content.filter(id == id_local!)
+            try sql_db!.run(query2.update(
+                is_send <- false,
+                id_server <- nil,
+                is_read <- false
+            ))
+            print("DDD")
+        }
+        catch{
+            print("ERROR change_send_state")
+            print(error)
+        }
+    }
 }
 
 

@@ -353,17 +353,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             sql_database.update_private_msg_read(id_local: id_loacal)
             update_database(mode: .change_read_state)
             
-            
-//            if let msgIndex = messages.index(where: { (target) -> Bool in
-//                if target.topicId == msgId{
-//                    return true
-//                }
-//                else{return false}
-//            }){
-//                messages[msgIndex].isRead = true
-//                self.collectionView.reloadData()
-//            }
-            
         }
         else if msgType == "has_been_read_many"{
             for msgIndex in 0 ..< messages.count{
@@ -469,7 +458,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
                     if data["is_send"] == nil || data["is_send"] as! Bool == false{
                         let time_now = Double(Date().timeIntervalSince1970)
                         let time_send = data["send_time"] as! Double
-                        if time_now - time_send > 4{
+                        if time_now - time_send >= 2{
                             messages[index].show_resend_btn = true
                             if let _ = sending_dic.index(where: { (element) -> Bool in
                                 if element.key == String(messages[index].id_local!) {
