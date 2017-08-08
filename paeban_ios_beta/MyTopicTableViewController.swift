@@ -244,13 +244,13 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             }))
             self.present(alert, animated: true, completion: nil)
         }
-        let report = UITableViewRowAction(style: .default, title: "舉報") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let report = UITableViewRowAction(style: .default, title: "舉報".localized(withComment: "MyTopicTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
             let topic_id = data.topicId_title!
             let client_name = data.clientName_detial!
             self.reportAbuse(topic_id: topic_id, client_id: block_id, client_name: client_name)
         }
-        let block = UITableViewRowAction(style: .default, title: "封鎖") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let block = UITableViewRowAction(style: .default, title: "封鎖".localized(withComment: "MyTopicTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
 //            let topic_id = data.topicId_title!
             let client_name = data.clientName_detial!

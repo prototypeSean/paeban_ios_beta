@@ -9,7 +9,7 @@
 "4Jc-HU-kXp.text" = "漸";
 
 /* Class = "UIButton"; normalTitle = "Facebook登入"; ObjectID = "4Qt-oe-Dwj"; */
-"4Qt-oe-Dwj.normalTitle" = "Login by Facebook";
+"4Qt-oe-Dwj.normalTitle" = "Login by FB";
 
 /* Class = "UILabel"; text = "漸漸的 , 認識你"; ObjectID = "5gl-mS-DqF"; */
 "5gl-mS-DqF.text" = "Meet You Gently";
@@ -129,7 +129,7 @@
 "ZcH-yC-Ffy.placeholder" = "Account";
 
 /* Class = "UIButton"; normalTitle = "註冊"; ObjectID = "acq-1n-1J6"; */
-"acq-1n-1J6.normalTitle" = "Sing in";
+"acq-1n-1J6.normalTitle" = "Sign up";
 
 /* Class = "UIButton"; normalTitle = "RESET"; ObjectID = "ba9-Z2-XU2"; */
 "ba9-Z2-XU2.normalTitle" = "RESET";
@@ -207,7 +207,7 @@
 "t75-Wg-olW.text" = "End-User License Agreement";
 
 /* Class = "UIButton"; normalTitle = "註冊"; ObjectID = "tAR-u1-Ad2"; */
-"tAR-u1-Ad2.normalTitle" = "Sing in";
+"tAR-u1-Ad2.normalTitle" = "Sign up";
 
 /* Class = "UILabel"; text = "  Copyright © 2016年 Paeban studio. All rights reserved."; ObjectID = "tar-Vk-qX6"; */
 "tar-Vk-qX6.text" = "  Copyright © 2016 Paeban studio. All rights reserved.";

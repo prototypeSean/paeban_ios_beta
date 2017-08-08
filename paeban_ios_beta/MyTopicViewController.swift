@@ -118,7 +118,8 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         myPhotoImg.image = myPhotoSave
         myPhotoImg.frame = myphotoborderView.bounds
         myphotoborderView.addSubview(myPhotoImg)
-        
+    }
+    func setBgImg(){
         // MARK: topicInfoBG背景白色漸層
         topicInfoBG.layer.borderColor = UIColor.gray.cgColor
         topicInfoBG.layer.borderWidth = 0.5
@@ -131,7 +132,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         gradientLayer.locations = [0.0, 1.0]
         topicInfoBG.layer.addSublayer(gradientLayer)
         
-//      MARK: 設定按鈕
+        //      MARK: 設定按鈕
         // 設定自動調整按鈕文字大小
         btnAddFriend.titleLabel?.adjustsFontSizeToFitWidth = true
         btnAddFriend.titleLabel?.minimumScaleFactor = 0.7
@@ -164,8 +165,11 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         btnBlock.layer.borderColor = UIColor.gray.cgColor
         btnBlock.layer.cornerRadius = btn_radius
         btnBlock.clipsToBounds = true
-
+        
     }
+    
+    
+
     func alertTopicClosed(){
         let refreshAlert = UIAlertController(title: "提示".localized(withComment: "MyTopicViewController"), message: "此話題已關閉".localized(withComment: "MyTopicViewController"), preferredStyle: UIAlertControllerStyle.alert)
         
@@ -189,7 +193,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
 //            "block_id":setID!,
 //            "topic_id":topicId!
 //        ]
-        let confirm = UIAlertController(title: "封鎖", message: String(format: NSLocalizedString("封鎖%@ ? 將再也無法聯繫他", comment: "FriendChatUpVC"),setName!) , preferredStyle: UIAlertControllerStyle.alert)
+        let confirm = UIAlertController(title: "封鎖".localized(withComment: "MyTopicViewController"), message: String(format: NSLocalizedString("封鎖 %@ ? 將再也無法聯繫他", comment: "FriendChatUpVC"),setName!) , preferredStyle: UIAlertControllerStyle.alert)
         confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicViewController"), style: UIAlertActionStyle.default, handler: nil))
         confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
             Block_list_center().add_user_to_block_list(client_id: self.setID!)
@@ -282,7 +286,8 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         }
     }
     override func viewDidLayoutSubviews() {
-        setImage()
+        super.viewDidLayoutSubviews()
+        setBgImg()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
