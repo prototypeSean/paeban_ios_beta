@@ -1813,9 +1813,9 @@ public class SQL_center{
             print(error)
         }
     }
-    func request_msg_read_state(id_local:Int64) -> Bool?{
+    func request_priv_msg_read_state(id_local:Int64) -> Bool?{
         do{
-            let query = topic_content.filter(id == id_local)
+            let query = private_table.filter(id == id_local)
             return try sql_db!.prepare(query).first(where: { (row) -> Bool in
                 return true
             })?[is_read]
@@ -2547,6 +2547,19 @@ public class SQL_center{
         catch{
             print("error delete_topic_content")
             print(error)
+        }
+    }
+    func request_msg_read_state(id_local:Int64) -> Bool?{
+        do{
+            let query = topic_content.filter(id == id_local)
+            return try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            })?[is_read]
+        }
+        catch{
+            print("ERROR request_msg_read_state")
+            print(error)
+            return nil
         }
     }
     
