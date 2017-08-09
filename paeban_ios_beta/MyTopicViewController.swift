@@ -274,6 +274,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         client_data_obj = Client_detail_data(topic_id: topicId!, client_id: setID!)
     }
     override func viewDidAppear(_ animated: Bool) {
+        setImage()
         re_new_my_img()
         client_data_obj?.get_client_img { (return_img:UIImage?) in
             if return_img != nil{
@@ -282,7 +283,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         }
     }
     override func viewDidLayoutSubviews() {
-        setImage()
+        //setImage()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -306,6 +307,10 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     
     func check_my_photo_level(){
         let new_level = sql_database.get_level_my(topic_id_in: self.topicId!, client_id: self.ownerId!)
+        // fly rempve
+        print("---+++---")
+        print(new_level)
+        print(self.my_img_level)
         if self.my_img_level != new_level{
             self.my_img_level = new_level
             re_new_my_img()
