@@ -274,12 +274,13 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.setBgImg()
         self.check_is_friend()
         client_data_obj = Client_detail_data(topic_id: topicId!, client_id: setID!)
     }
     override func viewDidAppear(_ animated: Bool) {
-        setBgImg()
         setImage()
+        
         re_new_my_img()
         client_data_obj?.get_client_img { (return_img:UIImage?) in
             if return_img != nil{
