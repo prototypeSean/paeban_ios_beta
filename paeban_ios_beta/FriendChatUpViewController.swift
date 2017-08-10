@@ -46,10 +46,15 @@ class FriendChatUpViewController: UIViewController {
         topicTitleContent.text = clientName
     }
     
-    override func viewDidLayoutSubviews() {
-        guestPhotoImg.image = sql_database.get_friend_img(friend_id: clientId!)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         setImage()
+        guestPhotoImg.image = sql_database.get_friend_img(friend_id: clientId!)
         setButton()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

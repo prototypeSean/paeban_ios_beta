@@ -279,6 +279,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         client_data_obj = Client_detail_data(topic_id: topicId!, client_id: setID!)
     }
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         setImage()
         
         re_new_my_img()
