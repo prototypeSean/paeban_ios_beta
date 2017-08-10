@@ -11,6 +11,7 @@
 		1909C1701EF278D300EE5183 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1909C1721EF278D300EE5183 /* Localizable.strings */; };
 		190B21BE1EEFA9C2007067B7 /* TutoriaInsideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190B21BD1EEFA9C2007067B7 /* TutoriaInsideViewController.swift */; };
 		190B21BF1EEFD41E007067B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 190B21C11EEFD41E007067B7 /* Main.storyboard */; };
+		190F3A1C1F07840000AF9851 /* UIViewX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190F3A1B1F07840000AF9851 /* UIViewX.swift */; };
 		73E59CAE7906529E9934E916 /* Pods_paeban_ios_beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DA9AB49DFA16020BF975A80 /* Pods_paeban_ios_beta.framework */; };
 		9301F6041D1D16F900D1F8C0 /* TopicSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9301F6031D1D16F900D1F8C0 /* TopicSearchBar.swift */; };
 		9301F6061D1D1A2800D1F8C0 /* TopicSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9301F6051D1D1A2800D1F8C0 /* TopicSearchController.swift */; };
@@ -95,6 +96,7 @@
 		190B21BD1EEFA9C2007067B7 /* TutoriaInsideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutoriaInsideViewController.swift; sourceTree = "<group>"; };
 		190B21C01EEFD41E007067B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		190B21C31EEFD42E007067B7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		190F3A1B1F07840000AF9851 /* UIViewX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewX.swift; sourceTree = "<group>"; };
 		5DA9AB49DFA16020BF975A80 /* Pods_paeban_ios_beta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_paeban_ios_beta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9301F6031D1D16F900D1F8C0 /* TopicSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSearchBar.swift; sourceTree = "<group>"; };
 		9301F6051D1D1A2800D1F8C0 /* TopicSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSearchController.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				931FF1A01CFEA848000E7F8A /* Info.plist */,
 				1909C1691EF26DCB00EE5183 /* InfoPlist.strings */,
 				934EBAFF1DCB0A3600FB9748 /* Designable.swift */,
+				190F3A1B1F07840000AF9851 /* UIViewX.swift */,
 			);
 			path = paeban_ios_beta;
 			sourceTree = "<group>";
@@ -570,6 +573,7 @@
 				CF2E9D681D7BE33C00F485BB /* FriendStanderType.swift in Sources */,
 				CF7926601DA0E74200821860 /* SingInModel.swift in Sources */,
 				930F90D81DEAC07200346A13 /* EULAViewController.swift in Sources */,
+				190F3A1C1F07840000AF9851 /* UIViewX.swift in Sources */,
 				932A00E71CFEBA460036E1EA /* TopicTableViewController.swift in Sources */,
 				CFF6C4161E9F4D5200A191FD /* suport_func.swift in Sources */,
 				932A00E61CFEBA460036E1EA /* Topic.swift in Sources */,

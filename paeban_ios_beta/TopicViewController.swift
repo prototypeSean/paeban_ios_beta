@@ -44,6 +44,26 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     var my_img_level:Int?
     var client_data_obj:Client_detail_data?
     
+    @IBOutlet weak var popUpImg: UIImageView!
+    @IBOutlet weak var popUpviewCenterY: NSLayoutConstraint!
+    @IBOutlet weak var popUpViewCenterX: NSLayoutConstraint!
+    @IBAction func popUpImgBtn(_ sender: Any) {
+        popUpviewCenterY.constant = 0
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: {
+                        self.view.layoutSubviews()
+        })
+        popUpImg.image = guestPhotoImg.image
+    }
+    @IBAction func popUpImgClose(_ sender: Any) {
+        popUpviewCenterY.constant = -1200
+        
+        UIView.animate(withDuration: 0.1,
+                       animations: {
+                        self.view.layoutSubviews()
+        })
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         //getHttpData()
