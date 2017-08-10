@@ -61,7 +61,9 @@ public var app_instence:UIApplication?
 public var sql_database = SQL_center()
 public var init_sql = false
 public let image_url_host = "http://www.paeban.com/media/"
-public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate{
+
+
+public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate, CAAnimationDelegate{
     
     @IBAction func loninBottom(_ sender: AnyObject) {
         self.hide_items()
@@ -92,6 +94,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var fb_logo: UIImageView!
     @IBOutlet weak var tutorial: UIButton!
     @IBOutlet weak var state_lable: UILabel!
+//    @IBOutlet weak var gradientView: UIViewX!
+//    @IBOutlet weak var gradientText: UIImageView!
+    @IBOutlet weak var lunchScreenText: UILabel!
+
     
     let login_paeban_obj = login_paeban()
     var state_switch = true
@@ -252,8 +258,28 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         self.navigationController?.isNavigationBarHidden = true
         print("--viewWillAppear--")
         tutorial.titleLabel?.adjustsFontSizeToFitWidth = true
+        gradientBackgroung()
+        
+        
     }
     override public func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        gradient.mask = lunchScreenText.layer
+        let zen = UIImage(named: "zen")
+        let zenImage = UIImageView(image: zen)
+        zenImage.frame.size.height = lunchScreenText.bounds.height
+        zenImage.frame.size.width = lunchScreenText.bounds.width
+        zenImage.center.x = lunchScreenText.bounds.width/2
+        zenImage.center.y = lunchScreenText.bounds.height/2
+        lunchScreenText.addSubview(zenImage)
+        
+        animateGradient()
+        fb_logo.layoutIfNeeded()
+        fb_logo.image = UIImage(named:"fbLogo")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        fb_logo.tintColor = #colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1)
+        fb_logo.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        
+        
 //        let alert = UIAlertController(title: "123", message: ssss, preferredStyle: UIAlertControllerStyle.alert)
 //        self.present(alert, animated: false, completion: nil)
         
@@ -271,6 +297,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     override public func viewDidLoad() {
         super.viewDidLoad()
         //check_data_base()
+        
+        createColorSets()
+//        gradientBackgroung()
+        
         main_vc = self
         login_paeban_obj.delegate = self
         loginId.delegate = self
@@ -279,7 +309,53 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         BtnOutlet()
         check_online(in: self, with: autoLogin)
     }
+    // MARK: 漸層文字背景
     
+    var colorSets: [[CGColor]] = []
+    var currentColorSet: Int!
+    let gradient = CAGradientLayer()
+    
+    func createColorSets() {
+        colorSets.append([#colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1).cgColor, #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).cgColor])
+        colorSets.append([#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor, #colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1).cgColor])
+        colorSets.append([#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1).cgColor, #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1).cgColor])
+        
+        currentColorSet = 0
+    }
+    
+    func gradientBackgroung(){
+        gradient.frame = view.bounds
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.colors = colorSets[currentColorSet]
+        self.view.layer.insertSublayer(gradient, at: 0)
+    }
+    
+    func animateGradient(){
+        if currentColorSet < colorSets.count - 1 {
+            currentColorSet! += 1
+        }
+        else {
+            currentColorSet = 0
+        }
+        let colorChangeAnimation = CABasicAnimation(keyPath: "colors")
+        colorChangeAnimation.delegate = self
+        colorChangeAnimation.duration = 7.0
+        colorChangeAnimation.toValue = colorSets[currentColorSet]
+        colorChangeAnimation.fillMode = kCAFillModeForwards
+        colorChangeAnimation.isRemovedOnCompletion = false
+        gradient.add(colorChangeAnimation, forKey: "colorChange")
+    }
+    
+    // 讓他永遠不停的函數...但是被捨棄
+//    public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+//        if flag {
+////            print(currentColorSet)
+//            gradient.colors = colorSets[currentColorSet]
+//            animateGradient()
+//        }
+//    }
+
     // MARK: 內部函數
     func autoLogin(){
         if let _ = FBSDKAccessToken.current(){
@@ -351,13 +427,13 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
     }
     func BtnOutlet(){
-        fbButtonOutlet.layer.borderWidth = 1.2
-        fbButtonOutlet.layer.cornerRadius = 2
-        fbButtonOutlet.layer.borderColor = UIColor(red:0.24, green:0.35, blue:0.61, alpha:1.0).cgColor
-        loginId.layer.borderWidth = 1
-        loginId.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
-        logInPw.layer.borderWidth = 1
-        logInPw.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
+//        fbButtonOutlet.layer.borderWidth = 1.2
+//        fbButtonOutlet.layer.cornerRadius = 2
+//        fbButtonOutlet.layer.borderColor = UIColor(red:0.24, green:0.35, blue:0.61, alpha:1.0).cgColor
+//        loginId.layer.borderWidth = 1
+//        loginId.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
+//        logInPw.layer.borderWidth = 1
+//        logInPw.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
     }
     func fbLogIn() {
         fbLoginManager.logIn(withReadPermissions: ["email"],from: self.parent, handler: { (result, error) -> Void in
@@ -720,6 +796,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     public func websocketDidReceiveData(socket: WebSocket, data: Data){
         print("data")
     }
+    
     
     // 監聽鍵盤出現上滑
     func keyboardWillShow(notification: NSNotification) {

@@ -51,6 +51,23 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         btnBlock.layer.borderWidth = 1
         block()
     }
+    @IBOutlet weak var popUpImg: UIImageView!
+    @IBOutlet weak var popUpViewCenterY: NSLayoutConstraint!
+    @IBAction func popUpImgBtn(_ sender: Any) {
+        popUpViewCenterY.constant = 0
+        UIView.animate(withDuration: 0.3, animations: {
+            self.view.layoutSubviews()
+        })
+        popUpImg.image = guestPhotoImg.image
+    }
+    
+    @IBAction func popUpCloseBtn(_ sender: Any) {
+        popUpViewCenterY.constant = -1200
+        UIView.animate(withDuration: 0.3, animations: {
+            self.view.layoutSubviews()
+        })
+
+    }
     var myPhotoSave:UIImage?
     let myPhotoImg = UIImageView()
     

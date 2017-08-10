@@ -26,7 +26,23 @@ class FriendChatUpViewController: UIViewController {
         block()
     }
     
+    @IBOutlet weak var popUpViewCenterY: NSLayoutConstraint!
     
+    @IBOutlet weak var popUpImage: UIImageView!
+    @IBAction func popUpImgbtn(_ sender: Any) {
+        popUpViewCenterY.constant = 0
+        UIView.animate(withDuration: 0.3, animations: {
+            self.view.layoutSubviews()
+        })
+        popUpImage.image = guestPhotoImg.image
+    }
+    
+    @IBAction func popUpClosebtn(_ sender: Any) {
+        popUpViewCenterY.constant = -1200
+        UIView.animate(withDuration: 0.3, animations: {
+            self.view.layoutSubviews()
+        })
+    }
     var setID:String?
     var setName:String?
     var setImg:UIImage?
