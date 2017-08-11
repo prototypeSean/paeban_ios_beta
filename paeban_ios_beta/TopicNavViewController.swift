@@ -44,12 +44,13 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
 
     }
 
-    override public func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         gradientBackgroung()
+        print("VVVVVVVVVVVVVVVVVVVVV")
     }
     
-    override public func viewDidAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         animateGradient()
         
@@ -70,14 +71,15 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
     
     func gradientBackgroung(){
         // 製作包含上層狀態列跟NAV的漸層圖曾
-        var newNavFrame = self.navigationBar.bounds.offsetBy(dx: 0.0, dy: -20.0)
+        var newNavFrame = self.navigationBar.bounds.offsetBy(dx: 0.0, dy: 0.0)
         newNavFrame.size.height += 20
         
         gradient.frame = newNavFrame
         gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradient.endPoint = CGPoint(x: 1.0, y: 0.0)
         gradient.colors = colorSets[currentColorSet]
-        self.navigationBar.layer.insertSublayer(gradient, at: 0)
+//        self.navigationBar.layer.insertSublayer(gradient, at: 0)
+        self.navigationBar.layer.sublayers![0].insertSublayer(gradient, at: 0)
         
     }
     
@@ -97,7 +99,7 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
         gradient.add(colorChangeAnimation, forKey: "colorChange")
     }
     
-    public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if flag {
             //            print(currentColorSet)
             gradient.colors = colorSets[currentColorSet]
