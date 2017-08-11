@@ -419,7 +419,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
     }
     func wsReconnected(){
-        print("wsReconnected -- chat view")
         send_read_to_server()
     }
     

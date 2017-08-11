@@ -376,6 +376,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
     }
     func wsReconnected(){
+        send_read_to_server()
     }
     func new_client_topic_msg(sender: String) {
         if clientId == sender{
@@ -543,6 +544,17 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
         return new_message_list
+    }
+    func send_read_to_server(){
+        if clientId != nil{
+            let last_id = sql_database.get_private_msg_last_id_server(client_id_input: clientId!)
+            let sendData = ["msg_type":"priv_msg_been_read",
+                            "msg_id":last_id]
+            var addDic:Dictionary<String,AnyObject> = [:]
+            addDic["missionType"] = "priv_msg_been_read" as AnyObject?
+            addDic["data"] = sendData as AnyObject?
+            executeWork(addDic)
+        }
     }
     func scroll_locked_point_to_top(locked_id:Int64){
         print("===")
