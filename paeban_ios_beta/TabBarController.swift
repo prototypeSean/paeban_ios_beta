@@ -112,7 +112,8 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         tatal_badge += Int(return_dic["my_topic_badge"]!)!
         tatal_badge += Int(return_dic["recent_badge"]!)!
         tatal_badge += Int(return_dic["friend_badge"]!)!
-        app_instence?.applicationIconBadgeNumber = tatal_badge
+        // fly unlock
+        //app_instence?.applicationIconBadgeNumber = tatal_badge
     }
     func wsOnMsg(_ msg: Dictionary<String, AnyObject>) {
         //self.update_badges()

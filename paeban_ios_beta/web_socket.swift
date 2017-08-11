@@ -157,6 +157,8 @@ open class webSocketActiveCenter:app_event {
         wsad_ForTopicTableViewController?.wsReconnected()
         wasd_ForRecentTableViewController?.wsReconnected()
         wasd_ForMyTopicTableViewController?.wsReconnected()
+        wasd_ForFriendChatViewController?.wsReconnected()
+        wasd_ForChatViewController?.wsReconnected()
         re_connect_check_SOP()
     }
     // internal func

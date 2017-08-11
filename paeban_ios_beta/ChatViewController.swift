@@ -394,19 +394,19 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     
     }
     func new_client_topic_msg(sender: String) {
-        print("new_client_topic_msg")
         if sender == clientID{
             update_database(mode: .new_client_msg)
-            if topicId != nil && clientID != nil{
-                let last_id = sql_database.get_topic_content_last_id_server(topic_id_input: topicId!, client_id_input: clientID!)
-                print("new_client_topic_msg2")
-                let sendData = [
-                    "msg_type":"topic_content_read",
-                    "topic_content_id":last_id
-                ]
-                socket.write(data:json_dumps(sendData as NSDictionary))
-            }
-            
+            send_read_to_server()
+        }
+    }
+    func send_read_to_server(){
+        if topicId != nil && clientID != nil{
+            let last_id = sql_database.get_topic_content_last_id_server(topic_id_input: topicId!, client_id_input: clientID!)
+            let sendData = [
+                "msg_type":"topic_content_read",
+                "topic_content_id":last_id
+            ]
+            socket.write(data:json_dumps(sendData as NSDictionary))
         }
     }
     func new_my_topic_msg(sender: String, id_local: String) {
@@ -419,6 +419,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
     }
     func wsReconnected(){
+        print("wsReconnected -- chat view")
+        send_read_to_server()
     }
     
     // internal func
