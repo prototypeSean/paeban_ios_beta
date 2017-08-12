@@ -2419,7 +2419,6 @@ public class SQL_center{
     }
         // 輸入話題ID,取得一個字典是跟誰的對話，還有最後一句話的狀態
     func get_last_line(topic_id_in:String) -> Dictionary<String,Dictionary<String,AnyObject>>?{
-        print("---get_last_line----")
         do{
             let black_list:Array<String> = get_black_list()
             var return_dic:Dictionary<String,Dictionary<String,AnyObject>> = [:]

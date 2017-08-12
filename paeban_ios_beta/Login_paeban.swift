@@ -22,19 +22,18 @@ class login_paeban{
     var csrf_string = ""
     func login_with_fb(){
         let url = "\(local_host)register-by-token/facebook/\(fb_ssesion!)"
-        print(url)
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             if error != nil{
                 self.delegate?.login_with_fb_report!(state: "net_fail")
-                print("連線錯誤\(error)")
+                print("連線錯誤")
+                print(error)
             }
             else{
                 let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
                 if ouput != "log in fail"{
-                    print("001")
                     if let httpResponse = response as? HTTPURLResponse {
                         if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
                             self.delegate?.login_with_fb_report!(state: response_cookie)
@@ -43,9 +42,9 @@ class login_paeban{
                 }
                 else{
                     self.delegate?.login_with_fb_report!(state: "login_no")
-                    print("002")
                 }
-                print("回應內容物： \(ouput)")
+                print("回應內容物：")
+                print(ouput)
             }
             
         })
@@ -69,8 +68,6 @@ class login_paeban{
             else{
                 let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
                 if let httpResponse = response as? HTTPURLResponse {
-                    //                        print("========print(response)========")
-                    //                        print(response)
                     if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
                         
                         self.delegate?.get_cookie_csrf_report!(state: ouput as! String,setcookie:response_cookie)
@@ -168,8 +165,6 @@ class login_paeban{
             else{
                 //let ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
                 if let httpResponse = response as? HTTPURLResponse {
-                    //                        print("========print(response)========")
-                    //                        print(response)
                     if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
                         cookie_new.set_cookie(cookie_in: response_cookie)
                         request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]

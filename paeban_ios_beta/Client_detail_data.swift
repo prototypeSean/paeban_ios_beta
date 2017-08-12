@@ -47,7 +47,6 @@ class Client_detail_data{
                         for datas in return_list{
                             self.level = new_level
                             sql_database.tmp_client_addNew(input_dic: datas)
-                            print("data levle: \(datas["level"])")
                             DispatchQueue.main.async {
                                 act(base64ToImage(datas["img"] as! String))
                             }

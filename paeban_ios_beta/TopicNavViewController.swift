@@ -47,7 +47,6 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         gradientBackgroung()
-        print("VVVVVVVVVVVVVVVVVVVVV")
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -380,7 +380,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
         else if msgType == "topic_content_been_read"{
             let id_local_input = msg["id_local"] as! String
-            print("topic_content_been_read \(id_local_input)")
             sql_database.update_topic_content_read(id_local: id_local_input)
             update_database(mode: .change_read_state)
         }
@@ -412,7 +411,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     func new_my_topic_msg(sender: String, id_local: String) {
         DispatchQueue.main.async {
             if sender == userData.id{
-                print("===new_my_topic_msg===")
                 self.sending_dic.removeValue(forKey: id_local)
                 self.update_database(mode: .change_resend_btn)
             }
@@ -473,7 +471,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             set_page_up_point()
             if topicId != nil && clientID != nil{
                 let last_id = sql_database.get_topic_content_last_id_server(topic_id_input: topicId!, client_id_input: clientID!)
-                print("new_client_topic_msg2")
                 let sendData = [
                     "msg_type":"topic_content_read",
                     "topic_content_id":last_id
@@ -501,7 +498,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             set_page_up_point()
         }
         else if mode == .change_read_state{
-            print("change_read_state")
             for invers_index in 0..<messages.count{
                 let index = messages.count - invers_index - 1
                 if messages[index].isRead != true{
@@ -570,7 +566,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         ]
         HttpRequestCenter().request_user_data("get_last_read_id", send_dic: send_dic) { (return_dic) in
             let last_local_id = return_dic["last_read_id"]! as! String
-            print(last_local_id)
             if last_local_id != "0"{
                 sql_database.update_topic_content_read(id_local: last_local_id)
                 DispatchQueue.main.async {
@@ -643,7 +638,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 sending_dic.removeValue(forKey: sending_dic_datas.key)
             }
         }
-        print(sending_dic)
     }
     func request_last_read_id_from_server(){
         if topicId != nil && clientID != nil{

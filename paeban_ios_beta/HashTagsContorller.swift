@@ -18,7 +18,6 @@ class HashTagsContorller: UIView {
     // MARK: Initialization
     
     func drawButton(){
-        //print(tagListInContorller)
         var btn_x_start = 0
         if !tagListInContorller!.isEmpty{
             if self.subviews.count >= 0{
@@ -59,13 +58,9 @@ class HashTagsContorller: UIView {
             
         }
         else{
-            //print("stert_remove")
-            //var cc = 0
             for view in self.subviews{
                 view.removeFromSuperview()
-                //cc += 1
             }
-            //print(cc)
         }
         
     }
@@ -77,7 +72,6 @@ class HashTagsContorller: UIView {
     //  還沒作標籤太多太長的應對方式 （最多兩行，超過隱藏）
 
     func ratingButtonTapped(_ button: UIButton) {
-        
-        print("Button pressed 👍")
+        // fly "這函數他媽又是幹嘛用的"
     }
 }

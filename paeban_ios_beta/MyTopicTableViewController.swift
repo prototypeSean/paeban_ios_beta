@@ -46,7 +46,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
-        print("viewWillAppear")
         model.main_loading_v2()
         update_badges()
     }
@@ -252,13 +251,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
         let block = UITableViewRowAction(style: .default, title: "封鎖".localized(withComment: "MyTopicTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let block_id = data.clientId_detial!
-//            let topic_id = data.topicId_title!
             let client_name = data.clientName_detial!
             self.block(block_id: block_id, client_name: client_name)
-            // working  下面搬到上面的內部
-            // 飛行
-            print(block_id)
-            //Block_list_center().add_user_to_block_list(client_id: block_id)
         }
         block.backgroundColor = UIColor.red
         close_topic_btn.backgroundColor = UIColor.black
@@ -322,7 +316,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
 //        }
     }
 //    func new_my_topic_msg(sender:String, id_local:String){
-//        print("==new_my_topic_msg==")
 //        model.main_loading_v2()
 //    }
     @objc func new_client_topic_msg(sender: String) {
@@ -477,7 +470,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                     if self.check_detail_cell_is_need_update(topic_id: topicId, check_data: returnDataList){
                         self.secTopic[topicId] = returnDataList
                     }
-                    print("第\(self.secTopic.count)筆詳細資料下載完畢")
                 })
             })
         }
@@ -509,7 +501,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
             let topicTitleData = MyTopicStandardType(dataType:"title")
             let topicTitle = (topic_id.1 as! Dictionary<String,AnyObject>)["topic_title"] as! String
             let topicId = topic_id.0
-            print("編號\(topicId)Topic標題下載完畢")
             get_my_topic_detail(topicId)
             var topicWithWhoDic: Dictionary<String,Bool> = [:]
             for topic_with_who_id in (topic_id.1 as! Dictionary<String,AnyObject>)["topics"] as! Dictionary<String,AnyObject>{
@@ -769,8 +760,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
                         })
                     }
                     else{
-                        print("timeOut")
-                        // 顯示手動更新按鈕
                     }
                 }
             }
@@ -815,8 +804,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     func pop_to_root_view(){
         let parent = self.parent as! UINavigationController
-        print("pop_to_root_view")
-        print(parent)
         parent.popToRootViewController(animated: false)
     }
     func autoLeap(segeu_data:Dictionary<String,String>){

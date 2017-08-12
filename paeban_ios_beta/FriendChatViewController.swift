@@ -66,7 +66,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         
         if missionType == "request_history_priv_msg"{
             let sendData = dataDic["data"] as! Dictionary<String,String>
-            print("last_id_of_msg:\(sendData["last_id_of_msg"])")
         }
     }
     
@@ -268,18 +267,12 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
     }
     // MARK:滾動中
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //print(self.collectionView.contentSize.height)
         if page_up_point != nil{
             let page_up_point_check = self.collectionView.cellForItem(at: IndexPath(row: self.page_up_point!, section:0))?.bounds.height
             if page_up_point_check != nil{
                 self.update_database(mode: .page_up)
             }
         }
-        //print(scrollView.contentOffset.y)
-        // sss = nil 等於已消失
-        //print(self.collectionView.cellForItem(at: IndexPath(row: self.messages.count - 1, section:0))?.bounds.height)
-        
-        //print(scrollView.contentOffset.y)
     }
     func save_scroll_data(){
         old_height = self.collectionView.contentSize.height
@@ -369,7 +362,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             }
         }
         else if msgType == "online"{
-            print("======\(workList.count)=====")
             for workList_s in workList{
                 executeWork(workList_s)
             }
@@ -557,32 +549,22 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         }
     }
     func scroll_locked_point_to_top(locked_id:Int64){
-        print("===")
-        print(locked_id)
         if let index = messages.index(where: { (ele:JSQMessage3) -> Bool in
             if ele.id_local == locked_id{
                 return true
             }
             return false
         }){
-            
-            print("scroll_locked_point_to_top")
-            print(index)
             self.collectionView.scrollToItem(at: IndexPath(row:index, section:0), at: .top, animated: false)
         }
     }
     func scroll_locked_point_to_bottom(locked_id:Int64){
-        print("===")
-        print(locked_id)
         if let index = messages.index(where: { (ele:JSQMessage3) -> Bool in
             if ele.id_local == locked_id{
                 return true
             }
             return false
         }){
-            
-            print("scroll_locked_point_to_top")
-            print(index)
             self.collectionView.scrollToItem(at: IndexPath(row:index, section:0), at: .bottom, animated: false)
             if messages.count - index < 5{
                 self.page_down_point = nil
@@ -704,8 +686,6 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         if let send_list = sql_database.get_unsend_private_data(client_id: clientId!){
             for send_data in send_list{
                 sending_dic[send_data["id_local"] as! String] = Int(Date().timeIntervalSince1970)
-                print(send_data)
-                print("=====")
                 socket.write(data: json_dumps(send_data))
             }
         }

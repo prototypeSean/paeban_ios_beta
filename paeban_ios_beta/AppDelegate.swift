@@ -29,21 +29,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
             token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
         }
         userData.deviceToken = token
-        print(token)
     }
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print(error)
     }
     //========deviceToken=======
     
     //========收到推播=========
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         print("---didReceiveRemoteNotification---")
-        //print(logInState)
         if logInState && (application.applicationState == UIApplicationState.inactive){
             if let segue_inf = userInfo["segue_inf"] as? Dictionary<String,String>{
-                print("========segue_inf=========")
-                print(segue_inf)
                 notificationSegueInf = segue_inf
             }
         }
@@ -67,7 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
             if segue_inf != nil{
                 notificationSegueInf = segue_inf!
             }
-            //print(segue_inf)
         }
         
         

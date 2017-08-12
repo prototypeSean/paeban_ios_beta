@@ -243,7 +243,6 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
                         while_pertect -= 100
                     }
                 }
-                print("end...")
                 //self.segueData = nil
                 notificationSegueInf = [:]
             
@@ -274,6 +273,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     
     // MARK: event for cell button
     func ok_btn_click(click_row:Int){
+        // fly “這是哪裡的按鈕？？？”
         print("click")
     }
     func friend_confirm(answer:String, friend_id:String){

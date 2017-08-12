@@ -18,9 +18,6 @@ class EULAViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     @IBAction func return_to_mmain_vc(_ sender: AnyObject) {
-        print("++++++++")
-        print(self)
-        print(self.parent)
         let nav_vc = self.parent?.parent as? UINavigationController
         
         //self.view.removeFromSuperview()
@@ -28,7 +25,6 @@ class EULAViewController: UIViewController {
             nav_vc!.popToRootViewController(animated: true)
         }
         //let page_vc = self.parent as? TutorialPageViewController
-        //print(page_vc?.childViewControllers)
         
         // test
         DispatchQueue.global(qos: .default).async {
@@ -45,9 +41,6 @@ class EULAViewController: UIViewController {
                 vc_s.view = nil
                 vc_s.dismiss(animated: false, completion: nil)
             }
-            // test
-            
-            print("done")
         }
         
         

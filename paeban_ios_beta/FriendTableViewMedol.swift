@@ -146,8 +146,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         if data.cell_type == "friend"{
             let cell2 = cell as! FriendTableViewCell
             if data.photo == nil{
-                // fly
-                print("NILLLLLLLLL")
                 DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
                     if data.photoHttpStr != nil && data.photoHttpStr != ""{
                         let url = "\(local_host)media/\(data.photoHttpStr!)"
@@ -540,7 +538,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             }
             return false
         }){
-            print(remove_id_index)
             let remove_id_index_int = remove_id_index as Int
             friendsList.remove(at: remove_id_index_int)
         }
@@ -555,16 +552,12 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         // 2.有伸展按鈕但沒打開
         // 3.有伸展按鈕且有打開
         
-        //fly
-        print("table_view_state: \(extend_btn_state)")
         if extend_btn_state == 1{
             if !self.invite_list.isEmpty{
                 add_list_extend_btn()
             }
             replace_friend_cell()
             targetVC.tableView.reloadData()
-            //fly
-            print(friendsList)
         }
         else if extend_btn_state == 2{
             var new_friendsList = friendsList
@@ -670,7 +663,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
             }
             else if msg_type == "friend_confirm_success"{
                 if msg["answer"] as! String == "yes"{
-                    print(msg)
                     self.add_friend(id: msg["friend_id"] as! String,
                                     name: msg["friend_name"] as! String,
                                     photoHttpStr: msg["friend_pic"] as! String,
@@ -701,8 +693,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 }){
                     friendsList[friend_cell_index].lastLine = msg_text
                     friendsList[friend_cell_index].last_speaker = sender_name
-                    //print(chat_view?.clientId)
-                    //print(client_id)
                     if chat_view?.clientId == client_id{
                         if sender_name != userData.name{
                             friendsList[friend_cell_index].read_msg = true

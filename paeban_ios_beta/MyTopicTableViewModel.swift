@@ -31,7 +31,6 @@ class MyTopicTableViewModel{
     
     // ====controller func 2.0 ====
     func main_loading_v2(){
-        print("******reload******")
         get_title_cell_from_local_v2()
         get_detail_cell_from_local_v2()
         updata_online_state()
@@ -312,7 +311,6 @@ class MyTopicTableViewModel{
                                 if self.new_mytopic[cell_index].clientPhoto_detial == nil ||
                                     self.new_mytopic[cell_index].level != data_dic["level"] as? Int{
                                     let new_cell_obj = self.new_mytopic[cell_index]
-                                    print(data_dic)
                                     new_cell_obj.clientName_detial = data_dic["client_name"] as? String
                                     new_cell_obj.clientName_detial = data_dic["client_name"] as? String
                                     new_cell_obj.clientPhoto_detial = base64ToImage(data_dic["img"] as! String)
@@ -715,7 +713,6 @@ class MyTopicTableViewModel{
 //                    DispatchQueue.global(qos: .background).async {
 //                        sleep(5)
 //                        if !self.check_detail_cell_has_been_load(topic_id: select_cell.topicId_title!){
-//                            print("=======check_detail_cell_has_been_load_nil==========")
 //                            self.update_detail_cell(topic_id: select_cell.topicId_title!, aftre_update: { (detail_cell_list) -> Void in
 //                                if self.topic_id_wait_to_extend_detail_cell == select_cell.topicId_title!{
 //                                    self.topic_id_wait_to_extend_detail_cell = nil
@@ -1052,10 +1049,6 @@ class MyTopicTableViewModel{
         if !self.auto_leap_data_dic.isEmpty{
             let topic_id = self.auto_leap_data_dic["topic_id"]!
             let client_id = self.auto_leap_data_dic["client_id"]!
-            // 飛行
-            print("---check_if_need_to_auto_leap---")
-            print(topic_id)
-            print(client_id)
             
             if secTopic[topic_id] != nil{
                 if let detail_obj_index = secTopic[topic_id]!.index(where: { (element) -> Bool in
