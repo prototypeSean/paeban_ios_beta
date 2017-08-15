@@ -142,12 +142,12 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         topicInfoBG.layer.borderWidth = 0.5
         
         topicInfoBG.backgroundColor = UIColor.white
-        gradientLayer.frame = topicInfoBG.bounds
-        let color1 = UIColor(red:0.97, green:0.97, blue:0.97, alpha:0.2).cgColor as CGColor
-        let color2 = UIColor(red:0.95, green:0.95, blue:0.95, alpha:0.2).cgColor as CGColor
-        gradientLayer.colors = [color1, color2]
-        gradientLayer.locations = [0.0, 1.0]
-        topicInfoBG.layer.addSublayer(gradientLayer)
+//        gradientLayer.frame = topicInfoBG.bounds
+//        let color1 = UIColor.clear
+//        let color2 = UIColor.clear
+//        gradientLayer.colors = [color1, color2]
+//        gradientLayer.locations = [0.0, 1.0]
+//        topicInfoBG.layer.addSublayer(gradientLayer)
         
         //      MARK: 設定按鈕
         // 設定自動調整按鈕文字大小
