@@ -25,6 +25,10 @@ class RecentNavViewController: UINavigationController {
         return image!
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationBar.isTranslucent = false
