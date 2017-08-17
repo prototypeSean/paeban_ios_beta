@@ -21,8 +21,10 @@ class HttpRequestCenter{
         let url = "\(local_host)topic_update/"
         let sendData = "mode=new"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) -> Void in
-            let turnToType = self.topic_type(returnData as Dictionary<NSObject, AnyObject>)
-            topicData(turnToType)
+            if !returnData.isEmpty{
+                let turnToType = self.topic_type(returnData as Dictionary<NSObject, AnyObject>)
+                topicData(turnToType)
+            }
         }
     }
     
