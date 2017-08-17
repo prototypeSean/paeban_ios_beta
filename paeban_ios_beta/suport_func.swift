@@ -33,6 +33,7 @@ func update_topic_content_from_server(delegate_target_list:Array<webSocketActive
                         
                         
                     }
+                    
                     //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
                 }
             }
