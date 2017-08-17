@@ -152,8 +152,8 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
         super.viewDidAppear(animated)
         update_database(mode: .initial)
         update_database(mode: .change_resend_btn)
-        let delegate_list = [wsActive.wasd_ForFriendChatViewController]
-        update_private_mag(delegate_target_list: delegate_list)
+//        let delegate_list = [wsActive.wasd_ForFriendChatViewController]
+//        update_private_mag(delegate_target_list: delegate_list)
         request_last_read_id_from_server_private()
     }
     override func viewDidDisappear(_ animated: Bool) {

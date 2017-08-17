@@ -710,7 +710,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 notificationSegueInf = [:]
             })
         }
-        
+        let delegate_list = [wsActive.wasd_ForFriendChatViewController]
+        update_private_mag(delegate_target_list: delegate_list)
+        update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
     }
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         socketState = false
