@@ -375,6 +375,7 @@ class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenter
             update_database(mode: .new_client_msg)
             update_database(mode: .change_read_state)
         }
+        (tabBar_pointer as? TabBarController)?.update_badges()
     }
     func new_my_topic_msg(sender: String, id_local: String) {
         sending_dic.removeValue(forKey: id_local)

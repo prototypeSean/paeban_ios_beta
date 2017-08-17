@@ -397,6 +397,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             update_database(mode: .new_client_msg)
             send_read_to_server()
         }
+        (tabBar_pointer as? TabBarController)?.update_badges()
     }
     func send_read_to_server(){
         if topicId != nil && clientID != nil{
