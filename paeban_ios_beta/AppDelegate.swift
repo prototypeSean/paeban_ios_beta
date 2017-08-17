@@ -52,21 +52,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         registerForPushNotifications(application: application)
-        //===========================
+        // fly
+        //=============Launching==============
         app_instence = application
-        
         if ((launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification]) != nil){
             let nts = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as! Dictionary<String,AnyObject>
             let segue_inf = nts["segue_inf"] as? Dictionary<String,String>
-            
             if segue_inf != nil{
                 notificationSegueInf = segue_inf!
             }
+            
         }
-        
-        
-        
-        //===========================
+
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         // Override point for customization after application launch.
@@ -93,9 +90,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         if tapBar_pointer != nil{
             (tapBar_pointer as! TabBarController).update_badges()
         }
-        // 或許不啟用了
-        //update_badges(app: application)
-        
         print("====applicationDidEnterBackground======")
         
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
@@ -124,7 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         else{
             print("socket_is_nil")
         }
-        if !notificationSegueInf.isEmpty{
+        if !notificationSegueInf.isEmpty && logInState && (application.applicationState == UIApplicationState.inactive){
             notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
             notificationSegueInf = [:]
         }

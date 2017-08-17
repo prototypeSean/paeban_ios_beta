@@ -23,7 +23,7 @@ public let local_host = "http://www.paeban.com/"
 
 
 // MARK:公用變數
-public var ssss:String?
+public var ssss:String = "005"
 public var back_ground_state = false
 public var socket:WebSocket!
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
@@ -696,19 +696,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 if sql_database.check_database_is_empty(){
                     //self.update_database(reset_db: "1")
                 }
-                let time_init = Date()
-                while myFriendsList.isEmpty{
-                    usleep(100)
-                    let time_pass = Date().timeIntervalSince(time_init) as Double
-                    if time_pass > 5{
-                        break
-                    }
-                }
-                if !notificationSegueInf.isEmpty{
-                    DispatchQueue.main.async {
-                        notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
-                    }
-                }
             }
             
         }
@@ -716,6 +703,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             print("wsReConnected")
             ws_connected(socket)
             wsActive.wsReConnect()
+        }
+        if !notificationSegueInf.isEmpty{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
+                notificationSegueInf = [:]
+            })
         }
         
     }
