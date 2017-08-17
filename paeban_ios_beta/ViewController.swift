@@ -316,8 +316,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     let gradient = CAGradientLayer()
     
     func createColorSets() {
-        colorSets.append([#colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1).cgColor, #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).cgColor])
-        colorSets.append([#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor, #colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1).cgColor])
+        colorSets.append([#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 0.15).cgColor, #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.1956896552).cgColor])
+//        colorSets.append([#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor, #colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1).cgColor])
         colorSets.append([#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1).cgColor, #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1).cgColor])
         
         currentColorSet = 0
@@ -340,7 +340,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         let colorChangeAnimation = CABasicAnimation(keyPath: "colors")
         colorChangeAnimation.delegate = self
-        colorChangeAnimation.duration = 7.0
+        colorChangeAnimation.duration = 3.0
         colorChangeAnimation.toValue = colorSets[currentColorSet]
         colorChangeAnimation.fillMode = kCAFillModeForwards
         colorChangeAnimation.isRemovedOnCompletion = false
@@ -838,11 +838,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if loading_view == nil{
             loading_view = add_loading_view()
             loading_title_lable?.text = title
-            loading_title_lable?.textColor = UIColor.white
+            loading_title_lable?.textColor = UIColor.lightGray
             loading_title_lable?.sizeToFit()
             loading_title_lable?.center = CGPoint(
                 x: (loading_view?.frame.width)!/2,
-                y: ((loading_view?.frame.height)!/2 + 180)
+                y: ((loading_view?.frame.height)!/2 + 220)
             )
         }
         else{
@@ -850,7 +850,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             loading_title_lable?.sizeToFit()
             loading_title_lable?.center = CGPoint(
                 x: (loading_view?.frame.width)!/2,
-                y: ((loading_view?.frame.height)!/2 + 180)
+                y: ((loading_view?.frame.height)!/2 + 220)
             )
         }
     }
@@ -859,13 +859,13 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             persent_lable?.isHidden = false
             persent_lable!.center = CGPoint(
                 x: (loading_view?.frame.width)!/2,
-                y: ((loading_view?.frame.height)!/2 + 80)
+                y: ((loading_view?.frame.height)!/2 + 240)
             )
             UIGraphicsBeginImageContext((persent_lable?.frame.size)!)
             let context = UIGraphicsGetCurrentContext()
             context!.setFillColor(UIColor.darkGray.cgColor)
             context!.fill((persent_lable?.frame)!)
-            let c1 = UIColor.white.cgColor
+            let c1 = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1).cgColor
             let c2 = UIColor.clear.cgColor
             let left = CGPoint(x: 0, y: (persent_lable?.frame.height)!)
             let right = CGPoint(x: (persent_lable?.frame.width)!, y: (persent_lable?.frame.height)!)
@@ -887,14 +887,16 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             let height = CGFloat(0 + (nav?.view.frame.height)!)
             let load_view = UIView()
             load_view.frame = CGRect(x:0, y: 0, width: self.view.frame.width, height: height)
-            load_view.backgroundColor = UIColor.gray
+            load_view.backgroundColor = UIColor.clear
             //self.view.addSubview(load_view)
             let load_simbol = UIActivityIndicatorView()
             load_simbol.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-            load_simbol.activityIndicatorViewStyle = .whiteLarge
-            load_view.alpha = 0.7
+            load_simbol.activityIndicatorViewStyle = .white
+            load_simbol.color = UIColor.lightGray
+            load_view.alpha = 1
+            load_view.tintColor = UIColor.red
             self.view.addSubview(load_view)
-            load_simbol.center = CGPoint(x: self.view.frame.width/2, y: (height/2)+120)
+            load_simbol.center = CGPoint(x: self.view.frame.width/2, y: (height/2)+180)
             load_view.addSubview(load_simbol)
             load_simbol.startAnimating()
             loading_title_lable = UILabel()
