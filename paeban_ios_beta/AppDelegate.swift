@@ -87,8 +87,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         socketState = false
         back_ground_state = true
         recive_apns_switch = true
-        if tapBar_pointer != nil{
-            (tapBar_pointer as! TabBarController).update_badges()
+        if tabBar_pointer != nil{
+            (tabBar_pointer as! TabBarController).update_badges()
         }
         print("====applicationDidEnterBackground======")
         

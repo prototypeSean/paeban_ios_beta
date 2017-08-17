@@ -16,7 +16,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
 //        if notificationSegueInf != [:]{
 //            switchToView(segueInf: notificationSegueInf)
 //        }
-        tapBar_pointer = self
+        tabBar_pointer = self
         wsActive.wasd_ForTabBarController = self
         notificationDelegateCenter_obj.delegata = self
         update_badges()

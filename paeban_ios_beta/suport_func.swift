@@ -33,7 +33,7 @@ func update_topic_content_from_server(delegate_target_list:Array<webSocketActive
                         
                         
                     }
-                    
+                    (tabBar_pointer as? TabBarController)?.update_badges()
                     //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
                 }
             }
@@ -56,9 +56,8 @@ func update_private_mag(delegate_target_list:Array<webSocketActiveCenterDelegate
                     delegate_s?.new_client_topic_msg!(sender: sender)
                 }
             }
-            
-            
         }
+        (tabBar_pointer as? TabBarController)?.update_badges()
     })
 }
 

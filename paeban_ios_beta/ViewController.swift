@@ -60,7 +60,7 @@ public var open_app_frist = true
 public var app_instence:UIApplication?
 public var sql_database = SQL_center()
 public var init_sql = false
-public var tapBar_pointer:UITabBarController?
+public var tabBar_pointer:UITabBarController?
 public let image_url_host = "http://www.paeban.com/media/"
 
 
