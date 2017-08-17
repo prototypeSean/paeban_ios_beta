@@ -90,8 +90,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         socketState = false
         back_ground_state = true
         recive_apns_switch = true
+        if tapBar_pointer != nil{
+            (tapBar_pointer as! TabBarController).update_badges()
+        }
         // 或許不啟用了
         //update_badges(app: application)
+        
         print("====applicationDidEnterBackground======")
         
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
