@@ -38,16 +38,15 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func text_change(_ sender: UITextField) {
-        if sender.text != nil{
-            change_name_btn_text(text: sender.text!)
-        }
-        
+//        if sender.text != nil{
+//            change_name_btn_text(text: sender.text!)
+//        }
     }
     @IBOutlet weak var name_text: UITextField!
-    @IBAction func name_btn(_ sender: AnyObject) {
-        edit_name()
-    }
-    @IBOutlet weak var name_btn_obj: UIButton!
+//    @IBAction func name_btn(_ sender: AnyObject) {
+//        edit_name()
+//    }
+//    @IBOutlet weak var name_btn_obj: UIButton!
     
 
     @IBOutlet weak var is_true_photo_switch: UISwitch!
@@ -141,7 +140,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let Center_1 = (((initFearm?.height)! - keyboardSize.height))/2
-            let delta_x = ((name_btn_obj!.center.y)) - Center_1
+            let delta_x = ((name_text!.center.y)) - Center_1
             var newCenter_y = (initCenter?.y)! - delta_x
             if delta_x > keyboardSize.height{
                 newCenter_y = (initCenter?.y)! - keyboardSize.height
@@ -187,7 +186,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         name_text.becomeFirstResponder()
     }
     func change_name_btn_text(text:String){
-        name_btn_obj.setTitle(text, for: UIControlState.normal)
+        //name_btn_obj.setTitle(text, for: UIControlState.normal)
     }
     func resizeImage1(image: UIImage, newWidth: CGFloat) -> UIImage {
         let jpegImgData = UIImageJPEGRepresentation(image, CGFloat(1))
@@ -309,9 +308,10 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         // 調整勾勾圖示的預設渲染模式
         isTruePhoto.image = UIImage(named:"True_photo")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         
-        name_text.isHidden  = true
+        //name_text.isHidden  = true
         name_text.delegate = self
-        name_btn_obj.setTitle(userData.name!, for: UIControlState.normal)
+        name_text.text = userData.name
+        //name_btn_obj.setTitle(userData.name!, for: UIControlState.normal)
 //        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingViewController.dismissKeyboard))
 //        view.addGestureRecognizer(tap)
         find_user_kb_height()
