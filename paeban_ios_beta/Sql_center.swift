@@ -2770,6 +2770,18 @@ public class SQL_center{
         }
     }
         // 確認客戶端本地照片是否為最新
+    func updata_client_name(client_id_ins:String, client_name_ins:String){
+        do{
+            let query = tmp_client_Table.filter(client_id == client_id_ins)
+            let update = query.update(tmp_client_name <- client_name_ins)
+            try sql_db!.run(update)
+        }
+        catch{
+            print("ERROR updata_client_name")
+            print(error)
+        }
+    }
+    
     func tmp_client_img_check(client_id:String, tmp_client_img_name:String) -> Bool? {
         do{
             let query_client = tmp_client_Table.filter(self.client_id == client_id)
@@ -2796,6 +2808,28 @@ public class SQL_center{
             return nil
         }
     }
+    
+    func check_client_img_levels(client_id_list:Array<String>) -> Dictionary<String, Array<Int64>>{
+        var client_img_levels_dic:Dictionary<String, Array<Int64>> = [:]
+        for client_ids in client_id_list{
+            do{
+                var temp_level_list:Array<Int64> = []
+                for client_data_obj in try sql_db!.prepare(tmp_client_Table.filter(client_id == client_ids)){
+                    temp_level_list.append(client_data_obj[tmp_client_level]!)
+                }
+                if !temp_level_list.isEmpty{
+                    client_img_levels_dic[client_ids] = temp_level_list
+                }
+            }
+            catch{
+                print("ERROR check_client_img_levels --> client_id = \(client_ids)")
+                print(error)
+            }
+        }
+        return client_img_levels_dic
+    }
+    
+    
     
     func establish_app_log(){
         do{

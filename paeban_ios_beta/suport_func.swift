@@ -90,21 +90,7 @@ class Ignore_list_center{
 }
 
 func synchronize_friend_table(after:(()->Void)?){
-    let local_friend_datas = sql_database.get_friend_list()
-    var check_dic:Dictionary<String,AnyObject> = [:]
-    for friends in local_friend_datas{
-        var temp_dic = [
-            "client_id": friends["client_id"]! as! String,
-            "client_name": friends["client_name"]! as! String,
-            "img_name": friends["img_name"]! as! String
-        ]
-        if friends["img"] == nil{
-            temp_dic["img_name"] = ""
-        }
-        check_dic[friends["client_id"]! as! String] = temp_dic as AnyObject
-    }
     let send_dic = [
-        "local_friend_dic":check_dic as AnyObject,
         "inactive_list":sql_database.get_inactive_friend_list() as AnyObject
     ]
     HttpRequestCenter().request_user_data_v2("synchronize_friend_table", send_dic: send_dic) { (return_dic:Dictionary<String, AnyObject>?) in
@@ -119,6 +105,34 @@ func synchronize_friend_table(after:(()->Void)?){
             let comlete_delete_list = return_dic!["inactive_list"] as! Array<String>
             sql_database.remove_friend_complete(complete_list: comlete_delete_list)
             after?()
+        }
+    }
+}
+
+func synchronize_tmp_client_Table(after:(()->Void)?){
+    
+    HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_1", send_dic: [:]) { (return_dic:Dictionary<String, AnyObject>?) in
+        if return_dic != nil{
+            var request_client_id_list:Array<String> = []
+            for return_list_data in return_dic!["return_list"] as! Array<Dictionary<String, AnyObject>>{
+                let client_id = return_list_data["client_id"] as! String
+                let client_name = return_list_data["client_name"] as! String
+                let client_img_name = return_list_data["client_img_name"] as! String
+                sql_database.updata_client_name(client_id_ins: client_id, client_name_ins: client_name)
+                if sql_database.tmp_client_img_check(client_id: client_id, tmp_client_img_name: client_img_name) == false{
+                    request_client_id_list.append(client_id)
+                }
+            }
+            let client_img_level_dic = sql_database.check_client_img_levels(client_id_list: request_client_id_list)
+            if !client_img_level_dic.isEmpty{
+                HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_2", send_dic: ["client_img_level_list":client_img_level_dic as AnyObject], InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                    if return_dic != nil{
+                        // return_dic = [client_id: [level: img]]
+                        // 寫入資料庫
+                        after?()
+                    }
+                })
+            }
         }
     }
 }
