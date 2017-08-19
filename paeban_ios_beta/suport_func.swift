@@ -95,8 +95,10 @@ func synchronize_friend_table(after:(()->Void)?){
     ]
     HttpRequestCenter().request_user_data_v2("synchronize_friend_table", send_dic: send_dic) { (return_dic:Dictionary<String, AnyObject>?) in
         if return_dic != nil{
+            var complet_list:Array<String> = []
             for return_list_data in return_dic!["return_list"] as! Array<Dictionary<String,AnyObject>>{
                 sql_database.insert_friend(input_dic: return_list_data)
+                complet_list.append(return_list_data["client_id"] as! String)
             }
             if !(return_dic!["return_list"] as! Array<Dictionary<String,AnyObject>>).isEmpty{
                 let delegate_list = [wsActive.wasd_FriendTableViewMedol]
@@ -104,6 +106,12 @@ func synchronize_friend_table(after:(()->Void)?){
             }
             let comlete_delete_list = return_dic!["inactive_list"] as! Array<String>
             sql_database.remove_friend_complete(complete_list: comlete_delete_list)
+            if !complet_list.isEmpty{
+                HttpRequestCenter().request_user_data_v2("synchronize_friend_table_complete", send_dic: ["complete_list": complet_list as AnyObject], InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                    //pass
+                })
+            }
+            
             after?()
         }
     }
@@ -127,8 +135,22 @@ func synchronize_tmp_client_Table(after:(()->Void)?){
             if !client_img_level_dic.isEmpty{
                 HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_2", send_dic: ["client_img_level_list":client_img_level_dic as AnyObject], InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
                     if return_dic != nil{
-                        // return_dic = [client_id: [level: img]]
-                        // 寫入資料庫
+                        let return_client_img_level_list = return_dic!["return_client_img_level_list"] as! Array<Dictionary<String, AnyObject>>
+//                        return_dic  data type
+//                            return_dic = [[
+//                            "client_id": "client_id",
+//                            "img_name": "img_name",
+//                            "img_data":["level": "img_string"]
+//                            ]]
+                        var update_complete_list:Array<String> = []
+                        for client_data in return_client_img_level_list{
+                            let client_id = client_data["client_id"] as! String
+                            let img_name = client_data["img_name"] as! String
+                            let client_img_data = client_data["img_data"] as! Dictionary<Int64, String>
+                            update_complete_list.append(client_id)
+                            sql_database.update_client_img(client_id: client_id, img_name: img_name, img_data_s: client_img_data)
+                        }
+//                        HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_2", send_dic: <#T##Dictionary<String, AnyObject>#>, InViewAct: <#T##(Dictionary<String, AnyObject>?) -> Void#>)
                         after?()
                     }
                 })
