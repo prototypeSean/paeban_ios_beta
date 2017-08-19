@@ -2829,12 +2829,12 @@ public class SQL_center{
         return client_img_levels_dic
     }
     
-    func update_client_img(client_id:String, img_name:String, img_data_s:Dictionary<Int64, String>){
+    func update_client_img(client_id:String, img_name:String, img_data_s:Dictionary<String, String>){
         for img_data in img_data_s{
             do{
                 let query = tmp_client_Table.filter(
                     self.client_id == client_id &&
-                    tmp_client_level == img_data.key
+                    tmp_client_level == Int64(img_data.key)
                 )
                 let update = query.update(tmp_client_img <- img_data.value)
                 try sql_db!.run(update)

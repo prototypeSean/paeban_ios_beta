@@ -28,6 +28,9 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
     override func viewDidAppear(_ animated: Bool) {
         rTVModel.chat_view = nil
         self.show_leave_topic_master_alert()
+        synchronize_tmp_client_Table { 
+            self.rTVModel.reCheckDataBase()
+        }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

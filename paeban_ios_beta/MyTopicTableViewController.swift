@@ -52,6 +52,9 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     override func viewDidAppear(_ animated: Bool) {
         model.chat_view = nil
         self.show_leave_topic_alert()
+        synchronize_tmp_client_Table { 
+            self.model.main_loading_v2()
+        }
     }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     }

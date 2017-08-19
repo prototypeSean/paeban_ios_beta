@@ -125,11 +125,8 @@ func synchronize_tmp_client_Table(after:(()->Void)?){
             for return_list_data in return_dic!["return_list"] as! Array<Dictionary<String, AnyObject>>{
                 let client_id = return_list_data["client_id"] as! String
                 let client_name = return_list_data["client_name"] as! String
-                let client_img_name = return_list_data["client_img_name"] as! String
                 sql_database.updata_client_name(client_id_ins: client_id, client_name_ins: client_name)
-                if sql_database.tmp_client_img_check(client_id: client_id, tmp_client_img_name: client_img_name) == false{
-                    request_client_id_list.append(client_id)
-                }
+                request_client_id_list.append(client_id)
             }
             let client_img_level_dic = sql_database.check_client_img_levels(client_id_list: request_client_id_list)
             if !client_img_level_dic.isEmpty{
@@ -146,13 +143,20 @@ func synchronize_tmp_client_Table(after:(()->Void)?){
                         for client_data in return_client_img_level_list{
                             let client_id = client_data["client_id"] as! String
                             let img_name = client_data["img_name"] as! String
-                            let client_img_data = client_data["img_data"] as! Dictionary<Int64, String>
+                            let client_img_data = client_data["img_data"]! as! Dictionary<String,String>
                             update_complete_list.append(client_id)
                             sql_database.update_client_img(client_id: client_id, img_name: img_name, img_data_s: client_img_data)
                         }
-//                        HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_2", send_dic: <#T##Dictionary<String, AnyObject>#>, InViewAct: <#T##(Dictionary<String, AnyObject>?) -> Void#>)
+                        HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_3", send_dic: ["update_complete_list":update_complete_list as AnyObject], InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                            //pass
+                        })
                         after?()
                     }
+                })
+            }
+            else{
+                HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_3", send_dic: ["update_complete_list":request_client_id_list as AnyObject], InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                    //pass
                 })
             }
         }

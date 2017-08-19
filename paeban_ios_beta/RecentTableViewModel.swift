@@ -25,6 +25,7 @@ class RecentTableViewModel{
     var leave_topic_master_list:Array<Dictionary<String,String>> = []
     // controller func
     func reCheckDataBase() {
+        recentDataBase = []
         get_recent_data()
         updata_online_state()
         update_battery_state()
