@@ -38,7 +38,9 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         self.tableView.reloadData()
         model?.chat_view = nil
         model?.getFrientList()
-        synchronize_friend_table(after: nil)
+        synchronize_friend_table {
+            self.update_badges()
+        }
         getInviteList()
         self.update_badges()
     }
@@ -302,6 +304,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             return true
         }
     }
+    
 }
 
 

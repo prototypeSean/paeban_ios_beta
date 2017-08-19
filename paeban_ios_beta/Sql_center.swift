@@ -405,6 +405,7 @@ public class SQL_center{
             if !ckeck_user_is_blocked(client_id_in: client_id_var){
                 if (try sql_db!.scalar(friend_list_table.filter(username == client_id_var).count)) == 0{
                     // 是全新資料
+                    print("new_data")
                     let insert = friend_list_table.insert(
                         username <- input_dic["client_id"] as! String,
                         user_full_name <- input_dic["client_name"] as! String,
@@ -416,6 +417,7 @@ public class SQL_center{
                     try sql_db!.run(insert)
                 }
                 else{
+                    print("old_data")
                     let target_obj = try sql_db!.prepare(friend_list_table.filter(username == client_id_var)).first(where: { (row) -> Bool in
                         return true
                     })
@@ -563,6 +565,9 @@ public class SQL_center{
             for friend_datas in try sql_db!.prepare(query){
                 // fly remove print
                 print(friend_datas[username])
+                if friend_datas[friend_image] != nil{
+                    print("img iru")
+                }
                 var temp_dic:Dictionary<String,AnyObject> = [
                     "client_id": friend_datas[username] as AnyObject,
                     "client_name": friend_datas[user_full_name] as AnyObject,
@@ -619,7 +624,11 @@ public class SQL_center{
             if let friend_obj = try sql_db!.prepare(friend_list_table.filter(username == friend_id)).first(where: { (row) -> Bool in
                 return true
             }){
-                return base64ToImage(friend_obj[friend_image]!)
+                print(friend_id)
+                if friend_obj[friend_image] != nil{
+                    return base64ToImage(friend_obj[friend_image]!)
+                }
+                
             }
         }
         catch{
@@ -2929,6 +2938,18 @@ public class SQL_center{
         }
         catch{
             print("ERROR change_send_state")
+            print(error)
+        }
+    }
+    func test_img(id:String){
+        do{
+            let sss = try sql_db!.prepare(friend_list_table.filter(username == id)).first(where: { (row) -> Bool in
+                return true
+            })
+            print("test_img")
+            print(sss?[friend_image])
+        }
+        catch{
             print(error)
         }
     }
