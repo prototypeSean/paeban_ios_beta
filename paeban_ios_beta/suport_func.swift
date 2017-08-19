@@ -112,7 +112,9 @@ func synchronize_friend_table(after:(()->Void)?){
                 })
             }
             
-            after?()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                after?()
+            })
         }
     }
 }
@@ -150,14 +152,20 @@ func synchronize_tmp_client_Table(after:(()->Void)?){
                         HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_3", send_dic: ["update_complete_list":update_complete_list as AnyObject], InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
                             //pass
                         })
-                        after?()
+                        DispatchQueue.main.async {
+                            after?()
+                        }
+                        
                     }
                 })
             }
             else{
-                HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_3", send_dic: ["update_complete_list":request_client_id_list as AnyObject], InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
-                    //pass
-                })
+                if !request_client_id_list.isEmpty{
+                    HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_3", send_dic: ["update_complete_list":request_client_id_list as AnyObject], InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
+                        //pass
+                    })
+                }
+                
             }
         }
     }
