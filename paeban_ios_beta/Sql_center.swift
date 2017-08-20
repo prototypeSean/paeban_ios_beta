@@ -972,7 +972,7 @@ public class SQL_center{
             return false
         }
         catch{
-            print("insert_recent_topic資料庫錯誤")
+            print("check_is_in_mytopic資料庫錯誤")
             print(error)
             return false
         }
@@ -1091,7 +1091,9 @@ public class SQL_center{
             active <- true
         )
         do{
-            try sql_db?.run(insert)
+            if try sql_db!.scalar(recent_topic.filter(topic_id == input_dic["topic_id"]!).count) > 0{
+                try sql_db?.run(insert)
+            }
         }
         catch{
             print("insert_recent_topic資料庫錯誤")
