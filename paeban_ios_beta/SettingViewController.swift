@@ -162,6 +162,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         if userData.is_real_photo == true{
             isTruePhotoSwitch.isOn = true
+            isTruePhoto.tintColor = UIColor(red:0.00, green:0.73, blue:0.62, alpha:1.0)
         }
     }
     func logOut(){
