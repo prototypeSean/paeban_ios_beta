@@ -637,6 +637,31 @@ public class SQL_center{
         }
         return nil
     }
+    func get_friend_no_img_dic() -> Dictionary<String,String>{
+        do{
+            var friend_no_img_dic:Dictionary<String,String> = [:]
+            for datas in try sql_db!.prepare(friend_list_table.filter(friend_image == nil)){
+                friend_no_img_dic[datas[username]] = datas[friend_image_file_name]
+            }
+            return friend_no_img_dic
+        }
+        catch{
+            print("ERRPR get_friend_no_img_dic")
+            print(error)
+            return [:]
+        }
+    }
+    func write_img(friend_id:String, img_str:String){
+        do{
+            let query = friend_list_table.filter(username == friend_id)
+            let updata = query.update(friend_image <- img_str)
+            try sql_db!.run(updata)
+        }
+        catch{
+            print("ERROR write_img")
+            print(error)
+        }
+    }
     func print_fl(){
         var sss:Array<String> = []
         do{

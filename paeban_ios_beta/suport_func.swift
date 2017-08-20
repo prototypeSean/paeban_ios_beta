@@ -111,9 +111,13 @@ func synchronize_friend_table(after:(()->Void)?){
                     //pass
                 })
             }
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                 after?()
+            })
+            get_friend_img(after: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                    after?()
+                })
             })
         }
     }
@@ -172,6 +176,46 @@ func synchronize_tmp_client_Table(after:(()->Void)?){
     }
 }
 
+func get_friend_img(after:(()->Void)?){
+    let friend_no_img_dic = sql_database.get_friend_no_img_dic()
+    if !friend_no_img_dic.isEmpty{
+        let dic_len = friend_no_img_dic.count
+        var dic_count = 0
+        for data in friend_no_img_dic{
+            let url = "\(local_host)media/\(data.value)"
+            HttpRequestCenter().getHttpImg(url, getImg: { (get_img) in
+                let img_str = imageToBase64(image: get_img, optional: "withHeader")
+                sql_database.write_img(friend_id: data.key, img_str: img_str)
+                dic_count += 1
+                if dic_count >= dic_len{
+                    after?()
+                }
+            })
+
+        }
+    }
+//    DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+//        if data.photoHttpStr != nil && data.photoHttpStr != ""{
+//            let url = "\(local_host)media/\(data.photoHttpStr!)"
+//            HttpRequestCenter().getHttpImg(url, getImg: { (get_img) in
+//                if let user_index = self.friendsList.index(where: { (target) -> Bool in
+//                    if target.photoHttpStr == data.photoHttpStr!{
+//                        return true
+//                    }
+//                    return false
+//                }){
+//                    self.friendsList[user_index].photo = get_img
+//                    DispatchQueue.main.async {
+//                        self.targetVC.tableView.beginUpdates()
+//                        self.targetVC.tableView.reloadRows(at: [IndexPath(row: user_index as Int, section: 0)], with: UITableViewRowAnimation.none)
+//                        self.targetVC.tableView.endUpdates()
+//                    }
+//                }
+//            })
+//        }
+//        
+//    }
+}
 
 enum load_data_mode {
     case initial
