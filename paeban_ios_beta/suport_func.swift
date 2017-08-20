@@ -131,6 +131,7 @@ func synchronize_tmp_client_Table(after:(()->Void)?){
                 request_client_id_list.append(client_id)
             }
             let client_img_level_dic = sql_database.check_client_img_levels(client_id_list: request_client_id_list)
+            print(client_img_level_dic)
             if !client_img_level_dic.isEmpty{
                 HttpRequestCenter().request_user_data_v2("synchronize_tmp_client_Table_step_2", send_dic: ["client_img_level_list":client_img_level_dic as AnyObject], InViewAct: { (return_dic:Dictionary<String, AnyObject>?) in
                     if return_dic != nil{

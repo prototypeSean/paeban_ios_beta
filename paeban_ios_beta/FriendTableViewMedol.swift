@@ -31,7 +31,6 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         let result_dic = sql_database.get_friend_list()
         let new_table_data = turnToFriendStanderType_v3(friend_list:result_dic)
         renew_friend_list_database(input_list: new_table_data)
-        //update_imgs_from_server()
         update_online_state()
     }
     func renew_friend_list_database(input_list:Array<FriendStanderType>){

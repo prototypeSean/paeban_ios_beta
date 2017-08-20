@@ -101,6 +101,9 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         else if cmd_line == "chse"{
             sql_database.change_send_state()
         }
+        else if cmd_line == "printtemp"{
+            sql_database.print_temp()
+        }
         else if cmd_line == "help"{
             let help_list = [
                 "recent_db       列印recent_topic",

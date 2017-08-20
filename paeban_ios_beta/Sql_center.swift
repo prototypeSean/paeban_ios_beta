@@ -2818,13 +2818,13 @@ public class SQL_center{
         }
     }
     
-    func check_client_img_levels(client_id_list:Array<String>) -> Dictionary<String, Array<Int64>>{
-        var client_img_levels_dic:Dictionary<String, Array<Int64>> = [:]
+    func check_client_img_levels(client_id_list:Array<String>) -> Dictionary<String, Array<String>>{
+        var client_img_levels_dic:Dictionary<String, Array<String>> = [:]
         for client_ids in client_id_list{
             do{
-                var temp_level_list:Array<Int64> = []
+                var temp_level_list:Array<String> = []
                 for client_data_obj in try sql_db!.prepare(tmp_client_Table.filter(client_id == client_ids)){
-                    temp_level_list.append(client_data_obj[tmp_client_level]!)
+                    temp_level_list.append(String(client_data_obj[tmp_client_level]!))
                 }
                 if !temp_level_list.isEmpty{
                     client_img_levels_dic[client_ids] = temp_level_list
@@ -2948,6 +2948,19 @@ public class SQL_center{
             })
             print("test_img")
             print(sss?[friend_image])
+        }
+        catch{
+            print(error)
+        }
+    }
+    func print_temp(){
+        do{
+            for c in try sql_db!.prepare(tmp_client_Table){
+                print(c[client_id])
+                print(c[tmp_client_level])
+                print("==--==")
+            }
+            
         }
         catch{
             print(error)

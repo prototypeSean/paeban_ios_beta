@@ -39,7 +39,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         model?.chat_view = nil
         model?.getFrientList()
         synchronize_friend_table {
-            self.update_badges()
+            self.model?.getFrientList()
         }
         getInviteList()
         self.update_badges()
@@ -51,7 +51,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return model!.getDataCount()
+        return model!.friendsList.count
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
