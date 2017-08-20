@@ -729,7 +729,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
     }
     func new_client_topic_msg(sender: String) {
         self.getFrientList()
-        self.updateModel()
+        //self.updateModel()
         targetVC.update_badges()
     }
     
