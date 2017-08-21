@@ -23,6 +23,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
     }
     func switchToView(segueInf:Dictionary<String,String>){
         // fly
+        print("dkdkdk")
         print(Date().timeIntervalSince1970)
         DispatchQueue.main.async {
             if let pageInt = leapToPage(segueInf: segueInf){

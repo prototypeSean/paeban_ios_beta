@@ -811,6 +811,8 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     func autoLeap(segeu_data:Dictionary<String,String>){
         if !segeu_data.isEmpty{
+            print("dkdkdk")
+            print(Date().timeIntervalSince1970)
             let segue_topic_id = segeu_data["topic_id"]
             let segue_user_id = segeu_data["user_id"]
             self.segueData["topic_id"] = segue_topic_id! as AnyObject

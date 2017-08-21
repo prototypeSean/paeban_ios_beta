@@ -104,6 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("====applicationDidBecomeActive====")
         print("時間起算點")
+        print("dkdkdk")
         print(Date().timeIntervalSince1970)
         app_instence = application
         FBSDKAppEvents.activateApp()
