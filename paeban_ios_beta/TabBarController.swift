@@ -22,6 +22,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         update_badges()
     }
     func switchToView(segueInf:Dictionary<String,String>){
+        print("autoLearTest step1")
         if let pageInt = leapToPage(segueInf: segueInf){
             let childView = self.childViewControllers
             var targetClassName:String
@@ -45,10 +46,10 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
                     let target_VC = class_s.self.childViewControllers[0].self
                     switch pageInt {
                     case 1:
-                        print("case1")
                         let target_VC_transform = target_VC as! MyTopicTableViewController
                         //target_VC_transform.pop_to_root_view()
                         //self.selectedIndex = pageInt
+                        print("autoLearTest step1")
                         target_VC_transform.autoLeap(segeu_data: segueInf)
                     case 2:
                         let target_VC_transform = target_VC as! RecentTableViewController
