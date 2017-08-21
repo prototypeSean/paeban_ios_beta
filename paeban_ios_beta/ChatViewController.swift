@@ -116,7 +116,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         update_database(mode: .change_resend_btn)
 //        update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
         request_last_read_id_from_server()
-        self.collectionView?.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { 
+            self.collectionView?.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
+        }
     }
 
         // 下面兩個負責讀取訊息
