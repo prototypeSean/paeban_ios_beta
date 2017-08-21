@@ -22,48 +22,50 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         update_badges()
     }
     func switchToView(segueInf:Dictionary<String,String>){
-        if let pageInt = leapToPage(segueInf: segueInf){
-            let childView = self.childViewControllers
-            var targetClassName:String
-            switch pageInt{
-            case 1:
-                targetClassName = "MytopicNavViewController"
-            case 2:
-                targetClassName = "RecentNavViewController"
-            case 3:
-                targetClassName = "FriendNavViewController"
-            default:
-                targetClassName = ""
-            }
-            var target_VC:UIViewController?
-            for class_s in childView{
-                let nav = class_s as! UINavigationController
-                nav.popViewController(animated: false)
-                self.selectedIndex = pageInt
-                let classFullName = String(describing: class_s.self)
-                
-                if targetClassName == getClassName(classFullName: classFullName){
-                    target_VC = class_s.self.childViewControllers[0].self
+        DispatchQueue.global(qos: .userInteractive).async {
+            if let pageInt = leapToPage(segueInf: segueInf){
+                let childView = self.childViewControllers
+                var targetClassName:String
+                switch pageInt{
+                case 1:
+                    targetClassName = "MytopicNavViewController"
+                case 2:
+                    targetClassName = "RecentNavViewController"
+                case 3:
+                    targetClassName = "FriendNavViewController"
+                default:
+                    targetClassName = ""
                 }
-            }
-            switch pageInt {
-            case 1:
-                let target_VC_transform = target_VC as! MyTopicTableViewController
-                //target_VC_transform.pop_to_root_view()
-                //self.selectedIndex = pageInt
-                target_VC_transform.autoLeap(segeu_data: segueInf)
-            case 2:
-                let target_VC_transform = target_VC as! RecentTableViewController
-                //target_VC_transform.pop_to_root_view()
-                //self.selectedIndex = pageInt
-                target_VC_transform.autoLeap(segeu_data: segueInf)
-            case 3:
-                let target_VC_transform = target_VC as! FriendTableViewController
-                //target_VC_transform.pop_to_root_view()
-                
-                target_VC_transform.autoLeap(segeu_data: segueInf)
-            default:
-                print("targetClassName is nil")
+                var target_VC:UIViewController?
+                for class_s in childView{
+                    let nav = class_s as! UINavigationController
+                    nav.popViewController(animated: false)
+                    self.selectedIndex = pageInt
+                    let classFullName = String(describing: class_s.self)
+                    
+                    if targetClassName == getClassName(classFullName: classFullName){
+                        target_VC = class_s.self.childViewControllers[0].self
+                    }
+                }
+                switch pageInt {
+                case 1:
+                    let target_VC_transform = target_VC as! MyTopicTableViewController
+                    //target_VC_transform.pop_to_root_view()
+                    //self.selectedIndex = pageInt
+                    target_VC_transform.autoLeap(segeu_data: segueInf)
+                case 2:
+                    let target_VC_transform = target_VC as! RecentTableViewController
+                    //target_VC_transform.pop_to_root_view()
+                    //self.selectedIndex = pageInt
+                    target_VC_transform.autoLeap(segeu_data: segueInf)
+                case 3:
+                    let target_VC_transform = target_VC as! FriendTableViewController
+                    //target_VC_transform.pop_to_root_view()
+                    
+                    target_VC_transform.autoLeap(segeu_data: segueInf)
+                default:
+                    print("targetClassName is nil")
+                }
             }
         }
     }
