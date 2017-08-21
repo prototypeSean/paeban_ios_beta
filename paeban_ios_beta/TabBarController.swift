@@ -43,7 +43,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
                     self.selectedIndex = pageInt
                     let classFullName = String(describing: class_s.self)
                     
-                    if targetClassName == getClassName(classFullName: classFullName){
+                    if targetClassName == self.getClassName(classFullName: classFullName){
                         target_VC = class_s.self.childViewControllers[0].self
                     }
                 }
