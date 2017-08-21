@@ -24,6 +24,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
     func switchToView(segueInf:Dictionary<String,String>){
         print("autoLearTest step1")
         if let pageInt = leapToPage(segueInf: segueInf){
+            print("autoLearTest step1.1")
             let childView = self.childViewControllers
             var targetClassName:String
             switch pageInt{
@@ -36,12 +37,13 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
             default:
                 targetClassName = ""
             }
+            print("autoLearTest step1.2")
             for class_s in childView{
                 let nav = class_s as! UINavigationController
                 nav.popViewController(animated: false)
                 self.selectedIndex = pageInt
                 let classFullName = String(describing: class_s.self)
-                
+                print("autoLearTest step1.3")
                 if targetClassName == getClassName(classFullName: classFullName){
                     let target_VC = class_s.self.childViewControllers[0].self
                     switch pageInt {
@@ -49,7 +51,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
                         let target_VC_transform = target_VC as! MyTopicTableViewController
                         //target_VC_transform.pop_to_root_view()
                         //self.selectedIndex = pageInt
-                        print("autoLearTest step1")
+                        print("autoLearTest step2")
                         target_VC_transform.autoLeap(segeu_data: segueInf)
                     case 2:
                         let target_VC_transform = target_VC as! RecentTableViewController
