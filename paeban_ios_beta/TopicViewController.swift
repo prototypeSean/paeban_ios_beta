@@ -406,12 +406,14 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         re_new_client_img()
     }
     func re_new_client_img(){
-        client_data_obj!.get_client_img(act: { (return_img:UIImage?) in
-            if return_img != nil{
-                self.ownerImg = return_img
-                self.guestPhotoImg.image = return_img
-            }
-        })
+        client_data_obj!.get_client_data { (return_dic:Dictionary<String, AnyObject>) in
+            let img_str = return_dic["img"] as! String
+            let img = base64ToImage(img_str)
+            self.ownerImg = img
+            self.guestPhotoImg.image = img
+            self.setName = return_dic["client_name"] as? String
+            self.title = self.setName
+        }
     }
     // MARK: override function
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

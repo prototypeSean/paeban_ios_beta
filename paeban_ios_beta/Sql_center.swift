@@ -1104,7 +1104,7 @@ public class SQL_center{
             active <- true
         )
         do{
-            if try sql_db!.scalar(recent_topic.filter(topic_id == input_dic["topic_id"]!).count) > 0{
+            if try sql_db!.scalar(recent_topic.filter(topic_id == input_dic["topic_id"]!).count) == 0{
                 try sql_db?.run(insert)
             }
         }
@@ -1245,6 +1245,21 @@ public class SQL_center{
             print("ERROR delete_recent_topic_complete")
             print(error)
         }
+    }
+    func get_recent_title(topic_id:String) -> String?{
+        do{
+            let query = recent_topic.filter(self.topic_id == topic_id)
+            if let topic_obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            }){
+                return topic_obj[topic_title]
+            }
+        }
+        catch{
+            print("ERROR get_recent_detail_data")
+            print(error)
+        }
+        return nil
     }
     func print_recent_db(){
         do{

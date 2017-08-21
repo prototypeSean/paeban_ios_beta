@@ -2,7 +2,7 @@ import UIKit
 
 class RecentTableViewController: UITableViewController, webSocketActiveCenterDelegate, RecentTableViewModelDelegate, TopicViewControllerDelegate{
     var rTVModel = RecentTableViewModel()
-    
+    var segue_data:Dictionary<String,AnyObject> = [:]
 
     @IBAction func master_test_msg(_ sender: Any) {
         let send_dic = ["msg_type":"cmd","text":"master_test_msg"]
@@ -60,7 +60,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
                 getSegueData = rTVModel.getSegueData(index)
             }
             else{
-                getSegueData = rTVModel.getSegueData(rTVModel.segueDataIndex!)
+                getSegueData = segue_data
             }
             
             topicViewCon.topicId = getSegueData["topicId"] as? String
@@ -72,6 +72,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             topicViewCon.title = getSegueData["title"] as? String
             topicViewCon.delegate = self
             rTVModel.chat_view = topicViewCon
+            segue_data = [:]
         }
         
     }
@@ -170,35 +171,42 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             let segue_topic_id = segeu_data["topic_id"]
             let segue_user_id = segeu_data["user_id"]
             
-            var targetData_Dickey:Array<MyTopicStandardType>.Index?
-            
-            var while_pertect = 5000
-            
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
-                while targetData_Dickey == nil && while_pertect >= 0{
-                    
-                    targetData_Dickey = self.rTVModel.recentDataBase.index(where: { (MyTopicStandardType) -> Bool in
-                        if MyTopicStandardType.topicId_title == segue_topic_id && MyTopicStandardType.clientId_detial == segue_user_id{
-                            return true
-                        }
-                        else{return false}
-                    })
-                    
-                    if targetData_Dickey != nil{
-                        DispatchQueue.main.async {
-                            notificationSegueInf = [:]
-                            self.rTVModel.segueDataIndex = targetData_Dickey! as Int
-                            self.performSegue(withIdentifier: "clientModeSegue3", sender: nil)
-                            notificationSegueInf = [:]
-                        }
-                        
-                    }
-                    usleep(100000)
-                    while_pertect -= 100
-                }
-                //self.segueData = nil
-                notificationSegueInf = [:]
+            self.segue_data["topicId"] = segue_topic_id! as AnyObject
+            self.segue_data["ownerId"] = segue_user_id! as AnyObject
+            if let topic_title = sql_database.get_recent_title(topic_id: segue_topic_id!){
+                self.segue_data["topicTitle"] = topic_title as AnyObject
             }
+            self.performSegue(withIdentifier: "clientModeSegue3", sender: nil)
+            
+//            var targetData_Dickey:Array<MyTopicStandardType>.Index?
+//            
+//            var while_pertect = 5000
+//            
+//            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
+//                while targetData_Dickey == nil && while_pertect >= 0{
+//                    
+//                    targetData_Dickey = self.rTVModel.recentDataBase.index(where: { (MyTopicStandardType) -> Bool in
+//                        if MyTopicStandardType.topicId_title == segue_topic_id && MyTopicStandardType.clientId_detial == segue_user_id{
+//                            return true
+//                        }
+//                        else{return false}
+//                    })
+//                    
+//                    if targetData_Dickey != nil{
+//                        DispatchQueue.main.async {
+//                            notificationSegueInf = [:]
+//                            self.rTVModel.segueDataIndex = targetData_Dickey! as Int
+//                            self.performSegue(withIdentifier: "clientModeSegue3", sender: nil)
+//                            notificationSegueInf = [:]
+//                        }
+//                        
+//                    }
+//                    usleep(100000)
+//                    while_pertect -= 100
+//                }
+//                //self.segueData = nil
+//                notificationSegueInf = [:]
+//            }
             
         }
     }

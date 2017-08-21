@@ -109,7 +109,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         super.viewWillAppear(animated)
         wsActive.wasd_ForChatViewController = self
         add_tap()
-
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -252,6 +251,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         var data_dic:Array<Dictionary<String, AnyObject>> = []
         if mode == .initial{
             data_dic = sql_database.get_histopry_msg(topic_id_input: topicId!, client_id: clientID!, max_msg_long: max_load_msg_number, reference_point_local_id: 0, mode: mode)
+            print("--**---***---**--")
+            print(clientID)
+            print(topicId)
         }
         else if mode == .page_up{
             let reference_point_local_id = messages[0].id_local!

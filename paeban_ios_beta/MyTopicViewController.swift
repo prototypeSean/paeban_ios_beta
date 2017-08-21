@@ -294,17 +294,13 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         self.setBgImg()
         self.check_is_friend()
         client_data_obj = Client_detail_data(topic_id: topicId!, client_id: setID!)
+        self.title = ""
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setImage()
-        
         re_new_my_img()
-        client_data_obj?.get_client_img { (return_img:UIImage?) in
-            if return_img != nil{
-                self.guestPhotoImg.image = return_img
-            }
-        }
+        re_new_client_img()
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -349,6 +345,15 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
                 }
             }
         }
+    }
+    func re_new_client_img(){
+        client_data_obj?.get_client_data(act: { (return_dic:Dictionary<String, AnyObject>) in
+            let img_str = return_dic["img"] as! String
+            let img = base64ToImage(img_str)
+            self.guestPhotoImg.image = img
+            self.setName = return_dic["client_name"] as? String
+            self.title = self.setName
+        })
     }
     func set_my_img_level(input_img:UIImage, level_input:Int)->UIImage?{
         let context = CIContext(options: nil)
