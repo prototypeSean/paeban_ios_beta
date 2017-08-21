@@ -35,6 +35,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
             default:
                 targetClassName = ""
             }
+            var target_VC:UIViewController?
             for class_s in childView{
                 let nav = class_s as! UINavigationController
                 nav.popViewController(animated: false)
@@ -42,29 +43,27 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
                 let classFullName = String(describing: class_s.self)
                 
                 if targetClassName == getClassName(classFullName: classFullName){
-                    let target_VC = class_s.self.childViewControllers[0].self
-                    switch pageInt {
-                    case 1:
-                        let target_VC_transform = target_VC as! MyTopicTableViewController
-                        //target_VC_transform.pop_to_root_view()
-                        //self.selectedIndex = pageInt
-                        target_VC_transform.autoLeap(segeu_data: segueInf)
-                    case 2:
-                        let target_VC_transform = target_VC as! RecentTableViewController
-                        //target_VC_transform.pop_to_root_view()
-                        //self.selectedIndex = pageInt
-                        target_VC_transform.autoLeap(segeu_data: segueInf)
-                    case 3:
-                        let target_VC_transform = target_VC as! FriendTableViewController
-                        //target_VC_transform.pop_to_root_view()
-                        
-                        target_VC_transform.autoLeap(segeu_data: segueInf)
-                    default:
-                        print("targetClassName is nil")
-                    }
-                    break
+                    target_VC = class_s.self.childViewControllers[0].self
                 }
+            }
+            switch pageInt {
+            case 1:
+                let target_VC_transform = target_VC as! MyTopicTableViewController
+                //target_VC_transform.pop_to_root_view()
+                //self.selectedIndex = pageInt
+                target_VC_transform.autoLeap(segeu_data: segueInf)
+            case 2:
+                let target_VC_transform = target_VC as! RecentTableViewController
+                //target_VC_transform.pop_to_root_view()
+                //self.selectedIndex = pageInt
+                target_VC_transform.autoLeap(segeu_data: segueInf)
+            case 3:
+                let target_VC_transform = target_VC as! FriendTableViewController
+                //target_VC_transform.pop_to_root_view()
                 
+                target_VC_transform.autoLeap(segeu_data: segueInf)
+            default:
+                print("targetClassName is nil")
             }
         }
     }

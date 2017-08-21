@@ -142,7 +142,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("autoLearTest step4")
         if segue.identifier == "masterModeSegue"{
             var data_dic:Dictionary<String,AnyObject> = [:]
             let nextView = segue.destination as! MyTopicViewController
@@ -811,7 +810,6 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         parent.popToRootViewController(animated: false)
     }
     func autoLeap(segeu_data:Dictionary<String,String>){
-        print("autoLearTest step3")
         if !segeu_data.isEmpty{
             let segue_topic_id = segeu_data["topic_id"]
             let segue_user_id = segeu_data["user_id"]
