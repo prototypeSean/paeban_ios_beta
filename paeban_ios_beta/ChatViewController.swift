@@ -81,6 +81,13 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+//        do{
+//            try self.collectionView?.removeObserver(self, forKeyPath: "contentSize")
+//        }
+//        catch{
+//            print("ERROR removeObserver")
+//            print(error)
+//        }
         self.collectionView?.removeObserver(self, forKeyPath: "contentSize")
     }
     // MARK: 設定訊息顏色，用JSQ的套件
@@ -116,9 +123,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         update_database(mode: .change_resend_btn)
 //        update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
         request_last_read_id_from_server()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { 
-            self.collectionView?.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
-        }
+        self.collectionView?.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
     }
 
         // 下面兩個負責讀取訊息

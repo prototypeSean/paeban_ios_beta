@@ -97,16 +97,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        print("applicationWillEnterForeground")
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
-    
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("====applicationDidBecomeActive====")
         app_instence = application
         FBSDKAppEvents.activateApp()
         back_ground_state = false
-        
+        if !notificationSegueInf.isEmpty && logInState && (application.applicationState == UIApplicationState.inactive){
+            DispatchQueue.global(qos: .userInteractive).async {
+                notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
+                notificationSegueInf = [:]
+            }
+        }
         if (socket != nil){
             if socket.isConnected{
                 socket.disconnect()
@@ -117,10 +122,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         }
         else{
             print("socket_is_nil")
-        }
-        if !notificationSegueInf.isEmpty && logInState && (application.applicationState == UIApplicationState.inactive){
-            notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
-            notificationSegueInf = [:]
         }
         app_event_delegate?.app_did_active()
         
