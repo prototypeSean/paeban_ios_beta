@@ -101,11 +101,10 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         senderId = setID
         senderDisplayName = setName
         dennis_kao_s_fucking_trash()
-        
-        // 監聽 contentSize 的變化
-        self.collectionView?.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
+        // 監聽 contentSize 的變化
+        self.collectionView?.addObserver(self, forKeyPath: "contentSize", options: NSKeyValueObservingOptions.old, context: nil)
         super.viewWillAppear(animated)
         wsActive.wasd_ForChatViewController = self
         add_tap()
