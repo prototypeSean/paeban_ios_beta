@@ -115,7 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
                 notificationSegueInf = [:]
             }
         }
-        DispatchQueue.global(qos: .default).async {
+        DispatchQueue.global(qos: .background).async {
             if (socket != nil){
                 if socket.isConnected{
                     socket.disconnect()
