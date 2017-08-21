@@ -103,11 +103,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("====applicationDidBecomeActive====")
+        print(Date().timeIntervalSince1970)
         app_instence = application
         FBSDKAppEvents.activateApp()
         back_ground_state = false
         if !notificationSegueInf.isEmpty && logInState && (application.applicationState == UIApplicationState.inactive){
-            DispatchQueue.global(qos: .userInteractive).async {
+            DispatchQueue.main.async {
                 notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
                 notificationSegueInf = [:]
             }
