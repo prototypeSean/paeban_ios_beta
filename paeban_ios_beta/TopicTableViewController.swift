@@ -34,6 +34,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     var topicsBackup:Array<Topic> = []
     var httpOBJ = HttpRequestCenter()
     var requestUpDataSwitch = true
+    var last_check_online_time:TimeInterval?
     // MARK:override
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -167,23 +168,28 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
     }
     func update_online_state(){
-        var client_id_list:Array<String> = []
-        for cell_datas in topics{
-            client_id_list.append(cell_datas.owner)
-        }
-        HttpRequestCenter().inquire_online_state(client_id_list: client_id_list) { (return_dic:Dictionary<String, AnyObject>) in
-            if !return_dic.isEmpty{
-                let return_dic_copy = return_dic as! Dictionary<String,Bool>
-                for cell_datas in self.topics{
-                    if let online_state = return_dic_copy[cell_datas.owner]{
-                        cell_datas.online = online_state
+        let time_now = Date().timeIntervalSinceNow
+        if last_check_online_time == nil || time_now - last_check_online_time! > 10{
+            last_check_online_time = time_now
+            var client_id_list:Array<String> = []
+            for cell_datas in topics{
+                client_id_list.append(cell_datas.owner)
+            }
+            HttpRequestCenter().inquire_online_state(client_id_list: client_id_list) { (return_dic:Dictionary<String, AnyObject>) in
+                if !return_dic.isEmpty{
+                    let return_dic_copy = return_dic as! Dictionary<String,Bool>
+                    for cell_datas in self.topics{
+                        if let online_state = return_dic_copy[cell_datas.owner]{
+                            cell_datas.online = online_state
+                        }
                     }
-                }
-                DispatchQueue.main.async {
-                    self.topicList.reloadData()
+                    DispatchQueue.main.async {
+                        self.topicList.reloadData()
+                    }
                 }
             }
         }
+        
         
     }
     func new_topic_did_load(_ http_obj:HttpRequestCenter){

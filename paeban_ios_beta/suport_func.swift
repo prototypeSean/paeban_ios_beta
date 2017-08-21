@@ -217,6 +217,7 @@ func get_friend_img(after:(()->Void)?){
 //    }
 }
 
+
 enum load_data_mode {
     case initial
     case page_up

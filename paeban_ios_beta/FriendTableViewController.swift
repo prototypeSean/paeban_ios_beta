@@ -7,10 +7,10 @@
 //
 
 import UIKit
-
 class FriendTableViewController: UITableViewController,FriendInvitedCellTableViewCell_delegate {
     var model:FriendTableViewMedol?
     var segue_data_index:Int?
+    var segue_data:Dictionary<String,AnyObject> = [:]
     @IBAction func ok_btn(_ sender: AnyObject) {
         let cell = sender.superview??.superview as! UITableViewCell
         let indexPath = self.tableView.indexPath(for: cell)
@@ -40,6 +40,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         model?.getFrientList()
         synchronize_friend_table {
             self.model?.getFrientList()
+            self.model?.chat_view?.set_guest_img()
         }
         getInviteList()
         self.update_badges()
@@ -81,7 +82,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
                 getSegueData = model!.getSegueData(index)
             }
             else{
-                getSegueData = model!.getSegueData(self.segue_data_index!)
+                getSegueData = self.segue_data
             }
             topicViewCon.setID = userData.id
             topicViewCon.setName = userData.name
@@ -91,6 +92,8 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             topicViewCon.clientImg = getSegueData["clientImg"] as? UIImage
             topicViewCon.title = "好友"
             model?.chat_view = topicViewCon
+            
+            getSegueData = [:]
         }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -212,42 +215,49 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
     func autoLeap(segeu_data:Dictionary<String,String>){
         // 飛行
         if !segeu_data.isEmpty && recive_apns_switch{
-            let segue_user_id = segeu_data["user_id"]
-            var targetData_Dickey:Array<FriendStanderType>.Index?
-            
-            var while_pertect = 5000
-            
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
-                while targetData_Dickey == nil && while_pertect >= 0{
-                    var break_flag = false
-                    targetData_Dickey = self.model?.friendsList.index(where: { (FriendStanderType) -> Bool in
-                        if FriendStanderType.id == segue_user_id{
-                            return true
-                        }
-                        else{return false}
-                    })
-                    
-                    
-                    if targetData_Dickey != nil{
-                        DispatchQueue.main.async {
-                            
-                            notificationSegueInf = [:]
-                            self.segue_data_index = targetData_Dickey
-                            self.performSegue(withIdentifier: "friendConBox", sender: nil)
-                            break_flag = true
-                            recive_apns_switch = false
-                        }
+            if let segue_user_id = segeu_data["user_id"]{
+                if let friend_name = sql_database.get_friend_name(friend_id:segue_user_id){
+                    self.segue_data["clientId"] = segue_user_id as AnyObject
+                    self.segue_data["clientName"] = friend_name as AnyObject
+                    if let img = sql_database.get_friend_img(friend_id: segue_user_id){
+                        self.segue_data["clientImg"] = img
                     }
-                    if break_flag{
-                        break
-                    }
-                    usleep(100000)
-                        while_pertect -= 100
-                    }
+                    self.performSegue(withIdentifier: "friendConBox", sender: nil)
                 }
-                //self.segueData = nil
-                notificationSegueInf = [:]
+            }
+            notificationSegueInf = [:]
             
+            
+//            var targetData_Dickey:Array<FriendStanderType>.Index?
+//            var while_pertect = 5000
+//            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
+//                while targetData_Dickey == nil && while_pertect >= 0{
+//                    var break_flag = false
+//                    targetData_Dickey = self.model?.friendsList.index(where: { (FriendStanderType) -> Bool in
+//                        if FriendStanderType.id == segue_user_id{
+//                            return true
+//                        }
+//                        else{return false}
+//                    })
+//                    
+//                    
+//                    if targetData_Dickey != nil{
+//                        DispatchQueue.main.async {
+//                            
+//                            notificationSegueInf = [:]
+//                            self.segue_data_index = targetData_Dickey
+//                            self.performSegue(withIdentifier: "friendConBox", sender: nil)
+//                            break_flag = true
+//                            recive_apns_switch = false
+//                        }
+//                    }
+//                    if break_flag{
+//                        break
+//                    }
+//                    usleep(100000)
+//                        while_pertect -= 100
+//                    }
+//                }
         }
     }
     func getInviteList(){

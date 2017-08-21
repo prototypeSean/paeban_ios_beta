@@ -28,6 +28,7 @@ class MyTopicTableViewModel{
     var chat_view:MyTopicViewController?
     var topic_leave_list:Array<Dictionary<String,String>> = []
     var online_state_dic:Dictionary<String,Bool> = [:]
+    var last_check_online_time:TimeInterval?
     
     // ====controller func 2.0 ====
     func main_loading_v2(){
@@ -595,40 +596,44 @@ class MyTopicTableViewModel{
         delegate?.model_relodata()
     }
     func updata_online_state(){
-        var client_list:Array<String> = []
-        for sec_topic_datas in secTopic.values{
-            for client_objs in sec_topic_datas{
-                client_list.append(client_objs.clientId_detial!)
+        let time_now = Date().timeIntervalSince1970
+        if last_check_online_time == nil || time_now - last_check_online_time! > 30{
+            var client_list:Array<String> = []
+            for sec_topic_datas in secTopic.values{
+                for client_objs in sec_topic_datas{
+                    client_list.append(client_objs.clientId_detial!)
+                }
             }
-        }
-        HttpRequestCenter().inquire_online_state(client_id_list: client_list) { (return_dic:Dictionary<String, AnyObject>) in
-            if !return_dic.isEmpty{
-                DispatchQueue.main.async {
-                    let return_dic_copy = return_dic as! Dictionary<String,Bool>
-                    for sec_topic_datas in self.secTopic.values{
-                        for client_objs in sec_topic_datas{
-                            
-                            if let online_state = return_dic_copy[client_objs.clientId_detial!]{
-                                self.online_state_dic[client_objs.clientId_detial!] = return_dic_copy[client_objs.clientId_detial!]
-                                client_objs.clientOnline_detial = online_state
+            HttpRequestCenter().inquire_online_state(client_id_list: client_list) { (return_dic:Dictionary<String, AnyObject>) in
+                if !return_dic.isEmpty{
+                    DispatchQueue.main.async {
+                        let return_dic_copy = return_dic as! Dictionary<String,Bool>
+                        for sec_topic_datas in self.secTopic.values{
+                            for client_objs in sec_topic_datas{
+                                
+                                if let online_state = return_dic_copy[client_objs.clientId_detial!]{
+                                    self.online_state_dic[client_objs.clientId_detial!] = return_dic_copy[client_objs.clientId_detial!]
+                                    client_objs.clientOnline_detial = online_state
+                                }
+                                //                            if let index = self.mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
+                                //                                if client_objs.clientId_detial == ele.clientId_detial &&
+                                //                                    client_objs.topicId_title == ele.topicId_title &&
+                                //                                    client_objs.clientOnline_detial != ele.clientOnline_detial{
+                                //                                    return true
+                                //                                }
+                                //                                return false
+                                //                            }){
+                                //                                let index_path = IndexPath(row: index, section: 0)
+                                //                                self.mytopic[index].clientOnline_detial = client_objs.clientOnline_detial
+                                //                                self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
+                                //                            }
                             }
-//                            if let index = self.mytopic.index(where: { (ele:MyTopicStandardType) -> Bool in
-//                                if client_objs.clientId_detial == ele.clientId_detial &&
-//                                    client_objs.topicId_title == ele.topicId_title &&
-//                                    client_objs.clientOnline_detial != ele.clientOnline_detial{
-//                                    return true
-//                                }
-//                                return false
-//                            }){
-//                                let index_path = IndexPath(row: index, section: 0)
-//                                self.mytopic[index].clientOnline_detial = client_objs.clientOnline_detial
-//                                self.delegate?.model_relod_row(index_path_list: [index_path], option: .none)
-//                            }
                         }
                     }
                 }
             }
         }
+        
     }
     func remove_sec_topic_data(client_id:String){
         for topic_ids in secTopic.keys{

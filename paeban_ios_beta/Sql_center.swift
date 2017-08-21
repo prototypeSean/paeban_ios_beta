@@ -624,7 +624,6 @@ public class SQL_center{
             if let friend_obj = try sql_db!.prepare(friend_list_table.filter(username == friend_id)).first(where: { (row) -> Bool in
                 return true
             }){
-                print(friend_id)
                 if friend_obj[friend_image] != nil{
                     return base64ToImage(friend_obj[friend_image]!)
                 }
@@ -633,6 +632,20 @@ public class SQL_center{
         }
         catch{
             print("ERROR get_friend_img")
+            print(error)
+        }
+        return nil
+    }
+    func get_friend_name(friend_id:String) -> String?{
+        do{
+            if let friend_obj = try sql_db!.prepare(friend_list_table.filter(username == friend_id)).first(where: { (row) -> Bool in
+                return true
+            }){
+                return friend_obj[user_full_name]
+            }
+        }
+        catch{
+            print("ERROR get_friend_name")
             print(error)
         }
         return nil

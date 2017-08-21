@@ -23,6 +23,8 @@ class RecentTableViewModel{
     var delegate:RecentTableViewModelDelegate?
     var chat_view:TopicViewController?
     var leave_topic_master_list:Array<Dictionary<String,String>> = []
+    var last_check_online_time:TimeInterval?
+    
     // controller func
     func reCheckDataBase() {
         recentDataBase = []
@@ -228,23 +230,28 @@ class RecentTableViewModel{
         
     }
     func updata_online_state(){
-        var client_list:Array<String> = []
-        for client_data_s in recentDataBase{
-            client_list.append(client_data_s.clientId_detial!)
-        }
-        HttpRequestCenter().inquire_online_state(client_id_list: client_list) { (return_dic:Dictionary<String, AnyObject>) in
-            if !return_dic.isEmpty{
-                DispatchQueue.main.async {
-                    let return_dic_copy = return_dic as! Dictionary<String,Bool>
-                    for cell_datas in self.recentDataBase{
-                        if let online_state = return_dic_copy[cell_datas.clientId_detial!]{
-                            cell_datas.clientOnline_detial = online_state
+        let time_now = Date().timeIntervalSince1970
+        if last_check_online_time == nil || time_now - last_check_online_time! > 30{
+            last_check_online_time = time_now
+            var client_list:Array<String> = []
+            for client_data_s in recentDataBase{
+                client_list.append(client_data_s.clientId_detial!)
+            }
+            HttpRequestCenter().inquire_online_state(client_id_list: client_list) { (return_dic:Dictionary<String, AnyObject>) in
+                if !return_dic.isEmpty{
+                    DispatchQueue.main.async {
+                        let return_dic_copy = return_dic as! Dictionary<String,Bool>
+                        for cell_datas in self.recentDataBase{
+                            if let online_state = return_dic_copy[cell_datas.clientId_detial!]{
+                                cell_datas.clientOnline_detial = online_state
+                            }
                         }
+                        self.delegate?.model_relodata()
                     }
-                    self.delegate?.model_relodata()
                 }
             }
         }
+        
     }
     func update_battery_state(){
         var topic_id_list:Array<String> = []

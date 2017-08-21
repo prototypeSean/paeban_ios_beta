@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FriendChatUpViewController: UIViewController {
+class FriendChatUpViewController: UIViewController{
     let gradientLayer = CAGradientLayer()
     
     @IBOutlet weak var reportOutlet: UIButton!
@@ -66,7 +66,7 @@ class FriendChatUpViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setImage()
-        guestPhotoImg.image = sql_database.get_friend_img(friend_id: clientId!)
+        set_guest_img()
     }
     
     override func viewDidLayoutSubviews() {
@@ -88,7 +88,6 @@ class FriendChatUpViewController: UIViewController {
 //        }
     }
     func getPriMsgHistoryData(){}
-    
     
     // 設置照片外觀眉角
     func setImage(){
@@ -153,7 +152,6 @@ class FriendChatUpViewController: UIViewController {
         topicInfoBG.layer.addSublayer(gradientLayer)
         
     }
-    
 
     // 封鎖
     func block(){
@@ -248,5 +246,13 @@ class FriendChatUpViewController: UIViewController {
     func relace_chat_view_client_id(){
         chat_view?.setID = nil
         chat_view?.clientId = nil
+    }
+    
+    func set_guest_img(){
+        if guestPhotoImg.image == nil{
+            if let img = sql_database.get_friend_img(friend_id: clientId!){
+                guestPhotoImg.image = img
+            }
+        }
     }
 }
