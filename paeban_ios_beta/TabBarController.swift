@@ -22,6 +22,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         update_badges()
     }
     func switchToView(segueInf:Dictionary<String,String>){
+        // fly
         print(Date().timeIntervalSince1970)
         DispatchQueue.main.async {
             if let pageInt = leapToPage(segueInf: segueInf){

@@ -118,6 +118,8 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         add_tap()
     }
     override func viewDidAppear(_ animated: Bool) {
+        // fly
+        print(Date().timeIntervalSince1970)
         super.viewDidAppear(animated)
         update_database(mode: .initial)
         update_database(mode: .change_resend_btn)
