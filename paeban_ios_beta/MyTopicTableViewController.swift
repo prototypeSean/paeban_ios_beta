@@ -813,7 +813,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         if !segeu_data.isEmpty{
             let segue_topic_id = segeu_data["topic_id"]
             let segue_user_id = segeu_data["user_id"]
-            self.segueData["topicId"] = segue_topic_id! as AnyObject
+            self.segueData["topic_id"] = segue_topic_id! as AnyObject
             self.segueData["client_id"] = segue_user_id! as AnyObject
             if let topic_title = sql_database.get_recent_title(topic_id: segue_topic_id!){
                 self.segueData["topicTitle"] = topic_title as AnyObject

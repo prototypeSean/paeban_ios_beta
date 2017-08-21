@@ -104,6 +104,9 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         else if cmd_line == "printtemp"{
             sql_database.print_temp()
         }
+        else if cmd_line == "resettmp"{
+            sql_database.reset_tmp()
+        }
         else if cmd_line == "help"{
             let help_list = [
                 "recent_db       列印recent_topic",

@@ -3021,6 +3021,14 @@ public class SQL_center{
             print(error)
         }
     }
+    func reset_tmp(){
+        do{
+            try sql_db!.run(tmp_client_Table.delete())
+        }
+        catch{
+            print("ERROR reset_tmp")
+        }
+    }
 }
 
 
