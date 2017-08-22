@@ -104,6 +104,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("====applicationDidBecomeActive====")
+        print("時間起算")
+        print(Date().timeIntervalSince1970)
         app_instence = application
         if !notificationSegueInf.isEmpty && logInState{
             DispatchQueue.global(qos: .userInteractive).async {
