@@ -109,8 +109,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         app_instence = application
         FBSDKAppEvents.activateApp()
         back_ground_state = false
+        print(!notificationSegueInf.isEmpty)
+        print(logInState)
+        print(application.applicationState == UIApplicationState.inactive)
         if !notificationSegueInf.isEmpty && logInState && (application.applicationState == UIApplicationState.inactive){
             DispatchQueue.main.async {
+                print("sss")
                 notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
                 notificationSegueInf = [:]
             }
