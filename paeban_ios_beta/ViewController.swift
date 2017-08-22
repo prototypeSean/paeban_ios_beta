@@ -295,8 +295,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         //self.navigationController?.isNavigationBarHidden = false
     }
     override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("segue.identifier")
-        print(segue.identifier)
+        simpoAlert(reason: segue.identifier)
         if segue.identifier == "sing_in_segue"{
             self.navigationController?.isNavigationBarHidden = false
         }
