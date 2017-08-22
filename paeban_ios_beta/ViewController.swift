@@ -298,6 +298,15 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if segue.identifier == "sing_in_segue"{
             self.navigationController?.isNavigationBarHidden = false
         }
+        else if segue.identifier == "segueToMainUI"{
+            if !notificationSegueInf.isEmpty{
+                DispatchQueue.main.async{
+                    notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
+                    notificationSegueInf = [:]
+                    self.set_during_auto_leap()
+                }
+            }
+        }
     }
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -660,7 +669,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     func state_download_history_msg(){
         self.state_lable.text = "下載歷史訊息"
     }
-    
+    func set_during_auto_leap(){
+        during_auto_leap = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) { 
+            during_auto_leap = false
+        }
+    }
     // MARK: webSocket
     var wsTimer:Timer?
     var reConnectCount:Int = 0
@@ -708,12 +722,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             ws_connected(socket)
             wsActive.wsReConnect()
         }
-//        if !notificationSegueInf.isEmpty{
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-//                notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
-//                notificationSegueInf = [:]
-//            })
-//        }
     }
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         socketState = false
