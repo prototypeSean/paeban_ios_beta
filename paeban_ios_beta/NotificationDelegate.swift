@@ -16,8 +16,10 @@ public class NotificationDelegateCenter{
     var delegata:NotificationDelegate?
     
     func noti_incoming(segueInf:Dictionary<String,String>){
-        print("NotificationDelegateCenter_noti_incoming")
-        delegata?.switchToView(segueInf: segueInf)
+        DispatchQueue.main.async {
+            print("NotificationDelegateCenter_noti_incoming")
+            self.delegata?.switchToView(segueInf: segueInf)
+        }
     }
 }
 
