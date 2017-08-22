@@ -45,18 +45,18 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         // 讓整個VIEW往上縮起tabbar的高度
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
-//    override func viewWillAppear(_ animated: Bool) {
-//        model.main_loading_v2()
-//        update_badges()
-//    }
-//    override func viewDidAppear(_ animated: Bool) {
-//        model.chat_view = nil
-//        self.show_leave_topic_alert()
-//        synchronize_tmp_client_Table { 
-//            self.model.main_loading_v2()
-//            self.model.chat_view?.re_new_client_img()
-//        }
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        model.main_loading_v2()
+        update_badges()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        model.chat_view = nil
+        self.show_leave_topic_alert()
+        synchronize_tmp_client_Table { 
+            self.model.main_loading_v2()
+            self.model.chat_view?.re_new_client_img()
+        }
+    }
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

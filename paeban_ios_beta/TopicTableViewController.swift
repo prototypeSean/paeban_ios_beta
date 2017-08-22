@@ -63,23 +63,23 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
 //        initAddTopicArea()
 //    }
         // 從聊天視窗回到清單把cell的反灰取消
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        gettopic()
-//        if let path = topicList.indexPathForSelectedRow {
-//            topicList.deselectRow(at: path, animated: true)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        gettopic()
+        if let path = topicList.indexPathForSelectedRow {
+            topicList.deselectRow(at: path, animated: true)
+        }
+//        DispatchQueue.global(qos: .background).async {
+//            sleep(3)
+//            print(sql_database.get_unsend_topic_data(topic_id_input: "703", client_id: "aaasss"))
 //        }
-////        DispatchQueue.global(qos: .background).async {
-////            sleep(3)
-////            print(sql_database.get_unsend_topic_data(topic_id_input: "703", client_id: "aaasss"))
-////        }
-//        
-//    }
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        initAddTopicArea()
-//        Block_list_center().upload_data_to_synchronize_server_block_list()
-//    }
+        
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        initAddTopicArea()
+        Block_list_center().upload_data_to_synchronize_server_block_list()
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //print(segue.identifier)
         // 轉跳頁面時，收起鍵盤跟開話題的視窗（如果有的話）
