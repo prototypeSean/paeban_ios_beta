@@ -295,11 +295,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         //self.navigationController?.isNavigationBarHidden = false
     }
     override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("segue.identifier")
+        print(segue.identifier)
         if segue.identifier == "sing_in_segue"{
             self.navigationController?.isNavigationBarHidden = false
         }
-        print("segue.identifier")
-        print(segue.identifier)
         else if segue.identifier == "segueToMainUI"{
             if !notificationSegueInf.isEmpty{
                 DispatchQueue.main.async{
