@@ -73,6 +73,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
             topicViewCon.delegate = self
             rTVModel.chat_view = topicViewCon
             segue_data = [:]
+            topicViewCon.reset_during_auto_leap()
         }
         
     }
@@ -177,37 +178,6 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
                 self.segue_data["topicTitle"] = topic_title as AnyObject
             }
             self.performSegue(withIdentifier: "clientModeSegue3", sender: nil)
-            
-//            var targetData_Dickey:Array<MyTopicStandardType>.Index?
-//            
-//            var while_pertect = 5000
-//            
-//            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
-//                while targetData_Dickey == nil && while_pertect >= 0{
-//                    
-//                    targetData_Dickey = self.rTVModel.recentDataBase.index(where: { (MyTopicStandardType) -> Bool in
-//                        if MyTopicStandardType.topicId_title == segue_topic_id && MyTopicStandardType.clientId_detial == segue_user_id{
-//                            return true
-//                        }
-//                        else{return false}
-//                    })
-//                    
-//                    if targetData_Dickey != nil{
-//                        DispatchQueue.main.async {
-//                            notificationSegueInf = [:]
-//                            self.rTVModel.segueDataIndex = targetData_Dickey! as Int
-//                            self.performSegue(withIdentifier: "clientModeSegue3", sender: nil)
-//                            notificationSegueInf = [:]
-//                        }
-//                        
-//                    }
-//                    usleep(100000)
-//                    while_pertect -= 100
-//                }
-//                //self.segueData = nil
-//                notificationSegueInf = [:]
-//            }
-            
         }
     }
     func update_badges(){

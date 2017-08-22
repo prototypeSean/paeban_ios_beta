@@ -255,4 +255,7 @@ class FriendChatUpViewController: UIViewController{
             }
         }
     }
+    func reset_during_auto_leap(){
+        during_auto_leap = false
+    }
 }

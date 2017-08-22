@@ -434,6 +434,9 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     func new_my_topic_msg(sender: String, id_local: String) {
         check_my_photo_level()
     }
+    func reset_during_auto_leap(){
+        during_auto_leap = false
+    }
     private func check_is_friend(){
         if let _ = myFriendsList.index(where: { (element) -> Bool in
             if element.id == setID{

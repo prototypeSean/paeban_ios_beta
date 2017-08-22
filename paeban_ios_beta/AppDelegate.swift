@@ -90,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         if tabBar_pointer != nil{
             (tabBar_pointer as! TabBarController).update_badges()
         }
+        during_auto_leap = false
         print("====applicationDidEnterBackground======")
         
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
@@ -103,25 +104,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("====applicationDidBecomeActive====")
-        print("時間起算點")
-        print("dkdkdk")
-        print(Date().timeIntervalSince1970)
         app_instence = application
-        print(!notificationSegueInf.isEmpty)
-        print(logInState)
-        print(application.applicationState == UIApplicationState.inactive)
-        print("s1")
         if !notificationSegueInf.isEmpty && logInState{
-            print("s2")
             DispatchQueue.global(qos: .userInteractive).async {
                 notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
                 notificationSegueInf = [:]
             }
+            FBSDKAppEvents.activateApp()
+            back_ground_state = false
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 3, execute: {
+                if (socket != nil){
+                    if socket.isConnected{
+                        socket.disconnect()
+                    }
+                    else{
+                        socket.connect()
+                    }
+                }
+                else{
+                    print("socket_is_nil")
+                }
+                self.app_event_delegate?.app_did_active()
+            })
         }
-        FBSDKAppEvents.activateApp()
-        back_ground_state = false
-        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 2, execute: {
-            print("s3")
+        else{
+            FBSDKAppEvents.activateApp()
+            back_ground_state = false
             if (socket != nil){
                 if socket.isConnected{
                     socket.disconnect()
@@ -134,7 +142,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
                 print("socket_is_nil")
             }
             self.app_event_delegate?.app_did_active()
-        })
+        }
+        
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -161,6 +170,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
                 }
             }
             
+        }
+    }
+    func set_during_auto_leap(){
+        during_auto_leap = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { 
+            during_auto_leap = false
         }
     }
 }

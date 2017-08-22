@@ -33,17 +33,17 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
-        //autoLeap()
-        //wsActive.wasd_FriendTableViewMedol = model
-        self.tableView.reloadData()
-        model?.chat_view = nil
-        model?.getFrientList()
-        synchronize_friend_table {
-            self.model?.getFrientList()
-            self.model?.chat_view?.set_guest_img()
+        if !during_auto_leap{
+            self.tableView.reloadData()
+            model?.chat_view = nil
+            model?.getFrientList()
+            synchronize_friend_table {
+                self.model?.getFrientList()
+                self.model?.chat_view?.set_guest_img()
+            }
+            getInviteList()
+            self.update_badges()
         }
-        getInviteList()
-        self.update_badges()
     }
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -92,7 +92,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             topicViewCon.clientImg = getSegueData["clientImg"] as? UIImage
             topicViewCon.title = "好友"
             model?.chat_view = topicViewCon
-            
+            topicViewCon.reset_during_auto_leap()
             getSegueData = [:]
         }
     }

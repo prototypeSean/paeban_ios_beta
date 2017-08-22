@@ -454,6 +454,9 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     }
     
     // test
+    func reset_during_auto_leap(){
+        during_auto_leap = false
+    }
     func check_my_photo_level(){
         let new_level = sql_database.get_level_my(topic_id_in: self.topicId!, client_id: self.ownerId!)
         if self.my_img_level != new_level{

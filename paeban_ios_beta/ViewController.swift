@@ -19,6 +19,7 @@ public let version = "1.1.4.0"
 public let reset_database = false
 public let unlock_img_exp = 7
 public let local_host = "http://www.paeban.com/"
+public let image_url_host = "http://www.paeban.com/media/"
 // init config
 
 
@@ -61,7 +62,7 @@ public var app_instence:UIApplication?
 public var sql_database = SQL_center()
 public var init_sql = false
 public var tabBar_pointer:UITabBarController?
-public let image_url_host = "http://www.paeban.com/media/"
+public var during_auto_leap = false
 
 
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate, CAAnimationDelegate{
