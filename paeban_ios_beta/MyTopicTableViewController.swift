@@ -810,17 +810,19 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         parent.popToRootViewController(animated: false)
     }
     func autoLeap(segeu_data:Dictionary<String,String>){
-        if !segeu_data.isEmpty{
-            print("dkdkdk")
-            print(Date().timeIntervalSince1970)
-            let segue_topic_id = segeu_data["topic_id"]
-            let segue_user_id = segeu_data["user_id"]
-            self.segueData["topic_id"] = segue_topic_id! as AnyObject
-            self.segueData["client_id"] = segue_user_id! as AnyObject
-            if let topic_title = sql_database.get_recent_title(topic_id: segue_topic_id!){
-                self.segueData["topicTitle"] = topic_title as AnyObject
+        DispatchQueue.global(qos: .userInteractive).async {
+            if !segeu_data.isEmpty{
+                print("dkdkdk")
+                print(Date().timeIntervalSince1970)
+                let segue_topic_id = segeu_data["topic_id"]
+                let segue_user_id = segeu_data["user_id"]
+                self.segueData["topic_id"] = segue_topic_id! as AnyObject
+                self.segueData["client_id"] = segue_user_id! as AnyObject
+                if let topic_title = sql_database.get_recent_title(topic_id: segue_topic_id!){
+                    self.segueData["topicTitle"] = topic_title as AnyObject
+                }
+                self.performSegue(withIdentifier: "masterModeSegue", sender: nil)
             }
-            self.performSegue(withIdentifier: "masterModeSegue", sender: nil)
         }
     }
         // 左滑選項的函數

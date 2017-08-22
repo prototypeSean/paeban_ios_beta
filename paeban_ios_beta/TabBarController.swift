@@ -25,7 +25,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         // fly
         print("dkdkdk")
         print(Date().timeIntervalSince1970)
-        DispatchQueue.main.async {
+        DispatchQueue.global(qos: .userInteractive).async {
             if let pageInt = leapToPage(segueInf: segueInf){
                 let childView = self.childViewControllers
                 var targetClassName:String
