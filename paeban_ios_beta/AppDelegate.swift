@@ -113,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         print(logInState)
         print(application.applicationState == UIApplicationState.inactive)
         print("s1")
-        if !notificationSegueInf.isEmpty && logInState && (application.applicationState == UIApplicationState.inactive){
+        if !notificationSegueInf.isEmpty && logInState{
             print("s2")
             DispatchQueue.main.async {
                 notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)

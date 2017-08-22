@@ -707,12 +707,12 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             ws_connected(socket)
             wsActive.wsReConnect()
         }
-        if !notificationSegueInf.isEmpty{
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
-                notificationSegueInf = [:]
-            })
-        }
+//        if !notificationSegueInf.isEmpty{
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+//                notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
+//                notificationSegueInf = [:]
+//            })
+//        }
     }
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?){
         socketState = false
