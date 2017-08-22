@@ -295,12 +295,14 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         //self.navigationController?.isNavigationBarHidden = false
     }
     override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        simpoAlert(reason: segue.identifier)
+        simpoAlert(reason: segue.identifier!)
         if segue.identifier == "sing_in_segue"{
             self.navigationController?.isNavigationBarHidden = false
         }
         else if segue.identifier == "segueToMainUI"{
+            simpoAlert(reason: "st1")
             if !notificationSegueInf.isEmpty{
+                simpoAlert(reason: "st2")
                 DispatchQueue.main.async{
                     notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
                     notificationSegueInf = [:]
