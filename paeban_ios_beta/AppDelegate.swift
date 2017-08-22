@@ -112,27 +112,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         print(!notificationSegueInf.isEmpty)
         print(logInState)
         print(application.applicationState == UIApplicationState.inactive)
+        print("s1")
         if !notificationSegueInf.isEmpty && logInState && (application.applicationState == UIApplicationState.inactive){
+            print("s2")
             DispatchQueue.main.async {
-                print("sss")
                 notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
                 notificationSegueInf = [:]
             }
         }
-//        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1, execute: {
-//            if (socket != nil){
-//                if socket.isConnected{
-//                    socket.disconnect()
-//                }
-//                else{
-//                    socket.connect()
-//                }
-//            }
-//            else{
-//                print("socket_is_nil")
-//            }
-//            self.app_event_delegate?.app_did_active()
-//        })
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1, execute: {
+            print("s3")
+            if (socket != nil){
+                if socket.isConnected{
+                    socket.disconnect()
+                }
+                else{
+                    socket.connect()
+                }
+            }
+            else{
+                print("socket_is_nil")
+            }
+            self.app_event_delegate?.app_did_active()
+        })
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
