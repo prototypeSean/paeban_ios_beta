@@ -107,8 +107,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         print("dkdkdk")
         print(Date().timeIntervalSince1970)
         app_instence = application
-        FBSDKAppEvents.activateApp()
-        back_ground_state = false
         print(!notificationSegueInf.isEmpty)
         print(logInState)
         print(application.applicationState == UIApplicationState.inactive)
@@ -120,7 +118,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
                 notificationSegueInf = [:]
             }
         }
-        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1, execute: {
+        FBSDKAppEvents.activateApp()
+        back_ground_state = false
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 2, execute: {
             print("s3")
             if (socket != nil){
                 if socket.isConnected{
