@@ -29,7 +29,7 @@ public var back_ground_state = false
 public var socket:WebSocket!
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
 public var firstActiveApp = true // MARK:打包前改為 true****************************
-public var logInState = true    //記錄現在是否為登入狀態
+public var logInState = false    //記錄現在是否為登入狀態
 public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
 public var cookie_new = Cookie_Data() //全域紀錄的餅乾
 public var notificationSegueInf:Dictionary<String,String> = [:]
