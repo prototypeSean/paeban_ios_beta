@@ -2706,9 +2706,9 @@ public class SQL_center{
         return false
     }
     func update_user_img(input_dic:Dictionary<String,AnyObject>){
-        let query = user_data_table.filter(img_name == input_dic["img_name"] as! String)
-        let updata = query.update(
-            img <- input_dic["img"] as? String
+        let updata = user_data_table.update(
+            img <- input_dic["img"] as? String,
+            img_name <- input_dic["img_name"] as! String
         )
         do{
             try sql_db!.run(updata)
