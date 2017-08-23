@@ -64,6 +64,13 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
 //    }
         // 從聊天視窗回到清單把cell的反灰取消
     override func viewWillAppear(_ animated: Bool) {
+        if !notificationSegueInf.isEmpty{
+            DispatchQueue.main.async {
+                notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
+                notificationSegueInf = [:]
+                self.set_during_auto_leap()
+            }
+        }
         if !during_auto_leap{
             super.viewWillAppear(animated)
             gettopic()
@@ -237,6 +244,13 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             self.present(alert, animated: true, completion: nil)
         }
     }
+    func set_during_auto_leap(){
+        during_auto_leap = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            during_auto_leap = false
+        }
+    }
+    
     
     // MARK: delegate -> TableView
     func numberOfSections(in tableView: UITableView) -> Int {

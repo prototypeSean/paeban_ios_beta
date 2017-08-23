@@ -105,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         print("時間起算")
         print(Date().timeIntervalSince1970)
         app_instence = application
-        if !notificationSegueInf.isEmpty && logInState && false{
+        if !notificationSegueInf.isEmpty && logInState{
             DispatchQueue.global(qos: .userInteractive).async {
                 notificationDelegateCenter_obj.noti_incoming(segueInf: notificationSegueInf)
                 notificationSegueInf = [:]
