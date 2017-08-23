@@ -167,6 +167,10 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
             isTruePhotoSwitch.isOn = true
             isTruePhoto.tintColor = UIColor(red:0.00, green:0.73, blue:0.62, alpha:1.0)
         }
+        else{
+            isTruePhotoSwitch.isOn = false
+            isTruePhoto.tintColor = UIColor.clear
+        }
     }
     func logOut(){
         HttpRequestCenter().request_user_data("log_out", send_dic: [:]) { (element) in
