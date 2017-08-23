@@ -15,7 +15,7 @@ import CoreLocation
 
 // init config     --  named by DK
 public var my_blur_img_level_dic = [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 8:3, 9:0]
-public let version = "1.1.4.0"
+public let version = "1.1.4.1"
 public let reset_database = false
 public let unlock_img_exp = 7
 public let local_host = "http://www.paeban.com/"
@@ -119,7 +119,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         func check_user_id(input_dic:Dictionary<String, AnyObject>){
             if version_in_db != version ||
                 reset_database ||
-                input_dic["user_id"] as? String != sql_database.get_user_id(){
+                input_dic["user_id"] as? String != sql_database.get_user_id() ||
+                !sql_database.check_sql_update_complete()
+                {
                 print("資料庫重置")
                 
                 sql_database.remove_all_table()
@@ -996,6 +998,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         self.remove_loading_view()
                         self.show_items()
                         self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+                        sql_database.sql_updata_is_complete()
                     }
                 }
             }

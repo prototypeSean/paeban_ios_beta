@@ -2636,6 +2636,7 @@ public class SQL_center{
                 t.column(user_name)
                 t.column(img)
                 t.column(img_name)
+                t.column(sql_update_complete)
             })
             print("表單建立成功")
         }
@@ -2650,7 +2651,8 @@ public class SQL_center{
             let insert = user_data_table.insert(
                 user_id <- input_dic["user_id"] as! String,
                 user_name <- input_dic["user_name"] as! String,
-                img_name <- input_dic["img_name"] as! String
+                img_name <- input_dic["img_name"] as! String,
+                sql_update_complete <- false
             )
         
             try sql_db!.run(insert)
@@ -2659,6 +2661,33 @@ public class SQL_center{
             print(error)
             print("insert_user_name error")
         }
+    }
+    func sql_updata_is_complete(){
+        do{
+            let query = user_data_table.order(id.desc).limit(1)
+            try sql_db!.run(query.update(sql_update_complete <- true))
+        }
+        catch{
+            print("ERROR!!! insert_user_name")
+            print(error)
+        }
+    }
+    func check_sql_update_complete() -> Bool{
+        do{
+            let query = user_data_table.order(id.desc).limit(1)
+            if let obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            }){
+                if obj[sql_update_complete] != nil{
+                    return obj[sql_update_complete]!
+                }
+            }
+        }
+        catch{
+            print("ERROR!!! check_sql_update_complete")
+            print(error)
+        }
+        return false
     }
     func update_user_img(input_dic:Dictionary<String,AnyObject>){
         let query = user_data_table.filter(img_name == input_dic["img_name"] as! String)
