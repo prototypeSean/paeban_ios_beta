@@ -263,10 +263,14 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
                 if !return_dic.isEmpty{
                     DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
                         //let url = local_host + "media/" + (return_dic["user_pic"] as! String)
+                        print("dk1")
+                        
                         userData.name = return_dic["user_name"] as! String?
                         let img_name = return_dic["user_pic"] as! String
                         let is_real_pic = return_dic["show_my_photo"] as! Bool
                         let user_name = return_dic["user_name"] as! String
+                        print(img_name)
+                        print(img_str_save)
                         if img_str_save != nil{
                             userData.img = base64ToImage(img_str_save!)
                             let input_dic = [
