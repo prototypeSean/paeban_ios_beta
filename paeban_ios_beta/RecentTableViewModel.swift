@@ -504,7 +504,7 @@ class RecentTableViewModel{
             //ouputObj.clientOnline_detial = inputData["owner_online"] as? Bool
             ouputObj.tag_detial = inputData["tag_list"] as? Array<String>
             ouputObj.time = inputData["time"] as? Double
-            ouputObj.clientOnline_detial = false
+            //ouputObj.clientOnline_detial = false
             //ouputObj.battery = Int((inputData["battery"] as? String)!)
 //            let httpSendDic = ["client_id":inputData["owner"] as! String,
 //                               "topic_id":inputKey]
