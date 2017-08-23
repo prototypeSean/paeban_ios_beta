@@ -2721,7 +2721,7 @@ public class SQL_center{
     func update_user_date(input_dic:Dictionary<String,AnyObject>){
         do{
             let update = user_data_table.update(
-                username <- input_dic["user_name"] as! String
+                user_name <- input_dic["user_name"] as! String
                 
             )
             try sql_db!.run(update)
