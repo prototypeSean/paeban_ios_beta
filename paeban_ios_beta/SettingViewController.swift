@@ -209,13 +209,8 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     }
     func save_data_to_server(){
         let load_view = add_loading_view()
-        DispatchQueue.global(qos: .background).async {
-            sleep(30)
-            if load_view != nil{
-                DispatchQueue.main.async {
-                    self.remove_load_view(target_view: load_view!)
-                }
-            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 30) { 
+            self.remove_load_view(target_view: load_view!)
         }
         
         var is_true_photo:String
@@ -234,6 +229,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
             ]
         let child_vc = self.childViewControllers[0] as! SettingProfilePicViewController
         DispatchQueue.global(qos: .default).async {
+            var img_str_save:String?
             if child_vc.profilePicImg.image != userData.img && userData.img != nil{
                 var send_img_str = ""
                 var init_qulity = 200
@@ -245,28 +241,57 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
                     send_img_str = new_img_base64
                     init_qulity -= 1
                 }
-                
                 send_dic["is_new_img"] = "data3image/jpeg3base64," + send_img_str
+                img_str_save = "data3image/jpeg3base64," + send_img_str
                 // ;會造成字典解析錯誤 詳見 HttpRequestCenter().change_profile
                 
             }
             if self.name_text.text != userData.name && userData.name != nil && self.name_text.text != ""{
                 send_dic["new_name"] = self.name_text.text!
             }
-            
             HttpRequestCenter().change_profile(send_dic: send_dic as NSDictionary) { (return_dic) in
+                //回復格式
                 //["old_user_name": , "show_my_gender": 1, "old_user_pic": member/154/tes_gkpZIVk.jpeg, "show_my_photo": 0, "msg_type": update_user_profile, "user_pic": member/154/tes_gkpZIVk.jpeg, "user_name": ]
-                userData.name = return_dic["user_name"] as! String?
-                DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
-                    let url = local_host + "media/" + (return_dic["user_pic"] as! String)
-                    HttpRequestCenter().getHttpImg(url, getImg: { (return_img) in
-                        userData.img = return_img
-                    })
+                if !return_dic.isEmpty{
+                    DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                        //let url = local_host + "media/" + (return_dic["user_pic"] as! String)
+                        userData.name = return_dic["user_name"] as! String?
+                        let img_name = return_dic["user_pic"] as! String
+                        let is_real_pic = return_dic["show_my_photo"] as! Bool
+                        let user_name = return_dic["user_name"] as! String
+                        if img_str_save != nil{
+                            userData.img = base64ToImage(img_str_save!)
+                            let input_dic = [
+                                "img_name": img_name,
+                                "img": img_str_save,
+                            ]
+                            sql_database.update_user_img(input_dic: input_dic as Dictionary<String, AnyObject>)
+                        }
+                        userData.is_real_photo = is_real_pic
+                        let input_dic2:Dictionary<String, AnyObject> = [
+                            "user_name": user_name as AnyObject
+                        ]
+                        sql_database.update_user_date(input_dic: input_dic2)
+                        
+                        
+//                        HttpRequestCenter().getHttpImg(url, getImg: { (return_img) in
+//                            userData.img = return_img
+//                        })
+                        DispatchQueue.main.async {
+                            load_view!.removeFromSuperview()
+                        }
+                        
+                    }
+                }
+                else{
                     DispatchQueue.main.async {
                         load_view!.removeFromSuperview()
+                        let alert = UIAlertController(title: "錯誤", message: "發生網路異常，本次變更並未儲存", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "確定", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
                     }
-                    
                 }
+                
                 
             }
         }

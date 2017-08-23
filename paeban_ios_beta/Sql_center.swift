@@ -967,6 +967,21 @@ public class SQL_center{
         }
         return return_list
     }
+    func get_mytopic_title(topic_id:String) -> String?{
+        do{
+            let query = my_topic.filter(self.topic_id == topic_id)
+            if let topic_obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            }){
+                return topic_obj[topic_title]
+            }
+        }
+        catch{
+            print("ERROR get_recent_detail_data")
+            print(error)
+        }
+        return nil
+    }
     func check_old_topic_count() -> Int{
         do{
             return try sql_db!.scalar(my_topic.count)
@@ -2636,6 +2651,7 @@ public class SQL_center{
                 t.column(user_name)
                 t.column(img)
                 t.column(img_name)
+                t.column(is_read)
                 t.column(sql_update_complete)
             })
             print("表單建立成功")
@@ -2700,6 +2716,20 @@ public class SQL_center{
         catch{
             print(error)
             print("update_user_img error")
+        }
+    }
+    func update_user_date(input_dic:Dictionary<String,AnyObject>){
+        do{
+            let update = user_data_table.update(
+                username <- input_dic["user_name"] as! String
+                
+            )
+            try sql_db!.run(update)
+            
+        }
+        catch{
+            print(error)
+            print("update_user_date error")
         }
     }
     func get_user_id() -> String?{

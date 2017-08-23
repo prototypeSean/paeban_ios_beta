@@ -98,13 +98,13 @@ open class webSocketActiveCenter:app_event {
             if mainWorkList.index(of: msgtypeString) != nil {
                 if msgtypeString == "online"{
                     //建立個人資料
-                    userData.id = msg["user_id"] as? String
-                    userData.name = msg["user_name"] as? String
-                    userData.is_real_photo = msg["user_is_real_photo"] as? Bool
-                    let url = "\(local_host)media/\(msg["user_pic"] as! String)"
-                    HttpRequestCenter().getHttpImg(url){(img:UIImage) -> Void in
-                        userData.img = img
-                    }
+//                    userData.id = msg["user_id"] as? String
+//                    userData.name = msg["user_name"] as? String
+//                    userData.is_real_photo = msg["user_is_real_photo"] as? Bool
+//                    let url = "\(local_host)media/\(msg["user_pic"] as! String)"
+//                    HttpRequestCenter().getHttpImg(url){(img:UIImage) -> Void in
+//                        userData.img = img
+//                    }
                 }
                 else if msgtypeString == "topic_msg"{
                     topic_msg_factory(msg: msg)

@@ -212,12 +212,29 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                                 }))
                                 alert.addAction(UIAlertAction(title: "稍後".localized(withComment: "ViewController"), style: .destructive, handler: { (act) in
                                     check_user_id(input_dic: rturn_dic!)
+                                    
+                                    userData.id = rturn_dic!["user_id"] as? String
+                                    userData.is_real_photo = rturn_dic!["is_real_pic"] as? Bool
+                                    userData.name = rturn_dic!["user_name"] as? String
+                                    let user_data = sql_database.get_user_data()
+                                    if user_data?["img"] != nil{
+                                        userData.img = base64ToImage(user_data!["img"]!)
+                                    }
                                 }))
                                 self.present(alert, animated: true, completion: nil)
                             }
                         }
                         else{
                             check_user_id(input_dic: rturn_dic!)
+                            
+                            userData.id = rturn_dic!["user_id"] as? String
+                            userData.is_real_photo = rturn_dic!["is_real_pic"] as? Bool
+                            userData.name = rturn_dic!["user_name"] as? String
+                            let user_data = sql_database.get_user_data()
+                            if user_data?["img"] != nil{
+                                userData.img = base64ToImage(user_data!["img"]!)
+                            }
+                            
                         }
                     }
                 }

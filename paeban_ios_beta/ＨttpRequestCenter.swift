@@ -357,7 +357,7 @@ class HttpRequestCenter{
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
                 if error != nil{
                     print("======連線錯誤======")
-                    print(error)
+                    print(error as Any)
                     if retryCount > 0{
                         DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
                             sleep(1)
@@ -371,7 +371,7 @@ class HttpRequestCenter{
                     
                 }
                 else{
-                    ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as? String
+                    ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as String?
                     if let res = response as? HTTPURLResponse{
                         let status = res.statusCode
                         if status == 200{
@@ -383,7 +383,7 @@ class HttpRequestCenter{
                         else{
                             print("http state\(status)")
                             print(sendDate)
-                            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue))
+                            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as Any)
                         }
                     }
                     
