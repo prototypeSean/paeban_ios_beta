@@ -246,11 +246,12 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
                 send_dic["is_new_img"] = "data3image/jpeg3base64," + send_img_str
                 img_str_save = "data3image/jpeg3base64," + send_img_str
                 // ;會造成字典解析錯誤 詳見 HttpRequestCenter().change_profile
-                
             }
             if self.name_text.text != userData.name && userData.name != nil && self.name_text.text != ""{
                 send_dic["new_name"] = self.name_text.text!
             }
+            print("dkdkdk")
+            print(send_dic["is_myself"])
             HttpRequestCenter().change_profile(send_dic: send_dic as NSDictionary) { (return_dic) in
                 //回復格式
                 //["old_user_name": , "show_my_gender": 1, "old_user_pic": member/154/tes_gkpZIVk.jpeg, "show_my_photo": 0, "msg_type": update_user_profile, "user_pic": member/154/tes_gkpZIVk.jpeg, "user_name": ]
