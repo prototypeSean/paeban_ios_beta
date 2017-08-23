@@ -107,6 +107,13 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         else if cmd_line == "resettmp"{
             sql_database.reset_tmp()
         }
+        else if cmd_line == "getuserdata"{
+            let sss = sql_database.get_user_data()
+            print("img_name")
+            print(sss?["img_name"])
+            print("img")
+            print(sss?["img"])
+        }
         else if cmd_line == "help"{
             let help_list = [
                 "recent_db       列印recent_topic",
@@ -250,8 +257,6 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
             if self.name_text.text != userData.name && userData.name != nil && self.name_text.text != ""{
                 send_dic["new_name"] = self.name_text.text!
             }
-            print("dkdkdk")
-            print(send_dic["is_myself"])
             HttpRequestCenter().change_profile(send_dic: send_dic as NSDictionary) { (return_dic) in
                 //回復格式
                 //["old_user_name": , "show_my_gender": 1, "old_user_pic": member/154/tes_gkpZIVk.jpeg, "show_my_photo": 0, "msg_type": update_user_profile, "user_pic": member/154/tes_gkpZIVk.jpeg, "user_name": ]
