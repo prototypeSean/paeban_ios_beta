@@ -33,6 +33,7 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (self.tabBarController?.tabBar.frame)!.height, 0);
     }
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if !during_auto_leap{
             self.tableView.reloadData()
             model?.chat_view = nil
