@@ -240,7 +240,11 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         HttpRequestCenter().request_user_data("check_announcement", send_dic: [:]) { (return_dic) in
             let text = return_dic["announcement"] as! String
             let alert = UIAlertController(title: "公告".localized(withComment: "TopicTableViewController"), message: text, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "確認".localized(withComment: "TopicTableViewController"), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "確認".localized(withComment: "TopicTableViewController"), style: .default, handler: {(act) in
+                print("dk5")
+                print(notificationSegueInf)
+            }))
+            
             self.present(alert, animated: true, completion: nil)
         }
     }
