@@ -691,7 +691,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
     }
     func force_update_alert(){
-        let alert = UIAlertController(title: "警告", message: "版本過舊，請更新", preferredStyle: .alert)
+        let alert = UIAlertController(title: "錯誤", message: "版本過舊，請更新", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
             UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
             self.force_update_alert()
