@@ -241,8 +241,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             let text = return_dic["announcement"] as! String
             let alert = UIAlertController(title: "公告".localized(withComment: "TopicTableViewController"), message: text, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "確認".localized(withComment: "TopicTableViewController"), style: .default, handler: {(act) in
-                print("dk5")
-                print(notificationSegueInf)
+                simpoAlert2(view: self, reason: String(notificationSegueInf.isEmpty))
             }))
             
             self.present(alert, animated: true, completion: nil)
