@@ -108,7 +108,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     var loading_view:UIView?
     var loading_title_lable:UILabel?
     var persent_lable:UILabel?
-    
+    var force_update = false
     // =====登入程序=====
     func check_data_base(){
         // 驗證userdata

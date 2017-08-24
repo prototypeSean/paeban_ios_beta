@@ -433,11 +433,11 @@ func check_version(ver_local:String,ver_server:String) -> Bool{
     let ver_server_list = turn_ver_to_list(ver: ver_server)
     let list_len = ver_local_list.count
     for ver_list_index in 0..<list_len{
-        if ver_local_list[ver_list_index] > ver_server_list[ver_list_index]{
-            return true
+        if ver_local_list[ver_list_index] < ver_server_list[ver_list_index]{
+            return false
         }
     }
-    return false
+    return true
 }
 func compare_friend_stander_type(ele1:FriendStanderType, ele2:FriendStanderType) -> Bool{
     func make_list(target_obj:FriendStanderType) -> Array<String>{
