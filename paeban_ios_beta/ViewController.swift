@@ -206,27 +206,25 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                                 self.present(alert, animated: true, completion: nil)
                             }
                             else{
+                                userData.id = rturn_dic!["user_id"] as? String
+                                userData.is_real_photo = rturn_dic!["is_real_pic"] as? Bool
+                                userData.name = rturn_dic!["user_name"] as? String
+                                let user_data = sql_database.get_user_data()
+                                if user_data?["img"] != nil{
+                                    userData.img = base64ToImage(user_data!["img"]!)
+                                }
                                 let alert = UIAlertController(title: "通知".localized(withComment: "ViewController"), message:String(format: NSLocalizedString("版本 %@ 已發布\n請盡快更新\n您現在的版本是 %@ ", comment: "ViewController"), rturn_dic!["version"]! as! String, version), preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: "更新".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                                     UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
                                 }))
                                 alert.addAction(UIAlertAction(title: "稍後".localized(withComment: "ViewController"), style: .destructive, handler: { (act) in
                                     check_user_id(input_dic: rturn_dic!)
-                                    
-                                    userData.id = rturn_dic!["user_id"] as? String
-                                    userData.is_real_photo = rturn_dic!["is_real_pic"] as? Bool
-                                    userData.name = rturn_dic!["user_name"] as? String
-                                    let user_data = sql_database.get_user_data()
-                                    if user_data?["img"] != nil{
-                                        userData.img = base64ToImage(user_data!["img"]!)
-                                    }
                                 }))
                                 self.present(alert, animated: true, completion: nil)
                             }
                         }
                         else{
                             check_user_id(input_dic: rturn_dic!)
-                            
                             userData.id = rturn_dic!["user_id"] as? String
                             userData.is_real_photo = rturn_dic!["is_real_pic"] as? Bool
                             userData.name = rturn_dic!["user_name"] as? String
