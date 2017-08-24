@@ -63,7 +63,7 @@ public var sql_database = SQL_center()
 public var init_sql = false
 public var tabBar_pointer:UITabBarController?
 public var during_auto_leap = false
-
+public var force_update = false
 
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate, CAAnimationDelegate{
     
@@ -108,88 +108,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     var loading_view:UIView?
     var loading_title_lable:UILabel?
     var persent_lable:UILabel?
-    var force_update = false
+    var version_in_db:String!
     // =====登入程序=====
     func check_data_base(){
         // 驗證userdata
         // 請求版本號
-        sql_database.connect_sql()
-        let version_in_db = sql_database.load_version()
-        
-        func check_user_id(input_dic:Dictionary<String, AnyObject>){
-            if version_in_db != version ||
-                reset_database ||
-                input_dic["user_id"] as? String != sql_database.get_user_id() ||
-                !sql_database.check_sql_update_complete()
-                {
-                print("資料庫重置")
-                
-                sql_database.remove_all_table()
-                sql_database.establish_all_table(version: version)
-                // reset database
-                
-                sql_database.insert_user_name(input_dic: input_dic)
-                // write user data to database
-                
-                userData.id = input_dic["user_id"] as? String
-                userData.name = input_dic["user_name"] as? String
-                // set public var
-                
-                let url = "\(local_host)media/\(input_dic["img_name"] as! String)"
-                HttpRequestCenter().getHttpImg(url, getImg: { (img) in
-                    userData.img = img
-                    let img_string = imageToBase64(image: img, optional: "withHeader")
-                    let insert_dic = [
-                        "img_name": input_dic["img_name"] as! String,
-                        "img":img_string
-                    ]
-                    sql_database.update_user_img(input_dic: insert_dic as Dictionary<String, AnyObject>)
-                })
-                // get user img from server
-                // and write into database
-                
-                set_loading_view_title(title: "正在更新資料庫".localized(withComment: "ViewController"))
-                update_database(reset_db: "1")
-            }
-            else{
-                if let user_data_get_from_local_database = sql_database.get_user_data(){
-                    userData.id = user_data_get_from_local_database["user_id"]
-                    userData.name = user_data_get_from_local_database["user_name"]
-                    if user_data_get_from_local_database["img"] == nil{
-                        let img_name = user_data_get_from_local_database["img_name"]!
-                        let url = "\(local_host)media/\(img_name)"
-                        HttpRequestCenter().getHttpImg(url, getImg: { (img) in
-                            userData.img = img
-                            let img_string = imageToBase64(image: img, optional: "withHeader")
-                            let insert_dic = [
-                                "img_name": input_dic["img_name"] as! String,
-                                "img":img_string
-                            ]
-                            sql_database.update_user_img(input_dic: insert_dic as Dictionary<String, AnyObject>)
-                        })
-                    }
-                    else{
-                        let img_str = user_data_get_from_local_database["img"]!
-                        userData.img = base64ToImage(img_str)
-                    }
-                }
-                else{
-                    DispatchQueue.global(qos: .background).async {
-                        for _ in 0...10{
-                            print("!!!!!!!!嚴重邏輯錯誤 ＃147!!!!!!!!!!")
-                            sleep(1)
-                            // 無法取得使用者資料！！！
-                        }
-                    }
-                }
-                remove_loading_view()
-                show_items()
-                self.performSegue(withIdentifier: "segueToMainUI", sender: self)
-                let delegate_list = [wsActive.wasd_ForFriendChatViewController]
-                update_private_mag(delegate_target_list: delegate_list)
-                update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
-            }
-        }
         func get_user_info(){
             HttpRequestCenter().request_user_data_v2("get_user_info", send_dic: [:]) { (rturn_dic:Dictionary<String, AnyObject>?) in
                 if rturn_dic != nil{
@@ -197,11 +120,17 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         if !check_version(ver_local:version, ver_server: rturn_dic!["version"] as! String){
                             let version_at_least = rturn_dic!["version_at_least"] as! String
                             if !check_version(ver_local:version, ver_server: version_at_least){
+                                force_update = true
+                                main_vc = nil
+                                self.login_paeban_obj.delegate = nil
+                                self.loginId.delegate = nil
+                                self.logInPw.delegate = nil
                                 let alert_msg = String(format: NSLocalizedString("您的版本 %@ 過舊無法服務\n請更新到最新版本 %@", comment: "ViewController"), version, rturn_dic!["version"]! as! String)
                                 let alert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: alert_msg, preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: "確定".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                                     // 聽說ios10以前有問題？
                                     UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
+                                    self.force_update_alert()
                                 }))
                                 self.present(alert, animated: true, completion: nil)
                             }
@@ -215,16 +144,17 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                                 }
                                 let alert = UIAlertController(title: "通知".localized(withComment: "ViewController"), message:String(format: NSLocalizedString("版本 %@ 已發布\n請盡快更新\n您現在的版本是 %@ ", comment: "ViewController"), rturn_dic!["version"]! as! String, version), preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: "更新".localized(withComment: "ViewController"), style: .default, handler: { (act) in
+                                    self.check_user_id(input_dic: rturn_dic!)
                                     UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
                                 }))
                                 alert.addAction(UIAlertAction(title: "稍後".localized(withComment: "ViewController"), style: .destructive, handler: { (act) in
-                                    check_user_id(input_dic: rturn_dic!)
+                                    self.check_user_id(input_dic: rturn_dic!)
                                 }))
                                 self.present(alert, animated: true, completion: nil)
                             }
                         }
                         else{
-                            check_user_id(input_dic: rturn_dic!)
+                            self.check_user_id(input_dic: rturn_dic!)
                             userData.id = rturn_dic!["user_id"] as? String
                             userData.is_real_photo = rturn_dic!["is_real_pic"] as? Bool
                             userData.name = rturn_dic!["user_name"] as? String
@@ -271,6 +201,80 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
 //        }
         // MARK:"重置資料庫開關"
     }
+    func check_user_id(input_dic:Dictionary<String, AnyObject>){
+        if version_in_db != version ||
+            reset_database ||
+            input_dic["user_id"] as? String != sql_database.get_user_id() ||
+            !sql_database.check_sql_update_complete()
+        {
+            print("資料庫重置")
+            
+            sql_database.remove_all_table()
+            sql_database.establish_all_table(version: version)
+            // reset database
+            
+            sql_database.insert_user_name(input_dic: input_dic)
+            // write user data to database
+            
+            userData.id = input_dic["user_id"] as? String
+            userData.name = input_dic["user_name"] as? String
+            // set public var
+            
+            let url = "\(local_host)media/\(input_dic["img_name"] as! String)"
+            HttpRequestCenter().getHttpImg(url, getImg: { (img) in
+                userData.img = img
+                let img_string = imageToBase64(image: img, optional: "withHeader")
+                let insert_dic = [
+                    "img_name": input_dic["img_name"] as! String,
+                    "img":img_string
+                ]
+                sql_database.update_user_img(input_dic: insert_dic as Dictionary<String, AnyObject>)
+            })
+            // get user img from server
+            // and write into database
+            
+            set_loading_view_title(title: "正在更新資料庫".localized(withComment: "ViewController"))
+            update_database(reset_db: "1")
+        }
+        else{
+            if let user_data_get_from_local_database = sql_database.get_user_data(){
+                userData.id = user_data_get_from_local_database["user_id"]
+                userData.name = user_data_get_from_local_database["user_name"]
+                if user_data_get_from_local_database["img"] == nil{
+                    let img_name = user_data_get_from_local_database["img_name"]!
+                    let url = "\(local_host)media/\(img_name)"
+                    HttpRequestCenter().getHttpImg(url, getImg: { (img) in
+                        userData.img = img
+                        let img_string = imageToBase64(image: img, optional: "withHeader")
+                        let insert_dic = [
+                            "img_name": input_dic["img_name"] as! String,
+                            "img":img_string
+                        ]
+                        sql_database.update_user_img(input_dic: insert_dic as Dictionary<String, AnyObject>)
+                    })
+                }
+                else{
+                    let img_str = user_data_get_from_local_database["img"]!
+                    userData.img = base64ToImage(img_str)
+                }
+            }
+            else{
+                DispatchQueue.global(qos: .background).async {
+                    for _ in 0...10{
+                        print("!!!!!!!!嚴重邏輯錯誤 ＃147!!!!!!!!!!")
+                        sleep(1)
+                        // 無法取得使用者資料！！！
+                    }
+                }
+            }
+            remove_loading_view()
+            show_items()
+            self.performSegue(withIdentifier: "segueToMainUI", sender: self)
+            let delegate_list = [wsActive.wasd_ForFriendChatViewController]
+            update_private_mag(delegate_target_list: delegate_list)
+            update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
+        }
+    }
     // =====登入程序=====
     
     // MARK: override
@@ -301,7 +305,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         fb_logo.tintColor = #colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1)
         fb_logo.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
-        
 //        let alert = UIAlertController(title: "123", message: ssss, preferredStyle: UIAlertControllerStyle.alert)
 //        self.present(alert, animated: false, completion: nil)
         
@@ -322,8 +325,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     override public func viewDidLoad() {
         super.viewDidLoad()
-        //check_data_base()
-        
+        sql_database.connect_sql()
+        version_in_db = sql_database.load_version()
         createColorSets()
 //        gradientBackgroung()
         
@@ -686,6 +689,14 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) { 
             during_auto_leap = false
         }
+    }
+    func force_update_alert(){
+        let alert = UIAlertController(title: "警告", message: "版本過舊，請更新", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+            UIApplication.shared.openURL(URL(string: "https://appsto.re/tw/wUz9eb.i")!)
+            self.force_update_alert()
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     // MARK: webSocket
     var wsTimer:Timer?

@@ -141,7 +141,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
             else{
                 print("socket_is_nil")
             }
-            self.app_event_delegate?.app_did_active()
+            if !force_update{
+                self.app_event_delegate?.app_did_active()
+            }
+            
         }
         
     }
