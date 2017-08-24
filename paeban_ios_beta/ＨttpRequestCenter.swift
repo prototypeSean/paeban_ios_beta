@@ -373,6 +373,7 @@ class HttpRequestCenter{
                 else{
                     ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as String?
                     if let res = response as? HTTPURLResponse{
+                        print("http complete")
                         let status = res.statusCode
                         if status == 200{
                             ouput_json = json_load(ouput!) as! Dictionary
@@ -385,6 +386,9 @@ class HttpRequestCenter{
                             print(sendDate)
                             print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as Any)
                         }
+                    }
+                    else{
+                        print("http statusCode error")
                     }
                     
                 }

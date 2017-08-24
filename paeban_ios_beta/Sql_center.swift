@@ -3036,6 +3036,14 @@ public class SQL_center{
     
     
     // test_func
+    func del_user_data(){
+        do{
+            try sql_db!.run(user_data_table.delete())
+        }
+        catch{
+            print(error)
+        }
+    }
     func change_send_state(){
         do{
             let query = topic_content.order(id.desc).limit(1)

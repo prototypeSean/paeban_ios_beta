@@ -944,7 +944,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             "last_private_id":"0"
         ]
         HttpRequestCenter().request_user_data_v2("update_database", send_dic: send_dic as Dictionary<String, AnyObject>) { (return_dic) in
-            if return_dic != nil{
+            if return_dic != nil && !return_dic!.isEmpty{
                 DispatchQueue.global(qos: .default).async {
                     init_sql = false
                     var topic_content_data = return_dic?["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
@@ -1020,7 +1020,11 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 }
             }
             else{
-                // 重新請求
+                let alert = UIAlertController(title: "錯誤", message: "網路錯誤，請求料庫失敗，是否重新嘗試", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+                    self.update_database(reset_db: "1")
+                }))
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
