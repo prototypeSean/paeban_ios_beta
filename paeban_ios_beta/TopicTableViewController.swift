@@ -238,13 +238,25 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     }
     func check_announcement(){
         HttpRequestCenter().request_user_data("check_announcement", send_dic: [:]) { (return_dic) in
-            let text = return_dic["announcement"] as! String
-            let alert = UIAlertController(title: "公告".localized(withComment: "TopicTableViewController"), message: text, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "確認".localized(withComment: "TopicTableViewController"), style: .default, handler: {(act) in
-                simpoAlert2(view: self, reason: String(notificationSegueInf.isEmpty))
-            }))
-            
-            self.present(alert, animated: true, completion: nil)
+            if during_auto_leap{
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+                    let text = return_dic["announcement"] as! String
+                    let alert = UIAlertController(title: "公告".localized(withComment: "TopicTableViewController"), message: text, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "確認".localized(withComment: "TopicTableViewController"), style: .default, handler: {(act) in
+                        //pass
+                    }))
+                    
+                    self.present(alert, animated: true, completion: nil)
+                })
+            }
+            else{
+                let text = return_dic["announcement"] as! String
+                let alert = UIAlertController(title: "公告".localized(withComment: "TopicTableViewController"), message: text, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "確認".localized(withComment: "TopicTableViewController"), style: .default, handler: {(act) in
+                    //pass
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
     func set_during_auto_leap(){
