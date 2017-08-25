@@ -37,7 +37,7 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
         self.navigationBar.titleTextAttributes = fontDictionary
 //      原本TAB的顏色UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         self.tabBarController?.tabBar.tintColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-
+        animateGradient()
 
         
         //self.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
@@ -51,7 +51,7 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        animateGradient()
+        
         
     }
     
