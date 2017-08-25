@@ -264,6 +264,13 @@ class MyTopicTableViewModel{
                         self.secTopic[sec_topic_keys]![client_datas_index].clientSex_detial = data_dic["sex"] as? String
                         self.secTopic[sec_topic_keys]![client_datas_index].clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
                         self.secTopic[sec_topic_keys]![client_datas_index].clientOnline_detial = self.online_state_dic[self.secTopic[sec_topic_keys]![client_datas_index].clientId_detial!]
+                        if self.secTopic[sec_topic_keys]![client_datas_index].lastSpeaker_id_detial == userData.id{
+                            self.secTopic[sec_topic_keys]![client_datas_index].lastSpeaker_detial = userData.name
+                        }
+                        else{
+                            self.secTopic[sec_topic_keys]![client_datas_index].lastSpeaker_detial = data_dic["client_name"] as? String
+                        }
+                        //self.secTopic[sec_topic_keys]![client_datas_index].lastSpeaker_detial
                     }
                 }
                 else{
@@ -276,6 +283,12 @@ class MyTopicTableViewModel{
                             self.secTopic[sec_topic_keys]![client_datas_index].clientSex_detial = data_dic["sex"] as? String
                             self.secTopic[sec_topic_keys]![client_datas_index].clientIsRealPhoto_detial = data_dic["is_real_pic"] as? Bool
                             self.secTopic[sec_topic_keys]![client_datas_index].clientOnline_detial = self.online_state_dic[self.secTopic[sec_topic_keys]![client_datas_index].clientId_detial!]
+                            if self.secTopic[sec_topic_keys]![client_datas_index].lastSpeaker_id_detial == userData.id{
+                                self.secTopic[sec_topic_keys]![client_datas_index].lastSpeaker_detial = userData.name
+                            }
+                            else{
+                                self.secTopic[sec_topic_keys]![client_datas_index].lastSpeaker_detial = data_dic["client_name"] as? String
+                            }
                         }
                         // updata for table
                         
@@ -411,9 +424,7 @@ class MyTopicTableViewModel{
                 temp_unit.topicTitle_title = topic_title_in
                 temp_unit.clientOnline_detial = data_s.value["online"] as? Bool
                 temp_unit.lastSpeaker_id_detial = data_s.value["sender"] as? String
-                if temp_unit.lastSpeaker_id_detial == userData.id{
-                    temp_unit.lastSpeaker_detial = userData.name
-                }
+                
                 
                 return_list.append(temp_unit)
             }
