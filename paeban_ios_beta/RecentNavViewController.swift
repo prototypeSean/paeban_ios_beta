@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RecentNavViewController: TopicNavViewController {
+class RecentNavViewController: MytopicNavViewController {
 //    let gradientLayer = CAGradientLayer()
 //    
 //    

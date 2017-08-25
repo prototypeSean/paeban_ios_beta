@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FriendNavViewController: TopicNavViewController {
+class FriendNavViewController: MytopicNavViewController {
 //    let gradientLayer = CAGradientLayer()
 //    
 //    

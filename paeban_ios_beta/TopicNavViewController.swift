@@ -37,9 +37,6 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
         self.navigationBar.titleTextAttributes = fontDictionary
 //      原本TAB的顏色UIColor(red:0.98, green:0.43, blue:0.32, alpha:1.0)
         self.tabBarController?.tabBar.tintColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
-        animateGradient()
-
-        
         //self.navigationBar.setBackgroundImage(imageLayerForGradientBackground(), for: UIBarMetrics.default)
 
     }
@@ -47,13 +44,9 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         gradientBackgroung()
+        animateGradient()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        
-    }
     
     var colorSets = [[CGColor]]()
     var currentColorSet: Int!
@@ -69,15 +62,20 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
     
     func gradientBackgroung(){
         // 製作包含上層狀態列跟NAV的漸層圖曾
-        var newNavFrame = self.navigationBar.bounds.offsetBy(dx: 0.0, dy: 0.0)
-        newNavFrame.size.height += 20
-        
-        gradient.frame = newNavFrame
-        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
-        gradient.endPoint = CGPoint(x: 1.0, y: 0.0)
-        gradient.colors = colorSets[currentColorSet]
-//        self.navigationBar.layer.insertSublayer(gradient, at: 0)
-        self.navigationBar.layer.sublayers![0].insertSublayer(gradient, at: 0)
+        if nav_ca_layer == nil{
+            var newNavFrame = self.navigationBar.bounds.offsetBy(dx: 0.0, dy: 0.0)
+            newNavFrame.size.height += 20
+            nav_ca_layer = CAGradientLayer()
+            nav_ca_layer!.frame = newNavFrame
+            nav_ca_layer!.startPoint = CGPoint(x: 0.0, y: 0.0)
+            nav_ca_layer!.endPoint = CGPoint(x: 1.0, y: 0.0)
+            nav_ca_layer!.colors = colorSets[currentColorSet]
+        }
+//        gradient.frame = newNavFrame
+//        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
+//        gradient.endPoint = CGPoint(x: 1.0, y: 0.0)
+//        gradient.colors = colorSets[currentColorSet]
+        self.navigationBar.layer.sublayers![0].insertSublayer(nav_ca_layer!, at: 0)
         
     }
     
@@ -90,17 +88,18 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
         }
         let colorChangeAnimation = CABasicAnimation(keyPath: "colors")
         colorChangeAnimation.delegate = self
-        colorChangeAnimation.duration = 30.0
+        colorChangeAnimation.duration = 2.0
         colorChangeAnimation.toValue = colorSets[currentColorSet]
         colorChangeAnimation.fillMode = kCAFillModeForwards
         colorChangeAnimation.isRemovedOnCompletion = false
-        gradient.add(colorChangeAnimation, forKey: "colorChange")
+        nav_ca_layer!.add(colorChangeAnimation, forKey: "colorChange")
     }
     
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if flag {
+            print("edededed")
             //            print(currentColorSet)
-            gradient.colors = colorSets[currentColorSet]
+            nav_ca_layer!.colors = colorSets[currentColorSet]
             animateGradient()
         }
     }

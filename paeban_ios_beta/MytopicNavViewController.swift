@@ -9,6 +9,7 @@
 import UIKit
 
 class MytopicNavViewController: TopicNavViewController{
+    override func animateGradient(){}
 //    let gradientLayer = CAGradientLayer()
 //    
 //    override var preferredStatusBarStyle: UIStatusBarStyle {
