@@ -43,6 +43,7 @@ class FriendChatUpViewController: UIViewController{
             self.view.layoutSubviews()
         })
     }
+    
     var setID:String?
     var setName:String?
     var setImg:UIImage?

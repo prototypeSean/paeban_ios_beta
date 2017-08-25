@@ -32,7 +32,7 @@ class HashTagsContorller: UIView {
                     
                     button.setTitle(tagListInContorller![x], for: UIControlState())
                     
-                    button.backgroundColor = UIColor.orange
+                    button.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 0.85)
                     
                     button.addTarget(self, action: #selector(HashTagsContorller.ratingButtonTapped(_:)), for: .touchDown)
                     
