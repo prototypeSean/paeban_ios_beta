@@ -52,7 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         registerForPushNotifications(application: application)
-        // fly
         //=============Launching==============
         app_instence = application
         if ((launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification]) != nil){

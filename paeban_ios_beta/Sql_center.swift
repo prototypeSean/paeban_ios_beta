@@ -564,8 +564,6 @@ public class SQL_center{
             var return_list:Array<Dictionary<String,AnyObject>> = []
             let query = friend_list_table.filter(active == true)
             for friend_datas in try sql_db!.prepare(query){
-                // fly remove print
-                print(friend_datas[username])
                 if friend_datas[friend_image] != nil{
                     print("img iru")
                 }

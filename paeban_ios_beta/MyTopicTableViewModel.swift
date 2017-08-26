@@ -198,8 +198,6 @@ class MyTopicTableViewModel{
                     replace_cell_index! += 1
                 }
                 DispatchQueue.main.async {
-                    // fly
-                    //self.delegate?.model_insert_row(index_path_list: index_path_list, option: .none)
                     self.delegate?.model_relodata()
                 }
             }

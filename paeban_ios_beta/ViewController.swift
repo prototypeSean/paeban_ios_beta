@@ -988,14 +988,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                         writed_row += 1
                         print_writed_row_present()
                     })
-                    // fly remove =============
-                    //                for _ in 0..<50{
-                    //                    sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
-                    //                        //writed_row += 1
-                    //                        //print_writed_row_present()
-                    //                    })
-                    //                }
-                    // ============
                     sql_database.insert_private_msg_mega_ver(input_list: private_msg_data, persent_report: {() in
                         writed_row += 1
                         print_writed_row_present()

@@ -22,9 +22,6 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         update_badges()
     }
     func switchToView(segueInf:Dictionary<String,String>){
-        // fly
-        print("dkdkdk")
-        print(Date().timeIntervalSince1970)
         DispatchQueue.main.async {
             if let pageInt = leapToPage(segueInf: segueInf){
                 let childView = self.childViewControllers
@@ -116,7 +113,6 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         tatal_badge += Int(return_dic["my_topic_badge"]!)!
         tatal_badge += Int(return_dic["recent_badge"]!)!
         tatal_badge += Int(return_dic["friend_badge"]!)!
-        // fly unlock
         app_instence?.applicationIconBadgeNumber = tatal_badge
     }
     func wsOnMsg(_ msg: Dictionary<String, AnyObject>) {

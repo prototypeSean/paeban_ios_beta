@@ -347,7 +347,6 @@ class RecentTableViewModel{
             let client_id = recentDataBase[cells_index].clientId_detial!
             let client_data_obj = Client_detail_data(topic_id: topic_id, client_id: client_id)
             if client_data_obj.local_data_test(){
-                // fly
                 let client_datas = client_data_obj.get_data_from_local()
                 recentDataBase[cells_index].clientName_detial = client_datas?["client_name"] as? String
                 recentDataBase[cells_index].clientPhoto_detial = base64ToImage(client_datas!["img"] as! String)
