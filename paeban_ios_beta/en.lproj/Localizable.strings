@@ -71,7 +71,15 @@
 
 "用戶%@ 已離開您的話題%@" = "User %@ have left your topic %@";
 
+"全部關閉" = "Terminate";
+
+"關閉話題會移除此話題中所有的聊天室，請確認" = "Terminate topic will remove all chat room! please confirm.";
+
 "踢出" = "Kick Out";
+
+"警告" = "Warrning";
+
+"將用戶踢出話題？" = "Remove this person from your topic?";
 
 "確認" = "Confirm";
 
@@ -135,6 +143,8 @@
 
 /*RecentTableViewController*/
 "通知" = "Message";
+
+"刪除" = "Delete";
 
 "用戶%@ 已將您移出話題%@" = "%@ removed from you Topic %@";
 
@@ -200,6 +210,10 @@
 
 "錯誤" = "Error";
 
+"封鎖" = "Block";
+
+"封鎖%@ ? 將再也無法聯繫他" = "Bolck%@ ?, you'll never able to reach this person any more.";
+
 "用戶不存在" = "User not found";
 
 "話題不存在" = "Topic not found";
@@ -208,6 +222,7 @@
 
 "取消" = "Cancel";
 
+"向管理員反應%@ 的騷擾標題" = "Report %@'s abusive topic title to GM";
 
 /*TopicViewController*/
 "提示" = "Message";
@@ -301,3 +316,19 @@
 "正在同步資料庫: %d %%" = "Synchronizing: %d %%";
 
 "正在使用facebook帳號登入" = "Logging from Facebook...";
+
+/*FriebdTableViewController*/
+
+"刪除" = "Remove";
+
+"警告" = "Warrning";
+
+"取消" = "Cancel";
+
+"確定" = "Confirm";
+
+"確認" = "Confirm";
+
+"是否要刪除該用戶" = "Do you want to remove this friend?";
+
+

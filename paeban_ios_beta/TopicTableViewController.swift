@@ -421,7 +421,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         return true
     }
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let block_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "封鎖") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let block_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "封鎖".localized(withComment: "TopicTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
             func excute(){
                 let data = self.topics[IndexPath_parameter.row]
                 //self.block_user(setID: data.owner, topicId: data.topicID)
@@ -430,10 +430,10 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             }
             // MARK: 改alert
             let owner_name = self.topics[IndexPath_parameter.row].ownerName
-            self.conform_excute(title: "封鎖", msg: "封鎖 \(owner_name)？ 將再也無法聯繫他", yes_func: excute)
+            self.conform_excute(title: "封鎖".localized(withComment: "TopicTableViewController"), msg: String(format: NSLocalizedString("封鎖%@ ? 將再也無法聯繫他", comment: "TopicTableViewController"), owner_name), yes_func: excute)
             
         }
-        let report_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "舉報") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let report_btn = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "舉報".localized(withComment: "TopicTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
             func excute(){
                 let id = self.topics[IndexPath_parameter.row].owner
                 let topic_id = self.topics[IndexPath_parameter.row].topicID
@@ -441,7 +441,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             }
             // MARK: 改alert
             let owner_name = self.topics[IndexPath_parameter.row].ownerName
-            self.conform_excute(title: "舉報", msg: "向管理員反應收到  \(owner_name) 的騷擾內容", yes_func: excute)
+            self.conform_excute(title: "舉報", msg: String(format: NSLocalizedString("向管理員反應%@ 的騷擾標題", comment: "TopicTableViewController"), owner_name), yes_func: excute)
         }
         block_btn.backgroundColor = UIColor.red
         report_btn.backgroundColor = UIColor.black

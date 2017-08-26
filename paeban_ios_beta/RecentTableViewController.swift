@@ -81,7 +81,7 @@ class RecentTableViewController: UITableViewController, webSocketActiveCenterDel
         return true
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
+        let delete = UITableViewRowAction(style: .default, title: "刪除".localized(withComment: "RecentTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
             let topic_id = self.rTVModel.recentDataBase[indexPath.row].topicId_title!
             sql_database.delete_recent_topic(topic_id_in: topic_id)
             self.rTVModel.reCheckDataBase()

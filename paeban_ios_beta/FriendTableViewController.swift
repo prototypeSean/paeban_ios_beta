@@ -187,10 +187,10 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
             return [del_btn, ok_btn]
         }
         else if model?.friendsList[indexPath.row].cell_type == "friend"{
-            let delete_btn = UITableViewRowAction(style: .default, title: "刪除", handler: { (action, index_path) in
-                let alert = UIAlertController(title: "警告", message: "是否要刪除該用戶", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "取消", style: .default, handler: nil))
-                alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+            let delete_btn = UITableViewRowAction(style: .default, title: "刪除".localized(withComment: "FriebdTableViewController"), handler: { (action, index_path) in
+                let alert = UIAlertController(title: "警告".localized(withComment: "FriebdTableViewController"), message: "是否要刪除該用戶".localized(withComment: "FriebdTableViewController"), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "取消".localized(withComment: "FriebdTableViewController"), style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: "確定".localized(withComment: "FriebdTableViewController"), style: .destructive, handler: { (act) in
                     let friend_id = self.model?.friendsList[indexPath.row].id
                     sql_database.remove_friend_process(username_in: friend_id!)
                     self.model?.remove_friend(id: friend_id!)
