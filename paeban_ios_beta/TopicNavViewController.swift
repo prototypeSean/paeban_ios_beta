@@ -88,7 +88,7 @@ class TopicNavViewController: UINavigationController, CAAnimationDelegate {
         }
         let colorChangeAnimation = CABasicAnimation(keyPath: "colors")
         colorChangeAnimation.delegate = self
-        colorChangeAnimation.duration = 2.0
+        colorChangeAnimation.duration = 30.0
         colorChangeAnimation.toValue = colorSets[currentColorSet]
         colorChangeAnimation.fillMode = kCAFillModeForwards
         colorChangeAnimation.isRemovedOnCompletion = false
