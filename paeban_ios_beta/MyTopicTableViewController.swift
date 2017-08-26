@@ -232,18 +232,18 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     }
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let data = model.mytopic[indexPath.row]
-        let close_topic_btn = UITableViewRowAction(style: .default, title: "全部關閉") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            let alert = UIAlertController(title: "警告", message: "即將關閉話題，並移除所有參加者", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+        let close_topic_btn = UITableViewRowAction(style: .default, title: "全部關閉".localized(withComment: "MyTopicTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
+            let alert = UIAlertController(title: "警告".localized(withComment: "MyTopicTableViewController"), message: "關閉話題會移除此話題中所有的聊天室，請確認".localized(withComment: "MyTopicTableViewController"), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicTableViewController"), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: .destructive, handler: { (act) in
                 self.model.close_topic(index: IndexPath_parameter.row)
             }))
             self.present(alert, animated: true, completion: nil)
         }
-        let delete = UITableViewRowAction(style: .default, title: "刪除") { (UITableViewRowAction_parameter, IndexPath_parameter) in
-            let alert = UIAlertController(title: "警告", message: "將用戶踢出話題？", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
+        let delete = UITableViewRowAction(style: .default, title: "踢出".localized(withComment: "MyTopicTableViewController")) { (UITableViewRowAction_parameter, IndexPath_parameter) in
+            let alert = UIAlertController(title: "警告".localized(withComment: "MyTopicTableViewController"), message: "將用戶踢出話題？".localized(withComment: "MyTopicTableViewController"), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicTableViewController"), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: .destructive, handler: { (act) in
                 let data = self.model.mytopic[IndexPath_parameter.row]
                 Ignore_list_center().add_ignore_list(topic_id_in: data.topicId_title!, client_id: data.clientId_detial!)
                 self.model.delete_detail_cell(index: IndexPath_parameter.row)
@@ -560,7 +560,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
     func block(block_id:String, client_name:String){
         let confirm = UIAlertController(title: "封鎖".localized(withComment: "MyTopicTableViewController"), message: String(format: NSLocalizedString("封鎖%@ ? 本話題不會再出現此用戶", comment: "MyTopicTableViewController"), client_name), preferredStyle: UIAlertControllerStyle.alert)
         confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
-        confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction) in
+        confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.destructive, handler: { (UIAlertAction) in
             self.model.remove_detail_cell(by: block_id)
             self.model.remove_sec_topic_data(client_id:block_id)
             Block_list_center().add_user_to_block_list(client_id: block_id)
@@ -600,7 +600,7 @@ class MyTopicTableViewController: UITableViewController,webSocketActiveCenterDel
         ]
         let confirm = UIAlertController(title: "舉報".localized(withComment: "MyTopicTableViewController"), message: String(format: NSLocalizedString("向管理員反應收到%@ 的騷擾內容", comment: "MyTopicTableViewController"), client_name), preferredStyle: UIAlertControllerStyle.alert)
         confirm.addAction(UIAlertAction(title: "取消".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: nil))
-        confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.default, handler: { (UIAlertAction_void) in
+        confirm.addAction(UIAlertAction(title: "確定".localized(withComment: "MyTopicTableViewController"), style: UIAlertActionStyle.destructive, handler: { (UIAlertAction_void) in
             HttpRequestCenter().privacy_function(msg_type: "report_topic", send_dic: sendDic, inViewAct: { (Dictionary) in
                 let msg_type = Dictionary["msg_type"] as! String
                 let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
