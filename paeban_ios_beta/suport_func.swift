@@ -15,6 +15,7 @@ func update_topic_content_from_server(delegate_target_list:Array<webSocketActive
     ]
     HttpRequestCenter().request_user_data_v2("update_topic_content_from_server", send_dic: send_dic) { (return_dic:Dictionary<String, AnyObject>?) in
         DispatchQueue.main.async {
+            print("2202000222")
             if return_dic != nil{
                 let topic_content_data = return_dic!["topic_content_data"] as! Array<Dictionary<String,AnyObject>>
                 for topic_content_data_s in topic_content_data{
@@ -35,6 +36,11 @@ func update_topic_content_from_server(delegate_target_list:Array<webSocketActive
                     }
                     //sql_database.inser_date_to_topic_content(input_dic: topic_content_data_s)
                 }
+                if delegate_target_list.isEmpty{
+                    DispatchQueue.main.async {
+                        (tabBar_pointer as? TabBarController)?.update_badges()
+                    }
+                }
             }
         }
         
@@ -53,6 +59,11 @@ func update_private_mag(delegate_target_list:Array<webSocketActiveCenterDelegate
                 let sender = private_msg_data_s["sender_id"] as! String
                 for delegate_s in delegate_target_list{
                     delegate_s?.new_client_topic_msg!(sender: sender)
+                }
+            }
+            if delegate_target_list.isEmpty{
+                DispatchQueue.main.async {
+                    (tabBar_pointer as? TabBarController)?.update_badges()
                 }
             }
         }

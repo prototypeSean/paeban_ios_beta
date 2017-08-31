@@ -272,9 +272,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             remove_loading_view()
             show_items()
             self.performSegue(withIdentifier: "segueToMainUI", sender: self)
-            let delegate_list = [wsActive.wasd_ForFriendChatViewController]
-            update_private_mag(delegate_target_list: delegate_list)
-            update_topic_content_from_server(delegate_target_list:[wsActive.wasd_ForChatViewController])
+            update_private_mag(delegate_target_list: [])
+            update_topic_content_from_server(delegate_target_list:[])
+            
         }
     }
     // =====登入程序=====

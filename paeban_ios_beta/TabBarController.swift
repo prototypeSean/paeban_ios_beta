@@ -13,6 +13,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("330300033")
 //        if notificationSegueInf != [:]{
 //            switchToView(segueInf: notificationSegueInf)
 //        }
@@ -122,6 +123,7 @@ class TabBarController: UITabBarController, NotificationDelegate, webSocketActiv
         self.update_badges()
     }
     func new_client_topic_msg(sender: String) {
+        print("1100101")
         DispatchQueue.main.async {
             self.update_badges()
         }
