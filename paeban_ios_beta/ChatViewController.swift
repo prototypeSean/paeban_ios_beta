@@ -586,16 +586,6 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
         }
         
     }
-//    func enter_topic_signal(){
-//        if topicId != nil && clientID != nil{
-//            let sen_dic:NSDictionary = [
-//                "msg_type":"enter_topic",
-//                "topic_id":topicId!,
-//                "client_id":clientID!
-//            ]
-//            socket.write(data: json_dumps(sen_dic))
-//        }
-//    }
     var aspectRatioConstraint: NSLayoutConstraint? {
         willSet {
             if let existingConstraint = aspectRatioConstraint {
