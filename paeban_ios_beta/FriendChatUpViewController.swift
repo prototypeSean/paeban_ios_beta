@@ -30,6 +30,7 @@ class FriendChatUpViewController: UIViewController{
     
     @IBOutlet weak var popUpImage: UIImageView!
     @IBAction func popUpImgbtn(_ sender: Any) {
+        self.view.endEditing(true)
         popUpViewCenterY.constant = 0
         UIView.animate(withDuration: 0.3, animations: {
             self.view.layoutSubviews()

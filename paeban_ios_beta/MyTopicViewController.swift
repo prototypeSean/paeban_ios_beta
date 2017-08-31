@@ -54,6 +54,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     @IBOutlet weak var popUpImg: UIImageView!
     @IBOutlet weak var popUpViewCenterY: NSLayoutConstraint!
     @IBAction func popUpImgBtn(_ sender: Any) {
+        self.view.endEditing(true)
         popUpViewCenterY.constant = 0
         UIView.animate(withDuration: 0.3, animations: {
             self.view.layoutSubviews()
