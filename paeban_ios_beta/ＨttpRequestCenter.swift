@@ -503,11 +503,12 @@ class HttpRequestCenter{
     }
     
     func get_csfr(re_times:Int = 5, after:(()->Void)?){
+        // 請求內含csrf的cookie
+        // re_times ＝ 重試次數
+        // @dk
         let url = "\(local_host)login_paeban/"
-        
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "GET"
-        
         request.allHTTPHeaderFields = ["Referer":"\(local_host)"]
         let session = URLSession.shared
         //        let aaa = HTTPCookieStorage.shared.cookies(for: URL(string: url)!)
