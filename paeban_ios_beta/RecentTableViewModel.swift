@@ -251,7 +251,6 @@ class RecentTableViewModel{
                 }
             }
         }
-        
     }
     func update_battery_state(){
         var topic_id_list:Array<String> = []
