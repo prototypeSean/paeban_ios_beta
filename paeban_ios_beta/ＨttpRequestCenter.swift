@@ -396,6 +396,9 @@ class HttpRequestCenter{
             task.resume()
         }
         else{
+            get_csfr(after: {
+                self.ajax(url, sendDate: sendDate, retryCount: retryCount, outPutDic: outPutDic)
+            })
             print("cookie is nil")
         }
 
@@ -457,6 +460,9 @@ class HttpRequestCenter{
             task.resume()
         }
         else{
+            get_csfr(after: {
+                self.ajax2(url, sendDate: sendDate, retryCount: retryCount, cookie: cookie_new.get_cookie(), outPutDic: outPutDic)
+            })
             print("cookie is nil")
         }
         
@@ -496,6 +502,56 @@ class HttpRequestCenter{
         else{print("cookie is nil")}
     }
     
+    func get_csfr(re_times:Int = 5, after:(()->Void)?){
+        let url = "\(local_host)login_paeban/"
+        
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "GET"
+        
+        request.allHTTPHeaderFields = ["Referer":"\(local_host)"]
+        let session = URLSession.shared
+        //        let aaa = HTTPCookieStorage.shared.cookies(for: URL(string: url)!)
+        let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
+            if error != nil{
+                if re_times > 0{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        self.get_csfr(re_times:re_times - 1, after:after)
+                    })
+                }
+                print("連線錯誤\(error!)")
+            }
+            else{
+                if let httpResponse = response as? HTTPURLResponse {
+                    if let response_cookie = httpResponse.allHeaderFields["Set-Cookie"] as? String {
+                        cookie_new.set_cookie(cookie_in: response_cookie)
+                        after?()
+                    }
+                    else{
+                        if re_times > 0{
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                                self.get_csfr(re_times:re_times - 1, after:after)
+                            })
+                        }
+                        else{
+                            print("get csrf fail!!!")
+                        }
+                    }
+                }
+                else{
+                    if re_times > 0{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                            self.get_csfr(re_times:re_times - 1, after:after)
+                        })
+                    }
+                    else{
+                        print("get csrf fail!!!")
+                    }
+                }
+            }
+            
+        })
+        task.resume()
+    }
     
     
     fileprivate func topiceUserMode(){

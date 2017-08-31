@@ -20,6 +20,7 @@ public let reset_database = false
 public let unlock_img_exp = 7
 public let local_host = "http://www.paeban.com/"
 public let image_url_host = "http://www.paeban.com/media/"
+public let is_VIP = false
 // init config
 
 

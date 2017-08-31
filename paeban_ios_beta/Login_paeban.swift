@@ -82,8 +82,6 @@ class login_paeban{
                     self.delegate?.get_cookie_csrf_report!(state: "login_fail",setcookie:"")
                     
                 }
-                
-                //print(ouput)
             }
             
         })

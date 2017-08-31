@@ -91,6 +91,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
     var initCenter:CGPoint?
     var selectedTextField:UITextField?
     
+    let loading_vc = UIView()
     // internal func
     func simpoAlert(reason:String){
         let mailAlert = UIAlertController(title: "錯誤".localized(withComment: "SinInFramViewController"), message: reason, preferredStyle: UIAlertControllerStyle.alert)
@@ -173,6 +174,9 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
             checkAll = false
             simpoAlert(reason: "暱稱未填或不符合限制")
         }
+        if !checkAll{
+            loading_vc.removeFromSuperview()
+        }
         return checkAll
     }
     func sentSinginData(){
@@ -183,8 +187,8 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
         
         
         let nav_vc = self.parent
-        let loading_vc = UIView()
         let load_simbo = UIActivityIndicatorView()
+        
         loading_vc.frame = (nav_vc?.view.frame)!
         load_simbo.center = loading_vc.center
         loading_vc.backgroundColor = UIColor(colorLiteralRed: 0.3, green: 0.3, blue: 0.3, alpha: 0.5)
@@ -220,7 +224,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
                     else{
                         self.simpoAlert(reason: "email已被註冊".localized(withComment: "SinInFramViewController"))
                     }
-                    loading_vc.removeFromSuperview()
+                    self.loading_vc.removeFromSuperview()
                 })
                 
             })
