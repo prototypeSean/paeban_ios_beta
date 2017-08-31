@@ -187,8 +187,6 @@ open class webSocketActiveCenter:app_event {
                             id_local: resultDic["id_local"] as! String)
                     }
                 }
-                
-               
             }
             else{
                 // 別人說的

@@ -393,13 +393,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             sql_database.update_topic_content_read(id_local: id_local_input)
             update_database(mode: .change_read_state)
         }
-//        else if msgType == "enter_topic"{
-//            let topic_id_input = msg["topic_id"] as! String
-//            let client_id_input = msg["client_id"] as! String
-//            if topic_id_input == topicId && client_id_input == clientID{
-//                self.get_last_read_id(topic_id_input: topicId!, client_id_input: clientID!)
-//            }
-//        }
+
     
     }
     func new_client_topic_msg(sender: String) {
@@ -521,6 +515,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
             self.collectionView.reloadData()
         }
         else if mode == .change_resend_btn{
+            var recheck = false
             for invers_index in 0..<messages.count{
                 let index = messages.count - invers_index - 1
                 if let data = sql_database.request_topic_msg_sending_state(id_local: messages[index].id_local!){
@@ -536,6 +531,7 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                                 return false
                             }){
                                 messages[index].is_resending = true
+                                recheck = true
                             }
                             else{
                                 messages[index].is_resending = false
@@ -553,6 +549,9 @@ class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegat
                 }
             }
             self.collectionView.reloadData()
+            if recheck{
+                self.reload_after_5_sec()
+            }
         }
     }
     func save_scroll_data(){
