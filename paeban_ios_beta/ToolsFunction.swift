@@ -477,6 +477,25 @@ func compare_friend_stander_type(ele1:FriendStanderType, ele2:FriendStanderType)
 }
 
 
+// 擷取句子裡面特定字串
+func get_part_of_string(string:String, from:Int, before:Int) throws -> String{
+    enum get_part_of_string_Error: Error {
+        case indexError(String)
+        case rangeError(String)
+    }
+    if before < from{
+        throw get_part_of_string_Error.rangeError("forward only")
+    }
+    else if before > string.characters.count{
+        throw get_part_of_string_Error.indexError("index out of range")
+    }
+    else{
+        let string_sta_index = string.index(string.startIndex, offsetBy: from)
+        let string_end_index = string.index(string.endIndex, offsetBy: -(string.characters.count - before))
+        let string_range = Range(string_sta_index..<string_end_index)
+        return string[string_range]
+    }
+}
 
 
 
