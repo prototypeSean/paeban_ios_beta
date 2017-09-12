@@ -32,17 +32,29 @@ class FriendChatUpViewController: UIViewController{
     @IBAction func popUpImgbtn(_ sender: Any) {
         self.view.endEditing(true)
         popUpViewCenterY.constant = 0
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.view.layoutSubviews()
         })
         popUpImage.image = guestPhotoImg.image
+        popUpImage.frame = guestPhoto.frame
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIView.animate(withDuration: 0.3, animations: {
+                //self.view.layoutSubviews()
+                self.popUpImage.frame = CGRect(x: self.view.frame.minX, y: self.view.frame.minY, width: self.view.frame.maxX, height: self.view.frame.maxX)
+            })
+        }
     }
     
     @IBAction func popUpClosebtn(_ sender: Any) {
-        popUpViewCenterY.constant = -1200
-        UIView.animate(withDuration: 0.3, animations: {
-            self.view.layoutSubviews()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.popUpImage.image = self.guestPhotoImg.image
+            self.popUpImage.frame = self.guestPhoto.frame
         })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.popUpViewCenterY.constant = -1200
+            })
+        }
     }
     
     var setID:String?
@@ -55,6 +67,7 @@ class FriendChatUpViewController: UIViewController{
     var msg:Dictionary<String,AnyObject>?
     var chat_view:FriendChatViewController?
     var guestPhotoImg = UIImageView()
+    let guetsborderView = UIView()
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -102,7 +115,7 @@ class FriendChatUpViewController: UIViewController{
         guestPhoto.layer.shadowRadius = 2
         
         // add the border to subview 第二層做邊框（這邊設0因為不需要）
-        let guetsborderView = UIView()
+        
         guetsborderView.frame = guestPhoto.bounds
         guetsborderView.layer.cornerRadius = guestPhoto.frame.size.height/2
         guetsborderView.layer.borderColor = UIColor.black.cgColor

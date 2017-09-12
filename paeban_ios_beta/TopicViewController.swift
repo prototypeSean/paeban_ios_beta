@@ -50,20 +50,27 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
     @IBAction func popUpImgBtn(_ sender: Any) {
         self.view.endEditing(true)
         popUpviewCenterY.constant = 0
-        
-        UIView.animate(withDuration: 0.3,
-                       animations: {
-                        self.view.layoutSubviews()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutSubviews()
         })
         popUpImg.image = guestPhotoImg.image
+        popUpImg.frame = guestPhoto.frame
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.popUpImg.frame = CGRect(x: self.view.frame.minX, y: self.view.frame.minY, width: self.view.frame.maxX, height: self.view.frame.maxX)
+            })
+        }
     }
     @IBAction func popUpImgClose(_ sender: Any) {
-        popUpviewCenterY.constant = -1200
-        
-        UIView.animate(withDuration: 0.1,
-                       animations: {
-                        self.view.layoutSubviews()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.popUpImg.image = self.guestPhotoImg.image
+            self.popUpImg.frame = self.guestPhoto.frame
         })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.popUpviewCenterY.constant = -1200
+            })
+        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -169,9 +176,6 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         
         self.delegate?.topic_has_been_closed(topic_id_ins)
         sql_database.delete_topic_content(topic_id_ins:topic_id_ins)
-        print("-----------------")
-        print(topic_id_ins)
-        print(topicId)
         if topic_id_ins == topicId{
             self.present(refreshAlert, animated: true, completion: nil)
         }

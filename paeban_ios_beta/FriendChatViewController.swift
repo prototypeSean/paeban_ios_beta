@@ -12,7 +12,7 @@ import JSQMessagesViewController
 class FriendChatViewController: JSQMessagesViewController, webSocketActiveCenterDelegate{
     // config
     let buff_msg_number = 0
-    let max_load_msg_number = 50
+    let max_load_msg_number = 20
     // config
     
     var messages = [JSQMessage3]()
