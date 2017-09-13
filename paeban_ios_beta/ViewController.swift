@@ -21,6 +21,8 @@ public let unlock_img_exp = 7
 public let local_host = "http://www.paeban.com/"
 public let image_url_host = "http://www.paeban.com/media/"
 public let is_VIP = false
+// fly
+public var open_app_frist = false   // default true
 // init config
 
 
@@ -58,7 +60,6 @@ public var myFriendsList:Array<FriendStanderType> = [] //好友清單
 public let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
 public let notificationDelegateCenter_obj = NotificationDelegateCenter()
 public var main_vc:ViewController?
-public var open_app_frist = true
 public var app_instence:UIApplication?
 public var sql_database = SQL_center()
 public var init_sql = false
@@ -101,6 +102,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
 //    @IBOutlet weak var gradientView: UIViewX!
 //    @IBOutlet weak var gradientText: UIImageView!
     @IBOutlet weak var lunchScreenText: UILabel!
+    @IBAction func recover_account(_ sender: Any) {
+        add_talking_box()
+    }
 
     
     let login_paeban_obj = login_paeban()
@@ -1031,7 +1035,22 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             }
         }
     }
+    
+    func add_talking_box(){
+        self.dismissKeyboard()
+        let talk = TalkingBoxView()
+        talk.frame = self.view.frame
+        self.view.addSubview(talk)
+    }
 }
+
+
+
+
+
+
+
+
 
 
 

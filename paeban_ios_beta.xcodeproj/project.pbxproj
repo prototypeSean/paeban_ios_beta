@@ -71,6 +71,8 @@
 		CF89EF781DD34E1F00876298 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */; };
 		CF89EF7A1DD498C700876298 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF791DD498C700876298 /* TabBarController.swift */; };
 		CF8F64D71EA4F6820073D433 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8F64D61EA4F6820073D433 /* LoadingView.swift */; };
+		CF90FFA61F67D3360078A5FA /* TalkingBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF90FFA51F67D3360078A5FA /* TalkingBox.xib */; };
+		CF90FFAA1F67DFF80078A5FA /* TalkingBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF90FFA91F67DFF80078A5FA /* TalkingBoxView.swift */; };
 		CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */; };
 		CF9E37301E2229AE0077C7C9 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
@@ -160,6 +162,8 @@
 		CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		CF89EF791DD498C700876298 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		CF8F64D61EA4F6820073D433 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		CF90FFA51F67D3360078A5FA /* TalkingBox.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TalkingBox.xib; sourceTree = "<group>"; };
+		CF90FFA91F67DFF80078A5FA /* TalkingBoxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkingBoxView.swift; sourceTree = "<group>"; };
 		CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = paeban_ios_beta.entitlements; sourceTree = "<group>"; };
 		CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sql_center.swift; sourceTree = "<group>"; };
 		CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -266,6 +270,7 @@
 				CF13867A1D98C43D00E70990 /* setting */,
 				93077EF31E223800004900FF /* CustomJSQ */,
 				190B21C11EEFD41E007067B7 /* Main.storyboard */,
+				CF90FFA41F67CFF00078A5FA /* CustomTalkingBox */,
 				930BBCCD1DED628600939C0D /* tPages */,
 				930F90D71DEAC07200346A13 /* EULAViewController.swift */,
 				932A00DB1CFEBA460036E1EA /* Labels.swift */,
@@ -364,6 +369,15 @@
 				93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */,
 			);
 			name = sing_in;
+			sourceTree = "<group>";
+		};
+		CF90FFA41F67CFF00078A5FA /* CustomTalkingBox */ = {
+			isa = PBXGroup;
+			children = (
+				CF90FFA51F67D3360078A5FA /* TalkingBox.xib */,
+				CF90FFA91F67DFF80078A5FA /* TalkingBoxView.swift */,
+			);
+			name = CustomTalkingBox;
 			sourceTree = "<group>";
 		};
 		CF9E372C1E21E2F40077C7C9 /* all_filed_work */ = {
@@ -487,6 +501,7 @@
 			files = (
 				93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */,
 				1909C1671EF26DCB00EE5183 /* InfoPlist.strings in Resources */,
+				CF90FFA61F67D3360078A5FA /* TalkingBox.xib in Resources */,
 				932A00F51D0025AC0036E1EA /* Assets.xcassets in Resources */,
 				1909C1701EF278D300EE5183 /* Localizable.strings in Resources */,
 				190B21BF1EEFD41E007067B7 /* Main.storyboard in Resources */,
@@ -579,6 +594,7 @@
 				932A00E61CFEBA460036E1EA /* Topic.swift in Sources */,
 				CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */,
 				930BBCCA1DED626900939C0D /* TPage_1ViewController.swift in Sources */,
+				CF90FFAA1F67DFF80078A5FA /* TalkingBoxView.swift in Sources */,
 				CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */,
 				93077EEA1E20DDB3004900FF /* CustomMessagesCollectionViewCellIncoming.swift in Sources */,
 				936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */,

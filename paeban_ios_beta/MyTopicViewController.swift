@@ -56,18 +56,29 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     @IBAction func popUpImgBtn(_ sender: Any) {
         self.view.endEditing(true)
         popUpViewCenterY.constant = 0
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.view.layoutSubviews()
         })
         popUpImg.image = guestPhotoImg.image
+        popUpImg.frame = guestPhoto.frame
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            UIView.animate(withDuration: 0.3, animations: {
+                //self.view.layoutSubviews()
+                self.popUpImg.frame = CGRect(x: self.view.frame.minX, y: self.view.frame.minY, width: self.view.frame.maxX, height: self.view.frame.maxX)
+            })
+        }
     }
     
     @IBAction func popUpCloseBtn(_ sender: Any) {
-        popUpViewCenterY.constant = -1200
-        UIView.animate(withDuration: 0.3, animations: {
-            self.view.layoutSubviews()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.popUpImg.image = self.guestPhotoImg.image
+            self.popUpImg.frame = self.guestPhoto.frame
         })
-
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.popUpViewCenterY.constant = -1200
+            })
+        }
     }
     var myPhotoSave:UIImage?
     let myPhotoImg = UIImageView()
