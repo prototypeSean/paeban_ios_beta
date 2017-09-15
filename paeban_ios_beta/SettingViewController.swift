@@ -57,7 +57,7 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
     @IBAction func change_password(_ sender: Any) {
         let change_view = ChangePasswordView()
         change_view.frame = (self.navigationController?.view.frame)!
-        self.view.addSubview(change_view)
+        tabBarController?.view.addSubview(change_view)
     }
 //    @IBAction func change_password(_ sender: Any) {
 //        let change_view = ChangePasswordView()
