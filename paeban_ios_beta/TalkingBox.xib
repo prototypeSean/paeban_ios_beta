@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +16,6 @@
                 <outlet property="ContenerView" destination="4li-em-scD" id="reM-Df-xFK"/>
                 <outlet property="MainView" destination="iN0-l3-epB" id="awH-sx-N5t"/>
                 <outlet property="cancel_btn_outlet" destination="5jO-z8-rL2" id="th5-4R-n7G"/>
-                <outlet property="mail_box_lable" destination="x5X-Y3-LPJ" id="YZY-q6-0W7"/>
                 <outlet property="mail_text_filed" destination="OAt-vT-Bgp" id="R0s-pO-C7L"/>
             </connections>
         </placeholder>
@@ -35,45 +35,66 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4li-em-scD" userLabel="ContenerView">
                     <rect key="frame" x="67" y="268" width="240" height="130"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="信箱:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x5X-Y3-LPJ">
-                            <rect key="frame" x="25" y="35" width="39.5" height="30"/>
-                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="30" id="XAh-lK-Ijv"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NEE-59-laz">
-                            <rect key="frame" x="8" y="92" width="87" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="重設密碼"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NEE-59-laz">
+                            <rect key="frame" x="0.0" y="100.5" width="120" height="30"/>
+                            <color key="backgroundColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" weight="black" pointSize="15"/>
+                            <color key="tintColor" red="0.98991280790000002" green="0.48742645979999999" blue="0.25621944670000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" title="重設密碼">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="reset_password:" destination="-1" eventType="touchUpInside" id="r2h-6e-cJo"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7PZ-2L-nUy">
-                            <rect key="frame" x="145" y="92" width="87" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="重發認證"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7PZ-2L-nUy">
+                            <rect key="frame" x="120.5" y="100.5" width="120" height="30"/>
+                            <color key="backgroundColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" weight="black" pointSize="15"/>
+                            <color key="tintColor" red="0.98991280790000002" green="0.48742645979999999" blue="0.25621944670000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" title="重發認證">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="resent_mail:" destination="-1" eventType="touchUpInside" id="w4g-rz-T4P"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5jO-z8-rL2">
-                            <rect key="frame" x="215" y="0.0" width="25" height="25"/>
+                            <rect key="frame" x="218" y="-6" width="25" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="5Zs-5E-OLr"/>
                                 <constraint firstAttribute="width" constant="25" id="R0H-C3-O8i"/>
                             </constraints>
-                            <state key="normal" title="x"/>
+                            <state key="normal" title="✖️">
+                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="cancel_btn_act:" destination="-1" eventType="touchUpInside" id="Ky5-Il-712"/>
                             </connections>
                         </button>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OAt-vT-Bgp">
-                            <rect key="frame" x="68" y="35" width="147" height="30"/>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入您註冊的信箱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OAt-vT-Bgp">
+                            <rect key="frame" x="24" y="34" width="192" height="30"/>
                             <color key="backgroundColor" red="0.85563234992595538" green="0.85563234992595538" blue="0.85563234992595538" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -82,15 +103,19 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="OAt-vT-Bgp" secondAttribute="trailing" constant="25" id="2wu-Xy-AVw"/>
+                        <constraint firstItem="OAt-vT-Bgp" firstAttribute="centerX" secondItem="4li-em-scD" secondAttribute="centerX" id="34B-vP-AX4"/>
+                        <constraint firstItem="7PZ-2L-nUy" firstAttribute="width" secondItem="NEE-59-laz" secondAttribute="width" id="5jU-dY-AU2"/>
+                        <constraint firstItem="NEE-59-laz" firstAttribute="leading" secondItem="4li-em-scD" secondAttribute="leading" id="7g3-dQ-2Vq"/>
+                        <constraint firstItem="NEE-59-laz" firstAttribute="width" secondItem="4li-em-scD" secondAttribute="width" multiplier="0.5" id="EOy-Hv-6vn"/>
                         <constraint firstAttribute="height" constant="130" id="H7m-C4-FYz"/>
-                        <constraint firstItem="x5X-Y3-LPJ" firstAttribute="top" secondItem="4li-em-scD" secondAttribute="top" constant="35" id="NJ6-XD-zOf"/>
-                        <constraint firstItem="OAt-vT-Bgp" firstAttribute="leading" secondItem="x5X-Y3-LPJ" secondAttribute="trailing" constant="3.5" id="OQ9-dI-vGP"/>
-                        <constraint firstAttribute="trailing" secondItem="5jO-z8-rL2" secondAttribute="trailing" id="jnK-4O-aCF"/>
-                        <constraint firstItem="OAt-vT-Bgp" firstAttribute="centerY" secondItem="x5X-Y3-LPJ" secondAttribute="centerY" id="k66-hh-N00"/>
-                        <constraint firstItem="x5X-Y3-LPJ" firstAttribute="leading" secondItem="4li-em-scD" secondAttribute="leading" constant="25" id="kNB-4X-2EN"/>
-                        <constraint firstItem="5jO-z8-rL2" firstAttribute="top" secondItem="4li-em-scD" secondAttribute="top" id="ryJ-dc-53N"/>
-                        <constraint firstItem="OAt-vT-Bgp" firstAttribute="height" secondItem="x5X-Y3-LPJ" secondAttribute="height" id="tUa-rI-QLt"/>
+                        <constraint firstItem="7PZ-2L-nUy" firstAttribute="centerY" secondItem="NEE-59-laz" secondAttribute="centerY" id="J2t-Mm-hNn"/>
+                        <constraint firstItem="OAt-vT-Bgp" firstAttribute="width" secondItem="4li-em-scD" secondAttribute="width" multiplier="0.8" id="fFU-UQ-f64"/>
+                        <constraint firstAttribute="trailing" secondItem="5jO-z8-rL2" secondAttribute="trailing" constant="-3" id="jnK-4O-aCF"/>
+                        <constraint firstAttribute="trailing" secondItem="7PZ-2L-nUy" secondAttribute="trailing" id="m6Z-Cc-yGe"/>
+                        <constraint firstItem="OAt-vT-Bgp" firstAttribute="centerY" secondItem="4li-em-scD" secondAttribute="centerY" multiplier="0.75" id="mP0-9A-muI"/>
+                        <constraint firstItem="7PZ-2L-nUy" firstAttribute="height" secondItem="NEE-59-laz" secondAttribute="height" id="pfo-ea-lPp"/>
+                        <constraint firstAttribute="bottom" secondItem="NEE-59-laz" secondAttribute="bottom" id="qOR-RV-sJv"/>
+                        <constraint firstItem="5jO-z8-rL2" firstAttribute="top" secondItem="4li-em-scD" secondAttribute="top" constant="-6" id="ryJ-dc-53N"/>
                         <constraint firstAttribute="width" constant="240" id="wqx-cQ-hV7"/>
                     </constraints>
                 </view>

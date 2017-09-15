@@ -13,10 +13,95 @@ class SingInViewController: UIViewController, UIImagePickerControllerDelegate, U
     let singInModel = SingInModel()
     var imageViewTemp:UIImageView?
     
+    var picker:UIImagePickerController?=UIImagePickerController()
+    var popover:UIPopoverController?=nil
+    
+    @IBAction func selectImage(sender: AnyObject) {
+        
+        let imgPicker = UIImagePickerController()
+        imgPicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        
+        imgPicker.modalPresentationStyle = UIModalPresentationStyle.popover
+        
+        self.present(imgPicker, animated: true, completion: nil)
+        
+        let popper = imgPicker.popoverPresentationController
+        // returns a UIPopoverPresentationController
+        popper?.barButtonItem = sender as? UIBarButtonItem
+        
+    }
     
     @IBAction func addImgBtn(_ sender: AnyObject) {
-        addImgBtn()
+        let alert:UIAlertController=UIAlertController(title: "選取照片".localized(withComment: "SettingProfilePicViewController"), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        //        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default)
+        //        {
+        //            UIAlertAction in
+        //            self.openCamera()
+        //
+        //        }
+        let gallaryAction = UIAlertAction(title: "相簿".localized(withComment: "SettingProfilePicViewController"), style: UIAlertActionStyle.default)
+        {
+            UIAlertAction in
+            self.openGallary()
+        }
+        let cameraAction = UIAlertAction(title: "相機".localized(withComment: "SettingProfilePicViewController"), style: UIAlertActionStyle.default)
+        {
+            UIAlertAction in
+            self.openCamera()
+            
+        }
+        let cancelAction = UIAlertAction(title: "取消".localized(withComment: "SettingProfilePicViewController"), style: UIAlertActionStyle.cancel)
+        {
+            UIAlertAction in
+            
+        }
+        
+        // Add the actions
+        picker?.delegate = self
+        picker!.allowsEditing = true
+        alert.addAction(cameraAction)
+        alert.addAction(gallaryAction)
+        alert.addAction(cancelAction)
+        // Present the controller
+        if UIDevice.current.userInterfaceIdiom == .phone
+        {
+            self.present(alert, animated: true, completion: nil)
+        }
+        else
+        {
+            
+            popover=UIPopoverController(contentViewController: alert)
+            popover!.present(from: self.view.frame, in: self.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
+        }
+        //        addImgBtn()
     }
+    func openGallary()
+    {
+        picker!.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        if UIDevice.current.userInterfaceIdiom == .phone
+        {
+            self.present(picker!, animated: true, completion: nil)
+        }
+        else
+        {
+            popover=UIPopoverController(contentViewController: picker!)
+            popover!.present(from: self.view.frame, in: self.view, permittedArrowDirections: UIPopoverArrowDirection.any, animated: true)
+        }
+    }
+    func openCamera()
+    {
+        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.camera))
+        {
+            picker!.sourceType = UIImagePickerControllerSourceType.camera
+            self .present(picker!, animated: true, completion: nil)
+        }
+        else
+        {
+            openGallary()
+        }
+    }
+    
     @IBOutlet var addPhotoBG: UIView!
     @IBOutlet weak var addPhotoBtn: UIButton!
 

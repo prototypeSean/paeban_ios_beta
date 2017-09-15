@@ -20,15 +20,8 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
     @IBOutlet weak var profilePicBtn: UIButton!
     @IBOutlet weak var profilePicShadow: UIView!
     @IBAction func change_btn(_ sender: AnyObject) {
-//        addImgBtn()
         let alert:UIAlertController=UIAlertController(title: "選取照片".localized(withComment: "SettingProfilePicViewController"), message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        
-//        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default)
-//        {
-//            UIAlertAction in
-//            self.openCamera()
-//            
-//        }
+
         let gallaryAction = UIAlertAction(title: "相簿".localized(withComment: "SettingProfilePicViewController"), style: UIAlertActionStyle.default)
         {
             UIAlertAction in
@@ -100,31 +93,7 @@ class SettingProfilePicViewController: UIViewController, UIImagePickerController
     }
     
     // MARK:internal func
-    func addImgBtn(){
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
-            
-            //初始化图片控制器
-            let picker = UIImagePickerController()
-            //设置代理
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                picker.allowsEditing = false
-            } else {
-                picker.allowsEditing = true
-            }
-            picker.delegate = self
-            //设置媒体类型
-            picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: UIImagePickerControllerSourceType.photoLibrary)!
-            //指定图片控制器类型
-            picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
 
-            //弹出控制器，显示界面
-            self.present(picker, animated: true, completion: {
-                () -> Void in
-            })
-        }else{
-            print("相簿讀取錯誤")
-        }
-    }
     func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
         let jpegImgData = UIImageJPEGRepresentation(image, 100)
         let jpegImg = UIImage(data: jpegImgData!)
