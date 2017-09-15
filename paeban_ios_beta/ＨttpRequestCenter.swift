@@ -283,6 +283,21 @@ class HttpRequestCenter{
         }
     }
     
+    func http_request(url:String, data_mode:String, form_data_dic:Dictionary<String,AnyObject>,
+                      InViewAct: @escaping (_ returnData:Dictionary<String,AnyObject>?)->Void){
+        let url = "\(local_host)\(url)"
+        let jsonData = json_dumps2(form_data_dic as NSDictionary)
+        let sendData = "mode=\(data_mode);msg=\(jsonData!)"
+        ajax(url, sendDate: sendData, retryCount:5) { (returnDic) in
+            if !returnDic.isEmpty{
+                InViewAct(returnDic)
+            }
+            else{
+                InViewAct(nil)
+            }
+        }
+    }
+    
     // MARK:================私有函數===============
     
     // MARK:轉換為Topic的標準格式
@@ -385,6 +400,7 @@ class HttpRequestCenter{
                             print("http state\(status)")
                             print(sendDate)
                             print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as Any)
+                            outPutDic([:])
                         }
                     }
                     else{
