@@ -54,6 +54,12 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         save_data_to_server()
     }
     
+    @IBAction func change_password(_ sender: Any) {
+        let change_view = ChangePasswordView()
+        change_view.frame = (self.navigationController?.view.frame)!
+        self.view.addSubview(change_view)
+    }
+    
     @IBOutlet weak var cmd_line: UITextField!
     @IBAction func reset_act(_ sender: Any) {
         let cmd = cmd_line.text!
