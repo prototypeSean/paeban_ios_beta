@@ -54,7 +54,6 @@ class ChangePasswordView:UIView{
             })
         }
     }
-    
 }
 
 
