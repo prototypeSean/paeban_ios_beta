@@ -16,9 +16,12 @@ class ChangePasswordView:UIView{
             @IBOutlet weak var old_password: UITextField!
             @IBOutlet weak var new_password_1: UITextField!
             @IBOutlet weak var new_password_2: UITextField!
+            @IBOutlet weak var submit_btn_outlet: UIButton!
             @IBAction func submit_btn(_ sender: Any) {
-    }
+                
+            }
     
+    var animate_time:TimeInterval = 5
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,12 +39,33 @@ class ChangePasswordView:UIView{
         self.MainView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         self.MainView.frame = self.bounds
         style_setup()
+        show_view_animate()
     }
     func style_setup(){
-        
+    }
+    func show_view_animate(){
+        UIView.animate(withDuration: 0, animations: {
+            self.backgroundView.transform = CGAffineTransform(scaleX: 0, y: 0)
+            self.contenerView.transform = CGAffineTransform(scaleX: 0, y: 0)
+        }) { (true) in
+            UIView.animate(withDuration: self.animate_time, animations: {
+                self.backgroundView.transform = CGAffineTransform.identity
+                self.contenerView.transform = CGAffineTransform.identity
+            })
+        }
     }
     
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
