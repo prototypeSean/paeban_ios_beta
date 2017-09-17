@@ -11,7 +11,7 @@ import UIKit
 
 class TalkingBoxView:UIView, UITextFieldDelegate{
     // MARK setting
-    var main_view_animate_time:TimeInterval = 5
+    var main_view_animate_time:TimeInterval = 0.6
     
     @IBOutlet var MainView: UIView!
         @IBOutlet weak var BackgroundView: UIView!
