@@ -370,9 +370,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         if currentColorSet < colorSets.count - 1 {
             currentColorSet! += 1
         }
-        else {
-            currentColorSet = 0
-        }
+//        else {
+//            currentColorSet = 0
+//        }
         let colorChangeAnimation = CABasicAnimation(keyPath: "colors")
         colorChangeAnimation.delegate = self
         colorChangeAnimation.duration = 3.0

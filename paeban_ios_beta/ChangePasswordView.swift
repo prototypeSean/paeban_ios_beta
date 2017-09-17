@@ -21,7 +21,7 @@ class ChangePasswordView:UIView{
                 
             }
     
-    var animate_time:TimeInterval = 5
+    var animate_time:TimeInterval = 0.6
     
     override init(frame: CGRect) {
         super.init(frame: frame)
