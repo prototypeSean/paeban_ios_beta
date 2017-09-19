@@ -211,9 +211,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M6n-vc-KN0">
-                                <rect key="frame" x="320.33333333333326" y="656" width="94.666666666666686" height="30"/>
+                                <rect key="frame" x="320.33333333333326" y="686" width="94.666666666666686" height="30"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="導 覽">
                                     <color key="titleColor" red="0.93725490570000003" green="0.34901961679999999" blue="0.1921568662" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -233,8 +233,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UVw-i7-95T">
-                                <rect key="frame" x="-1" y="656" width="95.333333333333329" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <rect key="frame" x="-1" y="686" width="95.333333333333329" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="帳號救援">
                                     <color key="titleColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -254,7 +254,6 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="M6n-vc-KN0" firstAttribute="centerY" secondItem="q66-HI-hUr" secondAttribute="centerY" id="1Nr-UG-fD2"/>
                             <constraint firstItem="uRB-xh-cEB" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.9" id="1pW-u5-f0m"/>
                             <constraint firstItem="q66-HI-hUr" firstAttribute="centerX" secondItem="4Qt-oe-Dwj" secondAttribute="centerX" id="1za-FS-2Zy"/>
                             <constraint firstItem="4Qt-oe-Dwj" firstAttribute="width" secondItem="8BY-go-BQQ" secondAttribute="width" id="22C-b3-BMK"/>
@@ -266,6 +265,7 @@
                             <constraint firstItem="uRB-xh-cEB" firstAttribute="width" secondItem="uRB-xh-cEB" secondAttribute="height" multiplier="1:2" id="Bgz-HO-lhe"/>
                             <constraint firstItem="fYI-m1-mw8" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="FT1-pk-lpi"/>
                             <constraint firstItem="k3S-xV-Nns" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="HtN-kN-nNb"/>
+                            <constraint firstItem="UVw-i7-95T" firstAttribute="centerY" secondItem="M6n-vc-KN0" secondAttribute="centerY" id="IUG-ks-o3S"/>
                             <constraint firstItem="M6n-vc-KN0" firstAttribute="width" secondItem="KaK-oj-Drk" secondAttribute="width" id="K42-tB-xet"/>
                             <constraint firstItem="tAR-u1-Ad2" firstAttribute="leading" secondItem="vTK-am-ezn" secondAttribute="leading" id="LEY-Mu-lvQ"/>
                             <constraint firstItem="8BY-go-BQQ" firstAttribute="width" secondItem="ZcH-yC-Ffy" secondAttribute="width" id="Lgq-3d-e6A"/>
@@ -286,13 +286,13 @@
                             <constraint firstItem="fYI-m1-mw8" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="eO6-Kz-9HV"/>
                             <constraint firstItem="4Qt-oe-Dwj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fzr-4z-ihA"/>
                             <constraint firstItem="KaX-dN-TuG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="gmf-DZ-ebZ"/>
+                            <constraint firstItem="M6n-vc-KN0" firstAttribute="top" secondItem="q66-HI-hUr" secondAttribute="bottom" id="hmu-8x-7Eu"/>
                             <constraint firstItem="vTK-am-ezn" firstAttribute="bottom" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" id="jfQ-pn-EO9"/>
                             <constraint firstItem="q66-HI-hUr" firstAttribute="top" secondItem="8BY-go-BQQ" secondAttribute="bottom" constant="8" id="lY1-eu-9FA"/>
                             <constraint firstItem="8BY-go-BQQ" firstAttribute="height" secondItem="ZcH-yC-Ffy" secondAttribute="height" id="lea-Hc-SGg"/>
                             <constraint firstItem="M6n-vc-KN0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8BY-go-BQQ" secondAttribute="trailing" constant="8" symbolic="YES" id="ls4-KH-7vC"/>
                             <constraint firstItem="vTK-am-ezn" firstAttribute="height" secondItem="4Qt-oe-Dwj" secondAttribute="height" id="nBY-Bq-THL"/>
                             <constraint firstItem="cY6-tk-ITK" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ozT-ly-kpi"/>
-                            <constraint firstItem="UVw-i7-95T" firstAttribute="centerY" secondItem="q66-HI-hUr" secondAttribute="centerY" id="qhK-Ez-Kib"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="k3S-xV-Nns" secondAttribute="bottom" id="qyT-lh-o5d"/>
                             <constraint firstItem="ZcH-yC-Ffy" firstAttribute="top" secondItem="4Qt-oe-Dwj" secondAttribute="bottom" constant="8" symbolic="YES" id="rVD-6I-2Tn"/>
                             <constraint firstItem="uRB-xh-cEB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sWk-cW-0Xb"/>
