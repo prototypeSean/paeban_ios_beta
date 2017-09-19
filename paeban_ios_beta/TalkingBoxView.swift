@@ -11,7 +11,7 @@ import UIKit
 
 class TalkingBoxView:UIView, UITextFieldDelegate{
     // MARK setting
-    var main_view_animate_time:TimeInterval = 5
+    var main_view_animate_time:TimeInterval = 0.4
     
     @IBOutlet var MainView: UIView!
         @IBOutlet weak var BackgroundView: UIView!
@@ -72,26 +72,14 @@ class TalkingBoxView:UIView, UITextFieldDelegate{
         cancel_btn_outlet.backgroundColor = #colorLiteral(red: 0.9899128079, green: 0.4874264598, blue: 0.2562194467, alpha: 1)
     }
     func appeare_animate(){
-        MainView.alpha = 0.2
-        center_rect = CGRect(x: BackgroundView.frame.maxX/2, y: BackgroundView.frame.maxY/2, width: 0, height: 0)
-        BackgroundViewRect = BackgroundView.frame
-        ContenerViewRect = ContenerView.frame
-        BackgroundView.frame = center_rect!
-        ContenerView.frame = center_rect!
-        for views in ContenerView.subviews{
-            ContenerViewRectSubViewsRectList.append(views.frame)
-            views.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        }
-        UIView.animate(withDuration: main_view_animate_time) {
-            self.MainView.alpha = 1
-            self.BackgroundView.frame = self.BackgroundViewRect!
-            self.ContenerView.frame = self.ContenerViewRect!
-            var count = 0
-            for views in self.ContenerView.subviews{
-                views.frame = self.ContenerViewRectSubViewsRectList[count]
-                count += 1
-            }
-            self.ContenerViewRectSubViewsRectList = []
+        UIView.animate(withDuration: 0, animations: {
+            self.BackgroundView.transform = CGAffineTransform(scaleX: 0, y: 0)
+            self.ContenerView.transform = CGAffineTransform(scaleX: 0, y: 0)
+        }) { (true) in
+            UIView.animate(withDuration: self.main_view_animate_time, animations: {
+                self.BackgroundView.transform = CGAffineTransform.identity
+                self.ContenerView.transform = CGAffineTransform.identity
+            })
         }
     }
     
