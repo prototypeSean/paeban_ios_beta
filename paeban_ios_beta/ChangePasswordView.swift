@@ -107,7 +107,7 @@ class ChangePasswordView:UIView, UITextFieldDelegate{
             new_password_1.text != "" &&
             old_password.text != ""{
             let data_dic = [
-                "usdr_id": userData.id!,
+                "user_id": userData.id!,
                 "password": old_password.text!,
                 "new_password": new_password_1.text!
             ]
@@ -166,6 +166,7 @@ class ChangePasswordView:UIView, UITextFieldDelegate{
         add_load_view()
         HttpRequestCenter().http_request(url: url, data_mode: "change_password", form_data_dic: data_dic) { (result_dic:Dictionary<String, AnyObject>?) in
             DispatchQueue.main.async {
+                self.endEditing(true)
                 let alert = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
                 if result_dic != nil{
                     self.dissmis_load_view()
