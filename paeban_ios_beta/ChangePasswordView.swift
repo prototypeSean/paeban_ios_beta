@@ -101,7 +101,11 @@ class ChangePasswordView:UIView, UITextFieldDelegate{
     }
     func submit_btn_press(){
         // 確認新密碼一致
-        if new_password_1.text == new_password_2.text && new_password_1.text != nil && old_password.text != nil{
+        if new_password_1.text == new_password_2.text &&
+            new_password_1.text != nil &&
+            old_password.text != nil &&
+            new_password_1.text != "" &&
+            old_password.text != ""{
             let data_dic = [
                 "usdr_id": userData.id!,
                 "password": old_password.text!,
@@ -183,6 +187,7 @@ class ChangePasswordView:UIView, UITextFieldDelegate{
                 else{
                     alert.title = "錯誤"
                     alert.message = "網路異常"
+                    alert.addAction(UIAlertAction(title: "確定", style: .default, handler: nil))
                     self.dissmis_load_view()
                 }
                 self.window?.rootViewController?.presentedViewController?.present(alert, animated: true, completion: nil)
