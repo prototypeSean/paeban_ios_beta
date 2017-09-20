@@ -182,6 +182,8 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         
         // 判斷是否顯示變更密碼的按鈕
         if let _ = FBSDKAccessToken.current(){
+            self.change_password_btn.isEnabled = false
+            self.change_password_btn.tintColor = UIColor.clear
             // 用ＦＢ登入的
         }
         else{
