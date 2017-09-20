@@ -8,16 +8,15 @@
 
 import UIKit
 import Starscream
+import FBSDKLoginKit
+import FBSDKCoreKit
+import FBSDKShareKit
 
 class SettingViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func openFB(_ sender: UIBarButtonItem) {
         UIApplication.shared.openURL(URL(string: "https://www.facebook.com/meetgently/")!)
     }
-//    @IBAction func openFB(_ sender: UIButton) {
-//        UIApplication.shared.openURL(URL(string: "https://www.facebook.com/meetgently/")!)
-//    }
-//    @IBOutlet weak var openFBOutlet: UIButton!
     @IBOutlet weak var isTruePhotoSwitch: UISwitch!
     @IBOutlet weak var isTruePhoto: UIImageView!
     @IBAction func logOutBtn(_ sender: AnyObject) {
@@ -43,28 +42,16 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
 //        }
     }
     @IBOutlet weak var name_text: UITextField!
-//    @IBAction func name_btn(_ sender: AnyObject) {
-//        edit_name()
-//    }
-//    @IBOutlet weak var name_btn_obj: UIButton!
-    
-
     @IBOutlet weak var is_true_photo_switch: UISwitch!
     @IBAction func save_btn(_ sender: AnyObject) {
         save_data_to_server()
     }
-    
     @IBAction func change_password(_ sender: Any) {
         let change_view = ChangePasswordView()
         change_view.frame = (self.navigationController?.view.frame)!
         tabBarController?.view.addSubview(change_view)
     }
-//    @IBAction func change_password(_ sender: Any) {
-//        let change_view = ChangePasswordView()
-//        change_view.frame = (self.navigationController?.view.frame)!
-//        self.view.addSubview(change_view)
-//    }
-    
+    @IBOutlet weak var change_password_btn: UIBarButtonItem!
     @IBOutlet weak var cmd_line: UITextField!
     @IBAction func reset_act(_ sender: Any) {
         let cmd = cmd_line.text!
@@ -192,6 +179,15 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
             isTruePhotoSwitch.isOn = false
             isTruePhoto.tintColor = UIColor.clear
         }
+        
+        // 判斷是否顯示變更密碼的按鈕
+        if let _ = FBSDKAccessToken.current(){
+            // 用ＦＢ登入的
+        }
+        else{
+            // 一班燈入用戶
+        }
+        
     }
     func logOut(){
         HttpRequestCenter().request_user_data("log_out", send_dic: [:]) { (element) in

@@ -175,6 +175,7 @@ class ChangePasswordView:UIView, UITextFieldDelegate{
                         alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
                             self.removeFromSuperview()
                         }))
+                        socket.disconnect()
                     }
                     else{
                         alert.title = "錯誤"

@@ -389,6 +389,9 @@ class HttpRequestCenter{
                     ouput = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as String?
                     if let res = response as? HTTPURLResponse{
                         print("http complete")
+                        if let response_cookie = res.allHeaderFields["Set-Cookie"] as? String {
+                            cookie_new.set_cookie(cookie_in: response_cookie)
+                        }
                         let status = res.statusCode
                         if status == 200{
                             ouput_json = json_load(ouput!) as! Dictionary
