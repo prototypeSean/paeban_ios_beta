@@ -99,6 +99,8 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     @IBOutlet weak var fb_logo: UIImageView!
     @IBOutlet weak var tutorial: UIButton!
     @IBOutlet weak var state_lable: UILabel!
+    @IBOutlet weak var recover_account_outlet: UIButton!
+    
 //    @IBOutlet weak var gradientView: UIViewX!
 //    @IBOutlet weak var gradientText: UIImageView!
     @IBOutlet weak var lunchScreenText: UILabel!
@@ -668,6 +670,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             self.singIn_outlet.isHidden  = true
             self.fb_logo.isHidden = true
             self.tutorial.isHidden = true
+            self.recover_account_outlet.isHidden = true
         }
     }
     func show_items(){
@@ -679,6 +682,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             self.singIn_outlet.isHidden  = false
             self.fb_logo.isHidden = false
             self.tutorial.isHidden = false
+            self.recover_account_outlet.isHidden = false
         }
     }
     func state_loging(){
