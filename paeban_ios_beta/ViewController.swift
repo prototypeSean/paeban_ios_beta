@@ -453,6 +453,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         else{
             DispatchQueue.main.async {
+                self.remove_loading_view()
                 let alert = UIAlertController(title: "錯誤".localized(withComment: "ViewController"), message: "網路異常，是否嘗試重新連線".localized(withComment: "ViewController"), preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "是".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                     self.login_paeban_obj.get_cookie_csrf()
@@ -460,6 +461,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 alert.addAction(UIAlertAction(title: "否".localized(withComment: "ViewController"), style: .default, handler: { (act) in
                     self.show_items()
                 }))
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
