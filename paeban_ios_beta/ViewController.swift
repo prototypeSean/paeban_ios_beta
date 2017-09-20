@@ -1027,7 +1027,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 }
             }
             else{
-                let alert = UIAlertController(title: "錯誤", message: "網路錯誤，請求料庫失敗，是否重新嘗試", preferredStyle: .alert)
+                let alert = UIAlertController(title: "錯誤", message: "網路錯誤，請求資料庫失敗，是否重新嘗試", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
                     self.update_database(reset_db: "1")
                 }))

@@ -495,8 +495,8 @@ class HttpRequestCenter{
             var ouput:UIImage?
             var request = URLRequest(url: URL(string: url)!)
             request.httpMethod = "GET"
-            request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]
-            request.allHTTPHeaderFields = ["X-CSRFToken":cookie_new.get_csrf()]
+//            request.allHTTPHeaderFields = ["Cookie":cookie_new.get_cookie()]
+//            request.allHTTPHeaderFields = ["X-CSRFToken":cookie_new.get_csrf()]
             let session = URLSession.shared
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
                 if error != nil{
