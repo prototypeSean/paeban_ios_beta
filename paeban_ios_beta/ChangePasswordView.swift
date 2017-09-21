@@ -171,6 +171,7 @@ class ChangePasswordView:UIView, UITextFieldDelegate{
                 if result_dic != nil{
                     self.dissmis_load_view()
                     if result_dic!["result"] as! String == "success"{
+                        alert.title = "更改密碼"
                         alert.message = "密碼更換成功"
                         alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act) in
                             self.removeFromSuperview()
