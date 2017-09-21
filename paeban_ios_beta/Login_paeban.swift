@@ -63,7 +63,6 @@ class login_paeban{
         let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
             if error != nil{
                 self.delegate?.get_cookie_csrf_report!(state: "login_fail", setcookie: "")
-                print("ERR L1")
                 print("連線錯誤\(error)")
             }
             else{
@@ -119,7 +118,6 @@ class login_paeban{
             let task = session.dataTask(with: request, completionHandler: {data, response, error -> Void in
                 if error != nil{
                     self.delegate?.get_cookie_by_IDPW_report!(state: "net_fail", setcookie: "")
-                    print("ERR L2")
                     print("連線錯誤\(error)")
                     
                 }
@@ -160,7 +158,6 @@ class login_paeban{
         let task_csrf = session.dataTask(with: request_csrf, completionHandler: {data, response, error -> Void in
             if error != nil{
                 self.delegate?.get_cookie_csrf_report!(state: "login_fail", setcookie: "")
-                print("ERR L3")
                 print("連線錯誤\(error)")
             }
             else{

@@ -222,7 +222,7 @@ class SinInFramViewController: UIViewController, UIPickerViewDataSource, UIPicke
                         })
                     }
                     else{
-                        self.simpoAlert(reason: "email已被註冊".localized(withComment: "SinInFramViewController"))
+                        self.simpoAlert(reason: "信箱已被註冊".localized(withComment: "SinInFramViewController"))
                     }
                     self.loading_vc.removeFromSuperview()
                 })

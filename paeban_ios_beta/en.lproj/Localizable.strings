@@ -185,7 +185,7 @@
 
 "已發送註冊信,請至您的註冊信箱點擊啟動連結" = "A confirmation email has been sent, please check your email to valid account";
 
-"email已被註冊" = "This email has been registered";
+"信箱已被註冊" = "This email has been registered";
 
 
 /*ToolsFunction*/
