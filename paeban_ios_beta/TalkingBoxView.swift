@@ -107,7 +107,7 @@ class TalkingBoxView:UIView, UITextFieldDelegate{
                     if result_dic != nil{
                         if result_dic!["result"] as! String == "check_success"{
                             alert.title = "請收信"
-                            alert.message = "已將新密碼發送到您的註冊信箱"
+                            alert.message = "已將臨時密碼寄送到您的註冊信箱，請用臨時密碼登入"
                             self.removeFromSuperview()
                         }
                         else{
