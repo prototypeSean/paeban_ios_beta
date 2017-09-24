@@ -184,14 +184,14 @@ class TalkingBoxView:UIView, UITextFieldDelegate{
     func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             if !keyborad_showing_state{
-                ContenerView.center.y += keyboardSize.height
+                ContenerView.center.y += keyboardSize.height - 45
                 keyborad_showing_state = true
             }
         }
     }
     func keyboardWillHide(notification: NSNotification) {
         if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
-            ContenerView.center = ContenerViewInitCenter!
+            ContenerView.center = BackgroundView.center
             keyborad_showing_state = false
         }
     }
