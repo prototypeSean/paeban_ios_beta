@@ -93,7 +93,7 @@
                                 <action selector="cancel_btn_act:" destination="-1" eventType="touchUpInside" id="Ky5-Il-712"/>
                             </connections>
                         </button>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入您註冊的信箱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OAt-vT-Bgp">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入您註冊的信箱" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="OAt-vT-Bgp">
                             <rect key="frame" x="24" y="34" width="192" height="30"/>
                             <color key="backgroundColor" red="0.85563234992595538" green="0.85563234992595538" blue="0.85563234992595538" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="textColor"/>

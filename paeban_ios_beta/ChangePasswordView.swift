@@ -74,6 +74,7 @@ class ChangePasswordView:UIView, UITextFieldDelegate{
         self.MainView.frame = self.bounds
         style_setup()
         show_view_animate()
+        find_user_kb_height()
         old_password.delegate = self
         new_password_1.delegate = self
         new_password_2.delegate = self
@@ -197,16 +198,43 @@ class ChangePasswordView:UIView, UITextFieldDelegate{
             }
         }
     }
-    
-    // MARK: delegate
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        keybroad_showing = true
+    func find_user_kb_height(){
+        // 設定監聽鍵盤
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingViewController.dismissKeyboard))
+        self.addGestureRecognizer(tap)
     }
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if !keybroad_showing{
+                contenerView.center.y = contenerView.center.y - keyboardSize.height + contenerView.frame.height
+                print(contenerView.center.y,"contenerView.center.y")
+                print(keyboardSize.height,"keyboardSize.height")
+                keybroad_showing = true
+            }
+        }
+    }
+    func keyboardWillHide(notification: NSNotification) {
+        if ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue) != nil {
+            contenerView.center = backgroundView.center
+            keybroad_showing = false
+        }
+    }
+    func dismissKeyboard(){
         self.endEditing(true)
-        keybroad_showing = false
-        return true
     }
+    // MARK: delegate
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        keybroad_showing = true
+//        find_user_kb_height()
+//    }
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        self.endEditing(true)
+//        keybroad_showing = false
+//        return true
+//    }
 }
 
 
