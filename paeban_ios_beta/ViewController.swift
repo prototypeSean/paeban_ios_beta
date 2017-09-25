@@ -21,8 +21,7 @@ public let unlock_img_exp = 7
 public let local_host = "http://www.paeban.com/"
 public let image_url_host = "http://www.paeban.com/media/"
 public let is_VIP = false
-// fly
-public var open_app_frist = false   // default true
+public var open_app_frist = true   // default true
 // init config
 
 
