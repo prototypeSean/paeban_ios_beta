@@ -214,7 +214,6 @@ class FriendTableViewController: UITableViewController,FriendInvitedCellTableVie
         parent.popToRootViewController(animated: false)
     }
     func autoLeap(segeu_data:Dictionary<String,String>){
-        // 飛行
         if !segeu_data.isEmpty && recive_apns_switch{
             if let segue_user_id = segeu_data["user_id"]{
                 if let friend_name = sql_database.get_friend_name(friend_id:segue_user_id){
