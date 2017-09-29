@@ -18,8 +18,9 @@ public var my_blur_img_level_dic = [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 
 public let version = "1.9.0.0"
 public let reset_database = false
 public let unlock_img_exp = 7
-public let local_host = "http://www.paeban.com/"
-public let image_url_host = "http://www.paeban.com/media/"
+// fly 改port
+public let local_host = "http://www.paeban.com:10800/"
+public let image_url_host = local_host + "media/"
 public let is_VIP = false
 public var open_app_frist = true   // default true
 // init config

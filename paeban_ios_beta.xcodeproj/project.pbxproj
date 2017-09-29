@@ -80,6 +80,7 @@
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
 		CFB83DF61DFFA7370029C475 /* MyTopicTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB83DF51DFFA7370029C475 /* MyTopicTableViewModel.swift */; };
 		CFBA00AF1DB4CE5C00400C98 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */; };
+		CFBC10581F7BBA1A00A79EDE /* IAPCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBC10571F7BBA1A00A79EDE /* IAPCenter.swift */; };
 		CFCC8A851D78327800D5EDF6 /* RecentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */; };
 		CFCC8A891D78329C00D5EDF6 /* RecentTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */; };
 		CFCC8A8B1D78336500D5EDF6 /* RecentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */; };
@@ -175,6 +176,7 @@
 		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
 		CFB83DF51DFFA7370029C475 /* MyTopicTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopicTableViewModel.swift; sourceTree = "<group>"; };
 		CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		CFBC10571F7BBA1A00A79EDE /* IAPCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPCenter.swift; sourceTree = "<group>"; };
 		CFCC8A841D78327800D5EDF6 /* RecentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewCell.swift; sourceTree = "<group>"; };
 		CFCC8A881D78329C00D5EDF6 /* RecentTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewModel.swift; sourceTree = "<group>"; };
 		CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewController.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 		931FF1931CFEA848000E7F8A /* paeban_ios_beta */ = {
 			isa = PBXGroup;
 			children = (
+				CFBC10561F7BB9D700A79EDE /* iap_center */,
 				1909C16D1EF2768D00EE5183 /* Localize */,
 				CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */,
 				CF9E372C1E21E2F40077C7C9 /* all_filed_work */,
@@ -416,6 +419,14 @@
 				CFF6C4151E9F4D5200A191FD /* suport_func.swift */,
 			);
 			name = all_filed_work;
+			sourceTree = "<group>";
+		};
+		CFBC10561F7BB9D700A79EDE /* iap_center */ = {
+			isa = PBXGroup;
+			children = (
+				CFBC10571F7BBA1A00A79EDE /* IAPCenter.swift */,
+			);
+			name = iap_center;
 			sourceTree = "<group>";
 		};
 		F5E53891315C99A863EB47FB /* Pods */ = {
@@ -613,6 +624,7 @@
 				CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */,
 				93077EEA1E20DDB3004900FF /* CustomMessagesCollectionViewCellIncoming.swift in Sources */,
 				936F9FEF1D72C50200A3F1C9 /* MyTopicViewController.swift in Sources */,
+				CFBC10581F7BBA1A00A79EDE /* IAPCenter.swift in Sources */,
 				CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */,
 				CFD48D671DCB13FD006C48A2 /* EditViewController.swift in Sources */,
 				938828331DEDBD8D006E66AC /* RegistAndLoginViewController.swift in Sources */,
