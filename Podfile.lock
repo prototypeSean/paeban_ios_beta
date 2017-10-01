@@ -11,6 +11,7 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.15.1):
     - FBSDKCoreKit
+  - Google-Mobile-Ads-SDK (7.24.1)
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
@@ -23,6 +24,7 @@ DEPENDENCIES:
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
+  - Google-Mobile-Ads-SDK
   - JSQMessagesViewController
   - SQLite.swift (~> 0.11.2)
   - Starscream (~> 2.0.0)
@@ -32,11 +34,12 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: fc7fa53d16b095ee3fd53f0cd59f1df8bcbb634d
   FBSDKLoginKit: 073f79b3b2e762fc6f54a283fe15f45372d59f5f
   FBSDKShareKit: 11cbb5a4d7b5fda8143cc95b76188147e6725736
+  Google-Mobile-Ads-SDK: ed8004a7265b424568dc84f3d2bbe3ea3fff958f
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
   Starscream: 947c865596f0d6bb3f0203fee23228ed2d471468
 
-PODFILE CHECKSUM: 8433e822cdfbb488c9751ef0ecba26eca2c117ac
+PODFILE CHECKSUM: a9ca751684c95466feb111abc889fac61aebd885
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.3.1
