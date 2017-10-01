@@ -13,7 +13,7 @@ protocol IAPCenterDelegate {
     func product_info_return(product_list:Array<SKProduct>?)
 }
 
-class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver{
+public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver{
     var delegate:IAPCenterDelegate?
     var product_id_list:Array<String> = []
     override init() {
@@ -79,7 +79,7 @@ class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserve
     }
     
     // MARK: delegate
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse){
+    public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse){
         if response.products.count != 0 {
             var return_list:Array<SKProduct> = []
             for product in response.products {
@@ -91,9 +91,9 @@ class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserve
             delegate?.product_info_return(product_list: nil)
         }
     }
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]){
+    public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]){
         for transaction in transactions{
-            // write intp database
+            // write into database
         }
     }
 }

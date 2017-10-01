@@ -57,6 +57,8 @@
 		CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF13867D1D98CE0600E70990 /* LoginScrollView.swift */; };
 		CF288A991E67FF290052DFE8 /* IAPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF288A981E67FF290052DFE8 /* IAPurchaseViewController.swift */; };
 		CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */; };
+		CF2A3DA11F7F88D700CF7A61 /* IAPTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A3DA01F7F88D700CF7A61 /* IAPTableViewController.swift */; };
+		CF2A3DA31F7F8AD200CF7A61 /* IAPTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF2A3DA21F7F8AD200CF7A61 /* IAPTableView.storyboard */; };
 		CF2E9D621D7BDF9E00F485BB /* FriendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E9D611D7BDF9E00F485BB /* FriendTableViewController.swift */; };
 		CF2E9D641D7BDFC000F485BB /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E9D631D7BDFC000F485BB /* FriendTableViewCell.swift */; };
 		CF2E9D661D7BDFE300F485BB /* FriendTableViewMedol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2E9D651D7BDFE300F485BB /* FriendTableViewMedol.swift */; };
@@ -151,6 +153,8 @@
 		CF13867D1D98CE0600E70990 /* LoginScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScrollView.swift; sourceTree = "<group>"; };
 		CF288A981E67FF290052DFE8 /* IAPurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPurchaseViewController.swift; sourceTree = "<group>"; };
 		CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendChatUpViewController.swift; sourceTree = "<group>"; };
+		CF2A3DA01F7F88D700CF7A61 /* IAPTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPTableViewController.swift; sourceTree = "<group>"; };
+		CF2A3DA21F7F8AD200CF7A61 /* IAPTableView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = IAPTableView.storyboard; sourceTree = "<group>"; };
 		CF2E9D611D7BDF9E00F485BB /* FriendTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewController.swift; sourceTree = "<group>"; };
 		CF2E9D631D7BDFC000F485BB /* FriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
 		CF2E9D651D7BDFE300F485BB /* FriendTableViewMedol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewMedol.swift; sourceTree = "<group>"; };
@@ -425,6 +429,8 @@
 			isa = PBXGroup;
 			children = (
 				CFBC10571F7BBA1A00A79EDE /* IAPCenter.swift */,
+				CF2A3DA01F7F88D700CF7A61 /* IAPTableViewController.swift */,
+				CF2A3DA21F7F8AD200CF7A61 /* IAPTableView.storyboard */,
 			);
 			name = iap_center;
 			sourceTree = "<group>";
@@ -529,6 +535,7 @@
 				CF90FFA61F67D3360078A5FA /* TalkingBox.xib in Resources */,
 				932A00F51D0025AC0036E1EA /* Assets.xcassets in Resources */,
 				CF976E681F6BBC1800A840ED /* ChangePassword.xib in Resources */,
+				CF2A3DA31F7F8AD200CF7A61 /* IAPTableView.storyboard in Resources */,
 				1909C1701EF278D300EE5183 /* Localizable.strings in Resources */,
 				190B21BF1EEFD41E007067B7 /* Main.storyboard in Resources */,
 				93077EF01E20E035004900FF /* CustomMessagesCollectionViewCellOutgoing.xib in Resources */,
@@ -613,6 +620,7 @@
 				932D0D711DA0F61100ACA795 /* MytopicNavViewController.swift in Sources */,
 				CF2E9D681D7BE33C00F485BB /* FriendStanderType.swift in Sources */,
 				CF7926601DA0E74200821860 /* SingInModel.swift in Sources */,
+				CF2A3DA11F7F88D700CF7A61 /* IAPTableViewController.swift in Sources */,
 				930F90D81DEAC07200346A13 /* EULAViewController.swift in Sources */,
 				190F3A1C1F07840000AF9851 /* UIViewX.swift in Sources */,
 				932A00E71CFEBA460036E1EA /* TopicTableViewController.swift in Sources */,
