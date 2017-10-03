@@ -1477,7 +1477,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ZH-7d-0if">
-                                <rect key="frame" x="0.0" y="61" width="414" height="626"/>
+                                <rect key="frame" x="0.0" y="61.333333333333314" width="414" height="625.66666666666674"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="Pk2-do-hj9"/>
                                 </constraints>
@@ -1493,6 +1493,13 @@
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="aEh-SV-29s">
                                 <rect key="frame" x="-1" y="64" width="416" height="110"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ogf-LE-AsU" customClass="GADBannerView">
+                                <rect key="frame" x="0.0" y="637" width="414" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="WfN-iB-HJn"/>
+                                </constraints>
                             </view>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kY5-PA-Ibk">
                                 <rect key="frame" x="20" y="75" width="88" height="88"/>
@@ -1676,12 +1683,15 @@
                             <constraint firstItem="qPt-S3-4C6" firstAttribute="top" secondItem="yud-7a-qK2" secondAttribute="bottom" constant="8" symbolic="YES" id="Km3-S6-IBQ"/>
                             <constraint firstItem="aEh-SV-29s" firstAttribute="leading" secondItem="6Yb-S9-ebd" secondAttribute="leadingMargin" constant="-20.5" id="Nf2-lQ-GkA"/>
                             <constraint firstAttribute="trailingMargin" secondItem="1ZH-7d-0if" secondAttribute="trailing" constant="-20" id="Ovv-Lg-idn"/>
+                            <constraint firstItem="Ogf-LE-AsU" firstAttribute="width" secondItem="6Yb-S9-ebd" secondAttribute="width" id="Pym-tl-DhV"/>
                             <constraint firstItem="eTG-mV-jYP" firstAttribute="width" secondItem="kY5-PA-Ibk" secondAttribute="width" id="UZ1-G8-Ig4"/>
                             <constraint firstItem="Rog-Sp-21z" firstAttribute="top" secondItem="1ZH-7d-0if" secondAttribute="bottom" id="V3d-3c-WsZ"/>
                             <constraint firstItem="eTG-mV-jYP" firstAttribute="centerY" secondItem="kY5-PA-Ibk" secondAttribute="centerY" id="VGT-sp-48s"/>
                             <constraint firstItem="kY5-PA-Ibk" firstAttribute="leading" secondItem="6Yb-S9-ebd" secondAttribute="leadingMargin" id="W6x-Bv-rRW"/>
                             <constraint firstItem="1ZH-7d-0if" firstAttribute="height" secondItem="6Yb-S9-ebd" secondAttribute="height" multiplier="0.85" id="cB4-6W-8bA"/>
                             <constraint firstItem="1eB-uP-9zj" firstAttribute="centerX" secondItem="6Yb-S9-ebd" secondAttribute="centerX" id="e3a-j1-Jrr"/>
+                            <constraint firstItem="Rog-Sp-21z" firstAttribute="top" secondItem="Ogf-LE-AsU" secondAttribute="bottom" id="e6k-qD-Qdn"/>
+                            <constraint firstItem="Ogf-LE-AsU" firstAttribute="centerX" secondItem="6Yb-S9-ebd" secondAttribute="centerX" id="elW-HT-oDS"/>
                             <constraint firstItem="1ZH-7d-0if" firstAttribute="leading" secondItem="6Yb-S9-ebd" secondAttribute="leadingMargin" constant="-20" id="fwo-iL-uPO"/>
                             <constraint firstItem="1eB-uP-9zj" firstAttribute="height" secondItem="6Yb-S9-ebd" secondAttribute="height" id="ipb-Cf-Ewr"/>
                             <constraint firstItem="mWy-Dk-LKg" firstAttribute="top" secondItem="kY5-PA-Ibk" secondAttribute="top" id="j2q-yW-eK4"/>
@@ -1709,6 +1719,7 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="hidesBottomBarWhenPushed" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
+                        <outlet property="adBannerOutlet" destination="Ogf-LE-AsU" id="S8z-yV-rA7"/>
                         <outlet property="btnAddFriend" destination="hQM-93-MHZ" id="eLx-FK-dH7"/>
                         <outlet property="btnBlock" destination="1iA-d0-HvN" id="e1W-Fe-Uxj"/>
                         <outlet property="btnIgnroe" destination="fky-ei-yvH" id="PSB-TV-67R"/>
@@ -1717,6 +1728,8 @@
                         <outlet property="popUpImg" destination="B8p-cb-c7Q" id="Clc-f8-kfs"/>
                         <outlet property="popUpViewCenterX" destination="e3a-j1-Jrr" id="wHp-Zz-3NB"/>
                         <outlet property="popUpviewCenterY" destination="K37-BN-7ti" id="udw-pf-wRJ"/>
+                        <outlet property="topicChatViewContainerHeight" destination="cB4-6W-8bA" id="XcC-4s-aeg"/>
+                        <outlet property="topicChatViewContainerToBottom" destination="V3d-3c-WsZ" id="aRq-ms-u5y"/>
                         <outlet property="topicInfoBG" destination="aEh-SV-29s" id="Jef-D9-wpB"/>
                         <outlet property="topicTitleContent" destination="yud-7a-qK2" id="DDa-5L-GzG"/>
                     </connections>
@@ -2521,7 +2534,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Agd-9n-p2Q"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="68R-qK-mqe">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="626"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="625.66666666666674"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
@@ -2888,7 +2901,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DhN-4m-hPP">
-                                <rect key="frame" x="0.0" y="61" width="414" height="626"/>
+                                <rect key="frame" x="0.0" y="61.333333333333314" width="414" height="625.66666666666674"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="md3-Ur-ZYh"/>
                                 </constraints>
@@ -2901,6 +2914,13 @@
                                     <segue destination="kT7-Cr-d6j" kind="embed" identifier="sec" id="TNe-XA-eU3"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QBg-YI-YVv" customClass="GADBannerView">
+                                <rect key="frame" x="0.0" y="637" width="414" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="j5z-ki-a0w"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="600" placeholderIntrinsicHeight="90" translatesAutoresizingMaskIntoConstraints="NO" id="g4A-jM-ZPT">
                                 <rect key="frame" x="-1" y="64" width="416" height="110"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -3074,12 +3094,14 @@
                             <constraint firstItem="Xb7-t0-6CF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sbu-fj-0kP" secondAttribute="trailing" constant="8" symbolic="YES" id="DFV-Bf-TA5"/>
                             <constraint firstItem="AFM-PV-tWI" firstAttribute="height" secondItem="g4A-jM-ZPT" secondAttribute="height" multiplier="0.4" id="DdJ-eL-8rC"/>
                             <constraint firstItem="ktm-I7-dK4" firstAttribute="centerX" secondItem="TCa-fY-ouF" secondAttribute="centerX" id="GxV-WC-8Bp"/>
+                            <constraint firstItem="SWQ-2P-P7x" firstAttribute="top" secondItem="QBg-YI-YVv" secondAttribute="bottom" id="Jkk-BU-HVw"/>
                             <constraint firstItem="ktm-I7-dK4" firstAttribute="centerY" secondItem="TCa-fY-ouF" secondAttribute="centerY" constant="-1200" id="LLH-8u-yVM"/>
                             <constraint firstItem="DhN-4m-hPP" firstAttribute="top" secondItem="GPf-iK-ve8" secondAttribute="bottom" id="LRc-X8-OCE"/>
                             <constraint firstItem="DhN-4m-hPP" firstAttribute="leading" secondItem="TCa-fY-ouF" secondAttribute="leadingMargin" constant="-20" id="Mqs-FW-iZl"/>
                             <constraint firstItem="g4A-jM-ZPT" firstAttribute="height" secondItem="TCa-fY-ouF" secondAttribute="height" multiplier="0.15" id="NHU-hP-Isn"/>
                             <constraint firstItem="SWQ-2P-P7x" firstAttribute="top" secondItem="DhN-4m-hPP" secondAttribute="bottom" id="Nzh-W1-k7y"/>
                             <constraint firstItem="6hu-Ye-lun" firstAttribute="height" secondItem="MGz-ct-YLZ" secondAttribute="height" id="Q0g-Id-R1H"/>
+                            <constraint firstItem="QBg-YI-YVv" firstAttribute="centerX" secondItem="TCa-fY-ouF" secondAttribute="centerX" id="R2t-fi-Iw6"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Xb7-t0-6CF" secondAttribute="trailing" id="RZC-nh-onu"/>
                             <constraint firstItem="MGz-ct-YLZ" firstAttribute="height" secondItem="TCa-fY-ouF" secondAttribute="height" multiplier="0.12" id="TMG-HF-xi0"/>
                             <constraint firstItem="MGz-ct-YLZ" firstAttribute="leading" secondItem="TCa-fY-ouF" secondAttribute="leadingMargin" id="TpL-v1-tpc"/>
@@ -3089,6 +3111,7 @@
                             <constraint firstItem="Xb7-t0-6CF" firstAttribute="centerY" secondItem="g4A-jM-ZPT" secondAttribute="centerY" id="hjP-C4-GRi"/>
                             <constraint firstItem="MGz-ct-YLZ" firstAttribute="centerY" secondItem="g4A-jM-ZPT" secondAttribute="centerY" id="jHH-eD-9IC"/>
                             <constraint firstItem="6hu-Ye-lun" firstAttribute="centerX" secondItem="MGz-ct-YLZ" secondAttribute="centerX" id="jfR-NS-jSV"/>
+                            <constraint firstItem="QBg-YI-YVv" firstAttribute="width" secondItem="TCa-fY-ouF" secondAttribute="width" id="jxb-5m-rrT"/>
                             <constraint firstItem="g4A-jM-ZPT" firstAttribute="top" secondItem="GPf-iK-ve8" secondAttribute="bottom" id="mgs-83-OCu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="g4A-jM-ZPT" secondAttribute="trailing" constant="-20.5" id="p76-MU-hDz"/>
                             <constraint firstItem="sbu-fj-0kP" firstAttribute="centerX" secondItem="g4A-jM-ZPT" secondAttribute="centerX" id="pEh-8l-fJw"/>
@@ -3115,11 +3138,15 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="hidesBottomBarWhenPushed" value="YES"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
+                        <outlet property="adBannerOutlet" destination="QBg-YI-YVv" id="1eQ-Zx-nZu"/>
                         <outlet property="btnAddFriend" destination="qQl-5h-cVE" id="ncT-LW-7db"/>
                         <outlet property="btnBlock" destination="QUY-fi-OOz" id="JB2-AL-dHx"/>
                         <outlet property="btnIgnroe" destination="HJT-Pq-Enr" id="3Cc-Jy-Qsn"/>
+                        <outlet property="chatViewContainerOutlet" destination="DhN-4m-hPP" id="cl4-uI-Alr"/>
                         <outlet property="guestPhoto" destination="MGz-ct-YLZ" id="Uku-BH-PYb"/>
                         <outlet property="myPhoto" destination="Xb7-t0-6CF" id="Gg8-mO-TR6"/>
+                        <outlet property="myTopicChatViewContainerHeight" destination="tPG-lS-fK5" id="lgA-nE-Yxb"/>
+                        <outlet property="myTopicChatViewContainerToBottom" destination="Nzh-W1-k7y" id="HY9-pp-rUF"/>
                         <outlet property="popUpImg" destination="nyt-uu-Any" id="dWs-48-MLL"/>
                         <outlet property="popUpViewCenterY" destination="LLH-8u-yVM" id="gGa-ci-P2r"/>
                         <outlet property="topicInfoBG" destination="g4A-jM-ZPT" id="Owg-jB-HfG"/>
@@ -3139,7 +3166,7 @@
                         <viewControllerLayoutGuide type="bottom" id="SJa-n7-xti"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" restorationIdentifier="chatBoxView" id="1yC-zi-aJI">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="626"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="625.66666666666674"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -3676,9 +3703,9 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nCN-DR-xXv"/>
-        <segue reference="9Et-Zw-Bc4"/>
         <segue reference="wZO-VC-xmQ"/>
+        <segue reference="Vlh-Kf-y40"/>
         <segue reference="wc9-Me-EI3"/>
+        <segue reference="9Et-Zw-Bc4"/>
     </inferredMetricsTieBreakers>
 </document>

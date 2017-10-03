@@ -8,11 +8,13 @@
 
 import UIKit
 import JSQMessagesViewController
+import GoogleMobileAds
+
 protocol TopicViewControllerDelegate {
     func topic_has_been_closed(_ topicID:String)
 }
 
-class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
+class TopicViewController: UIViewController, webSocketActiveCenterDelegate, GADBannerViewDelegate{
     // 替漸層增加一個圖層
     let gradientLayer = CAGradientLayer()
     
@@ -72,10 +74,54 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             })
         }
     }
+    
+    // MARK: 廣告 Banner
+    @IBOutlet weak var adBannerOutlet: GADBannerView!
+    // 把外觀的高度跟距離拉過來做成變數，配合是這版本是不是內購用的
+    @IBOutlet weak var topicChatViewContainerToBottom: NSLayoutConstraint!
+    @IBOutlet weak var topicChatViewContainerHeight: NSLayoutConstraint!
+    
+    
+    func adBannerfunc(){
+        self.topicChatViewContainerHeight.constant = -50
+        self.topicChatViewContainerToBottom.constant = 50
+        self.adBannerOutlet.delegate = self
+        self.adBannerOutlet.adSize = kGADAdSizeSmartBannerPortrait
+        self.adBannerOutlet.adUnitID = "ca-app-pub-8856054505966532/2670891149"
+        self.adBannerOutlet.rootViewController = self
+        let request = GADRequest()
+        // flight--
+        request.testDevices = [ kGADSimulatorID,];
+        // --flight
+        self.adBannerOutlet.load(request)
+    }
+    
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("Banner loaded successfully")
+        self.adBannerOutlet = bannerView
+        
+        let translateTransform = CGAffineTransform(translationX: 0, y: -bannerView.bounds.size.height)
+        bannerView.transform = translateTransform
+        
+        UIView.animate(withDuration: 1.0) {
+            self.adBannerOutlet.frame = bannerView.frame
+            bannerView.transform = CGAffineTransform.identity
+            self.adBannerOutlet = bannerView
+        }
+        
+    }
+    
+    func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
+        print("Fail to receive ads")
+        print(error)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //getHttpData()
-        
+        if showADs == true{
+            adBannerfunc()
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

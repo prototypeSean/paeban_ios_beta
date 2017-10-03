@@ -10,8 +10,9 @@
 import UIKit
 
 import JSQMessagesViewController
+import GoogleMobileAds
 
-class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
+class MyTopicViewController: UIViewController, webSocketActiveCenterDelegate, GADBannerViewDelegate{
 
     @IBOutlet weak var guestPhoto: UIImageView!
     @IBOutlet weak var myPhoto: UIImageView!
@@ -95,6 +96,48 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
     var msg:Dictionary<String,AnyObject>?
     var isfriend = false
     var model:MyTopicTableViewModel?
+    
+    // Mark: 廣告 Banner
+    @IBOutlet weak var adBannerOutlet: GADBannerView!
+    @IBOutlet weak var chatViewContainerOutlet: UIView!
+    // 把外觀的高度跟距離拉過來做成變數，配合是這版本是不是內購用的
+    @IBOutlet weak var myTopicChatViewContainerToBottom: NSLayoutConstraint!
+    @IBOutlet weak var myTopicChatViewContainerHeight: NSLayoutConstraint!
+    
+    func adBannerfunc(){
+        self.myTopicChatViewContainerToBottom.constant = 50
+        self.myTopicChatViewContainerHeight.constant = -50
+        self.adBannerOutlet.delegate = self
+        self.adBannerOutlet.adSize = kGADAdSizeSmartBannerPortrait
+        self.adBannerOutlet.adUnitID = "ca-app-pub-8856054505966532/2670891149"
+        self.adBannerOutlet.rootViewController = self
+        let request = GADRequest()
+        // flight--
+        request.testDevices = [ kGADSimulatorID,];
+        // --flight
+        self.adBannerOutlet.load(request)
+    }
+    
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+        print("Banner loaded successfully")
+        //        adBannerOutlet.frame = bannerView.frame
+        self.adBannerOutlet = bannerView
+        
+        let translateTransform = CGAffineTransform(translationX: 0, y: -bannerView.bounds.size.height)
+        bannerView.transform = translateTransform
+        
+        UIView.animate(withDuration: 1.0) {
+            self.adBannerOutlet.frame = bannerView.frame
+            bannerView.transform = CGAffineTransform.identity
+            self.adBannerOutlet = bannerView
+        }
+        
+    }
+    
+    func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
+        print("Fail to receive ads")
+        print(error)
+    }
     
     var guestPhotoImg = UIImageView()
     var client_data_obj:Client_detail_data?
@@ -300,6 +343,11 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         wsActive.wasd_ForMyTopicViewController = self
 //        setImage()
         topicTitleContent.text = topicTitle
+        
+        if showADs == true{
+            adBannerfunc()
+        }
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

@@ -42,7 +42,9 @@ public struct setUserData{
     var img:UIImage?
     var deviceToken:String?
     var is_real_photo:Bool?
-}   //用戶個人資料
+}
+public var showADs = false
+//用戶個人資料
 public var userData = setUserData()
 public var recive_apns_switch = true
 public var nowTopicCellList:Array<MyTopicStandardType> = [] //話題清單

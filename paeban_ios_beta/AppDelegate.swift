@@ -67,6 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         // Override point for customization after application launch.
+        
+        // google 廣告SDK
         GADMobileAds.configure(withApplicationID: "ca-app-pub-8856054505966532/2670891149")
         
         return true

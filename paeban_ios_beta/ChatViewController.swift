@@ -8,6 +8,8 @@
 
 import UIKit
 import JSQMessagesViewController
+import GoogleMobileAds
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -20,7 +22,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class ChatViewController: JSQMessagesViewController,webSocketActiveCenterDelegate {
+class ChatViewController: JSQMessagesViewController, webSocketActiveCenterDelegate, GADBannerViewDelegate {
     @IBOutlet weak var topicTitle: UILabelPadding!
     // config
     let max_load_msg_number = 100
