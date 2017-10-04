@@ -43,7 +43,7 @@ public struct setUserData{
     var deviceToken:String?
     var is_real_photo:Bool?
 }
-public var showADs = false
+public var showADs = true
 //用戶個人資料
 public var userData = setUserData()
 public var recive_apns_switch = true
