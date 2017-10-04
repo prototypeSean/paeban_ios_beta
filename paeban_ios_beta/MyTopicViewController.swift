@@ -113,7 +113,7 @@ class MyTopicViewController: UIViewController, webSocketActiveCenterDelegate, GA
         self.adBannerOutlet.rootViewController = self
         let request = GADRequest()
         // flight--
-        request.testDevices = [ kGADSimulatorID,];
+//        request.testDevices = [ kGADSimulatorID,];
         // --flight
         self.adBannerOutlet.load(request)
     }

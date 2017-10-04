@@ -91,7 +91,7 @@ class TopicViewController: UIViewController, webSocketActiveCenterDelegate, GADB
         self.adBannerOutlet.rootViewController = self
         let request = GADRequest()
         // flight--
-        request.testDevices = [ kGADSimulatorID,];
+//        request.testDevices = [ kGADSimulatorID,];
         // --flight
         self.adBannerOutlet.load(request)
     }
