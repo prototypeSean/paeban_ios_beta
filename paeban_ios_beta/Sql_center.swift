@@ -3031,6 +3031,11 @@ public class SQL_center{
         return 0
     }
     
+    // transaction
+    let transaction = Table("transaction")
+    func establish_transaction(){
+        
+    }
     
     
     // test_func

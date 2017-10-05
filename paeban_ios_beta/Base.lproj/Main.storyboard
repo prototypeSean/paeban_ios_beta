@@ -1083,7 +1083,7 @@
                                     <action selector="text_change:" destination="fKg-5c-ll5" eventType="editingChanged" id="Env-eg-LcR"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ba9-Z2-XU2">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ba9-Z2-XU2">
                                 <rect key="frame" x="20" y="124" width="97" height="58"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.50766919150000001" green="0.50219578730000003" blue="0.83450589009999998" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
@@ -1114,7 +1114,7 @@
                                     <segue destination="kkj-Ls-lJu" kind="show" id="J6Z-fm-bpN"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vxa-zo-TEo">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vxa-zo-TEo">
                                 <rect key="frame" x="20" y="86" width="97" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.50766919150000001" green="0.50219578730000003" blue="0.83450589009999998" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
@@ -1147,7 +1147,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eU2-pq-WBs">
-                                <rect key="frame" x="20" y="72" width="78" height="59"/>
+                                <rect key="frame" x="249" y="510" width="78" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.50766919150000001" green="0.50219578730000003" blue="0.83450589009999998" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="IAP"/>
@@ -1204,8 +1204,6 @@
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="ba9-Z2-XU2"/>
-                                <exclude reference="vxa-zo-TEo"/>
                                 <exclude reference="m0K-T4-b8u"/>
                                 <exclude reference="fas-vJ-bza"/>
                             </mask>

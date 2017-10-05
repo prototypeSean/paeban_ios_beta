@@ -9,8 +9,14 @@
 import Foundation
 import StoreKit
 
+enum transaction_resule{
+    case seccess
+    case fail
+}
+
 protocol IAPCenterDelegate {
     func product_info_return(product_list:Array<SKProduct>?)
+    func transaction_complete(result:transaction_resule, transaction_id:String?)
 }
 
 public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver{
@@ -33,7 +39,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
     
     // MARK: oprate func
     func get_product_info(){
-        if !product_id_list.isEmpty{
+        if product_id_list.isEmpty{
             self.get_product_id_list(after: { (return_list:Array<String>?) in
                 if return_list != nil{
                     self.product_id_list = return_list!
@@ -69,7 +75,6 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         if SKPaymentQueue.canMakePayments() {
             let productIdentifiers = NSSet(array: product_id_list)
             let productRequest = SKProductsRequest(productIdentifiers: productIdentifiers as! Set<String>)
-            
             productRequest.delegate = self
             productRequest.start()
         }
@@ -93,10 +98,25 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
     }
     public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]){
         for transaction in transactions{
-            // write into database
+            switch transaction.transactionState {
+            case SKPaymentTransactionState.purchased:
+                delegate?.transaction_complete(result: .seccess, transaction_id: transaction.transactionIdentifier)
+                SKPaymentQueue.default().finishTransaction(transaction)
+            case SKPaymentTransactionState.failed:
+                delegate?.transaction_complete(result: .fail, transaction_id: transaction.transactionIdentifier)
+                SKPaymentQueue.default().finishTransaction(transaction)
+            default:
+                print(transaction.transactionState.rawValue)
+            }
         }
     }
 }
+
+
+
+
+
+
 
 
 
