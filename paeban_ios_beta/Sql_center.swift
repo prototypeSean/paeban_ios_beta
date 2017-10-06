@@ -3033,8 +3033,24 @@ public class SQL_center{
     
     // transaction
     let transaction = Table("transaction")
+    let product_id = Expression<String>("product_id")
+    let transaction_id = Expression<String>("transaction_id")
+    let transaction_token = Expression<String>("transaction_token")
     func establish_transaction(){
-        
+        do{
+            try sql_db?.run(transaction.create { t in
+                t.column(id, primaryKey: true)
+                t.column(transaction_id)
+                t.column(transaction_token)
+                t.column(is_send)
+                t.column(product_id)
+            })
+            print("表單建立成功")
+        }
+        catch{
+            print("資料庫錯誤")
+            print(error)
+        }
     }
     
     

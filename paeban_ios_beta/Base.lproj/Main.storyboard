@@ -250,6 +250,15 @@
                                     <action selector="recover_account:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MZw-Ka-0TS"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUG-eD-ERQ">
+                                <rect key="frame" x="0.0" y="287" width="223" height="217"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.50766919150000001" green="0.50219578730000003" blue="0.83450589009999998" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="2Wo-3d-YSi" kind="show" id="Inr-mi-d0s"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
@@ -2701,6 +2710,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GIt-G4-Nlz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1578" y="-1520"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Iv5-nV-djt">
+            <objects>
+                <viewController id="2Wo-3d-YSi" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="I5P-L4-pNj"/>
+                        <viewControllerLayoutGuide type="bottom" id="8X5-XE-LNb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rbg-bW-PLN">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tio-BL-yg6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5925" y="-1924"/>
         </scene>
         <!--Sin In Fram View Controller-->
         <scene sceneID="VKP-B1-VBx">

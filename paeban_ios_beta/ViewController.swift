@@ -290,12 +290,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // 把註冊前的NAV隱藏
-        self.navigationController?.isNavigationBarHidden = true
+        //self.navigationController?.isNavigationBarHidden = true
         print("--viewWillAppear--")
         tutorial.titleLabel?.adjustsFontSizeToFitWidth = true
         gradientBackgroung()
-        
-        
     }
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -313,10 +311,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         fb_logo.image = UIImage(named:"fbLogo")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         fb_logo.tintColor = #colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1)
         fb_logo.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
-//        let alert = UIAlertController(title: "123", message: ssss, preferredStyle: UIAlertControllerStyle.alert)
-//        self.present(alert, animated: false, completion: nil)
-        
     }
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -384,15 +378,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         colorChangeAnimation.isRemovedOnCompletion = false
         gradient.add(colorChangeAnimation, forKey: "colorChange")
     }
-    
-    // 讓他永遠不停的函數...但是被捨棄
-//    public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-//        if flag {
-////            print(currentColorSet)
-//            gradient.colors = colorSets[currentColorSet]
-//            animateGradient()
-//        }
-//    }
 
     // MARK: 內部函數
     func autoLogin(){
