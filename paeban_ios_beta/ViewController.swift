@@ -297,36 +297,19 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        gradient.mask = lunchScreenText.layer
-        let zen = UIImage(named: "zen")
-        let zenImage = UIImageView(image: zen)
-        zenImage.frame.size.height = lunchScreenText.bounds.height
-        zenImage.frame.size.width = lunchScreenText.bounds.width
-        zenImage.center.x = lunchScreenText.bounds.width/2
-        zenImage.center.y = lunchScreenText.bounds.height/2
-        lunchScreenText.addSubview(zenImage)
-        
-        animateGradient()
-        fb_logo.layoutIfNeeded()
-        fb_logo.image = UIImage(named:"fbLogo")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-        fb_logo.tintColor = #colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1)
-        fb_logo.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
-//        let alert = UIAlertController(title: "123", message: ssss, preferredStyle: UIAlertControllerStyle.alert)
-//        self.present(alert, animated: false, completion: nil)
-        
+        // fly  下面兩個註解暫時隱藏登入前動畫
+//        gradientText()
+//        animateGradient()
     }
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 註冊頁顯示NAV
-        //self.navigationController?.isNavigationBarHidden = false
     }
     override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sing_in_segue"{
             self.navigationController?.isNavigationBarHidden = false
         }
         else if segue.identifier == "segueToMainUI"{
-            
             
         }
     }
@@ -335,8 +318,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         sql_database.connect_sql()
         version_in_db = sql_database.load_version()
         createColorSets()
-//        gradientBackgroung()
-        
         main_vc = self
         login_paeban_obj.delegate = self
         loginId.delegate = self
@@ -345,18 +326,27 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         BtnOutlet()
         check_online(in: self, with: autoLogin)
     }
-    // MARK: 漸層文字背景
     
+    // MARK: 漸層文字背景
     var colorSets: [[CGColor]] = []
     var currentColorSet: Int!
     let gradient = CAGradientLayer()
     
     func createColorSets() {
         colorSets.append([#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 0.15).cgColor, #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.1956896552).cgColor])
-//        colorSets.append([#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor, #colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1).cgColor])
         colorSets.append([#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1).cgColor, #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1).cgColor])
-        
         currentColorSet = 0
+    }
+    
+    func gradientText(){
+        gradient.mask = lunchScreenText.layer
+        let zen = UIImage(named: "zen")
+        let zenImage = UIImageView(image: zen)
+        zenImage.frame.size.height = lunchScreenText.bounds.height
+        zenImage.frame.size.width = lunchScreenText.bounds.width
+        zenImage.center.x = lunchScreenText.bounds.width/2
+        zenImage.center.y = lunchScreenText.bounds.height/2
+        lunchScreenText.addSubview(zenImage)
     }
     
     func gradientBackgroung(){
@@ -465,13 +455,10 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
     }
     func BtnOutlet(){
-//        fbButtonOutlet.layer.borderWidth = 1.2
-//        fbButtonOutlet.layer.cornerRadius = 2
-//        fbButtonOutlet.layer.borderColor = UIColor(red:0.24, green:0.35, blue:0.61, alpha:1.0).cgColor
-//        loginId.layer.borderWidth = 1
-//        loginId.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
-//        logInPw.layer.borderWidth = 1
-//        logInPw.layer.borderColor = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0).cgColor
+        fb_logo.layoutIfNeeded()
+        fb_logo.image = UIImage(named:"fbLogo")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        fb_logo.tintColor = #colorLiteral(red: 0.4078193307, green: 0.4078193307, blue: 0.4078193307, alpha: 1)
+        fb_logo.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
     func fbLogIn() {
         fbLoginManager.logIn(withReadPermissions: ["email"],from: self.parent, handler: { (result, error) -> Void in
