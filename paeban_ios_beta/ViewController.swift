@@ -290,8 +290,9 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         // 把註冊前的NAV隱藏
         self.navigationController?.isNavigationBarHidden = true
         print("--viewWillAppear--")
-        tutorial.titleLabel?.adjustsFontSizeToFitWidth = true
-        gradientBackgroung()
+        // fly  下面兩個註解暫時隱藏登入前動畫
+        //tutorial.titleLabel?.adjustsFontSizeToFitWidth = true
+        //gradientBackgroung()
         
         
     }
