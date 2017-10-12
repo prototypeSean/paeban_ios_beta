@@ -290,7 +290,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // 把註冊前的NAV隱藏
-        //self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = true
         print("--viewWillAppear--")
         tutorial.titleLabel?.adjustsFontSizeToFitWidth = true
         gradientBackgroung()

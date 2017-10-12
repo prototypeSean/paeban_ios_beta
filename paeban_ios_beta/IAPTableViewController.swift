@@ -81,6 +81,7 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
         default:
             print("01")
         }
+        transition_ing = false
     }
 }
 

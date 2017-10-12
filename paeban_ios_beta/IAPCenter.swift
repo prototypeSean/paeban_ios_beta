@@ -30,6 +30,8 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
     func basic_setup(){
         // 加入監聽交易列隊
         SKPaymentQueue.default().add(self)
+        print("***************")
+        print(SKPaymentQueue.default().transactions)
         get_product_id_list { (product_id_list:Array<String>?) in
             if product_id_list != nil{
                 self.product_id_list = product_id_list!
@@ -97,18 +99,28 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         }
     }
     public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]){
+        print("---------------------------------------------------")
         for transaction in transactions{
             switch transaction.transactionState {
             case SKPaymentTransactionState.purchased:
+                print("---------seccess")
                 delegate?.transaction_complete(result: .seccess, transaction_id: transaction.transactionIdentifier)
-                SKPaymentQueue.default().finishTransaction(transaction)
+                //SKPaymentQueue.default().finishTransaction(transaction)
             case SKPaymentTransactionState.failed:
+                print("----------fail")
                 delegate?.transaction_complete(result: .fail, transaction_id: transaction.transactionIdentifier)
-                SKPaymentQueue.default().finishTransaction(transaction)
+                //SKPaymentQueue.default().finishTransaction(transaction)
             default:
                 print(transaction.transactionState.rawValue)
             }
         }
+    }
+    public func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+        print("------------")
+    }
+    public func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
+        print("---------")
+        print(error)
     }
 }
 

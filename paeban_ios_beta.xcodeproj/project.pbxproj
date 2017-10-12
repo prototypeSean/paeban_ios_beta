@@ -55,7 +55,6 @@
 		93AEF28C1D002A2C007FDE51 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93AEF28B1D002A2C007FDE51 /* Launch Screen.storyboard */; };
 		93B40BE91DB8B7DB00AC3D48 /* SignInNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */; };
 		CF13867E1D98CE0600E70990 /* LoginScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF13867D1D98CE0600E70990 /* LoginScrollView.swift */; };
-		CF288A991E67FF290052DFE8 /* IAPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF288A981E67FF290052DFE8 /* IAPurchaseViewController.swift */; };
 		CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */; };
 		CF2A3DA11F7F88D700CF7A61 /* IAPTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF2A3DA01F7F88D700CF7A61 /* IAPTableViewController.swift */; };
 		CF2A3DA31F7F8AD200CF7A61 /* IAPTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF2A3DA21F7F8AD200CF7A61 /* IAPTableView.storyboard */; };
@@ -151,7 +150,6 @@
 		BAC8DE25847EF16A13E40E0D /* Pods-paeban_ios_beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.release.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.release.xcconfig"; sourceTree = "<group>"; };
 		CCB2ABAD6DC20E3AE8B85FBB /* Pods-paeban_ios_beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-paeban_ios_beta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-paeban_ios_beta/Pods-paeban_ios_beta.debug.xcconfig"; sourceTree = "<group>"; };
 		CF13867D1D98CE0600E70990 /* LoginScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScrollView.swift; sourceTree = "<group>"; };
-		CF288A981E67FF290052DFE8 /* IAPurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPurchaseViewController.swift; sourceTree = "<group>"; };
 		CF2A076B1D7D42CE005B0358 /* FriendChatUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendChatUpViewController.swift; sourceTree = "<group>"; };
 		CF2A3DA01F7F88D700CF7A61 /* IAPTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPTableViewController.swift; sourceTree = "<group>"; };
 		CF2A3DA21F7F8AD200CF7A61 /* IAPTableView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = IAPTableView.storyboard; sourceTree = "<group>"; };
@@ -419,7 +417,6 @@
 				932A00E11CFEBA460036E1EA /* web_socket.swift */,
 				CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */,
 				CF8F64D61EA4F6820073D433 /* LoadingView.swift */,
-				CF288A981E67FF290052DFE8 /* IAPurchaseViewController.swift */,
 				CFF6C4151E9F4D5200A191FD /* suport_func.swift */,
 			);
 			name = all_filed_work;
@@ -665,7 +662,6 @@
 				CF2E9D641D7BDFC000F485BB /* FriendTableViewCell.swift in Sources */,
 				CF5E24B61ED1875A00ACC164 /* Client_detail_data.swift in Sources */,
 				190B21BE1EEFA9C2007067B7 /* TutoriaInsideViewController.swift in Sources */,
-				CF288A991E67FF290052DFE8 /* IAPurchaseViewController.swift in Sources */,
 				932D0D6F1DA0D8B800ACA795 /* RecentNavViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
