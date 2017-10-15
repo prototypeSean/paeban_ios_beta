@@ -18,36 +18,24 @@ class EULAViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     @IBAction func return_to_mmain_vc(_ sender: AnyObject) {
-        let nav_vc = self.parent?.parent as? UINavigationController
-        
-        //self.view.removeFromSuperview()
-        if nav_vc != nil{
-            nav_vc!.popToRootViewController(animated: true)
-        }
-        //let page_vc = self.parent as? TutorialPageViewController
-        
+        self.navigationController?.popToRootViewController(animated: true)
         // test
-        DispatchQueue.global(qos: .default).async {
-            sleep(1)
-            let vc_list = [self.getViewController(indentifier: "TPage_1ViewController"),
-                           self.getViewController(indentifier: "TPage_2ViewController"),
-//                           self.getViewController(indentifier: "TPage_3ViewController"),
-//                           self.getViewController(indentifier: "TPage_4ViewController"),
-                           self.getViewController(indentifier: "TPage_5ViewController"),
-                           self.getViewController(indentifier: "TPage_6ViewController"),
-                           self.getViewController(indentifier: "EULAViewController")
-            ]
-            for vc_s in vc_list{
-                vc_s.view = nil
-                vc_s.dismiss(animated: false, completion: nil)
-            }
-        }
-        
-        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//            let vc_list = [self.getViewController(indentifier: "TPage_1ViewController"),
+//                           self.getViewController(indentifier: "TPage_2ViewController"),
+//                           self.getViewController(indentifier: "TPage_5ViewController"),
+//                           self.getViewController(indentifier: "TPage_6ViewController"),
+//                           self.getViewController(indentifier: "EULAViewController")
+//            ]
+//            for vc_s in vc_list{
+//                vc_s.dismiss(animated: false, completion: nil)
+//            }
+//        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        print("Wwwwwwwwwwwwwwwwwwww")
         // Dispose of any resources that can be recreated.
     }
     
