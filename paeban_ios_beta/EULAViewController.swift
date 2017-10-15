@@ -27,21 +27,21 @@ class EULAViewController: UIViewController {
         //let page_vc = self.parent as? TutorialPageViewController
         
         // test
-        DispatchQueue.global(qos: .default).async {
-            sleep(1)
-            let vc_list = [self.getViewController(indentifier: "TPage_1ViewController"),
-                           self.getViewController(indentifier: "TPage_2ViewController"),
-//                           self.getViewController(indentifier: "TPage_3ViewController"),
-//                           self.getViewController(indentifier: "TPage_4ViewController"),
-                           self.getViewController(indentifier: "TPage_5ViewController"),
-                           self.getViewController(indentifier: "TPage_6ViewController"),
-                           self.getViewController(indentifier: "EULAViewController")
-            ]
-            for vc_s in vc_list{
-                vc_s.view = nil
-                vc_s.dismiss(animated: false, completion: nil)
-            }
-        }
+//        DispatchQueue.global(qos: .default).async {
+//            sleep(1)
+//            let vc_list = [self.getViewController(indentifier: "TPage_1ViewController"),
+//                           self.getViewController(indentifier: "TPage_2ViewController"),
+////                           self.getViewController(indentifier: "TPage_3ViewController"),
+////                           self.getViewController(indentifier: "TPage_4ViewController"),
+//                           self.getViewController(indentifier: "TPage_5ViewController"),
+//                           self.getViewController(indentifier: "TPage_6ViewController"),
+//                           self.getViewController(indentifier: "EULAViewController")
+//            ]
+//            for vc_s in vc_list{
+//                vc_s.view = nil
+//                vc_s.dismiss(animated: false, completion: nil)
+//            }
+//        }
         
         
     }
