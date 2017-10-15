@@ -101,6 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("====applicationDidBecomeActive====")
+        sql_database.connect_sql()
         app_instence = application
         if !notificationSegueInf.isEmpty && logInState{
             DispatchQueue.global(qos: .userInteractive).async {

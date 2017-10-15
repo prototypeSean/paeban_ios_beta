@@ -328,7 +328,6 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
     }
     override public func viewDidLoad() {
         super.viewDidLoad()
-        sql_database.connect_sql()
         version_in_db = sql_database.load_version()
         createColorSets()
 //        gradientBackgroung()
@@ -861,23 +860,25 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         firstActiveApp = false
     }
     func set_loading_view_title(title:String){
-        if loading_view == nil{
-            loading_view = add_loading_view()
-            loading_title_lable?.text = title
-            loading_title_lable?.textColor = UIColor.lightGray
-            loading_title_lable?.sizeToFit()
-            loading_title_lable?.center = CGPoint(
-                x: (loading_view?.frame.width)!/2,
-                y: ((loading_view?.frame.height)!/2 + 220)
-            )
-        }
-        else{
-            loading_title_lable?.text = title
-            loading_title_lable?.sizeToFit()
-            loading_title_lable?.center = CGPoint(
-                x: (loading_view?.frame.width)!/2,
-                y: ((loading_view?.frame.height)!/2 + 220)
-            )
+        DispatchQueue.main.async {
+            if self.loading_view == nil{
+                self.loading_view = self.add_loading_view()
+                self.loading_title_lable?.text = title
+                self.loading_title_lable?.textColor = UIColor.lightGray
+                self.loading_title_lable?.sizeToFit()
+                self.loading_title_lable?.center = CGPoint(
+                    x: (self.loading_view?.frame.width)!/2,
+                    y: ((self.loading_view?.frame.height)!/2 + 220)
+                )
+            }
+            else{
+                self.self.loading_title_lable?.text = title
+                self.loading_title_lable?.sizeToFit()
+                self.loading_title_lable?.center = CGPoint(
+                    x: (self.loading_view?.frame.width)!/2,
+                    y: ((self.loading_view?.frame.height)!/2 + 220)
+                )
+            }
         }
     }
     func set_persent_lable(persent:Double){

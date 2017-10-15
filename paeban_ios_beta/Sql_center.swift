@@ -3040,10 +3040,9 @@ public class SQL_center{
         do{
             try sql_db?.run(transaction.create { t in
                 t.column(id, primaryKey: true)
-                t.column(transaction_id)
+                t.column(transaction_id, unique: true)
                 t.column(transaction_token)
                 t.column(is_send)
-                t.column(product_id)
             })
             print("表單建立成功")
         }
@@ -3051,6 +3050,51 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
+    }
+    func is_transaction_existed(transaction_id:String) -> Bool{
+        do{
+            let count = try sql_db!.scalar(transaction.filter(self.transaction_id == transaction_id).count)
+            if count == 0{
+                return false
+            }
+            else{return true}
+        }
+        catch{
+            print("is_transaction_existed ERROR")
+            print(error)
+            return false
+        }
+    }
+    func write_transaction(transaction_id:String, token:String){
+        do{
+            let inster = transaction.insert(
+                self.transaction_id <- transaction_id,
+                self.transaction_token <- token,
+                is_send <- false
+            )
+            try sql_db!.run(inster)
+        }
+        catch{
+            print(error)
+        }
+    }
+    func get_exchanged_yet_transaction_list() -> Array<Dictionary<String, String>>{
+        var result_list:Array<Dictionary<String, String>> = []
+        do{
+            let query = transaction.filter(is_send == false)
+            for datas in try sql_db!.prepare(query){
+                let temp_dic = [
+                    "transaction_id" : datas[transaction_id],
+                    "transaction_token": datas[transaction_token]
+                ]
+                result_list.append(temp_dic)
+            }
+        }
+        catch{
+            print("get_exchanged_yet_transaction_list ERROR")
+            print(error)
+        }
+        return result_list
     }
     
     

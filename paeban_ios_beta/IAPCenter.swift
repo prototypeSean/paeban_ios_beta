@@ -22,15 +22,28 @@ protocol IAPCenterDelegate {
 public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver{
     var delegate:IAPCenterDelegate?
     var product_id_list:Array<String> = []
+    // MARK: setting
+    let IAP_URL_PATH = "iap/"
+    enum HTTP_REQUEST_MODE:String{
+        case get_product_id_list = "get_product_id_list"
+        case send_transaction = "send_transaction"
+    }
+    enum HTTP_SEND_DIC_KEY:String {
+        case transaction_list = "transaction_list"
+    }
+    enum HTTP_RESPONSE_DIC_KEY:String {
+        case product_id_list = "product_id_list"
+    }
+    
+    // MARK: system
     override init() {
         super.init()
         basic_setup()
     }
-    // system
     func basic_setup(){
         // 加入監聽交易列隊
         SKPaymentQueue.default().add(self)
-        print("***************")
+        print("5555")
         print(SKPaymentQueue.default().transactions)
         get_product_id_list { (product_id_list:Array<String>?) in
             if product_id_list != nil{
@@ -39,7 +52,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         }
     }
     
-    // MARK: oprate func
+    // MARK: operate func
     func get_product_info(){
         if product_id_list.isEmpty{
             self.get_product_id_list(after: { (return_list:Array<String>?) in
@@ -57,15 +70,29 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         }
     }
     func buy_product(product:SKProduct){
+        let payment = SKMutablePayment(product: product)
+        // fly applicationUsername = userId
+        payment.applicationUsername = "110482"
         SKPaymentQueue.default().add(SKPayment(product: product))
     }
-    
+    func re_exchang_point(){
+        print_trans_id()
+    }
+    func send_transaction(){
+        let exchanged_yet_transaction_list = sql_database.get_exchanged_yet_transaction_list()
+//        ["transaction_id":transaction_id,
+//         "transaction_token":transaction_token]
+        let _temp_dic = [HTTP_SEND_DIC_KEY.transaction_list.rawValue: exchanged_yet_transaction_list]
+        HttpRequestCenter().http_request(url: IAP_URL_PATH, data_mode: HTTP_REQUEST_MODE.send_transaction.rawValue, form_data_dic: _temp_dic as Dictionary<String, AnyObject>) { (result_dic) in
+            //code
+        }
+    }
     
     // MARK: internal func
     private func get_product_id_list(after:@escaping (_ product_id_list:Array<String>?)->Void){
-        HttpRequestCenter().http_request(url: "iap/", data_mode: "get_product_id_list", form_data_dic: [:]) { (result_dic:Dictionary<String, AnyObject>?) in
+        HttpRequestCenter().http_request(url: IAP_URL_PATH, data_mode: HTTP_REQUEST_MODE.get_product_id_list.rawValue, form_data_dic: [:]) { (result_dic:Dictionary<String, AnyObject>?) in
             if result_dic != nil{
-                let product_id_list = result_dic!["product_id_list"]! as! Array<String>
+                let product_id_list = result_dic![HTTP_RESPONSE_DIC_KEY.product_id_list.rawValue]! as! Array<String>
                 after(product_id_list)
             }
             else{
@@ -85,6 +112,14 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         }
     }
     
+    private func print_trans_id(){
+        print("-----print_trans_id-----")
+        let ttt = SKPaymentQueue.default().transactions
+        for c in ttt{
+            print(c.transactionIdentifier ?? "transactionIdentifier nil")
+        }
+    }
+    
     // MARK: delegate
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse){
         if response.products.count != 0 {
@@ -99,17 +134,15 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         }
     }
     public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]){
-        print("---------------------------------------------------")
         for transaction in transactions{
             switch transaction.transactionState {
             case SKPaymentTransactionState.purchased:
                 print("---------seccess")
                 delegate?.transaction_complete(result: .seccess, transaction_id: transaction.transactionIdentifier)
-                //SKPaymentQueue.default().finishTransaction(transaction)
             case SKPaymentTransactionState.failed:
                 print("----------fail")
                 delegate?.transaction_complete(result: .fail, transaction_id: transaction.transactionIdentifier)
-                //SKPaymentQueue.default().finishTransaction(transaction)
+                SKPaymentQueue.default().finishTransaction(transaction)
             default:
                 print(transaction.transactionState.rawValue)
             }
