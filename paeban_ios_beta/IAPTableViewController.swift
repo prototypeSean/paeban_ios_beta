@@ -45,33 +45,21 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
         add_load_view()
         if !transition_ing{
             iap_center?.buy_product(product: product_list[indexPath.row])
-            set_loading_view_title(text: "正在啟動交易")
+            set_loading_view_title(text: alert_string.initiate_transaction.rawValue)
             transition_ing = true
         }
         else{
-            let alert = UIAlertController(title: "警告", message: "尚有交易進行中，請稍後再試", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "確定", style: .default, handler: {(act) -> Void in
-                iap_center?.re_exchanged_point()
-                self.set_loading_view_title(text: "正在完成上一次交易")
+            let alert = UIAlertController(title: alert_string.warning.rawValue, message: alert_string.transactioning_please_try_later.rawValue, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: {(act) -> Void in
+                // fly 可能可以直接用 send_transaction（）
+                iap_center?.re_send_transaction()
+                self.set_loading_view_title(text: alert_string.trying_to_complete_last_transaction.rawValue)
             }))
             self.present(alert, animated: true, completion: nil)
         }
     }
     
-    // MARK: tools
-    private func save_transaction_token(transaction_id:String){
-        let receipt_url = Bundle.main.appStoreReceiptURL
-        do{
-            let receipt_data = try Data(contentsOf: receipt_url!, options: Data.ReadingOptions.alwaysMapped)
-            let receipt_string = receipt_data.base64EncodedString(options: [])
-            sql_database.write_transaction(transaction_id: transaction_id, token: receipt_string)
-        }
-        catch{
-            print("save_transaction_token ERROR")
-            // a110482
-            // restore trans
-        }
-    }
+    
     
     // MARK: transition delegate
     var transition_ing = false
@@ -81,30 +69,47 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
             self.tableView.reloadData()
         }
         else{
-            let alert = UIAlertController(title: "錯誤", message: "請求商品網路錯誤，是否重試", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "確定", style: .default, handler: { (act:UIAlertAction) in
+            let alert = UIAlertController(title: alert_string.error.rawValue, message: alert_string.internet_error_do_you_want_retry.rawValue, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: alert_string.cancel.rawValue, style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: { (act:UIAlertAction) in
                 iap_center?.get_product_info()
             }))
             self.present(alert, animated: true, completion: nil)
         }
     }
+
+    func transaction_verifying(transaction_id:String?){
+        self.set_loading_view_title(text:alert_string.verifying.rawValue)
+    }
+    func transaction_exchanging(transaction_id:String?){
+        self.set_loading_view_title(text: alert_string.exchanging_point.rawValue)
+    }
     func transaction_complete(result:transaction_resule, transaction_id:String?) {
         switch result {
         case .seccess:
-            set_loading_view_title(text: "正在進行點數轉換")
-            save_transaction_token(transaction_id: transaction_id!)
-            // a110482
-            // 取得並送給server驗證
+            let alert = UIAlertController(title: alert_string.notice.rawValue, message: alert_string.transaction_success.rawValue, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+            alert.addAction(confirm_btn)
+            self.present(alert, animated: true, completion: nil)
         case .fail:
-            remove_loading_view()
-            let alert = UIAlertController(title: "交易失敗", message: "本次交易並未扣款", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "確定", style: .default, handler: nil))
+            let alert = UIAlertController(title: alert_string.warning.rawValue, message: alert_string.transaction_fail.rawValue, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: { (action) in
+                iap_center?.re_send_transaction()
+            })
+            let cancel_btn = UIAlertAction(title: alert_string.cancel.rawValue, style: .default, handler: nil)
+            alert.addAction(confirm_btn)
+            alert.addAction(cancel_btn)
             self.present(alert, animated: true, completion: nil)
         }
+        remove_loading_view()
         transition_ing = false
     }
-
+    func internet_error(){
+        
+    }
+    func verify_fail(verify_fail_list:Array<String>){}
+    
+    
     // MARK: loading view
     var loading_view = UIView()
     var loading_view_title = UILabel()
@@ -125,6 +130,7 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
     func remove_loading_view(){
         loading_view.removeFromSuperview()
     }
+
 }
 
 

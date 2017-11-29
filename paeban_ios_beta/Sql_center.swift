@@ -164,7 +164,8 @@ public class SQL_center{
         self.establish_recent_topic()
         self.establish_user_data()
         self.establish_ignore_list()
-        establish_app_log()
+        self.establish_app_log()
+        self.establish_transaction()
     }
     func remove_all_table(){
         let table_list = [
@@ -3036,13 +3037,18 @@ public class SQL_center{
     let product_id = Expression<String>("product_id")
     let transaction_id = Expression<String>("transaction_id")
     let transaction_token = Expression<String>("transaction_token")
+    let application_username = Expression<String>("application_username")
+    let verify_fail = Expression<Bool>("verify_fail")
+    let transaction_complete = Expression<Bool>("transaction_complete")
     func establish_transaction(){
         do{
             try sql_db?.run(transaction.create { t in
                 t.column(id, primaryKey: true)
                 t.column(transaction_id, unique: true)
                 t.column(transaction_token)
-                t.column(is_send)
+                t.column(transaction_complete)
+                t.column(application_username)
+                t.column(verify_fail)
             })
             print("表單建立成功")
         }
@@ -3065,12 +3071,14 @@ public class SQL_center{
             return false
         }
     }
-    func write_transaction(transaction_id:String, token:String){
+    func write_transaction(transaction_id:String, token:String, application_username:String){
         do{
             let inster = transaction.insert(
                 self.transaction_id <- transaction_id,
                 self.transaction_token <- token,
-                is_send <- false
+                self.application_username <- application_username,
+                transaction_complete <- false,
+                verify_fail <- false
             )
             try sql_db!.run(inster)
         }
@@ -3081,11 +3089,12 @@ public class SQL_center{
     func get_exchanged_yet_transaction_list() -> Array<Dictionary<String, String>>{
         var result_list:Array<Dictionary<String, String>> = []
         do{
-            let query = transaction.filter(is_send == false)
+            let query = transaction.filter(transaction_complete == false)
             for datas in try sql_db!.prepare(query){
                 let temp_dic = [
                     "transaction_id" : datas[transaction_id],
-                    "transaction_token": datas[transaction_token]
+                    "transaction_token": datas[transaction_token],
+                    "application_username": datas[application_username]
                 ]
                 result_list.append(temp_dic)
             }
@@ -3096,7 +3105,47 @@ public class SQL_center{
         }
         return result_list
     }
-    
+    func write_verify_fail_transaction(transaction_id:String){
+        do{
+            try sql_db!.run(
+                transaction.filter(self.transaction_id == transaction_id).update(
+                    verify_fail <- true
+                )
+            )
+        }
+        catch{
+            print(error)
+            print("write_verify_fail_transaction ERROR!!!")
+        }
+    }
+    func get_verify_fail_transaction_list() -> Array<String>{
+        do{
+            var result_list:Array<String> = []
+            let query = transaction.filter(verify_fail == true)
+            for c in try sql_db!.prepare(query){
+                result_list.append(c[transaction_id])
+            }
+            return result_list
+        }
+        catch{
+            print(error)
+            print("get_verify_fail_transaction_list ERROR!!")
+            return []
+        }
+    }
+    func update_transaction_complete(transaction_id:String){
+        do{
+            let query = transaction.filter(self.transaction_id == transaction_id)
+            try sql_db!.run(query.update(
+                verify_fail <- false,
+                transaction_complete <- true
+            ))
+        }
+        catch{
+            print(error)
+            print("update_transaction_complete ERROR!!!")
+        }
+    }
     
     // test_func
     func del_user_data(){

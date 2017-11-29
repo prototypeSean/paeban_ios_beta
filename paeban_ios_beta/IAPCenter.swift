@@ -16,10 +16,14 @@ enum transaction_resule{
 
 protocol IAPCenterDelegate {
     func product_info_return(product_list:Array<SKProduct>?)
+    func transaction_verifying(transaction_id:String?)
+    func transaction_exchanging(transaction_id:String?)
     func transaction_complete(result:transaction_resule, transaction_id:String?)
+    func internet_error()
+    func verify_fail(verify_fail_list:Array<String>)
 }
 
-public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver{
+public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver, webSocketActiveCenterDelegate{
     var delegate:IAPCenterDelegate?
     var product_id_list:Array<String> = []
     // MARK: setting
@@ -39,12 +43,11 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
     override init() {
         super.init()
         basic_setup()
+        wsActive.web_socket_reconnected_delegate_list.append(self)
     }
     func basic_setup(){
         // 加入監聽交易列隊
         SKPaymentQueue.default().add(self)
-        print("5555")
-        print(SKPaymentQueue.default().transactions)
         get_product_id_list { (product_id_list:Array<String>?) in
             if product_id_list != nil{
                 self.product_id_list = product_id_list!
@@ -71,21 +74,26 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
     }
     func buy_product(product:SKProduct){
         let payment = SKMutablePayment(product: product)
-        // fly applicationUsername = userId
-        payment.applicationUsername = "110482"
-        SKPaymentQueue.default().add(SKPayment(product: product))
+        payment.applicationUsername = userData.id!
+        SKPaymentQueue.default().add(payment)
     }
-    func re_exchang_point(){
+    func re_send_transaction(){
         print_trans_id()
     }
     func send_transaction(){
-        let exchanged_yet_transaction_list = sql_database.get_exchanged_yet_transaction_list()
-//        ["transaction_id":transaction_id,
-//         "transaction_token":transaction_token]
-        let _temp_dic = [HTTP_SEND_DIC_KEY.transaction_list.rawValue: exchanged_yet_transaction_list]
-        HttpRequestCenter().http_request(url: IAP_URL_PATH, data_mode: HTTP_REQUEST_MODE.send_transaction.rawValue, form_data_dic: _temp_dic as Dictionary<String, AnyObject>) { (result_dic) in
-            //code
+        // fly exchanged_yet_transaction_list
+        let exchanged_yet_transaction_list = [sql_database.get_exchanged_yet_transaction_list().first]
+        // transaction_list 的內容物格式
+        // ["transaction_id":transaction_id,"transaction_token":transaction_token,"application_username",application_username]
+        if !exchanged_yet_transaction_list.isEmpty{
+            let _temp_dic = [HTTP_SEND_DIC_KEY.transaction_list.rawValue: exchanged_yet_transaction_list]
+            HttpRequestCenter().http_request(url: IAP_URL_PATH, data_mode: HTTP_REQUEST_MODE.send_transaction.rawValue, form_data_dic: _temp_dic as Dictionary<String, AnyObject>) { (result_dic) in
+                self.explanation_result(result: result_dic)
+            }
         }
+    }
+    func recive_iap_websocket(msg:Dictionary<String,AnyObject>){
+        print(msg)
     }
     
     // MARK: internal func
@@ -119,8 +127,98 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
             print(c.transactionIdentifier ?? "transactionIdentifier nil")
         }
     }
+    private func explanation_result(result:Dictionary<String,AnyObject>?){
+        // dic keys
+        let RESULT_LIST = "result_list"
+        let RESULT = "result"
+        let TRANSACTION_ID = "transaction_id"
+        let FAIL_VERIFY_TRANSACTION_LIST = "fail_verify_transaction_list"
+        enum result_type:String{
+            case verifying = "verifying"
+            case exchanging = "exchanging"
+            case success = "success"
+            case verify_fail = "verify_fail"
+        }
+        // vars
+        var need_alert_varify_fail = false
+        // main function
+        guard result != nil else {
+            delegate?.internet_error()
+            return
+        }
+        let result_list = result![RESULT_LIST] as! Array<Dictionary<String,AnyObject>>
+        for c in result_list{
+            if c[RESULT]! as! String == result_type.verifying.rawValue{
+                delegate?.transaction_verifying(transaction_id: c[TRANSACTION_ID] as? String)
+            }
+            else if c[RESULT]! as! String == result_type.exchanging.rawValue{
+                delegate?.transaction_exchanging(transaction_id: c[TRANSACTION_ID] as? String)
+            }
+            else if c[RESULT]! as! String == result_type.verify_fail.rawValue{
+                delegate?.transaction_complete(result: .fail, transaction_id: c[TRANSACTION_ID] as? String)
+            }
+            else{
+                //fail
+                if c[RESULT]! as! String == result_type.verify_fail.rawValue{
+                    delegate?.transaction_complete(result: .fail, transaction_id: c[TRANSACTION_ID] as? String)
+                }
+                //success
+                else{
+                    delegate?.transaction_complete(result: .seccess, transaction_id: c[TRANSACTION_ID] as? String)
+                    self.finish_transaction_by_id(transaction_id: c[TRANSACTION_ID] as! String)
+                    // fly 或許再多一個點數變動確認的函數
+                }
+                let fail_verify_transaction_list = c[FAIL_VERIFY_TRANSACTION_LIST] as! Array<String>
+                for c in fail_verify_transaction_list{
+                    sql_database.write_verify_fail_transaction(transaction_id: c)
+                }
+                if !fail_verify_transaction_list.isEmpty{need_alert_varify_fail = true}
+            }
+        }
+        if need_alert_varify_fail{
+            let fail_list = sql_database.get_verify_fail_transaction_list()
+            delegate?.verify_fail(verify_fail_list: fail_list)
+        }
+    }
+    // MARK: tools
+    private func save_transaction_token(transaction_id:String, application_username:String){
+        let receipt_url = Bundle.main.appStoreReceiptURL
+        do{
+            let receipt_data = try Data(contentsOf: receipt_url!, options: Data.ReadingOptions.alwaysMapped)
+            let receipt_string = receipt_data.base64EncodedString(options: [])
+            sql_database.write_transaction(transaction_id: transaction_id, token: receipt_string, application_username: application_username)
+        }
+        catch{
+            print("save_transaction_token ERROR")
+            // a110482
+            // restore trans
+        }
+    }
+    private func finish_transaction_by_id(transaction_id:String){
+        let transaction_line = SKPaymentQueue.default().transactions
+        for c in transaction_line{
+            if c.transactionIdentifier == transaction_id{
+                SKPaymentQueue.default().finishTransaction(c)
+                break
+            }
+        }
+    }
+    
+    
+    
     
     // MARK: delegate
+    ///
+    ///
+    /// - Parameters:
+    ///   - request:
+    ///   - response:
+    public func wsReconnected() {
+        send_transaction()
+    }
+    public func wsOnMsg(_ msg: Dictionary<String, AnyObject>) {
+        //pass
+    }
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse){
         if response.products.count != 0 {
             var return_list:Array<SKProduct> = []
@@ -138,10 +236,12 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
             switch transaction.transactionState {
             case SKPaymentTransactionState.purchased:
                 print("---------seccess")
-                delegate?.transaction_complete(result: .seccess, transaction_id: transaction.transactionIdentifier)
+                save_transaction_token(transaction_id: transaction.transactionIdentifier!, application_username: transaction.payment.applicationUsername!)
+                send_transaction()
+                //fly remove finishTransction
+                SKPaymentQueue.default().finishTransaction(transaction)
             case SKPaymentTransactionState.failed:
                 print("----------fail")
-                delegate?.transaction_complete(result: .fail, transaction_id: transaction.transactionIdentifier)
                 SKPaymentQueue.default().finishTransaction(transaction)
             default:
                 print(transaction.transactionState.rawValue)
@@ -155,6 +255,11 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         print("---------")
         print(error)
     }
+    // debug_tool
+    // 查看交易列隊數量
+    // 查看交易資料庫狀態
+    // 強制失敗按鈕
+
 }
 
 

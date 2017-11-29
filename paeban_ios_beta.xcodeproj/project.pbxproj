@@ -87,6 +87,7 @@
 		CFCC8A8B1D78336500D5EDF6 /* RecentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */; };
 		CFD48D671DCB13FD006C48A2 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD48D661DCB13FD006C48A2 /* EditViewController.swift */; };
 		CFDD861E1E4861540018EC7C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDD861D1E4861540018EC7C /* StoreKit.framework */; };
+		CFE94B611FCF069500AA7F50 /* language_profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE94B601FCF069500AA7F50 /* language_profile.swift */; };
 		CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */; };
 		CFF6C4161E9F4D5200A191FD /* suport_func.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF6C4151E9F4D5200A191FD /* suport_func.swift */; };
 /* End PBXBuildFile section */
@@ -184,6 +185,7 @@
 		CFCC8A8A1D78336500D5EDF6 /* RecentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentTableViewController.swift; sourceTree = "<group>"; };
 		CFD48D661DCB13FD006C48A2 /* EditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		CFDD861D1E4861540018EC7C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		CFE94B601FCF069500AA7F50 /* language_profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = language_profile.swift; sourceTree = "<group>"; };
 		CFE9E4D31D376F7F007B5D76 /* TableViewLoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewLoadingCell.swift; sourceTree = "<group>"; };
 		CFF6C4151E9F4D5200A191FD /* suport_func.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = suport_func.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -418,6 +420,7 @@
 				CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */,
 				CF8F64D61EA4F6820073D433 /* LoadingView.swift */,
 				CFF6C4151E9F4D5200A191FD /* suport_func.swift */,
+				CFE94B601FCF069500AA7F50 /* language_profile.swift */,
 			);
 			name = all_filed_work;
 			sourceTree = "<group>";
@@ -625,6 +628,7 @@
 				932A00E61CFEBA460036E1EA /* Topic.swift in Sources */,
 				CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */,
 				930BBCCA1DED626900939C0D /* TPage_1ViewController.swift in Sources */,
+				CFE94B611FCF069500AA7F50 /* language_profile.swift in Sources */,
 				CF90FFAA1F67DFF80078A5FA /* TalkingBoxView.swift in Sources */,
 				CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */,
 				93077EEA1E20DDB3004900FF /* CustomMessagesCollectionViewCellIncoming.swift in Sources */,

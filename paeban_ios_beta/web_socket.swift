@@ -87,6 +87,8 @@ open class webSocketActiveCenter:app_event {
     var wasd_ForTabBarController:webSocketActiveCenterDelegate?
     let wasd_ForTabBarController_list = ["topic_msg", "priv_msg"]
     
+    var web_socket_reconnected_delegate_list:Array<webSocketActiveCenterDelegate?> = []
+    
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         if let msgtype = msg["msg_type"]{
             let msgtypeString = msgtype as! String
@@ -111,6 +113,11 @@ open class webSocketActiveCenter:app_event {
                 }
                 else if msgtypeString == "priv_msg"{
                     private_msg_factory(msg: msg)
+                }
+                else if msgtypeString == "iap_verify"{
+                    if iap_center != nil{
+                        iap_center!.recive_iap_websocket(msg:msg)
+                    }
                 }
             }
             
@@ -159,6 +166,9 @@ open class webSocketActiveCenter:app_event {
         wasd_ForMyTopicTableViewController?.wsReconnected()
         wasd_ForFriendChatViewController?.wsReconnected()
         wasd_ForChatViewController?.wsReconnected()
+        for c in web_socket_reconnected_delegate_list{
+            c?.wsReconnected()
+        }
         re_connect_check_SOP()
     }
     // internal func
