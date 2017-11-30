@@ -105,9 +105,25 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
         transition_ing = false
     }
     func internet_error(){
-        
+        let alert = UIAlertController(title: alert_string.error.rawValue, message: alert_string.internet_error_do_you_want_retry.rawValue, preferredStyle: .alert)
+        let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default) { (action) in
+            iap_center?.re_send_transaction()
+        }
+        let cancel_btn = UIAlertAction(title: alert_string.cancel.rawValue, style: .default, handler: nil)
+        alert.addAction(confirm_btn)
+        alert.addAction(cancel_btn)
+        self.present(alert, animated: true, completion: nil)
     }
-    func verify_fail(verify_fail_list:Array<String>){}
+    func verify_fail(verify_fail_list:Array<String>){
+        var fail_list_string = ""
+        for c in verify_fail_list{
+            fail_list_string = "\(fail_list_string)\n\(c)"
+        }
+        let alert = UIAlertController(title: alert_string.error.rawValue, message: "\(alert_string.the_following_are_veriry_fail_list.rawValue)\(fail_list_string)", preferredStyle: .alert)
+        let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+        alert.addAction(confirm_btn)
+        self.present(alert, animated: true, completion: nil)
+    }
     
     
     // MARK: loading view

@@ -78,22 +78,33 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         SKPaymentQueue.default().add(payment)
     }
     func re_send_transaction(){
+        guard send_verify_forbidden != true else{
+            return
+        }
         print_trans_id()
     }
     func send_transaction(){
-        // fly exchanged_yet_transaction_list
+        guard send_verify_forbidden != true else{
+            return
+        }
         let exchanged_yet_transaction_list = [sql_database.get_exchanged_yet_transaction_list().first]
         // transaction_list 的內容物格式
         // ["transaction_id":transaction_id,"transaction_token":transaction_token,"application_username",application_username]
         if !exchanged_yet_transaction_list.isEmpty{
             let _temp_dic = [HTTP_SEND_DIC_KEY.transaction_list.rawValue: exchanged_yet_transaction_list]
             HttpRequestCenter().http_request(url: IAP_URL_PATH, data_mode: HTTP_REQUEST_MODE.send_transaction.rawValue, form_data_dic: _temp_dic as Dictionary<String, AnyObject>) { (result_dic) in
+                guard self.receiver_verify_forbidden != true else{
+                    self.explanation_result(result: nil)
+                    return
+                }
                 self.explanation_result(result: result_dic)
             }
         }
     }
     func recive_iap_websocket(msg:Dictionary<String,AnyObject>){
+        // fly remove print(msg)
         print(msg)
+        explanation_result(result: ["result_list":[msg] as AnyObject])
     }
     
     // MARK: internal func
@@ -138,6 +149,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
             case exchanging = "exchanging"
             case success = "success"
             case verify_fail = "verify_fail"
+            case iap_exchange_fail = "iap_exchange_fail"
         }
         // vars
         var need_alert_varify_fail = false
@@ -155,6 +167,9 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
                 delegate?.transaction_exchanging(transaction_id: c[TRANSACTION_ID] as? String)
             }
             else if c[RESULT]! as! String == result_type.verify_fail.rawValue{
+                delegate?.transaction_complete(result: .fail, transaction_id: c[TRANSACTION_ID] as? String)
+            }
+            else if c[RESULT]! as! String == result_type.iap_exchange_fail.rawValue{
                 delegate?.transaction_complete(result: .fail, transaction_id: c[TRANSACTION_ID] as? String)
             }
             else{
@@ -252,14 +267,50 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         print("------------")
     }
     public func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
-        print("---------")
+        print("交易錯誤!!!")
         print(error)
     }
-    // debug_tool
+    // MARK:debug_tool
     // 查看交易列隊數量
+    func see_transaction_line(){
+        print("準備列印交易序列")
+        var result_str = ""
+        let trans_line = SKPaymentQueue.default().transactions
+        for c in trans_line{
+            result_str = "\(result_str)\(c.transactionIdentifier!)\n"
+        }
+        if result_str == ""{
+            print("交易序列空白")
+        }
+        print("==開始列印交易序列==")
+        print(result_str)
+    }
     // 查看交易資料庫狀態
-    // 強制失敗按鈕
-
+    func show_transaction_database(){
+        sql_database.show_transaction_database()
+    }
+    // 禁止發送驗證到server
+    var send_verify_forbidden = false
+    func switch_send_verify_forbidden(){
+        switch send_verify_forbidden{
+        case true:
+            send_verify_forbidden = false
+        default:
+            send_verify_forbidden = true
+        }
+        print("send_verify_forbidden:\(send_verify_forbidden)")
+    }
+    // 禁止接收驗證訊號
+    var receiver_verify_forbidden = false
+    func switch_receiver_verify_forbidden(){
+        switch receiver_verify_forbidden{
+        case true:
+            receiver_verify_forbidden = false
+        default:
+            receiver_verify_forbidden = true
+        }
+        print("receiver_verify_forbidden:\(receiver_verify_forbidden)")
+    }
 }
 
 

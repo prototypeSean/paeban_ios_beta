@@ -3146,6 +3146,22 @@ public class SQL_center{
             print("update_transaction_complete ERROR!!!")
         }
     }
+    func show_transaction_database(){
+        do{
+            print("準備列印交易資料庫")
+            for c in try sql_db!.prepare(transaction){
+                let trans_id = "id:\(c[transaction_id])  "
+                let trans_complete = "交易完成：\(c[transaction_complete])  "
+                let verify_fail = "驗證失敗：\(c[self.verify_fail])  "
+                print("\(trans_id)\(trans_complete)\(verify_fail)")
+            }
+            print("--完成--")
+        }
+        catch{
+            print(error)
+            print("show_transaction_database ERROR!!!")
+        }
+    }
     
     // test_func
     func del_user_data(){
