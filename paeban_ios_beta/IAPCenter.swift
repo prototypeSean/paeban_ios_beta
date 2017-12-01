@@ -116,6 +116,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
             }
             else{
                 after(nil)
+                print("get_product_id_list http_error!!!")
             }
         }
     }
