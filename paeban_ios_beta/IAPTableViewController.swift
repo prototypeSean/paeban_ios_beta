@@ -52,7 +52,7 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
             let alert = UIAlertController(title: alert_string.warning.rawValue, message: alert_string.transactioning_please_try_later.rawValue, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: {(act) -> Void in
                 // fly 可能可以直接用 send_transaction（）
-                iap_center?.re_send_transaction()
+                iap_center?.send_transaction()
                 self.set_loading_view_title(text: alert_string.trying_to_complete_last_transaction.rawValue)
             }))
             self.present(alert, animated: true, completion: nil)
@@ -94,7 +94,7 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
         case .fail:
             let alert = UIAlertController(title: alert_string.warning.rawValue, message: alert_string.transaction_fail.rawValue, preferredStyle: .alert)
             let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: { (action) in
-                iap_center?.re_send_transaction()
+                iap_center?.send_transaction()
             })
             let cancel_btn = UIAlertAction(title: alert_string.cancel.rawValue, style: .default, handler: nil)
             alert.addAction(confirm_btn)
@@ -107,7 +107,7 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
     func internet_error(){
         let alert = UIAlertController(title: alert_string.error.rawValue, message: alert_string.internet_error_do_you_want_retry.rawValue, preferredStyle: .alert)
         let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default) { (action) in
-            iap_center?.re_send_transaction()
+            iap_center?.send_transaction()
         }
         let cancel_btn = UIAlertAction(title: alert_string.cancel.rawValue, style: .default, handler: nil)
         alert.addAction(confirm_btn)
@@ -141,10 +141,14 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
         tabBar_pointer!.view.addSubview(loading_view)
     }
     func set_loading_view_title(text:String){
-        loading_view_title.text = text
+        DispatchQueue.main.async {
+            self.loading_view_title.text = text
+        }
     }
     func remove_loading_view(){
-        loading_view.removeFromSuperview()
+        DispatchQueue.main.async {
+            self.loading_view.removeFromSuperview()
+        }
     }
 
 }

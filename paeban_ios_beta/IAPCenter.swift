@@ -87,7 +87,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         guard send_verify_forbidden != true else{
             return
         }
-        let exchanged_yet_transaction_list = [sql_database.get_exchanged_yet_transaction_list().first]
+        let exchanged_yet_transaction_list = sql_database.get_exchanged_yet_transaction_list()
         // transaction_list 的內容物格式
         // ["transaction_id":transaction_id,"transaction_token":transaction_token,"application_username",application_username]
         if !exchanged_yet_transaction_list.isEmpty{
@@ -139,6 +139,8 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         }
     }
     private func explanation_result(result:Dictionary<String,AnyObject>?){
+        // fly remove print
+        print(result)
         // dic keys
         let RESULT_LIST = "result_list"
         let RESULT = "result"
@@ -181,13 +183,16 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
                 else{
                     delegate?.transaction_complete(result: .seccess, transaction_id: c[TRANSACTION_ID] as? String)
                     self.finish_transaction_by_id(transaction_id: c[TRANSACTION_ID] as! String)
+                    sql_database.update_transaction_complete(transaction_id:c[TRANSACTION_ID] as! String)
                     // fly 或許再多一個點數變動確認的函數
                 }
-                let fail_verify_transaction_list = c[FAIL_VERIFY_TRANSACTION_LIST] as! Array<String>
-                for c in fail_verify_transaction_list{
-                    sql_database.write_verify_fail_transaction(transaction_id: c)
+                if let fail_verify_transaction_list_anyobj = c[FAIL_VERIFY_TRANSACTION_LIST]{
+                    let fail_verify_transaction_list = fail_verify_transaction_list_anyobj as! Array<String>
+                    for c in fail_verify_transaction_list{
+                        sql_database.write_verify_fail_transaction(transaction_id: c)
+                    }
+                    if !fail_verify_transaction_list.isEmpty{need_alert_varify_fail = true}
                 }
-                if !fail_verify_transaction_list.isEmpty{need_alert_varify_fail = true}
             }
         }
         if need_alert_varify_fail{
@@ -230,6 +235,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
     ///   - response:
     public func wsReconnected() {
         send_transaction()
+        print("IAP wsReconnected")
     }
     public func wsOnMsg(_ msg: Dictionary<String, AnyObject>) {
         //pass
@@ -271,8 +277,8 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         print(error)
     }
     // MARK:debug_tool
-    // 查看交易列隊數量
-    func see_transaction_line(){
+        // 查看交易列隊數量
+    func show_transaction_line(){
         print("準備列印交易序列")
         var result_str = ""
         let trans_line = SKPaymentQueue.default().transactions
@@ -285,11 +291,11 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         print("==開始列印交易序列==")
         print(result_str)
     }
-    // 查看交易資料庫狀態
+        // 查看交易資料庫狀態
     func show_transaction_database(){
         sql_database.show_transaction_database()
     }
-    // 禁止發送驗證到server
+        // 禁止發送驗證到server
     var send_verify_forbidden = false
     func switch_send_verify_forbidden(){
         switch send_verify_forbidden{
@@ -300,7 +306,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         }
         print("send_verify_forbidden:\(send_verify_forbidden)")
     }
-    // 禁止接收驗證訊號
+        // 禁止接收驗證訊號
     var receiver_verify_forbidden = false
     func switch_receiver_verify_forbidden(){
         switch receiver_verify_forbidden{
@@ -309,6 +315,12 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         default:
             receiver_verify_forbidden = true
         }
+        print("receiver_verify_forbidden:\(receiver_verify_forbidden)")
+    }
+        // 列印當前禁止項目設定值
+    func show_forbidden_setting(){
+        print("預設值是兩者皆為false時全功能正常運作")
+        print("send_verify_forbidden:\(send_verify_forbidden)")
         print("receiver_verify_forbidden:\(receiver_verify_forbidden)")
     }
 }

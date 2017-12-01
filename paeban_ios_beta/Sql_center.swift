@@ -182,7 +182,8 @@ public class SQL_center{
             user_data_table,
             recent_topic,
             //app_log,
-            ignore_list
+            ignore_list,
+            transaction
         ]
         for tables in table_list{
             do{

@@ -76,6 +76,7 @@
 		CF90FFAA1F67DFF80078A5FA /* TalkingBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF90FFA91F67DFF80078A5FA /* TalkingBoxView.swift */; };
 		CF976E681F6BBC1800A840ED /* ChangePassword.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF976E671F6BBC1800A840ED /* ChangePassword.xib */; };
 		CF976E6C1F6BBC5000A840ED /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF976E6B1F6BBC5000A840ED /* ChangePasswordView.swift */; };
+		CF9B39821FD01233006481F5 /* IapDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9B39811FD01233006481F5 /* IapDebugViewController.swift */; };
 		CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */; };
 		CF9E37301E2229AE0077C7C9 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
@@ -172,6 +173,7 @@
 		CF90FFA91F67DFF80078A5FA /* TalkingBoxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkingBoxView.swift; sourceTree = "<group>"; };
 		CF976E671F6BBC1800A840ED /* ChangePassword.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePassword.xib; sourceTree = "<group>"; };
 		CF976E6B1F6BBC5000A840ED /* ChangePasswordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
+		CF9B39811FD01233006481F5 /* IapDebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IapDebugViewController.swift; sourceTree = "<group>"; };
 		CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = paeban_ios_beta.entitlements; sourceTree = "<group>"; };
 		CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sql_center.swift; sourceTree = "<group>"; };
 		CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -431,6 +433,7 @@
 				CFBC10571F7BBA1A00A79EDE /* IAPCenter.swift */,
 				CF2A3DA01F7F88D700CF7A61 /* IAPTableViewController.swift */,
 				CF2A3DA21F7F8AD200CF7A61 /* IAPTableView.storyboard */,
+				CF9B39811FD01233006481F5 /* IapDebugViewController.swift */,
 			);
 			name = iap_center;
 			sourceTree = "<group>";
@@ -615,6 +618,7 @@
 				933B77921DCDCD5800110D8C /* SettingProfilePicViewController.swift in Sources */,
 				93077EEC1E20DDCF004900FF /* CustomMessagesCollectionViewCellOutgoing.swift in Sources */,
 				9390D06F1DE82F8C00FEC14A /* FriendInvitedCellTableViewCell.swift in Sources */,
+				CF9B39821FD01233006481F5 /* IapDebugViewController.swift in Sources */,
 				9301F6061D1D1A2800D1F8C0 /* TopicSearchController.swift in Sources */,
 				932A00EB1CFEBA460036E1EA /* TopicNavViewController.swift in Sources */,
 				932D0D711DA0F61100ACA795 /* MytopicNavViewController.swift in Sources */,
