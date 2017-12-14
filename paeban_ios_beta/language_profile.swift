@@ -28,9 +28,12 @@ public enum alert_string:String {
     case transaction_success = "交易成功"
     case verifying = "驗證中"
     case the_following_are_veriry_fail_list = "以下交易序號錯誤，請通知們處理"
+    case double_ckeck_for_unlock_img = "是否要花費100點提早解鎖該用戶照片？"
+    case get_client_id_error = "獲取用戶名稱錯誤"
+    case have_been_unlocked = "已解鎖過該用戶"
+    case insufficient_coin = "餘額不足"
+    case unknow_error_20001 = "內部伺服器錯誤 20001"
 }
-
-
 
 
 

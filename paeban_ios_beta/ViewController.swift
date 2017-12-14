@@ -20,6 +20,7 @@ public let reset_database = false // fly default false
 public let unlock_img_exp = 7
 // fly 改port
 public let local_host = "http://www.paeban.com:10800/"
+public let ws_host = "ws://www.paeban.com:10800/echo/"
 public let image_url_host = local_host + "media/"
 public let is_VIP = false
 public var open_app_frist = true   // default true
@@ -417,7 +418,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
                 cookie_new.set_cookie(cookie_in: setcookie)
                 self.check_data_base()
                 self.remove_loading_view()
-                socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
+                socket = WebSocket(url: URL(string: ws_host)!, protocols: ["text"])
                 socket.headers["Cookie"] = cookie_new.get_cookie()
                 socket.delegate = self
                 ws_connect_fun(socket)
@@ -548,7 +549,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             logInState = true
             cookie_new.set_cookie(cookie_in: state)
             check_data_base()
-            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
+            socket = WebSocket(url: URL(string: ws_host)!, protocols: ["text"])
             socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
@@ -601,7 +602,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
             logInState = true
             cookie_new.set_cookie(cookie_in: setcookie)
             check_data_base()
-            socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
+            socket = WebSocket(url: URL(string: ws_host)!, protocols: ["text"])
             socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = self
             ws_connect_fun(socket)
@@ -708,7 +709,7 @@ public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDel
         }
         
         print("reConnecting...")
-        socket = WebSocket(url: URL(string: "ws://www.paeban.com/echo/")!, protocols: ["text"])
+        socket = WebSocket(url: URL(string: ws_host)!, protocols: ["text"])
         socket.headers["Cookie"] = cookie_new.get_cookie()
         socket.delegate = self
         ws_connect_fun(socket)

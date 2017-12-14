@@ -26,6 +26,7 @@ protocol IAPCenterDelegate {
 public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransactionObserver, webSocketActiveCenterDelegate{
     var delegate:IAPCenterDelegate?
     var product_id_list:Array<String> = []
+
     // MARK: setting
     let IAP_URL_PATH = "iap/"
     enum HTTP_REQUEST_MODE:String{
@@ -98,6 +99,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
                     return
                 }
                 self.explanation_result(result: result_dic)
+                self.retry_after_10sec()
             }
         }
     }
@@ -182,9 +184,11 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
                 }
                 //success
                 else{
-                    delegate?.transaction_complete(result: .seccess, transaction_id: c[TRANSACTION_ID] as? String)
                     self.finish_transaction_by_id(transaction_id: c[TRANSACTION_ID] as! String)
-                    sql_database.update_transaction_complete(transaction_id:c[TRANSACTION_ID] as! String)
+                    let result = sql_database.update_transaction_complete(transaction_id:c[TRANSACTION_ID] as! String)
+                    if result == true{
+                        delegate?.transaction_complete(result: .seccess, transaction_id: c[TRANSACTION_ID] as? String)
+                    }
                     // fly 或許再多一個點數變動確認的函數
                 }
                 if let fail_verify_transaction_list_anyobj = c[FAIL_VERIFY_TRANSACTION_LIST]{
@@ -201,6 +205,15 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
             delegate?.verify_fail(verify_fail_list: fail_list)
         }
     }
+    private func retry_after_10sec(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            let transaction_line = SKPaymentQueue.default().transactions
+            if !transaction_line.isEmpty{
+                self.re_send_transaction()
+            }
+        }
+    }
+    
     // MARK: tools
     private func save_transaction_token(transaction_id:String, application_username:String){
         let receipt_url = Bundle.main.appStoreReceiptURL
@@ -326,7 +339,93 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
     }
 }
 
+class PaidService{
+    // dic keys
+    let RESULT = "result"
+    //let MSG_TYPE = "msg_type"
+    let IMG = "img"
+    let CLIENT_ID = "client_id"
+    // result_type
+    //let IAP_VERIFY = "iap_verify"
+    let HAVE_BEEN_UNLOCKED = "have_been_unlocked"
+    let INSUFFICIENT_COIN = "insufficient_coin"
+    let UN_KNOW_ERROR_20001 = "un_know_error_20001"
+    let SUCCESS = "success"
+    let HTTP_ERROR = "http_error"
+    
+    var client_id:String?
+    var after:((_ result:String)->Void)?
+    
+    func unlock_img_process(client_id:String, after:@escaping (_ result:String)->Void){
+        let send_dic = ["client_id": client_id]
+        let IAP_URL_PATH = "iap/"
+        self.client_id = client_id
+        self.after = after
+        HttpRequestCenter().http_request(url: IAP_URL_PATH, data_mode: "unlock_img", form_data_dic: send_dic as Dictionary<String,AnyObject>, InViewAct: {(result_dic:Dictionary<String,AnyObject>?) -> Void in
+            DispatchQueue.main.async {
+                guard result_dic != nil else{
+                    after(self.HTTP_ERROR)
+                    return
+                }
+                if result_dic![self.RESULT] as! String == self.SUCCESS{
+                    let img = result_dic![self.IMG] as! String
+                    let client_id = result_dic![self.CLIENT_ID] as! String
+                    sql_database.update_unlock_img(client_id:client_id, img_str:img)
+                    after(self.SUCCESS)
+                }
+                else if result_dic![self.RESULT] as! String == self.HAVE_BEEN_UNLOCKED{
+                    let img = result_dic![self.IMG] as! String
+                    let client_id = result_dic![self.CLIENT_ID] as! String
+                    sql_database.update_unlock_img(client_id:client_id, img_str:img)
+                    after(self.HAVE_BEEN_UNLOCKED)
+                }
+                else if result_dic![self.RESULT] as! String == self.INSUFFICIENT_COIN{
+                    after(self.INSUFFICIENT_COIN)
+                }
+                else{
+                    after(self.UN_KNOW_ERROR_20001)
+                }
+            }
+        })
+    }
 
+    func unlock_img_result_explanation(result:String, view_controller:UIViewController, completion:(()->Void)?){
+        if result == self.HTTP_ERROR{
+            let alert = UIAlertController(title: alert_string.error.rawValue, message: alert_string.internet_error_do_you_want_retry.rawValue, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: { (act) in
+                self.unlock_img_process(client_id:self.client_id!, after: self.after!)
+            })
+            let cancel_btn = UIAlertAction(title: alert_string.cancel.rawValue, style: .default, handler: nil)
+            alert.addAction(confirm_btn)
+            alert.addAction(cancel_btn)
+            view_controller.present(alert, animated: true, completion: completion)
+        }
+        else if result == self.SUCCESS{
+            let alert = UIAlertController(title: alert_string.notice.rawValue, message: alert_string.transaction_success.rawValue, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+            alert.addAction(confirm_btn)
+            view_controller.present(alert, animated: true, completion: completion)
+        }
+        else if result == self.HAVE_BEEN_UNLOCKED{
+            let alert = UIAlertController(title: alert_string.notice.rawValue, message: alert_string.have_been_unlocked.rawValue, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+            alert.addAction(confirm_btn)
+            view_controller.present(alert, animated: true, completion: completion)
+        }
+        else if result == self.INSUFFICIENT_COIN{
+            let alert = UIAlertController(title: alert_string.notice.rawValue, message: alert_string.insufficient_coin.rawValue, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+            alert.addAction(confirm_btn)
+            view_controller.present(alert, animated: true, completion: completion)
+        }
+        else{
+            let alert = UIAlertController(title: alert_string.error.rawValue, message: alert_string.unknow_error_20001.rawValue, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+            alert.addAction(confirm_btn)
+            view_controller.present(alert, animated: true, completion: completion)
+        }
+    }
+}
 
 
 

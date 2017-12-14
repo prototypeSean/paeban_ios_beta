@@ -1627,6 +1627,18 @@
                                             <action selector="popUpImgClose:" destination="FBi-3N-jAs" eventType="touchUpInside" id="COe-qF-qD8"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lEH-14-egv" userLabel="Unlock_img">
+                                        <rect key="frame" x="172" y="333" width="70" height="70"/>
+                                        <color key="backgroundColor" red="0.50766919150000001" green="0.50219578730000003" blue="0.83450589009999998" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="AUG-Fq-9tN"/>
+                                            <constraint firstAttribute="width" constant="70" id="kdm-Wb-nMp"/>
+                                        </constraints>
+                                        <state key="normal" title="unlock"/>
+                                        <connections>
+                                            <action selector="unlock_img:" destination="FBi-3N-jAs" eventType="touchUpInside" id="q2d-zl-jp5"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -1643,7 +1655,9 @@
                                     <constraint firstItem="B8p-cb-c7Q" firstAttribute="centerX" secondItem="1eB-uP-9zj" secondAttribute="centerX" id="hMa-o6-Vbf"/>
                                     <constraint firstItem="Nbr-dM-fIS" firstAttribute="height" secondItem="1eB-uP-9zj" secondAttribute="height" multiplier="0.15" id="lVf-Rg-gHV"/>
                                     <constraint firstItem="Nbr-dM-fIS" firstAttribute="width" secondItem="1eB-uP-9zj" secondAttribute="width" id="r9d-HS-fXD"/>
+                                    <constraint firstItem="lEH-14-egv" firstAttribute="centerY" secondItem="1eB-uP-9zj" secondAttribute="centerY" id="sgO-U5-Bfy"/>
                                     <constraint firstItem="Nbr-dM-fIS" firstAttribute="centerX" secondItem="1eB-uP-9zj" secondAttribute="centerX" id="tgx-t6-Irs"/>
+                                    <constraint firstItem="lEH-14-egv" firstAttribute="centerX" secondItem="1eB-uP-9zj" secondAttribute="centerX" id="yY4-iD-RDj"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -3690,8 +3704,8 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lxg-Ec-9Hp"/>
-        <segue reference="XH3-qg-Ahu"/>
+        <segue reference="wZO-VC-xmQ"/>
+        <segue reference="vc1-tE-BTH"/>
         <segue reference="nCN-DR-xXv"/>
         <segue reference="9Et-Zw-Bc4"/>
     </inferredMetricsTieBreakers>

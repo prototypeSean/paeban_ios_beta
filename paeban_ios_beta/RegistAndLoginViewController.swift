@@ -108,7 +108,7 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
         if state != "login_no"{
             print("登入成功!!!")
             cookie_new.set_cookie(cookie_in: state)
-            socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            socket = WebSocket(url: URL(string: ws_host)!, protocols: ["chat", "superchat"])
             socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = main_vc
             ws_connect_fun(socket)
@@ -135,7 +135,7 @@ class RegistAndLoginViewController: UIViewController, login_paeban_delegate {
         else if state == "login_yes"{
             logInState = true
             cookie_new.set_cookie(cookie_in: setcookie)
-            socket = WebSocket(url: URL(string: "wss://www.paeban.com/echo")!, protocols: ["chat", "superchat"])
+            socket = WebSocket(url: URL(string: ws_host)!, protocols: ["chat", "superchat"])
             socket.headers["Cookie"] = cookie_new.get_cookie()
             socket.delegate = main_vc
             ws_connect_fun(socket)

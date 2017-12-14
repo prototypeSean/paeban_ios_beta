@@ -2970,6 +2970,17 @@ public class SQL_center{
         }
     }
     
+    func update_unlock_img(client_id:String, img_str:String){
+        do{
+            let query = tmp_client_Table.filter(self.client_id == client_id)
+            let update = query.update(tmp_client_img <- img_str)
+            try sql_db!.run(update)
+        }
+        catch{
+            print("update_unlock_img ERROR!!!")
+            print(error)
+        }
+    }
     
     
     func establish_app_log(){
@@ -3134,9 +3145,16 @@ public class SQL_center{
             return []
         }
     }
-    func update_transaction_complete(transaction_id:String){
+    func update_transaction_complete(transaction_id:String) -> Bool{
+        var result = false
         do{
             let query = transaction.filter(self.transaction_id == transaction_id)
+            let query_obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            })
+            if query_obj![transaction_complete] == false{
+                result = true
+            }
             try sql_db!.run(query.update(
                 verify_fail <- false,
                 transaction_complete <- true
@@ -3146,6 +3164,7 @@ public class SQL_center{
             print(error)
             print("update_transaction_complete ERROR!!!")
         }
+        return result
     }
     func show_transaction_database(){
         do{

@@ -72,6 +72,10 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             })
         }
     }
+    @IBAction func unlock_img(_ sender: Any) {
+        unlock_img()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //getHttpData()
@@ -146,6 +150,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         block()
     }
     
+    // internal function
 
     func get_client_img(owner:String,topic_id:String){
         // old
@@ -367,7 +372,18 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
         alert.addAction(UIAlertAction(title: "確認".localized(withComment: "TopicViewController"), style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    
+        // 強制解鎖照片
+    func unlock_img(){
+        let HAVE_BEEN_UNLOCKED = "have_been_unlocked"
+        let SUCCESS = "success"
+        PaidService().unlock_img_process(client_id:self.ownerId!, after: {(result:String)->Void in
+            PaidService().unlock_img_result_explanation(result: result, view_controller: self, completion: {
+                if result == SUCCESS || result == HAVE_BEEN_UNLOCKED{
+                    self.re_new_client_img()
+                }
+            })
+        })
+    }
     // MARK: delegate -> websocket
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>){
         let msgType =  msg["msg_type"] as! String
@@ -416,6 +432,7 @@ class TopicViewController: UIViewController,webSocketActiveCenterDelegate {
             let img = base64ToImage(img_str)
             self.ownerImg = img
             self.guestPhotoImg.image = img
+            self.popUpImg.image = img
             self.setName = return_dic["client_name"] as? String
             self.title = self.setName
         }
