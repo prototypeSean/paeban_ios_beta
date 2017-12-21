@@ -278,6 +278,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
             case SKPaymentTransactionState.failed:
                 print("----------fail")
                 SKPaymentQueue.default().finishTransaction(transaction)
+                delegate?.transaction_complete(result: .fail, transaction_id: nil)
             default:
                 print(transaction.transactionState.rawValue)
             }
