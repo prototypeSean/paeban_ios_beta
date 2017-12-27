@@ -10,29 +10,36 @@
 import Foundation
 
 //MARK: language profile
-public enum alert_string:String {
+public class alert_string {
     // 標題
-    case warning = "警告"
-    case confirm = "確定"
-    case cancel = "取消"
-    case error = "錯誤"
-    case notice = "通知"
+    let warning = "警告"
+    let confirm = "確定"
+    let cancel = "取消"
+    let error = "錯誤"
+    let notice = "通知"
     
     // 句子
-    case internet_error_do_you_want_retry = "網路錯誤，是否重試"
-    case initiate_transaction = "正在啟動交易"
-    case transactioning_please_try_later = "尚有交易進行中，請稍後再試"
-    case trying_to_complete_last_transaction = "正在完成上一次交易"
-    case exchanging_point = "正在進行點數轉換"
-    case transaction_fail = "交易驗證失敗，是否重試?"
-    case transaction_success = "交易成功"
-    case verifying = "驗證中"
-    case the_following_are_veriry_fail_list = "以下交易序號錯誤，請通知們處理"
-    case double_ckeck_for_unlock_img = "是否要花費100點提早解鎖該用戶照片？"
-    case get_client_id_error = "獲取用戶名稱錯誤"
-    case have_been_unlocked = "已解鎖過該用戶"
-    case insufficient_coin = "餘額不足"
-    case unknow_error_20001 = "內部伺服器錯誤 20001"
+    let internet_error_do_you_want_retry = "網路錯誤，是否重試"
+    let initiate_transaction = "正在啟動交易"
+    let transactioning_please_try_later = "尚有交易進行中，請稍後再試"
+    let trying_to_complete_last_transaction = "正在完成上一次交易"
+    let exchanging_point = "正在進行點數轉換"
+    let transaction_fail = "交易驗證失敗，是否重試?"
+    let transaction_success = "交易成功"
+    let verifying = "驗證中"
+    let the_following_are_veriry_fail_list = "以下交易序號錯誤，請通知們處理"
+    let double_ckeck_for_unlock_img = "是否要花費\(unlock_img_point)點數提早解鎖該用戶照片？"
+    let get_client_id_error = "獲取用戶名稱錯誤"
+    let have_been_unlocked = "已解鎖過該用戶"
+    let insufficient_coin = "餘額不足"
+    let unknow_error_20001 = "內部伺服器錯誤 20001"
+    let create_extra_topic = "預設只能同時存在一個話題，確定要花費\(extra_topic_point)點數開啟額外的新的話題？"
+    let too_many_topic_no_auto_close = "話題數太多，請關閉一個話題，並花費\(extra_topic_point)點數開啟新的話題"
+    let cant_find_del_topic = " 無法找到被刪除的話題"
+    
+    func too_many_topic(close_topic_title:String) -> String{
+        return "話題數太多，是否要關閉話題：\(close_topic_title)，並花費\(extra_topic_point)點數開啟新的話題"
+    }
 }
 
 

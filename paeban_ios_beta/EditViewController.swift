@@ -80,21 +80,48 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
     func check_if_has_old_topic_from_local(text:String){
         let old_topic_count = sql_database.check_old_topic_count()
         if old_topic_count > 0{
-            let alert = UIAlertController(title: "開啟新話題".localized(withComment: "EditVC"), message: "同時只能有一個話題，確定要開啟新的話題並刪除目前的所有對話？".localized(withComment: "EditVC"), preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "取消".localized(withComment: "EditVC"), style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "確定".localized(withComment: "EditVC"), style: .default, handler: { (alert_pa) in
-                self.send_new_topic_to_server(new_topic_title:text)
-            }))
-            self.present(alert, animated: true, completion: nil)
+            if old_topic_count >= 3{
+                let last_respond_topic_id_local = sql_database.find_last_respond_topic_id_local()
+                let last_respond_topic_title = sql_database.find_last_respond_title(topic_id_local: last_respond_topic_id_local)
+                if last_respond_topic_id_local == nil || last_respond_topic_title == nil{
+                    let alert = UIAlertController(title: alert_string().notice, message: alert_string().too_many_topic_no_auto_close, preferredStyle: .alert)
+                    let confirm = UIAlertAction(title: alert_string().confirm, style: .default, handler: { (act) in
+                        // pass
+                    })
+                    alert.addAction(confirm)
+                    self.present(alert, animated: true, completion: nil)
+                }
+                else{
+                    let alert = UIAlertController(title: alert_string().notice, message: alert_string().too_many_topic(close_topic_title: last_respond_topic_title!), preferredStyle: .alert)
+                    let cancel = UIAlertAction(title: alert_string().cancel, style: .default, handler: nil)
+                    let confirm = UIAlertAction(title: alert_string().confirm, style: .default, handler: { (act) in
+                        self.send_new_topic_to_server(create_topic_mode: .del_and_new_paid, new_topic_title: text, del_topic_id_local: last_respond_topic_id_local)
+                    })
+                    alert.addAction(cancel)
+                    alert.addAction(confirm)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+            else{
+                let alert = UIAlertController(title: alert_string().notice, message: alert_string().create_extra_topic, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: alert_string().cancel, style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: alert_string().confirm, style: .default, handler: { (alert_pa) in
+                    self.send_new_topic_to_server(create_topic_mode: .new_paid, new_topic_title: text, del_topic_id_local: nil)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
         else{
-            send_new_topic_to_server(new_topic_title:text)
+            send_new_topic_to_server(create_topic_mode: .typical_free, new_topic_title: text, del_topic_id_local: nil)
         }
     }
-    
-    func send_new_topic_to_server(new_topic_title:String){
+    enum Create_topic_mode:String{
+        case typical_free = "typical_free"
+        case del_and_new_paid = "del_and_new_paid"
+        case new_paid = "new_paid"
+    }
+    func send_new_topic_to_server(create_topic_mode:Create_topic_mode,new_topic_title:String,del_topic_id_local:String?){
         self.collapseInputBox()
-        sql_database.delete_all_my_topic()
         let topic_title_get = turn_full_title_to_title(input_full_title: new_topic_title)!
         let topic_tag_string = turn_full_title_to_tag_save_type(input_full_title: new_topic_title)
         if let id_local = sql_database.insert_my_topic_from_local(topic_title_in:topic_title_get,topic_tag_string_in:topic_tag_string){
@@ -102,12 +129,50 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
             if topic_tag_string != ""{
                 topic_tag_list = turn_tag_string_to_tag_list(tag_string: topic_tag_string)
             }
+            var send_dic:Dictionary<String, AnyObject> = [:]
+            if create_topic_mode == .typical_free{
+                send_dic = [
+                    "id_local":id_local as AnyObject,
+                    "topic_title":topic_title_get as AnyObject,
+                    "topic_tag_list":topic_tag_list as AnyObject,
+                    "create_topic_mode":Create_topic_mode.typical_free.rawValue as AnyObject
+                ]
+            }
+            else if create_topic_mode == .del_and_new_paid{
+                if del_topic_id_local != nil{
+                    let del_topic_id = sql_database.get_topic_id_by_local_id(id_local:del_topic_id_local!)!
+                    sql_database.turn_my_topic_active_state_to_false(topic_id_ins: del_topic_id)
+                    let del_topic_id_list:Array<String> = [del_topic_id]
+                    send_dic = [
+                        "id_local":id_local as AnyObject,
+                        "topic_title":topic_title_get as AnyObject,
+                        "topic_tag_list":topic_tag_list as AnyObject,
+                        "create_topic_mode":Create_topic_mode.del_and_new_paid.rawValue as AnyObject,
+                        "del_topic_id_list":del_topic_id_list as AnyObject
+                    ]
+                }
+                else{
+                    let alert = UIAlertController(title: alert_string().error, message: alert_string().cant_find_del_topic, preferredStyle: .alert)
+                    let confirm = UIAlertAction(title: alert_string().confirm, style: .default, handler: nil)
+                    alert.addAction(confirm)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+            else if create_topic_mode == .new_paid{
+                var del_topic_id_list:Array<String> = []
+                del_topic_id_list = sql_database.get_inactive_my_topic()
+                send_dic = [
+                    "id_local":id_local as AnyObject,
+                    "topic_title":topic_title_get as AnyObject,
+                    "topic_tag_list":topic_tag_list as AnyObject,
+                    "create_topic_mode":Create_topic_mode.new_paid.rawValue as AnyObject,
+                ]
+                if !del_topic_id_list.isEmpty{
+                    send_dic["del_topic_id_list"] = del_topic_id_list as AnyObject
+                    send_dic["create_topic_mode"] = Create_topic_mode.del_and_new_paid.rawValue as AnyObject
+                }
+            }
             
-            let send_dic:Dictionary<String, AnyObject> = [
-                "id_local":id_local as AnyObject,
-                "topic_title":topic_title_get as AnyObject,
-                "topic_tag_list":topic_tag_list as AnyObject
-            ]
             func send(){
                 let load_view = add_loading_view()
                 HttpRequestCenter().request_user_data_v2("new_topic", send_dic: send_dic, InViewAct: { (return_dic) in
@@ -180,11 +245,7 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
-    
-    
 }
-
-
 
 
 

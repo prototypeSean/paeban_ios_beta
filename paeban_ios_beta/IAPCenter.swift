@@ -392,36 +392,36 @@ class PaidService{
 
     func unlock_img_result_explanation(result:String, view_controller:UIViewController, completion:(()->Void)?){
         if result == self.HTTP_ERROR{
-            let alert = UIAlertController(title: alert_string.error.rawValue, message: alert_string.internet_error_do_you_want_retry.rawValue, preferredStyle: .alert)
-            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: { (act) in
+            let alert = UIAlertController(title: alert_string().error, message: alert_string().internet_error_do_you_want_retry, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: { (act) in
                 self.unlock_img_process(client_id:self.client_id!, after: self.after!)
             })
-            let cancel_btn = UIAlertAction(title: alert_string.cancel.rawValue, style: .default, handler: nil)
+            let cancel_btn = UIAlertAction(title: alert_string().cancel, style: .default, handler: nil)
             alert.addAction(confirm_btn)
             alert.addAction(cancel_btn)
             view_controller.present(alert, animated: true, completion: completion)
         }
         else if result == self.SUCCESS{
-            let alert = UIAlertController(title: alert_string.notice.rawValue, message: alert_string.transaction_success.rawValue, preferredStyle: .alert)
-            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+            let alert = UIAlertController(title: alert_string().notice, message: alert_string().transaction_success, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: nil)
             alert.addAction(confirm_btn)
             view_controller.present(alert, animated: true, completion: completion)
         }
         else if result == self.HAVE_BEEN_UNLOCKED{
-            let alert = UIAlertController(title: alert_string.notice.rawValue, message: alert_string.have_been_unlocked.rawValue, preferredStyle: .alert)
-            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+            let alert = UIAlertController(title: alert_string().notice, message: alert_string().have_been_unlocked, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: nil)
             alert.addAction(confirm_btn)
             view_controller.present(alert, animated: true, completion: completion)
         }
         else if result == self.INSUFFICIENT_COIN{
-            let alert = UIAlertController(title: alert_string.notice.rawValue, message: alert_string.insufficient_coin.rawValue, preferredStyle: .alert)
-            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+            let alert = UIAlertController(title: alert_string().notice, message: alert_string().insufficient_coin, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: nil)
             alert.addAction(confirm_btn)
             view_controller.present(alert, animated: true, completion: completion)
         }
         else{
-            let alert = UIAlertController(title: alert_string.error.rawValue, message: alert_string.unknow_error_20001.rawValue, preferredStyle: .alert)
-            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+            let alert = UIAlertController(title: alert_string().error, message: alert_string().unknow_error_20001, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: nil)
             alert.addAction(confirm_btn)
             view_controller.present(alert, animated: true, completion: completion)
         }

@@ -45,15 +45,15 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
         add_load_view()
         if !transition_ing{
             iap_center?.buy_product(product: product_list[indexPath.row])
-            set_loading_view_title(text: alert_string.initiate_transaction.rawValue)
+            set_loading_view_title(text: alert_string().initiate_transaction)
             transition_ing = true
         }
         else{
-            let alert = UIAlertController(title: alert_string.warning.rawValue, message: alert_string.transactioning_please_try_later.rawValue, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: {(act) -> Void in
+            let alert = UIAlertController(title: alert_string().warning, message: alert_string().transactioning_please_try_later, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: alert_string().confirm, style: .default, handler: {(act) -> Void in
                 // fly 可能可以直接用 send_transaction（）
                 iap_center?.send_transaction()
-                self.set_loading_view_title(text: alert_string.trying_to_complete_last_transaction.rawValue)
+                self.set_loading_view_title(text: alert_string().trying_to_complete_last_transaction)
             }))
             self.present(alert, animated: true, completion: nil)
         }
@@ -69,9 +69,9 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
             self.tableView.reloadData()
         }
         else{
-            let alert = UIAlertController(title: alert_string.error.rawValue, message: alert_string.internet_error_do_you_want_retry.rawValue, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: alert_string.cancel.rawValue, style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: { (act:UIAlertAction) in
+            let alert = UIAlertController(title: alert_string().error, message: alert_string().internet_error_do_you_want_retry, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: alert_string().cancel, style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: alert_string().confirm, style: .default, handler: { (act:UIAlertAction) in
                 iap_center?.get_product_info()
             }))
             self.present(alert, animated: true, completion: nil)
@@ -79,24 +79,24 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
     }
 
     func transaction_verifying(transaction_id:String?){
-        self.set_loading_view_title(text:alert_string.verifying.rawValue)
+        self.set_loading_view_title(text:alert_string().verifying)
     }
     func transaction_exchanging(transaction_id:String?){
-        self.set_loading_view_title(text: alert_string.exchanging_point.rawValue)
+        self.set_loading_view_title(text: alert_string().exchanging_point)
     }
     func transaction_complete(result:transaction_resule, transaction_id:String?) {
         switch result {
         case .seccess:
-            let alert = UIAlertController(title: alert_string.notice.rawValue, message: alert_string.transaction_success.rawValue, preferredStyle: .alert)
-            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+            let alert = UIAlertController(title: alert_string().notice, message: alert_string().transaction_success, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: nil)
             alert.addAction(confirm_btn)
             self.present(alert, animated: true, completion: nil)
         case .fail:
-            let alert = UIAlertController(title: alert_string.warning.rawValue, message: alert_string.transaction_fail.rawValue, preferredStyle: .alert)
-            let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: { (action) in
+            let alert = UIAlertController(title: alert_string().warning, message: alert_string().transaction_fail, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: { (action) in
                 iap_center?.send_transaction()
             })
-            let cancel_btn = UIAlertAction(title: alert_string.cancel.rawValue, style: .default, handler: nil)
+            let cancel_btn = UIAlertAction(title: alert_string().cancel, style: .default, handler: nil)
             alert.addAction(confirm_btn)
             alert.addAction(cancel_btn)
             self.present(alert, animated: true, completion: nil)
@@ -105,11 +105,11 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
         transition_ing = false
     }
     func internet_error(){
-        let alert = UIAlertController(title: alert_string.error.rawValue, message: alert_string.internet_error_do_you_want_retry.rawValue, preferredStyle: .alert)
-        let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default) { (action) in
+        let alert = UIAlertController(title: alert_string().error, message: alert_string().internet_error_do_you_want_retry, preferredStyle: .alert)
+        let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default) { (action) in
             iap_center?.send_transaction()
         }
-        let cancel_btn = UIAlertAction(title: alert_string.cancel.rawValue, style: .default, handler: nil)
+        let cancel_btn = UIAlertAction(title: alert_string().cancel, style: .default, handler: nil)
         alert.addAction(confirm_btn)
         alert.addAction(cancel_btn)
         self.present(alert, animated: true, completion: nil)
@@ -119,8 +119,8 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
         for c in verify_fail_list{
             fail_list_string = "\(fail_list_string)\n\(c)"
         }
-        let alert = UIAlertController(title: alert_string.error.rawValue, message: "\(alert_string.the_following_are_veriry_fail_list.rawValue)\(fail_list_string)", preferredStyle: .alert)
-        let confirm_btn = UIAlertAction(title: alert_string.confirm.rawValue, style: .default, handler: nil)
+        let alert = UIAlertController(title: alert_string().error, message: "\(alert_string().the_following_are_veriry_fail_list)\(fail_list_string)", preferredStyle: .alert)
+        let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: nil)
         alert.addAction(confirm_btn)
         self.present(alert, animated: true, completion: nil)
     }

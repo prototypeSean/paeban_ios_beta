@@ -18,6 +18,11 @@ public var my_blur_img_level_dic = [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 
 public let version = "1.9.0.0"
 public let reset_database = true // fly default false
 public let unlock_img_exp = 7
+public let unlock_img_point = 100
+public let extra_topic_point = 50
+    // 最大話題並存數
+public let max_topic_num = 3
+
 // fly 改port
 public let local_host = "http://www.paeban.com:10800/"
 public let ws_host = "ws://www.paeban.com:10800/echo/"

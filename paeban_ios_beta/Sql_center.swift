@@ -1091,7 +1091,107 @@ public class SQL_center{
         return return_dic
     }
         // 取的所有的 BADGE 由三個分開的 func 整理成純文字
-    
+    func find_last_respond_topic_id_local() -> String?{
+        func get_topic_content_time(topic_id:String?) -> Double?{
+            guard topic_id != nil else {
+                return nil
+            }
+            do{
+                let query = topic_content.filter(self.topic_id == topic_id).order(id.desc).limit(1)
+                let obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                    return true
+                })
+                return obj?[time]!
+            }
+            catch{
+                print("get_topic_content_time ERROR!!")
+            }
+            return nil
+        }
+        func compare_topic_respond_last_time(topic_id_local_1:String?, topic_id_local_2:String?) -> String?{
+            let time_1 = get_topic_content_time(topic_id: get_topic_id_by_local_id(id_local: topic_id_local_1))
+            let time_2 = get_topic_content_time(topic_id: get_topic_id_by_local_id(id_local: topic_id_local_2))
+            if time_1 != nil || time_2 != nil{
+                if topic_id_local_1 == nil && topic_id_local_2 == nil{
+                    return nil
+                }
+                else if topic_id_local_1 != nil && topic_id_local_2 != nil{
+                    if Int(topic_id_local_1!)! > Int(topic_id_local_2!)!{
+                        return topic_id_local_2
+                    }
+                    else{
+                        return topic_id_local_1
+                    }
+                }
+                else{
+                    if topic_id_local_1 == nil{
+                        return topic_id_local_2!
+                    }
+                    else{
+                        return topic_id_local_1!
+                    }
+                }
+            }
+            else{
+                if time_1! > time_2!{
+                    return topic_id_local_2
+                }
+                else{
+                    return topic_id_local_1
+                }
+            }
+        }
+        
+        // 函數邏輯區
+        do{
+            var topic_id_local:String?
+            for c in try sql_db!.prepare(my_topic){
+                if c[active] == true{
+                    topic_id_local = compare_topic_respond_last_time(topic_id_local_1: topic_id_local, topic_id_local_2: String(c[id]))
+                }
+            }
+            return topic_id_local
+        }
+        catch{
+            print("find_less_respond_topic ERROR!!!")
+            print(error)
+            return nil
+        }
+    }
+    func get_topic_id_by_local_id(id_local:String?) -> String?{
+        do{
+            guard id_local != nil else {
+                return nil
+            }
+            let query = my_topic.filter(id == Int64(id_local!)!)
+            let obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            })
+            return obj?[topic_id]
+        }
+        catch{
+            print("get_topic_id_by_local_id ERROR!!!")
+            print(error)
+            return nil
+        }
+    }
+    func find_last_respond_title(topic_id_local:String?) -> String?{
+        do{
+            guard topic_id_local != nil else {
+                return nil
+            }
+            let query = my_topic.filter(id == Int64(topic_id_local!)!)
+            return try sql_db!.prepare(query).first(where: { (row) -> Bool in
+                return true
+            })?[topic_title]
+        }
+        catch{
+            print("find_last_respond_title ERROR!!")
+            print(error)
+            return nil
+        }
+    }
+
     
     // recent_topic
     func establish_recent_topic(){
@@ -1320,128 +1420,7 @@ public class SQL_center{
         return 0
     }
     
-    // leave_topic
-//    func establish_leave_topic_table(){
-//        do{
-//            try sql_db?.run(leave_topic.create { t in
-//                t.column(id, primaryKey: true)
-//                t.column(topic_id)
-//            })
-//            print("表單建立成功")
-//        }
-//        catch{
-//            print("資料庫錯誤")
-//            print(error)
-//        }
-//    }
-//    func add_topic_to_topic_table(topic_id_input:String){
-//        let insert = leave_topic.insert(
-//            topic_id <- topic_id_input
-//        )
-//        do{
-//            try sql_db!.run(insert)
-//        }
-//        catch{
-//            print("資料庫錯誤")
-//            print(error)
-//        }
-//    }
-//    func remove_topic_from_topic_table(topic_id_input:String){
-//        let query = leave_topic.filter(topic_id == topic_id_input)
-//        
-//        do{
-//            try sql_db!.run(query.delete())
-//        }
-//        catch{
-//            print("資料庫錯誤")
-//            print(error)
-//        }
-//    }
-//    func get_topic_table_list() -> Array<String>{
-//        var return_list:Array<String> = []
-//        do{
-//            for topic_c in try sql_db!.prepare(leave_topic) {
-//                return_list.append(topic_c[topic_id]!)
-//            }
-//        }
-//        catch{
-//            print("資料庫錯誤")
-//            print(error)
-//        }
-//        return return_list
-//    }
-//    func print_topic_table(){
-//        print("print_topic_table=====op")
-//        do{
-//            for topic_c in try sql_db!.prepare(leave_topic) {
-//                print("topic_id: \(topic_c[topic_id])")
-//                // id: 1, email: alice@mac.com, name: Optional("Alice")
-//            }
-//            print("print_topic_table=====ed")
-//        }
-//        catch{
-//            print("資料庫錯誤")
-//            print(error)
-//        }
-//    }
     
-    
-    // leave_topic_master
-//    func establish_leave_topic_master_table(){
-//        do{
-//            try sql_db?.run(leave_topic_master.create { t in
-//                t.column(id, primaryKey: true)
-//                t.column(topic_id)
-//                t.column(client_id)
-//            })
-//            print("表單建立成功")
-//        }
-//        catch{
-//            print("資料庫錯誤")
-//            print(error)
-//        }
-//    }
-//    func add_topic_to_leave_topic_master_table(topic_id_input:String, client_id_input:String){
-//        let insert = leave_topic_master.insert(
-//            topic_id <- topic_id_input,
-//            client_id <- client_id_input
-//        )
-//        do{
-//            try sql_db!.run(insert)
-//        }
-//        catch{
-//            print("資料庫錯誤")
-//            print(error)
-//        }
-//    }
-//    func remove_topic_from_leave_topic_master_table(topic_id_input:String, client_id_input:String){
-//        let query = leave_topic_master.filter(topic_id == topic_id_input && client_id == client_id_input)
-//        
-//        do{
-//            try sql_db!.run(query.delete())
-//        }
-//        catch{
-//            print("資料庫錯誤")
-//            print(error)
-//        }
-//    }
-//    func get_leave_topic_master_table_list() -> Array<Dictionary<String,String>>{
-//        var return_list:Array<Dictionary<String,String>> = []
-//        do{
-//            for topic_c in try sql_db!.prepare(leave_topic_master) {
-//                let temp_dic:Dictionary<String,String> = [
-//                    "topic_id":topic_c[topic_id]!,
-//                    "client_id":topic_c[client_id]!
-//                ]
-//                return_list.append(temp_dic)
-//            }
-//        }
-//        catch{
-//            print("資料庫錯誤")
-//            print(error)
-//        }
-//        return return_list
-//    }
     
     
     // private func
