@@ -177,9 +177,45 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
                 let load_view = add_loading_view()
                 HttpRequestCenter().request_user_data_v2("new_topic", send_dic: send_dic, InViewAct: { (return_dic) in
                     DispatchQueue.main.async {
+                        // dic keys
+                        let RESULT = "result"
+                        // result_type
+                        let INSUFFICIENT_COIN = "insufficient_coin"
+                        let UN_KNOW_ERROR_20002 = "UN_KNOW_ERROR_20002"
+                        let SUCCESS = "success"
+                        let TOO_MATCH_TOPIC = "too_match_topic"
                         if return_dic != nil{
-                            sql_database.update_my_topic(local_topic_id_in: return_dic!["id_local"]! as! String, topic_id_in: return_dic!["topic_id"]! as! String)
                             load_view?.removeFromSuperview()
+                            // -----  working
+                            let result = return_dic![RESULT]! as! String
+                            if result == SUCCESS{
+                                sql_database.update_my_topic(local_topic_id_in: return_dic!["id_local"]! as! String, topic_id_in: return_dic!["topic_id"]! as! String)
+                                self.jump_tp_my_topic()
+                            }
+                            else if result == TOO_MATCH_TOPIC{
+                                let alert = UIAlertController(title: alert_string().warning, message: alert_string().too_many_topic_please_wait, preferredStyle: .alert)
+                                let confirm = UIAlertAction(title: alert_string().confirm, style: .default, handler: { (act) in
+                                    HttpRequestCenter().send_close_my_topic()
+                                })
+                                alert.addAction(confirm)
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                            else if result == INSUFFICIENT_COIN{
+                                let alert = UIAlertController(title: alert_string().warning, message: alert_string().insufficient_coin, preferredStyle: .alert)
+                                let confirm = UIAlertAction(title: alert_string().confirm, style: .default, handler: { (act) in
+                                    // 付款款或取消
+                                })
+                                alert.addAction(confirm)
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                            else if result == UN_KNOW_ERROR_20002{
+                                let alert = UIAlertController(title: alert_string().warning, message: alert_string().unknow_error_20002, preferredStyle: .alert)
+                                let confirm = UIAlertAction(title: alert_string().confirm, style: .default, handler: nil)
+                                alert.addAction(confirm)
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                            // -----  working
+                            sql_database.update_my_topic(local_topic_id_in: return_dic!["id_local"]! as! String, topic_id_in: return_dic!["topic_id"]! as! String)
                             self.jump_tp_my_topic()
                         }
                         else{

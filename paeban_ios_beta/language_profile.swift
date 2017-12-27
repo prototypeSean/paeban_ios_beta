@@ -33,8 +33,10 @@ public class alert_string {
     let have_been_unlocked = "已解鎖過該用戶"
     let insufficient_coin = "餘額不足"
     let unknow_error_20001 = "內部伺服器錯誤 20001"
+    let unknow_error_20002 = "內部伺服器錯誤 20002"
     let create_extra_topic = "預設只能同時存在一個話題，確定要花費\(extra_topic_point)點數開啟額外的新的話題？"
     let too_many_topic_no_auto_close = "話題數太多，請關閉一個話題，並花費\(extra_topic_point)點數開啟新的話題"
+    let too_many_topic_please_wait = "話題數太多，可能是您已刪除的話題尚未送到伺服器，請稍後再試"
     let cant_find_del_topic = " 無法找到被刪除的話題"
     
     func too_many_topic(close_topic_title:String) -> String{

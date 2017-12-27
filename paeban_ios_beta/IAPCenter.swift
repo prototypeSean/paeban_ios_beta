@@ -108,7 +108,13 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         print(msg)
         explanation_result(result: ["result_list":[msg] as AnyObject])
     }
-    
+    func get_coin() {
+        HttpRequestCenter().request_user_data_v2("get_coin", send_dic: [:]){(return_dic:Dictionary<String, AnyObject>?) in
+            if return_dic != nil{
+                sql_database.update_coin(input_dic: return_dic!)
+            }
+        }
+    }
     // MARK: internal func
     private func get_product_id_list(after:@escaping (_ product_id_list:Array<String>?)->Void){
         HttpRequestCenter().http_request(url: IAP_URL_PATH, data_mode: HTTP_REQUEST_MODE.get_product_id_list.rawValue, form_data_dic: [:]) { (result_dic:Dictionary<String, AnyObject>?) in

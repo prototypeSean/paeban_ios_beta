@@ -115,6 +115,9 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         else if cmd_line == "del"{
             sql_database.del_user_data()
         }
+        else if cmd_line == "topic"{
+            sql_database.my_topic_print()
+        }
         else if cmd_line == "help"{
             let help_list = [
                 "recent_db       列印recent_topic",

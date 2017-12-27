@@ -1111,7 +1111,7 @@ public class SQL_center{
         func compare_topic_respond_last_time(topic_id_local_1:String?, topic_id_local_2:String?) -> String?{
             let time_1 = get_topic_content_time(topic_id: get_topic_id_by_local_id(id_local: topic_id_local_1))
             let time_2 = get_topic_content_time(topic_id: get_topic_id_by_local_id(id_local: topic_id_local_2))
-            if time_1 != nil || time_2 != nil{
+            if time_1 == nil && time_2 == nil{
                 if topic_id_local_1 == nil && topic_id_local_2 == nil{
                     return nil
                 }
@@ -1133,12 +1133,21 @@ public class SQL_center{
                 }
             }
             else{
-                if time_1! > time_2!{
-                    return topic_id_local_2
+                if time_1 != nil{
+                    if time_2 != nil{
+                        if time_1! > time_2!{
+                            return topic_id_local_2
+                        }
+                        else{
+                            return topic_id_local_1
+                        }
+                    }
+                    return topic_id_local_1!
                 }
                 else{
-                    return topic_id_local_1
+                    return topic_id_local_2
                 }
+                
             }
         }
         
@@ -2622,6 +2631,7 @@ public class SQL_center{
     }
     
     // user_data
+    let coin = Expression<Int64?>("coin")
     func establish_user_data(){
         do{
             try sql_db?.run(user_data_table.create { t in
@@ -2632,6 +2642,7 @@ public class SQL_center{
                 t.column(img_name)
                 t.column(is_read)
                 t.column(sql_update_complete)
+                t.column(coin)
             })
             print("表單建立成功")
         }
@@ -2709,6 +2720,18 @@ public class SQL_center{
         catch{
             print(error)
             print("update_user_date error")
+        }
+    }
+    func update_coin(input_dic:Dictionary<String,AnyObject>){
+        do{
+            let update = user_data_table.update(
+                coin <- Int64(input_dic["coin"]! as! Int)
+            )
+            try sql_db!.run(update)
+        }
+        catch{
+            print(error)
+            print("update_coin error")
         }
     }
     func get_user_id() -> String?{
@@ -3222,6 +3245,23 @@ public class SQL_center{
         }
         catch{
             print("ERROR reset_tmp")
+        }
+    }
+    func my_topic_print(){
+        do{
+            print("my_topic_print")
+//            t.column(id, primaryKey: true)
+//            t.column(topic_title)
+//            t.column(topic_id)
+//            t.column(is_send) // 開房有沒有開成功
+//            t.column(tags)
+//            t.column(active) // 是否準備關房  ＝false就是要關了  關成功整筆資料會殺掉
+            for c in try sql_db!.prepare(my_topic){
+                print("title: \(c[topic_title]!) is_send:\(c[is_send]!)")
+            }
+        }
+        catch{
+            print(error)
         }
     }
 }

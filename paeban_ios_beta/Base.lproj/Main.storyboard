@@ -1104,7 +1104,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="m0K-T4-b8u">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="m0K-T4-b8u">
                                 <rect key="frame" x="20" y="218" width="97" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.15083701250000001" green="0.83450589009999998" blue="0.77773329020000004" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
@@ -1112,7 +1112,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fas-vJ-bza">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fas-vJ-bza">
                                 <rect key="frame" x="20" y="263" width="97" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.15083701250000001" green="0.83450589009999998" blue="0.77773329020000004" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
@@ -1193,12 +1193,6 @@
                             <constraint firstItem="tpA-yd-gRf" firstAttribute="width" secondItem="RRD-Vn-6Qu" secondAttribute="width" id="ytC-CJ-Wr4"/>
                             <constraint firstItem="SbO-DT-2Sj" firstAttribute="bottom" secondItem="kAN-Oz-kIi" secondAttribute="bottom" id="zMx-v9-2Wq"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="m0K-T4-b8u"/>
-                                <exclude reference="fas-vJ-bza"/>
-                            </mask>
-                        </variation>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="4Dk-gy-K5h" appends="YES" id="RIO-0y-jpS"/>
                         </connections>
