@@ -186,10 +186,13 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
                         let TOO_MATCH_TOPIC = "too_match_topic"
                         if return_dic != nil{
                             load_view?.removeFromSuperview()
-                            // -----  working
                             let result = return_dic![RESULT]! as! String
                             if result == SUCCESS{
                                 sql_database.update_my_topic(local_topic_id_in: return_dic!["id_local"]! as! String, topic_id_in: return_dic!["topic_id"]! as! String)
+                                if return_dic!["del_topic_id_list"] != nil{
+                                    let del_topic_id_list = return_dic!["del_topic_id_list"]! as! Array<String>
+                                    sql_database.delete_my_topic_by_list(topic_id_list: del_topic_id_list)
+                                }
                                 self.jump_tp_my_topic()
                             }
                             else if result == TOO_MATCH_TOPIC{
@@ -214,8 +217,6 @@ class EditViewController: UIViewController ,UITextFieldDelegate {
                                 alert.addAction(confirm)
                                 self.present(alert, animated: true, completion: nil)
                             }
-                            // -----  working
-                            sql_database.update_my_topic(local_topic_id_in: return_dic!["id_local"]! as! String, topic_id_in: return_dic!["topic_id"]! as! String)
                             self.jump_tp_my_topic()
                         }
                         else{

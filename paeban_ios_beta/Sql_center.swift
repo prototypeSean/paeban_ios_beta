@@ -898,7 +898,7 @@ public class SQL_center{
     func update_my_topic(local_topic_id_in:String,topic_id_in:String){
         do{
             let query = my_topic.filter(id == Int64(Int(local_topic_id_in)!))
-            let update = query.update(topic_id <- topic_id_in)
+            let update = query.update(topic_id <- topic_id_in, is_send <- true)
             try sql_db?.run(update)
         }
         catch{
@@ -2076,8 +2076,6 @@ public class SQL_center{
             print("資料庫錯誤")
             print(error)
         }
-        // MARK:test print
-        //print_part_topic_content()
     }
     enum Topic_content_insert_option:String{
         case new_msg = "new_msg"
@@ -2151,8 +2149,6 @@ public class SQL_center{
             //找到該條資料升級成已送出
         //Check_state = readed
             //找到該條資料升級成已讀
-        // MARK:test print
-        //print_part_topic_content()
     }
     func check_id_server(id_server_input:String) -> Bool{
         let query = topic_content.filter(id_server == id_server_input)
@@ -2630,7 +2626,7 @@ public class SQL_center{
         }
     }
     
-    // user_data
+    // MARK: user_data
     let coin = Expression<Int64?>("coin")
     func establish_user_data(){
         do{
@@ -2778,7 +2774,21 @@ public class SQL_center{
         }
         return nil
     }
-    
+    func get_coin() -> Int?{
+        do{
+            let user_obj = try sql_db!.prepare(user_data_table).first(where: { (row) -> Bool in
+                return true
+            })
+            if let coin_int64 = user_obj?[coin]{
+                return Int(coin_int64)
+            }
+        }
+        catch{
+            print("ger_coin ERROR")
+            print(error)
+        }
+        return nil
+    }
     
     // establish_userdata
     func establish_version(version:String){
@@ -3257,7 +3267,7 @@ public class SQL_center{
 //            t.column(tags)
 //            t.column(active) // 是否準備關房  ＝false就是要關了  關成功整筆資料會殺掉
             for c in try sql_db!.prepare(my_topic){
-                print("title: \(c[topic_title]!) is_send:\(c[is_send]!)")
+                print("title: \(c[topic_title]!) is_send:\(c[is_send]!) active:\(c[active])")
             }
         }
         catch{
