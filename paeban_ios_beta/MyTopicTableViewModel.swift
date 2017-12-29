@@ -32,6 +32,7 @@ class MyTopicTableViewModel{
     
     // ====controller func 2.0 ====
     func main_loading_v2(){
+        print("main loading 2.0")
         get_title_cell_from_local_v2()
         get_detail_cell_from_local_v2()
         updata_online_state()
@@ -116,6 +117,25 @@ class MyTopicTableViewModel{
             mytopic = new_mytopic
             DispatchQueue.main.async {
                 self.delegate?.model_relodata()
+            }
+        }
+        else{
+            for new_topics_obj in new_mytopic{
+                if new_topics_obj.dataType == "title"{
+                    if let _ = mytopic.index(where: { (old_my_topic_obj) -> Bool in
+                        if old_my_topic_obj.dataType == "title"{
+                            if new_topics_obj.topicId_title! == old_my_topic_obj.topicId_title!{
+                                return true
+                            }
+                        }
+                        return false
+                    }){
+                        //pass
+                    }
+                    else{
+                        mytopic.append(new_topics_obj)
+                    }
+                }
             }
         }
         
