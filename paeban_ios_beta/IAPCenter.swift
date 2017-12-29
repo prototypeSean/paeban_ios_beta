@@ -401,6 +401,7 @@ class PaidService{
     }
 
     func unlock_img_result_explanation(result:String, view_controller:UIViewController, completion:(()->Void)?){
+        // 要求view controller 是為了跳alert
         if result == self.HTTP_ERROR{
             let alert = UIAlertController(title: alert_string().error, message: alert_string().internet_error_do_you_want_retry, preferredStyle: .alert)
             let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: { (act) in

@@ -118,6 +118,13 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
         else if cmd_line == "topic"{
             sql_database.my_topic_print()
         }
+        else if cmd_line == "coin"{
+            iap_center?.get_coin_from_server()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                print("coin")
+                print(iap_center?.get_coin_from_local())
+            })
+        }
         else if cmd_line == "help"{
             let help_list = [
                 "recent_db       列印recent_topic",
@@ -127,7 +134,9 @@ class SettingViewController: UIViewController, UITextFieldDelegate {
                 "print_fl        print friend list",
                 "print_prmsg     列印好友對話紀錄",
                 "print_msg       列印topicContent",
-                "print_log       列印log紀錄"
+                "print_log       列印log紀錄",
+                "topic           列印所有我的話題",
+                "coin            列印coin"
             ]
             print("----cmd line----")
             for cmd_lines in help_list{
