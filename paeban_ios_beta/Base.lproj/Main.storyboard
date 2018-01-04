@@ -1582,8 +1582,8 @@
                                             <constraint firstAttribute="width" secondItem="B8p-cb-c7Q" secondAttribute="height" multiplier="1:1" id="RQy-eH-MaE"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="關閉" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cp-K6-nT3" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
-                                        <rect key="frame" x="189.33333333333337" y="620.33333333333337" width="34.666666666666657" height="20.333333333333258"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Close" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cp-K6-nT3" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
+                                        <rect key="frame" x="131.66666666666669" y="615.33333333333337" width="150.00000000000006" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -1622,13 +1622,16 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lEH-14-egv" userLabel="Unlock_img">
-                                        <rect key="frame" x="172" y="333" width="70" height="70"/>
-                                        <color key="backgroundColor" red="0.50766919150000001" green="0.50219578730000003" blue="0.83450589009999998" alpha="0.80329122340000003" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="70" id="AUG-Fq-9tN"/>
-                                            <constraint firstAttribute="width" constant="70" id="kdm-Wb-nMp"/>
-                                        </constraints>
-                                        <state key="normal" title="unlock"/>
+                                        <rect key="frame" x="132" y="575.33333333333337" width="150" height="30"/>
+                                        <color key="backgroundColor" red="0.98991280790000002" green="0.48742645979999999" blue="0.25621944670000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="  Unblur ( 50 Points )  ">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="unlock_img:" destination="FBi-3N-jAs" eventType="touchUpInside" id="q2d-zl-jp5"/>
                                         </connections>
@@ -1640,8 +1643,10 @@
                                     <constraint firstAttribute="bottom" secondItem="7Uz-bI-cIV" secondAttribute="bottom" id="1Xm-v9-mU7"/>
                                     <constraint firstItem="4cp-K6-nT3" firstAttribute="centerY" secondItem="7Uz-bI-cIV" secondAttribute="centerY" id="3lB-mX-b6f"/>
                                     <constraint firstItem="7Uz-bI-cIV" firstAttribute="width" secondItem="B8p-cb-c7Q" secondAttribute="width" id="B3L-12-5Sr"/>
+                                    <constraint firstItem="lEH-14-egv" firstAttribute="height" secondItem="4cp-K6-nT3" secondAttribute="height" id="BDm-Lh-Tpj"/>
                                     <constraint firstItem="Nbr-dM-fIS" firstAttribute="top" secondItem="1eB-uP-9zj" secondAttribute="top" id="C7o-gJ-YNy"/>
                                     <constraint firstItem="7Uz-bI-cIV" firstAttribute="top" secondItem="B8p-cb-c7Q" secondAttribute="bottom" id="Dwo-He-X6Z"/>
+                                    <constraint firstItem="lEH-14-egv" firstAttribute="bottom" secondItem="4cp-K6-nT3" secondAttribute="top" constant="-10" id="JHF-df-rKp"/>
                                     <constraint firstItem="B8p-cb-c7Q" firstAttribute="width" secondItem="1eB-uP-9zj" secondAttribute="width" id="KZG-hK-KMT"/>
                                     <constraint firstItem="4cp-K6-nT3" firstAttribute="centerX" secondItem="7Uz-bI-cIV" secondAttribute="centerX" id="V1f-4l-L7R"/>
                                     <constraint firstItem="B8p-cb-c7Q" firstAttribute="top" secondItem="Nbr-dM-fIS" secondAttribute="bottom" id="dcP-9F-YEU"/>
@@ -1649,8 +1654,8 @@
                                     <constraint firstItem="B8p-cb-c7Q" firstAttribute="centerX" secondItem="1eB-uP-9zj" secondAttribute="centerX" id="hMa-o6-Vbf"/>
                                     <constraint firstItem="Nbr-dM-fIS" firstAttribute="height" secondItem="1eB-uP-9zj" secondAttribute="height" multiplier="0.15" id="lVf-Rg-gHV"/>
                                     <constraint firstItem="Nbr-dM-fIS" firstAttribute="width" secondItem="1eB-uP-9zj" secondAttribute="width" id="r9d-HS-fXD"/>
-                                    <constraint firstItem="lEH-14-egv" firstAttribute="centerY" secondItem="1eB-uP-9zj" secondAttribute="centerY" id="sgO-U5-Bfy"/>
                                     <constraint firstItem="Nbr-dM-fIS" firstAttribute="centerX" secondItem="1eB-uP-9zj" secondAttribute="centerX" id="tgx-t6-Irs"/>
+                                    <constraint firstItem="lEH-14-egv" firstAttribute="width" secondItem="4cp-K6-nT3" secondAttribute="width" id="yPf-jW-HFa"/>
                                     <constraint firstItem="lEH-14-egv" firstAttribute="centerX" secondItem="1eB-uP-9zj" secondAttribute="centerX" id="yY4-iD-RDj"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -3002,8 +3007,8 @@
                                             <constraint firstAttribute="width" secondItem="nyt-uu-Any" secondAttribute="height" multiplier="1:1" id="hXS-8e-bSh"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="關閉" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MYf-dh-Nub" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
-                                        <rect key="frame" x="190.33333333333337" y="619.33333333333337" width="34.666666666666657" height="20.333333333333258"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="關閉" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MYf-dh-Nub" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
+                                        <rect key="frame" x="132.66666666666669" y="614.33333333333337" width="150.00000000000006" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -3041,13 +3046,32 @@
                                             <action selector="popUpCloseBtn:" destination="e1T-xY-fjR" eventType="touchUpInside" id="eKP-jG-3HY"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="acy-Hm-UXh" userLabel="Unlock_img">
+                                        <rect key="frame" x="132" y="574" width="150" height="30"/>
+                                        <color key="backgroundColor" red="0.98991280790000002" green="0.48742645979999999" blue="0.25621944670000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="  Unblur ( 50 Points )  ">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="3"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="unBlurClicked:" destination="e1T-xY-fjR" eventType="touchUpInside" id="Tgc-Q9-cTY"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="acy-Hm-UXh" firstAttribute="width" secondItem="MYf-dh-Nub" secondAttribute="width" id="2Zd-nl-QGr"/>
+                                    <constraint firstItem="acy-Hm-UXh" firstAttribute="bottom" secondItem="MYf-dh-Nub" secondAttribute="top" constant="-10" id="3FY-2R-X5Z"/>
                                     <constraint firstItem="WJE-Kl-Fwb" firstAttribute="centerX" secondItem="ktm-I7-dK4" secondAttribute="centerX" id="Eja-OR-jDe"/>
                                     <constraint firstItem="FO8-bJ-CS0" firstAttribute="height" secondItem="ktm-I7-dK4" secondAttribute="height" multiplier="0.15" id="H4y-D5-74m"/>
+                                    <constraint firstItem="acy-Hm-UXh" firstAttribute="height" secondItem="MYf-dh-Nub" secondAttribute="height" id="J6q-Vk-HjH"/>
                                     <constraint firstItem="nyt-uu-Any" firstAttribute="top" secondItem="FO8-bJ-CS0" secondAttribute="bottom" id="Ksf-Zq-syW"/>
+                                    <constraint firstItem="acy-Hm-UXh" firstAttribute="centerX" secondItem="ktm-I7-dK4" secondAttribute="centerX" id="TI5-9Z-9jw"/>
                                     <constraint firstAttribute="bottom" secondItem="WJE-Kl-Fwb" secondAttribute="bottom" id="V4Z-DU-fNr"/>
                                     <constraint firstItem="MYf-dh-Nub" firstAttribute="centerY" secondItem="WJE-Kl-Fwb" secondAttribute="centerY" id="XxI-xF-bXM"/>
                                     <constraint firstItem="nyt-uu-Any" firstAttribute="width" secondItem="ktm-I7-dK4" secondAttribute="width" id="boQ-By-pkG"/>
@@ -3698,8 +3722,8 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="wZO-VC-xmQ"/>
-        <segue reference="vc1-tE-BTH"/>
+        <segue reference="lxg-Ec-9Hp"/>
+        <segue reference="XH3-qg-Ahu"/>
         <segue reference="nCN-DR-xXv"/>
         <segue reference="9Et-Zw-Bc4"/>
     </inferredMetricsTieBreakers>
