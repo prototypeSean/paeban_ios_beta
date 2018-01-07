@@ -74,6 +74,7 @@ public var during_auto_leap = false
 public var force_update = false
 public var nav_ca_layer:CAGradientLayer?
 public var iap_center:IAPCenter?
+public var location_manage = Location_manage()
 
 public class ViewController: UIViewController, WebSocketDelegate, UITextFieldDelegate, login_paeban_delegate, CAAnimationDelegate{
     

@@ -10,10 +10,13 @@ import Foundation
 import MapKit
 
 
-class Location_manage:NSObject,CLLocationManagerDelegate{
+public class Location_manage:NSObject,CLLocationManagerDelegate{
     var myLocationManager :CLLocationManager!
     var my_location:CLLocationCoordinate2D?
     var locate_authorize:Bool?
+    var upload_location_list:Array<Double>?
+    var self_location_list:Array<Double>?
+        // 暫存準備上傳的自我座標
     override init() {
         super.init()
         myLocationManager = CLLocationManager()
@@ -31,11 +34,39 @@ class Location_manage:NSObject,CLLocationManagerDelegate{
     }
     
     // MARK: operate function
-    func get_distance(){}
+         // 取得跟別人的距離字典<對方ＩＤ, 距離>
+    func get_distance(client_id_list:Array<String>, after:@escaping (_ distance_dic:Dictionary<String, Double>)->Void){
+        let CLIENT_ID_LIST = "client_id_list"
+        let send_dic = [CLIENT_ID_LIST: client_id_list]
+        HttpRequestCenter().request_user_data_v2("get_location", send_dic: send_dic as Dictionary<String, AnyObject>) { (result_dic) in
+            guard result_dic != nil else{
+                return
+            }
+            guard self.self_location_list != nil else{
+                return
+            }
+            var result_dic_2:Dictionary<String, Double> = [:]
+            
+            let data_dic = result_dic as! Dictionary<String, Array<String>>
+            let point_self:CLLocationCoordinate2D = CLLocationCoordinate2D(
+                latitude: self.self_location_list![0],
+                longitude:  self.self_location_list![1])
+            // 自己的座標
+            for c in data_dic{
+                // 計算別人的距離
+                let point_client:CLLocationCoordinate2D = CLLocationCoordinate2D(
+                    latitude: Double(c.value[0])!,
+                    longitude: Double(c.value[1])!)
+                let distance = self.GetDistance_Google(pointA: point_self, pointB: point_client)
+                result_dic_2[c.key] = distance
+            }
+            after(result_dic_2)
+        }
+    }
     
     // MARK: internal function
         // 地球上兩點取得距離
-    func GetDistance_Google(pointA:CLLocationCoordinate2D , pointB:CLLocationCoordinate2D) -> Double{
+    private func GetDistance_Google(pointA:CLLocationCoordinate2D , pointB:CLLocationCoordinate2D) -> Double{
         let EARTH_RADIUS:Double = 6378.137;
         
         let radlng1:Double = pointA.longitude * .pi / 180.0;
@@ -50,7 +81,7 @@ class Location_manage:NSObject,CLLocationManagerDelegate{
         return s;
     }
         // 開始定位程序
-    func locate_process(){
+    private func locate_process(){
         // 首次使用 向使用者詢問定位自身位置權限
         if CLLocationManager.authorizationStatus() ==  CLAuthorizationStatus.notDetermined {
             // 取得定位服務授權
@@ -79,9 +110,34 @@ class Location_manage:NSObject,CLLocationManagerDelegate{
         }
     }
     
+        // 上傳位置
+    private func upload_location(){
+        let LOCATION_LIST = "location_list"
+        guard self.upload_location_list != nil else {
+            return
+        }
+        let send_dic = [LOCATION_LIST: self.upload_location_list as AnyObject]
+        HttpRequestCenter().request_user_data_v2("upload_location", send_dic: send_dic) { (result_dic) in
+            if result_dic == nil{
+                DispatchQueue.main.asyncAfter(deadline: .now() + 180, execute: {
+                    self.upload_location()
+                })
+            }
+            else{
+                self.upload_location_list = nil
+            }
+        }
+    }
     // MARK: delegate
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
-        
+        // return my coordinate
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+        if !locations.isEmpty{
+            let currentLocation :CLLocation =
+                locations[0] as CLLocation
+            self.upload_location_list = [currentLocation.coordinate.latitude, currentLocation.coordinate.longitude]
+            self.self_location_list = self.upload_location_list
+            upload_location()
+        }
     }
     
 }
