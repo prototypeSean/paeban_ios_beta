@@ -16,11 +16,9 @@ class TutorialPageViewController: UIPageViewController, UIPageViewControllerData
                 self.getViewController(indentifier: "TPage_2ViewController"),
                 self.getViewController(indentifier: "TPage_5ViewController"),
                 self.getViewController(indentifier: "TPage_6ViewController"),
-//                self.getViewController(indentifier: "TPage_5ViewController"),
                 self.getViewController(indentifier: "EULAViewController")
         ]
     }()
-    
     //页面加载完毕
     override func viewDidLoad() {
         super.viewDidLoad()

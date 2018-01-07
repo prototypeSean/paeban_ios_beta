@@ -66,6 +66,7 @@
 		CF337E051DACEFEC003A133C /* SinInFramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF337E041DACEFEC003A133C /* SinInFramViewController.swift */; };
 		CF42B8AE1E7D6BAC001924F0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF42B8AD1E7D6BAC001924F0 /* MapKit.framework */; };
 		CF4AE9A31EDD7DDE00EB83DC /* Block_list_center.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF4AE9A21EDD7DDE00EB83DC /* Block_list_center.swift */; };
+		CF58181A1FF69C930064CE51 /* Location_manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5818191FF69C930064CE51 /* Location_manager.swift */; };
 		CF5E24B61ED1875A00ACC164 /* Client_detail_data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5E24B51ED1875A00ACC164 /* Client_detail_data.swift */; };
 		CF79265E1DA0E71D00821860 /* SingInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265D1DA0E71D00821860 /* SingInViewController.swift */; };
 		CF7926601DA0E74200821860 /* SingInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF79265F1DA0E74200821860 /* SingInModel.swift */; };
@@ -163,6 +164,7 @@
 		CF337E041DACEFEC003A133C /* SinInFramViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinInFramViewController.swift; sourceTree = "<group>"; };
 		CF42B8AD1E7D6BAC001924F0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		CF4AE9A21EDD7DDE00EB83DC /* Block_list_center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block_list_center.swift; sourceTree = "<group>"; };
+		CF5818191FF69C930064CE51 /* Location_manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location_manager.swift; sourceTree = "<group>"; };
 		CF5E24B51ED1875A00ACC164 /* Client_detail_data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client_detail_data.swift; sourceTree = "<group>"; };
 		CF79265D1DA0E71D00821860 /* SingInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInViewController.swift; sourceTree = "<group>"; };
 		CF79265F1DA0E74200821860 /* SingInModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingInModel.swift; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 				CF8F64D61EA4F6820073D433 /* LoadingView.swift */,
 				CFF6C4151E9F4D5200A191FD /* suport_func.swift */,
 				CFE94B601FCF069500AA7F50 /* language_profile.swift */,
+				CF5818191FF69C930064CE51 /* Location_manager.swift */,
 			);
 			name = all_filed_work;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */,
 				930BBCCA1DED626900939C0D /* TPage_1ViewController.swift in Sources */,
 				CFE94B611FCF069500AA7F50 /* language_profile.swift in Sources */,
+				CF58181A1FF69C930064CE51 /* Location_manager.swift in Sources */,
 				CF90FFAA1F67DFF80078A5FA /* TalkingBoxView.swift in Sources */,
 				CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */,
 				93077EEA1E20DDB3004900FF /* CustomMessagesCollectionViewCellIncoming.swift in Sources */,
