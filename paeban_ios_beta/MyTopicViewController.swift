@@ -80,6 +80,11 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
             })
         }
     }
+    
+    @IBAction func unBlurClicked(_ sender: Any) {
+        unlock_img()
+    }
+    
     var myPhotoSave:UIImage?
     let myPhotoImg = UIImageView()
     
@@ -292,7 +297,19 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
         socket.write(data: json_dumps(sendDic))
     }
     
-    
+    // 強制解鎖照片
+    func unlock_img(){
+        let HAVE_BEEN_UNLOCKED = "have_been_unlocked"
+        let SUCCESS = "success"
+        print(self.setID, "setIDsetIDsetIDsetIDsetIDsetID")
+        PaidService().unlock_img_process(client_id:self.setID!, after: {(result:String)->Void in
+            PaidService().unlock_img_result_explanation(result: result, view_controller: self, completion: {
+                if result == SUCCESS || result == HAVE_BEEN_UNLOCKED{
+                    self.re_new_client_img()
+                }
+            })
+        })
+    }
     
     // override
     override func viewDidLoad() {
@@ -363,6 +380,7 @@ class MyTopicViewController: UIViewController ,webSocketActiveCenterDelegate{
             let img_str = return_dic["img"] as! String
             let img = base64ToImage(img_str)
             self.guestPhotoImg.image = img
+            self.popUpImg.image = img
             self.setName = return_dic["client_name"] as? String
             self.title = self.setName
         })
