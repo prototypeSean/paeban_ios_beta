@@ -287,7 +287,9 @@ PublicViewCellDelegate{
                     self.topics[index_path].distance = String(c.value)
                 }
             }
-            self.topicList.reloadData()
+            DispatchQueue.main.async {
+                self.topicList.reloadData()
+            }
         }
     }
     
