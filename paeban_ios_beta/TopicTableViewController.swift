@@ -379,11 +379,10 @@ PublicViewCellDelegate{
             cell.online.tintColor = UIColor.lightGray
         }
         if topic.distance != nil{
-            // fly topicTitle -> distance
-            cell.topicTitle.text = "\(topic.distance!)\(alert_string().kilometer)"
+            cell.distance.text = "\(topic.distance!)\(alert_string().kilometer)"
         }
         else{
-            cell.topicTitle.text = "??\(alert_string().kilometer)"
+            cell.distance.text = "??\(alert_string().kilometer)"
         }
         cell.delegate = self
         // Configure the cell...

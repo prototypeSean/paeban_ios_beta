@@ -69,18 +69,19 @@ public class Location_manage:NSObject,CLLocationManagerDelegate{
     // MARK: internal function
         // 地球上兩點取得距離
     private func GetDistance_Google(pointA:CLLocationCoordinate2D , pointB:CLLocationCoordinate2D) -> Double{
-        let EARTH_RADIUS:Double = 6378.137;
+        //My location
+        let myLocation = CLLocation(latitude: pointA.latitude, longitude: pointA.longitude)
         
-        let radlng1:Double = pointA.longitude * .pi / 180.0;
-        let radlng2:Double = pointB.longitude * .pi / 180.0;
+        //My buddy's location
+        let myBuddysLocation = CLLocation(latitude: pointB.latitude, longitude: pointB.longitude)
         
-        let a:Double = radlng1 - radlng2;
-        let b:Double = (pointA.latitude - pointB.latitude) * .pi / 180;
-        var s:Double = 2 * asin(sqrt(pow(sin(a/2), 2) + cos(radlng1) * cos(radlng2) * pow(sin(b/2), 2)));
+        //Measuring my distance to my buddy's (in km)
+        let distance = myLocation.distance(from:myBuddysLocation) / 1000
         
-        s = s * EARTH_RADIUS;
-        s = (round(s * 10000) / 10000);
-        return s;
+        //Display the result in km
+        let s = String(format: "%.01f", distance)
+        
+        return Double(s)!
     }
         // 開始定位程序
     private func locate_process(){
