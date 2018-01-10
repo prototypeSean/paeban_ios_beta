@@ -13,7 +13,7 @@ extension UIViewController{
     func alert_unlock_distance() {
         let alert = UIAlertController(title: alert_string().notice, message: alert_string().unlock_distance, preferredStyle: .alert)
         let confirm = UIAlertAction(title: alert_string().confirm, style: .default) { (act) in
-            self.unlocl_distance()
+            self.unlock_distance()
         }
         let cancel = UIAlertAction(title: alert_string().cancel, style: .default, handler: nil)
         alert.addAction(confirm)
@@ -21,12 +21,12 @@ extension UIViewController{
         self.present(alert, animated: true, completion: nil)
     }
     
-    func unlocl_distance(){
+    func unlock_distance(){
         PaidService().unlock_distance(complete: { (result_dic) in
             guard result_dic != nil else{
                 let alert = UIAlertController(title: alert_string().notice, message: alert_string().internet_error_do_you_want_retry, preferredStyle: .alert)
                 let confirm = UIAlertAction(title: alert_string().confirm, style: .default, handler: { (act) in
-                    self.unlocl_distance()
+                    self.unlock_distance()
                 })
                 let cancel = UIAlertAction(title: alert_string().cancel, style: .default, handler: nil)
                 alert.addAction(confirm)
