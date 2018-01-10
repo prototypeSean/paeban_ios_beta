@@ -17,7 +17,7 @@ protocol MyTopicTableViewModelDelegate {
     func segue_to_chat_view(detail_cell_obj:MyTopicStandardType)
 }
 
-class MyTopicTableViewModel{
+class MyTopicTableViewModel:PublicViewModel{
     // 主table顯示用清單
     var mytopic:Array<MyTopicStandardType> = []
     var new_mytopic:Array<MyTopicStandardType> = []
@@ -57,6 +57,10 @@ class MyTopicTableViewModel{
         // get detail client data for table + reload
         
         update_battery_state()
+        self.get_distance(topic_list: mytopic) { (result_list) in
+            self.mytopic = result_list
+            self.delegate?.model_relodata()
+        }
     }
     enum work_mode {
         case for_table

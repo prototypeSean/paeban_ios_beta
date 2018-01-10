@@ -20,6 +20,7 @@ public let reset_database = false // fly default false
 public let unlock_img_exp = 7
 public let unlock_img_point = 100
 public let extra_topic_point = 50
+public let unlock_distance_point = 100
     // 最大話題並存數
 public let max_topic_num = 3
 

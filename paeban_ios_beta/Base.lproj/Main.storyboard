@@ -1275,8 +1275,9 @@
                                                         </mask>
                                                     </variation>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="km" lineBreakMode="clip" minimumScaleFactor="0.45000000000000001" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IIc-iW-Uqw">
-                                                    <rect key="frame" x="389" y="16" width="15" height="12"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="km" lineBreakMode="clip" minimumScaleFactor="0.45000000000000001" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IIc-iW-Uqw">
+                                                    <rect key="frame" x="342" y="16" width="62" height="38"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" weight="thin" pointSize="10"/>
                                                     <color key="textColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -1355,6 +1356,15 @@
                                                         <constraint firstAttribute="width" secondItem="Efe-P4-ZU2" secondAttribute="height" multiplier="1:1" id="d7G-P6-dx3"/>
                                                     </constraints>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sGl-Sw-51o">
+                                                    <rect key="frame" x="262" y="31" width="46" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <state key="normal" title="UnlockDistance"/>
+                                                    <connections>
+                                                        <action selector="unlock_distance_btn:" destination="Wjc-mK-FT3" eventType="touchUpInside" id="eL6-wV-Szh"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="jPN-A9-vyF" firstAttribute="top" secondItem="DgY-qs-9aX" secondAttribute="top" constant="1" id="29s-Ht-pga"/>
@@ -1391,6 +1401,7 @@
                                         <inset key="separatorInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
                                             <outlet property="battery" destination="Txa-ij-40K" id="fJ1-cp-S66"/>
+                                            <outlet property="distance" destination="IIc-iW-Uqw" id="HXi-IN-emx"/>
                                             <outlet property="hashtags" destination="uS3-xb-XE1" id="eyH-Gf-xgI"/>
                                             <outlet property="isMe" destination="Efe-P4-ZU2" id="deY-Id-wB7"/>
                                             <outlet property="online" destination="fug-jH-rwJ" id="POs-bN-OGW"/>
@@ -1452,9 +1463,23 @@
                         <segue destination="FBi-3N-jAs" kind="show" identifier="clientModeSegue" id="wZO-VC-xmQ"/>
                     </connections>
                 </viewController>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" placeholderIntrinsicWidth="469" placeholderIntrinsicHeight="41" text="中文 En" lineBreakMode="tailTruncation" numberOfLines="2" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="oGa-Rg-unV" customClass="UILabelPadding" customModule="paeban_ios_beta" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="303" height="39"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="TpV-d5-gzx"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="TpV-d5-gzx"/>
+                        </mask>
+                    </variation>
+                </label>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w4c-w9-wSg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3662" y="-743"/>
+            <point key="canvasLocation" x="-3662.3188405797105" y="-743.47826086956525"/>
         </scene>
         <!--加入的話題-->
         <scene sceneID="xNr-Pe-fgg">
@@ -3722,8 +3747,8 @@
         <image name="user_avator_placeholder" width="120" height="170"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lxg-Ec-9Hp"/>
-        <segue reference="XH3-qg-Ahu"/>
+        <segue reference="wZO-VC-xmQ"/>
+        <segue reference="wc9-Me-EI3"/>
         <segue reference="nCN-DR-xXv"/>
         <segue reference="9Et-Zw-Bc4"/>
     </inferredMetricsTieBreakers>

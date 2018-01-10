@@ -1915,6 +1915,9 @@ public class SQL_center{
     }
     func get_private_msg_last_checked_server_id() -> String{
         do{
+            guard userData.id != nil else{
+                return "0"
+            }
             let query = private_table.filter(receiver == userData.id!).order(id.desc)
             if let private_msg_obj = try sql_db!.prepare(query).first(where: { (row) -> Bool in
                 return true

@@ -367,6 +367,7 @@ class PaidService{
     var client_id:String?
     var after:((_ result:String)->Void)?
     
+    // MARK:解鎖照片
     func unlock_img_process(client_id:String, after:@escaping (_ result:String)->Void){
         let send_dic = ["client_id": client_id]
         let IAP_URL_PATH = "iap/"
@@ -399,7 +400,6 @@ class PaidService{
             }
         })
     }
-
     func unlock_img_result_explanation(result:String, view_controller:UIViewController, completion:(()->Void)?){
         // 要求view controller 是為了跳alert
         if result == self.HTTP_ERROR{
@@ -437,6 +437,14 @@ class PaidService{
             view_controller.present(alert, animated: true, completion: completion)
         }
     }
+    
+    func unlock_distance(complete:@escaping (_ result_dic:Dictionary<String,AnyObject>?)->Void){
+        let IAP_URL_PATH = "iap/"
+        HttpRequestCenter().http_request(url: IAP_URL_PATH, data_mode: "unlock_distance", form_data_dic:[:]) { (result_dic) in
+            complete(result_dic)
+        }
+    }
+
 }
 
 

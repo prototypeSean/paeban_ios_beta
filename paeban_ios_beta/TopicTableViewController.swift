@@ -11,7 +11,9 @@ import Starscream
 public var tagList:[String] = []
 
 // 所有話題清單 其實不是tabelveiw 是 UIview
-class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate,TopicViewControllerDelegate{
+class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITableViewDelegate, UITableViewDataSource,webSocketActiveCenterDelegate, UISearchBarDelegate, TopicSearchControllerDelegate,TopicViewControllerDelegate,
+PublicViewCellDelegate{
+    
     // MARK: Properties
     var topicSearchController: TopicSearchController?
     // 用來控制要顯示上面哪個清單
@@ -27,6 +29,8 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
     @IBAction func testBtn(_ sender: AnyObject) {
         leap(from: self, to: 2)
     }
+
+    
     var filteredArray = [String]()
     var searchKeyAndState:Dictionary<String,String?> = ["key": nil, "smallest_id": "init", "state": "none"]
     var dataArray = [String]()
@@ -134,6 +138,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                     self.topics = temp_topic
                     self.topicList.reloadData()
                     self.update_online_state()
+                    self.get_distance()
                 }
                 
             })
@@ -160,6 +165,7 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                             refreshControl?.endRefreshing()
                             self.requestUpDataSwitch = true
                             self.update_online_state()
+                            self.get_distance()
                         })
                     }
                 }
@@ -265,7 +271,25 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
             during_auto_leap = false
         }
     }
-    
+    private func get_distance(){
+        var client_id_list:Array<String> = []
+        for c in self.topics{
+            client_id_list.append(c.owner)
+        }
+        location_manage.get_distance(client_id_list: client_id_list) { (result_dic:Dictionary<String,Double>) in
+            for c in result_dic{
+                if let index_path = self.topics.index(where: { (topic:Topic) -> Bool in
+                    if c.key == topic.owner{
+                        return true
+                    }
+                    return false
+                }){
+                    self.topics[index_path].distance = String(c.value)
+                }
+            }
+            self.topicList.reloadData()
+        }
+    }
     
     // MARK: delegate -> TableView
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -354,6 +378,14 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         else{
             cell.online.tintColor = UIColor.lightGray
         }
+        if topic.distance != nil{
+            // fly topicTitle -> distance
+            cell.topicTitle.text = "\(topic.distance!)\(alert_string().kilometer)"
+        }
+        else{
+            cell.topicTitle.text = "??\(alert_string().kilometer)"
+        }
+        cell.delegate = self
         // Configure the cell...
 
         return cell
@@ -524,6 +556,10 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
         }
     }
     
+    func did_recive_alert_unlock_distance(){
+        self.alert_unlock_distance()
+    }
+    
     // socket
     func wsOnMsg(_ msg:Dictionary<String,AnyObject>) {
         if let msg_type:String =  msg["msg_type"] as? String{
@@ -570,53 +606,6 @@ class TopicTableViewController:UIViewController, HttpRequestCenterDelegate,UITab
                     }
                 }
             }
-                
-            //關閉話題
-//            else if msg_type == "topic_closed"{
-//                let closeTopicIdList:Array<String>? = msg["topic_id"] as? Array
-//                
-//                if closeTopicIdList != nil{
-//                    // 更新本頁資料
-//                    var removeTopicIndexList:Array<Int> = []
-//                    for closeTopicId in closeTopicIdList!{
-//                        let closeTopicIndex = topics.index(where: { (Topic) -> Bool in
-//                            if Topic.topicID == closeTopicId{
-//                                return true
-//                            }
-//                            else{return false}
-//                        })
-//                        if closeTopicIndex != nil{
-//                            removeTopicIndexList.append(closeTopicIndex! as Int)
-//                        }
-//                    }
-//                    removeTopicIndexList = removeTopicIndexList.sorted(by: >)
-//                    for removeTopicIndex in removeTopicIndexList{
-//                        topics.remove(at: removeTopicIndex)
-//                    }
-//                    topicList.reloadData()
-//                    
-//                    //更新recenttopic資料
-//                    var removeTopicIndexList2:Array<Int> = []
-//                    for closeTopicId in closeTopicIdList!{
-//                        let closeTopicIndex = nowTopicCellList.index(where: { (target) -> Bool in
-//                            if target.topicId_title == closeTopicId{
-//                                return true
-//                            }
-//                            else{return false}
-//                        })
-//                        if closeTopicIndex != nil{
-//                            removeTopicIndexList2.append(closeTopicIndex! as Int)
-//                        }
-//                    }
-//                    removeTopicIndexList2 = removeTopicIndexList2.sorted(by: >)
-//                    for removeTopicIndex in removeTopicIndexList2{
-//                        nowTopicCellList.remove(at: removeTopicIndex)
-//                    }
-//                }
-//
-//                
-//                
-//            }
             //接收新搜尋
             else if msg_type == "search_topic"{
                 

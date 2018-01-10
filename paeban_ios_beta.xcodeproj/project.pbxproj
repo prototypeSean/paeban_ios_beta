@@ -75,11 +75,14 @@
 		CF8F64D71EA4F6820073D433 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8F64D61EA4F6820073D433 /* LoadingView.swift */; };
 		CF90FFA61F67D3360078A5FA /* TalkingBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF90FFA51F67D3360078A5FA /* TalkingBox.xib */; };
 		CF90FFAA1F67DFF80078A5FA /* TalkingBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF90FFA91F67DFF80078A5FA /* TalkingBoxView.swift */; };
+		CF95B41C2006135400DE4B51 /* ExtensionTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF95B41B2006135400DE4B51 /* ExtensionTableview.swift */; };
+		CF95B41E200634EF00DE4B51 /* PublicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF95B41D200634EF00DE4B51 /* PublicViewModel.swift */; };
 		CF976E681F6BBC1800A840ED /* ChangePassword.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF976E671F6BBC1800A840ED /* ChangePassword.xib */; };
 		CF976E6C1F6BBC5000A840ED /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF976E6B1F6BBC5000A840ED /* ChangePasswordView.swift */; };
 		CF9B39821FD01233006481F5 /* IapDebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9B39811FD01233006481F5 /* IapDebugViewController.swift */; };
 		CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */; };
 		CF9E37301E2229AE0077C7C9 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */; };
+		CFA53DC82003678C00B21B3E /* PublicViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA53DC72003678C00B21B3E /* PublicViewCell.swift */; };
 		CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */; };
 		CFB83DF61DFFA7370029C475 /* MyTopicTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB83DF51DFFA7370029C475 /* MyTopicTableViewModel.swift */; };
 		CFBA00AF1DB4CE5C00400C98 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */; };
@@ -173,6 +176,8 @@
 		CF8F64D61EA4F6820073D433 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		CF90FFA51F67D3360078A5FA /* TalkingBox.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TalkingBox.xib; sourceTree = "<group>"; };
 		CF90FFA91F67DFF80078A5FA /* TalkingBoxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkingBoxView.swift; sourceTree = "<group>"; };
+		CF95B41B2006135400DE4B51 /* ExtensionTableview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTableview.swift; sourceTree = "<group>"; };
+		CF95B41D200634EF00DE4B51 /* PublicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicViewModel.swift; sourceTree = "<group>"; };
 		CF976E671F6BBC1800A840ED /* ChangePassword.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePassword.xib; sourceTree = "<group>"; };
 		CF976E6B1F6BBC5000A840ED /* ChangePasswordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		CF9B39811FD01233006481F5 /* IapDebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IapDebugViewController.swift; sourceTree = "<group>"; };
@@ -180,6 +185,7 @@
 		CF9E372D1E21E41D0077C7C9 /* Sql_center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sql_center.swift; sourceTree = "<group>"; };
 		CF9E372F1E2229AE0077C7C9 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		CF9E37311E222A020077C7C9 /* sql_Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sql_Header.h; sourceTree = "<group>"; };
+		CFA53DC72003678C00B21B3E /* PublicViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicViewCell.swift; sourceTree = "<group>"; };
 		CFAC257E1D310EE300149CC6 /* TopicSecTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicSecTableViewCell.swift; sourceTree = "<group>"; };
 		CFB83DF51DFFA7370029C475 /* MyTopicTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTopicTableViewModel.swift; sourceTree = "<group>"; };
 		CFBA00AE1DB4CE5C00400C98 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -426,6 +432,9 @@
 				CFF6C4151E9F4D5200A191FD /* suport_func.swift */,
 				CFE94B601FCF069500AA7F50 /* language_profile.swift */,
 				CF5818191FF69C930064CE51 /* Location_manager.swift */,
+				CFA53DC72003678C00B21B3E /* PublicViewCell.swift */,
+				CF95B41B2006135400DE4B51 /* ExtensionTableview.swift */,
+				CF95B41D200634EF00DE4B51 /* PublicViewModel.swift */,
 			);
 			name = all_filed_work;
 			sourceTree = "<group>";
@@ -605,6 +614,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				930983E21D0166F5005B8E3B /* MyTopics.swift in Sources */,
+				CFA53DC82003678C00B21B3E /* PublicViewCell.swift in Sources */,
 				932A00E51CFEBA460036E1EA /* ＨttpRequestCenter.swift in Sources */,
 				932A00F31CFEBA460036E1EA /* web_socket.swift in Sources */,
 				930BBCCC1DED627D00939C0D /* TPage_2ViewController.swift in Sources */,
@@ -652,6 +662,7 @@
 				93077EF21E210F28004900FF /* CustomMessagesCollectionViewCell.swift in Sources */,
 				CF2E9D621D7BDF9E00F485BB /* FriendTableViewController.swift in Sources */,
 				CF4AE9A31EDD7DDE00EB83DC /* Block_list_center.swift in Sources */,
+				CF95B41E200634EF00DE4B51 /* PublicViewModel.swift in Sources */,
 				CF976E6C1F6BBC5000A840ED /* ChangePasswordView.swift in Sources */,
 				CF2E9D661D7BDFE300F485BB /* FriendTableViewMedol.swift in Sources */,
 				930BBCCF1DED634300939C0D /* TutorialPageViewController.swift in Sources */,
@@ -661,6 +672,7 @@
 				93B40BE91DB8B7DB00AC3D48 /* SignInNavViewController.swift in Sources */,
 				934EBB001DCB0A3600FB9748 /* Designable.swift in Sources */,
 				CF2E9D6A1D7C76D600F485BB /* FriendChatViewController.swift in Sources */,
+				CF95B41C2006135400DE4B51 /* ExtensionTableview.swift in Sources */,
 				932A00E21CFEBA460036E1EA /* AppDelegate.swift in Sources */,
 				CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */,
 				932A00E31CFEBA460036E1EA /* ToolsFunction.swift in Sources */,

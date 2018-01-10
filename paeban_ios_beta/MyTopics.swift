@@ -52,6 +52,7 @@ open class MyTopicStandardType {
     var tag_detial:Array<String>?
     var time:TimeInterval?
     var level:Int?
+    var distance:String?
     // === detail類型資料變數 ===
     
     var speak_time:timeval?

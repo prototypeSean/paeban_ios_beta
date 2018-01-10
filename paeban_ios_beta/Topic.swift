@@ -21,6 +21,7 @@ class Topic {
     var ownerName:String
     var is_friend:Bool?
     var battery: Int?
+    var distance:String?
     
     // MARK: Initialization
     

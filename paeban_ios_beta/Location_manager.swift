@@ -8,6 +8,7 @@
 
 import Foundation
 import MapKit
+import CoreLocation
 
 
 public class Location_manage:NSObject,CLLocationManagerDelegate{
@@ -29,7 +30,8 @@ public class Location_manage:NSObject,CLLocationManagerDelegate{
         
         // 取得自身定位位置的精確度
         myLocationManager.desiredAccuracy = 50
-        
+    }
+    func start_locate(){
         locate_process()
     }
     
@@ -83,8 +85,10 @@ public class Location_manage:NSObject,CLLocationManagerDelegate{
         // 開始定位程序
     private func locate_process(){
         // 首次使用 向使用者詢問定位自身位置權限
+        print("首次使用 向使用者詢問定位自身位置權限")
         if CLLocationManager.authorizationStatus() ==  CLAuthorizationStatus.notDetermined {
             // 取得定位服務授權
+            print("取得定位服務授權")
             myLocationManager.requestWhenInUseAuthorization()
             
             if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.denied{
@@ -95,6 +99,7 @@ public class Location_manage:NSObject,CLLocationManagerDelegate{
             }
             
             // 開始定位自身位置
+            print("開始定位自身位置")
             myLocationManager.startUpdatingLocation()
         }
             // 使用者已經拒絕定位自身位置權限

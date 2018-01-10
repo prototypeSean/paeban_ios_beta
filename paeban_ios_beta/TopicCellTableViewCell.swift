@@ -9,7 +9,7 @@
 import UIKit
 
 
-class TopicCellTableViewCell: UITableViewCell {
+class TopicCellTableViewCell: PublicViewCell {
 
     // MARK: Properties
     @IBOutlet weak var topicTitle: UILabel!
@@ -29,6 +29,11 @@ class TopicCellTableViewCell: UITableViewCell {
     @IBOutlet weak var battery: UIImageView!
     // 記得控制的時候要用sizeToFit()讓他自動調整長度
     @IBOutlet weak var topicOwner: UILabel!
+    @IBAction func unlock_distance_btn(_ sender: Any) {
+        self.unlock_distance()
+    }
+    
+    @IBOutlet weak var distance: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -47,6 +52,9 @@ class TopicCellTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    
+    
 }
 
 
