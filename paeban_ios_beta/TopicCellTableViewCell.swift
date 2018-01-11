@@ -35,6 +35,12 @@ class TopicCellTableViewCell: PublicViewCell {
     
     @IBOutlet weak var distance: UILabel!
     
+    // 一個是按鈕的外觀，一個是按鈕的圖示，解鎖之後兩個都要隱藏，分開是因為要讓按鈕很大顆
+    @IBOutlet weak var unLockDistanceOutlet: UIButton!
+    
+    @IBOutlet weak var unLockImage: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

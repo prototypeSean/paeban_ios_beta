@@ -41,7 +41,7 @@ public class alert_string {
     let too_many_topic_please_wait = "話題數太多，可能是您已刪除的話題尚未送到伺服器，請稍後再試"
     let cant_find_del_topic = " 無法找到被刪除的話題"
     let unlock_distance = "請問是否要花費\(unlock_distance_point)點數來解鎖所有用戶的距離計算功能"
-    let kilometer = "公里"
+    let kilometer = "KM"
     
     func too_many_topic(close_topic_title:String) -> String{
         return "話題數太多，是否要關閉話題：\(close_topic_title)，並花費\(extra_topic_point)點數開啟新的話題"
