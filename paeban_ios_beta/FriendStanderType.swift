@@ -25,6 +25,7 @@ open class FriendStanderType{
     var invite_list_count:Int?
     var online_checked = false
     var read_msg:Bool?
+    var distance:String?
 }
 
 public func turnToFriendStanderType(_ id:String,name:String,sex:String,isRealPhoto:Bool,online:Bool,photoString:String) ->FriendStanderType{

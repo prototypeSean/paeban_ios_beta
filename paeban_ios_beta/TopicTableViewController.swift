@@ -274,18 +274,30 @@ PublicViewCellDelegate{
     private func get_distance(){
         var client_id_list:Array<String> = []
         for c in self.topics{
-            client_id_list.append(c.owner)
+            if let _ = client_id_list.index(where: { (ele) -> Bool in
+                if ele == c.owner{return true}
+                return false
+            }){
+                //pass
+            }
+            else{
+                client_id_list.append(c.owner)
+            }
+        }
+        func replase_distance(c:(key:String,value:Double)){
+            if let index_path = self.topics.index(where: { (topic:Topic) -> Bool in
+                if c.key == topic.owner{
+                    return true
+                }
+                return false
+            }){
+                self.topics[index_path].distance = String(c.value)
+                replase_distance(c: c)
+            }
         }
         location_manage.get_distance(client_id_list: client_id_list) { (result_dic:Dictionary<String,Double>) in
             for c in result_dic{
-                if let index_path = self.topics.index(where: { (topic:Topic) -> Bool in
-                    if c.key == topic.owner{
-                        return true
-                    }
-                    return false
-                }){
-                    self.topics[index_path].distance = String(c.value)
-                }
+                replase_distance(c: c)
             }
             DispatchQueue.main.async {
                 self.topicList.reloadData()

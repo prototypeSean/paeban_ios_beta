@@ -32,6 +32,10 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         let new_table_data = turnToFriendStanderType_v3(friend_list:result_dic)
         renew_friend_list_database(input_list: new_table_data)
         update_online_state()
+        get_distance(topic_list: friend_list_database) { (new_friend_list) in
+            self.friend_list_database = new_friend_list
+            self.updateModel()
+        }
     }
     func renew_friend_list_database(input_list:Array<FriendStanderType>){
         friend_list_database = input_list.sorted(by: { (ele1, ele2) -> Bool in
@@ -627,6 +631,39 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         invite_obj.sex = msg["sex"] as? String
         invite_list.append(invite_obj)        
         updateModel()
+    }
+    func get_distance(topic_list:Array<FriendStanderType>, complete:@escaping (_ new_topic_list:Array<FriendStanderType>)->Void){
+        var result_topic_list:Array<FriendStanderType> = []
+        result_topic_list = topic_list
+        var client_id_list:Array<String> = []
+        for c in result_topic_list{
+            if c.cell_type != "list" && c.id != nil{
+                if let _ = client_id_list.index(where: { (ele) -> Bool in
+                    if ele == c.id{return true}
+                    return false
+                }){}
+                else{
+                    client_id_list.append(c.id!)
+                }
+            }
+        }
+        func replace_distance(c:(key:String,value:Double)){
+            if let index_path = result_topic_list.index(where: { (friend:FriendStanderType) -> Bool in
+                if c.key == friend.id{
+                    return true
+                }
+                return false
+            }){
+                result_topic_list[index_path].distance = String(c.value)
+                replace_distance(c: c)
+            }
+        }
+        location_manage.get_distance(client_id_list: client_id_list) { (result_dic:Dictionary<String,Double>) in
+            for c in result_dic{
+                replace_distance(c: c)
+            }
+            complete(result_topic_list)
+        }
     }
     
     // delegate
