@@ -225,12 +225,13 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
     }
     
     // MARK: tools
-    private func save_transaction_token(transaction_id:String, application_username:String){
+    private func save_transaction_token(transaction_id:String, application_username:String?){
         let receipt_url = Bundle.main.appStoreReceiptURL
         do{
             let receipt_data = try Data(contentsOf: receipt_url!, options: Data.ReadingOptions.alwaysMapped)
             let receipt_string = receipt_data.base64EncodedString(options: [])
-            sql_database.write_transaction(transaction_id: transaction_id, token: receipt_string, application_username: application_username)
+            sql_database.write_transaction(transaction_id: transaction_id, token: receipt_string, application_username: (application_username == nil ? "":userData.id!))
+            
         }
         catch{
             print("save_transaction_token ERROR")
@@ -265,9 +266,11 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         //pass
     }
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse){
+        print(response)
         if response.products.count != 0 {
             var return_list:Array<SKProduct> = []
             for product in response.products {
+                print(product.productIdentifier)
                 return_list.append(product)
             }
             delegate?.product_info_return(product_list: return_list)
@@ -281,7 +284,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
             switch transaction.transactionState {
             case SKPaymentTransactionState.purchased:
                 print("---------seccess")
-                save_transaction_token(transaction_id: transaction.transactionIdentifier!, application_username: transaction.payment.applicationUsername!)
+                save_transaction_token(transaction_id: transaction.transactionIdentifier!, application_username: transaction.payment.applicationUsername)
                 send_transaction()
                 //fly remove finishTransction
                 SKPaymentQueue.default().finishTransaction(transaction)

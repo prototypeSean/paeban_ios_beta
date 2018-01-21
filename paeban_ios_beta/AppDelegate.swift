@@ -51,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        sql_database.connect_sql()
         registerForPushNotifications(application: application)
         //=============Launching==============
         app_instence = application
@@ -101,7 +102,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate ,UITabBarControllerDelegat
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("====applicationDidBecomeActive====")
-        sql_database.connect_sql()
         location_manage.start_locate()
         app_instence = application
         if !notificationSegueInf.isEmpty && logInState{

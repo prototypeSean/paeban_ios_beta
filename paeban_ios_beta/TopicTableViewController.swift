@@ -286,7 +286,7 @@ PublicViewCellDelegate{
         }
         func replase_distance(c:(key:String,value:Double)){
             if let index_path = self.topics.index(where: { (topic:Topic) -> Bool in
-                if c.key == topic.owner{
+                if c.key == topic.owner && topic.distance != String(c.value){
                     return true
                 }
                 return false
