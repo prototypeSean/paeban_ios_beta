@@ -394,9 +394,11 @@ PublicViewCellDelegate{
         }
         if topic.distance != nil{
             cell.distance.text = "\(topic.distance!)\(alert_string().kilometer)"
+            cell.unLockDistanceOutlet.isHidden = true
+            cell.unLockImage.isHidden = true
         }
         else{
-            cell.distance.text = "??\(alert_string().kilometer)"
+            cell.distance.text = "\(alert_string().kilometer)"
         }
         cell.delegate = self
         // Configure the cell...
