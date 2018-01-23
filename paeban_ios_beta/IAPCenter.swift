@@ -366,6 +366,7 @@ class PaidService{
     let UN_KNOW_ERROR_20001 = "un_know_error_20001"
     let SUCCESS = "success"
     let HTTP_ERROR = "http_error"
+    let FREE_EXTRA_TOPIC_WILL_OUT = "free_extra_topic_will_out"
     
     var client_id:String?
     var after:((_ result:String)->Void)?
@@ -417,6 +418,12 @@ class PaidService{
         }
         else if result == self.SUCCESS{
             let alert = UIAlertController(title: alert_string().notice, message: alert_string().transaction_success, preferredStyle: .alert)
+            let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: nil)
+            alert.addAction(confirm_btn)
+            view_controller.present(alert, animated: true, completion: completion)
+        }
+        else if result == self.FREE_EXTRA_TOPIC_WILL_OUT{
+            let alert = UIAlertController(title: alert_string().notice, message: alert_string().free_extra_topic_will_out, preferredStyle: .alert)
             let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: nil)
             alert.addAction(confirm_btn)
             view_controller.present(alert, animated: true, completion: completion)
