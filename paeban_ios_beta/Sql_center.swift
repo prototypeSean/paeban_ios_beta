@@ -3116,7 +3116,10 @@ public class SQL_center{
     func get_exchanged_yet_transaction_list() -> Array<Dictionary<String, String>>{
         var result_list:Array<Dictionary<String, String>> = []
         do{
-            let query = transaction.filter(transaction_complete == false)
+            let query = transaction.filter(
+                transaction_complete == false &&
+                verify_fail == false
+            )
             for datas in try sql_db!.prepare(query){
                 let temp_dic = [
                     "transaction_id" : datas[transaction_id],
@@ -3182,6 +3185,7 @@ public class SQL_center{
         return result
     }
     func show_transaction_database(){
+        var fail_id_list:Array<String> = []
         do{
             print("準備列印交易資料庫")
             for c in try sql_db!.prepare(transaction){
@@ -3189,7 +3193,11 @@ public class SQL_center{
                 let trans_complete = "交易完成：\(c[transaction_complete])  "
                 let verify_fail = "驗證失敗：\(c[self.verify_fail])  "
                 print("\(trans_id)\(trans_complete)\(verify_fail)")
+                if c[transaction_complete] == false{
+                    fail_id_list.append(trans_id)
+                }
             }
+            print(fail_id_list)
             print("--完成--")
         }
         catch{

@@ -100,6 +100,8 @@ class IAPTableViewController:UITableViewController, IAPCenterDelegate{
             alert.addAction(confirm_btn)
             alert.addAction(cancel_btn)
             self.present(alert, animated: true, completion: nil)
+        case .cancel: break
+            //pass
         }
         remove_loading_view()
         transition_ing = false

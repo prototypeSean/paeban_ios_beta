@@ -34,7 +34,7 @@ public var open_app_frist = true   // default true
 
 
 // MARK:公用變數
-public var ssss:String = "005"
+//public var ssss:String = "005"
 public var back_ground_state = false
 public var socket:WebSocket!
 public var firstConnect = true  //紀錄是否為登入後第一次連接websocket

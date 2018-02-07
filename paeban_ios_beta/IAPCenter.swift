@@ -12,6 +12,7 @@ import StoreKit
 enum transaction_resule{
     case seccess
     case fail
+    case cancel
 }
 
 protocol IAPCenterDelegate {
@@ -105,6 +106,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
     }
     func recive_iap_websocket(msg:Dictionary<String,AnyObject>){
         // fly remove print(msg)
+        print("recive_iap_websocket")
         print(msg)
         explanation_result(result: ["result_list":[msg] as AnyObject])
     }
@@ -153,7 +155,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
     }
     private func explanation_result(result:Dictionary<String,AnyObject>?){
         // fly remove print
-        print(result)
+        //print(result)
         // dic keys
         let RESULT_LIST = "result_list"
         let RESULT = "result"
@@ -181,15 +183,16 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
             else if c[RESULT]! as! String == result_type.exchanging.rawValue{
                 delegate?.transaction_exchanging(transaction_id: c[TRANSACTION_ID] as? String)
             }
-            else if c[RESULT]! as! String == result_type.verify_fail.rawValue{
-                delegate?.transaction_complete(result: .fail, transaction_id: c[TRANSACTION_ID] as? String)
-            }
             else if c[RESULT]! as! String == result_type.iap_exchange_fail.rawValue{
                 delegate?.transaction_complete(result: .fail, transaction_id: c[TRANSACTION_ID] as? String)
             }
             else{
                 //fail
                 if c[RESULT]! as! String == result_type.verify_fail.rawValue{
+                    print(c)
+                    if let transaction_id = c[TRANSACTION_ID] as? String{
+                        sql_database.write_verify_fail_transaction(transaction_id: transaction_id)
+                    }
                     delegate?.transaction_complete(result: .fail, transaction_id: c[TRANSACTION_ID] as? String)
                 }
                 //success
@@ -201,12 +204,16 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
                     }
                     // fly 或許再多一個點數變動確認的函數
                 }
-                if let fail_verify_transaction_list_anyobj = c[FAIL_VERIFY_TRANSACTION_LIST]{
-                    let fail_verify_transaction_list = fail_verify_transaction_list_anyobj as! Array<String>
+                if let fail_verify_transaction_list:Array<String> = c[FAIL_VERIFY_TRANSACTION_LIST] as? Array<String>{
+                    print("YYYYY FAIL_VERIFY_TRANSACTION_LIST")
+                    print(fail_verify_transaction_list[0])
                     for c in fail_verify_transaction_list{
                         sql_database.write_verify_fail_transaction(transaction_id: c)
                     }
                     if !fail_verify_transaction_list.isEmpty{need_alert_varify_fail = true}
+                }
+                else{
+                    print("NO FAIL_VERIFY_TRANSACTION_LIST+++")
                 }
             }
         }
@@ -219,7 +226,7 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
             let transaction_line = SKPaymentQueue.default().transactions
             if !transaction_line.isEmpty{
-                self.re_send_transaction()
+                self.send_transaction()
             }
         }
     }
@@ -283,15 +290,14 @@ public class IAPCenter:NSObject, SKProductsRequestDelegate, SKPaymentTransaction
         for transaction in transactions{
             switch transaction.transactionState {
             case SKPaymentTransactionState.purchased:
-                print("---------seccess")
+                print("apple transaction seccess")
                 save_transaction_token(transaction_id: transaction.transactionIdentifier!, application_username: transaction.payment.applicationUsername)
                 send_transaction()
-                //fly remove finishTransction
-                SKPaymentQueue.default().finishTransaction(transaction)
+                
             case SKPaymentTransactionState.failed:
-                print("----------fail")
+                print("apple transaction fail")
                 SKPaymentQueue.default().finishTransaction(transaction)
-                delegate?.transaction_complete(result: .fail, transaction_id: nil)
+                delegate?.transaction_complete(result: .cancel, transaction_id: nil)
             default:
                 print(transaction.transactionState.rawValue)
             }
@@ -399,13 +405,15 @@ class PaidService{
                     after(self.INSUFFICIENT_COIN)
                 }
                 else{
-                    after(self.UN_KNOW_ERROR_20001)
+                    after(result_dic![self.RESULT] as! String)
                 }
             }
         })
     }
     func unlock_img_result_explanation(result:String, view_controller:UIViewController, completion:(()->Void)?){
         // 要求view controller 是為了跳alert
+        print(result)
+        print("***---")
         if result == self.HTTP_ERROR{
             let alert = UIAlertController(title: alert_string().error, message: alert_string().internet_error_do_you_want_retry, preferredStyle: .alert)
             let confirm_btn = UIAlertAction(title: alert_string().confirm, style: .default, handler: { (act) in

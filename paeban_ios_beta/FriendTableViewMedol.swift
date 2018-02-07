@@ -560,7 +560,9 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 add_list_extend_btn()
             }
             replace_friend_cell()
-            targetVC.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.targetVC.tableView.reloadData()
+            }
         }
         else if extend_btn_state == 2{
             var new_friendsList = friendsList
@@ -649,7 +651,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
         }
         func replace_distance(c:(key:String,value:Double)){
             if let index_path = result_topic_list.index(where: { (friend:FriendStanderType) -> Bool in
-                if c.key == friend.id{
+                if c.key == friend.id && friend.distance != nil{
                     return true
                 }
                 return false
@@ -658,6 +660,7 @@ class FriendTableViewMedol:webSocketActiveCenterDelegate{
                 replace_distance(c: c)
             }
         }
+        
         location_manage.get_distance(client_id_list: client_id_list) { (result_dic:Dictionary<String,Double>) in
             for c in result_dic{
                 replace_distance(c: c)
