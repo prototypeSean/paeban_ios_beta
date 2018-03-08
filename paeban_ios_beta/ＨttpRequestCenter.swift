@@ -12,12 +12,10 @@ import UIKit
 protocol HttpRequestCenterDelegate {
     func new_topic_did_load(_ http_obj:HttpRequestCenter)
 }
-
 class HttpRequestCenter{
     var delegate:HttpRequestCenterDelegate?
-    var topic_list = [Topic]()
-    
-    func getTopic(_ topicData:@escaping ([Topic]) -> Void){
+    var topic_list:Array<TopicData> = []
+    func getTopic(_ topicData:@escaping ([TopicData]) -> Void){
         let url = "\(local_host)topic_update/"
         let sendData = "mode=new"
         ajax(url, sendDate: sendData, retryCount:5) { (returnData) -> Void in
@@ -41,7 +39,7 @@ class HttpRequestCenter{
         
     }
     
-    func getOldTopic(_ topicID:Int,topicData:@escaping ([Topic])->Void){
+    func getOldTopic(_ topicID:Int,topicData:@escaping ([TopicData])->Void){
         let topicIdToString = String(topicID)
         let sendData = "mode=old;min_topic_id=\(topicIdToString)"
         let url = "\(local_host)topic_update/"
@@ -301,9 +299,9 @@ class HttpRequestCenter{
     // MARK:================私有函數===============
     
     // MARK:轉換為Topic的標準格式
-    func topic_type(_ ouput_json:Dictionary<NSObject, AnyObject>)->Array<Topic>{
+    func topic_type(_ ouput_json:Dictionary<NSObject, AnyObject>)->Array<TopicData>{
         let type_key:NSObject = "msg_type" as NSObject
-        var topic_list_temp = [Topic]()
+        var topic_list_temp = [TopicData]()
         if ouput_json[type_key] as! String == "new_topic"{
             var dataKeyList:[String] = []   //排序topicId清單
             for data_key in ouput_json.keys{
@@ -339,7 +337,7 @@ class HttpRequestCenter{
                     online = true
                 }
                 
-                let topic_temp = Topic(
+                let topic_temp = TopicData(
                     owner: dataKey_val!["topic_publisher"] as! String,
                     photo: finalimg,
                     title: dataKey_val!["title"] as! String,

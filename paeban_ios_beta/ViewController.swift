@@ -13,46 +13,10 @@ import FBSDKCoreKit
 import FBSDKShareKit
 import CoreLocation
 
-// init config     --  named by DK
-public var my_blur_img_level_dic = [0:17, 1:12, 2:11, 3:10, 4:9, 5:8, 6:7, 7:5, 8:3, 9:0]
-public let version = "1.9.0.0"
-public let reset_database = false // fly default false
-public let unlock_img_exp = 7
-public let unlock_img_point = 100
-public let extra_topic_point = 50
-public let unlock_distance_point = 100
-    // 最大話題並存數
-public let max_topic_num = 3
-
-// fly 改port
-public let local_host = "http://www.paeban.com:10800/"
-public let ws_host = "ws://www.paeban.com:10800/echo/"
-public let image_url_host = local_host + "media/"
-public let is_VIP = false
-public var open_app_frist = true   // default true
-// init config
-
-
 // MARK:公用變數
 //public var ssss:String = "005"
-public var back_ground_state = false
-public var socket:WebSocket!
-public var firstConnect = true  //紀錄是否為登入後第一次連接websocket
-public var firstActiveApp = true // MARK:打包前改為 true****************************
-public var logInState = false    //記錄現在是否為登入狀態
-public var wsActive = webSocketActiveCenter() //websocket 資料接收中心
-public var cookie_new = Cookie_Data() //全域紀錄的餅乾
-public var notificationSegueInf:Dictionary<String,String> = [:]
-public var socketState = false  //socket是否連線中
-public struct setUserData{
-    var id:String?
-    var name:String?
-    var img:UIImage?
-    var deviceToken:String?
-    var is_real_photo:Bool?
-}   //用戶個人資料
-public var userData = setUserData()
-public var recive_apns_switch = true
+
+
 public var nowTopicCellList:Array<MyTopicStandardType> = [] //話題清單
 public func addTopicCellToPublicList(_ input_data:MyTopicStandardType){
     if let _ = nowTopicCellList.index(where: { (target) -> Bool in

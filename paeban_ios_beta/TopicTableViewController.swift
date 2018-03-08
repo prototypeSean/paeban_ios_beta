@@ -34,8 +34,8 @@ PublicViewCellDelegate{
     var filteredArray = [String]()
     var searchKeyAndState:Dictionary<String,String?> = ["key": nil, "smallest_id": "init", "state": "none"]
     var dataArray = [String]()
-    var topics:[Topic] = []
-    var topicsBackup:Array<Topic> = []
+    var topics:[TopicData] = []
+    var topicsBackup:Array<TopicData> = []
     var httpOBJ = HttpRequestCenter()
     var requestUpDataSwitch = true
     var last_check_online_time:TimeInterval?
@@ -129,7 +129,7 @@ PublicViewCellDelegate{
         DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async{ () -> Void in
             self.httpOBJ.getTopic({ (temp_topic2) in
                 DispatchQueue.main.async {
-                    var temp_topic:Array<Topic> = []
+                    var temp_topic:Array<TopicData> = []
                     for temp_topic2_s in temp_topic2{
                         if temp_topic2_s.owner != userData.id{
                             temp_topic.append(temp_topic2_s)
@@ -149,7 +149,7 @@ PublicViewCellDelegate{
             print("updataing")
             self.requestUpDataSwitch = false
             DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async{ () -> Void in
-                var temp_topic:Array<Topic>{
+                var temp_topic:Array<TopicData>{
                     get{
                         return []
                     }
@@ -285,7 +285,7 @@ PublicViewCellDelegate{
             }
         }
         func replase_distance(c:(key:String,value:Double)){
-            if let index_path = self.topics.index(where: { (topic:Topic) -> Bool in
+            if let index_path = self.topics.index(where: { (topic:TopicData) -> Bool in
                 if c.key == topic.owner && topic.distance != String(c.value){
                     return true
                 }
@@ -438,7 +438,7 @@ PublicViewCellDelegate{
                         minTopicId = min(minTopicId, topicIdS!)
                     }
                     print("最小ＩＤ\(String(minTopicId))")
-                    var temp_topic:[Topic]{
+                    var temp_topic:[TopicData]{
                         get{return []}
                         set{
                             DispatchQueue.main.async(execute: {
@@ -624,7 +624,7 @@ PublicViewCellDelegate{
             //接收新搜尋
             else if msg_type == "search_topic"{
                 
-                func transformToTopicType(_ inputDic:Dictionary<String,AnyObject>) -> Array<Topic>{
+                func transformToTopicType(_ inputDic:Dictionary<String,AnyObject>) -> Array<TopicData>{
                     var tempTopicIdList:Array<Int> = []
                     for returnDic_s in inputDic{
                         if let tempTopicId = Int(returnDic_s.0){
@@ -632,7 +632,7 @@ PublicViewCellDelegate{
                         }
                     }
                     tempTopicIdList.sort(by: >)
-                    var topic_list_temp:Array<Topic> = []
+                    var topic_list_temp:Array<TopicData> = []
                     for tempTopicId in tempTopicIdList{
                         let encodedImageData = inputDic[String(tempTopicId)]!["img"] as! String
                         
@@ -657,7 +657,7 @@ PublicViewCellDelegate{
                         }
                         
                         
-                        let topic_temp = Topic(
+                        let topic_temp = TopicData(
                             owner: inputDic[String(tempTopicId)]!["topic_publisher"] as! String,
                             photo: finalimg,
                             title: inputDic[String(tempTopicId)]!["title"] as! String,
@@ -785,7 +785,7 @@ PublicViewCellDelegate{
     func hideKeybroad() {
         topicSearchController?.customSearchBar.resignFirstResponder()
     }
-    func turnTopicDataType(_ inputData:Topic) -> MyTopicStandardType{
+    func turnTopicDataType(_ inputData:TopicData) -> MyTopicStandardType{
         let returnData = MyTopicStandardType(dataType: "detail")
         returnData.topicTitle_title = inputData.title
         returnData.topicId_title = inputData.topicID

@@ -30,7 +30,6 @@
 		932A00E31CFEBA460036E1EA /* ToolsFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00D11CFEBA460036E1EA /* ToolsFunction.swift */; };
 		932A00E41CFEBA460036E1EA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00D21CFEBA460036E1EA /* ViewController.swift */; };
 		932A00E51CFEBA460036E1EA /* ＨttpRequestCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00D31CFEBA460036E1EA /* ＨttpRequestCenter.swift */; };
-		932A00E61CFEBA460036E1EA /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00D41CFEBA460036E1EA /* Topic.swift */; };
 		932A00E71CFEBA460036E1EA /* TopicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00D51CFEBA460036E1EA /* TopicTableViewController.swift */; };
 		932A00E81CFEBA460036E1EA /* TopicCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00D61CFEBA460036E1EA /* TopicCellTableViewCell.swift */; };
 		932A00EB1CFEBA460036E1EA /* TopicNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932A00D91CFEBA460036E1EA /* TopicNavViewController.swift */; };
@@ -73,6 +72,11 @@
 		CF89EF781DD34E1F00876298 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */; };
 		CF89EF7A1DD498C700876298 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EF791DD498C700876298 /* TabBarController.swift */; };
 		CF8F64D71EA4F6820073D433 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8F64D61EA4F6820073D433 /* LoadingView.swift */; };
+		CF8FEEE32050CB3500D441AE /* PublicTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8FEEE22050CB3500D441AE /* PublicTopicViewController.swift */; };
+		CF8FEEE52050CC6E00D441AE /* TopicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8FEEE42050CC6E00D441AE /* TopicData.swift */; };
+		CF8FEEE72050D07500D441AE /* PublicObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8FEEE62050D07500D441AE /* PublicObject.swift */; };
+		CF8FEEE92050D0D900D441AE /* PublicVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8FEEE82050D0D900D441AE /* PublicVariable.swift */; };
+		CF8FEEEB2050D0E700D441AE /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8FEEEA2050D0E700D441AE /* AppSetting.swift */; };
 		CF90FFA61F67D3360078A5FA /* TalkingBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF90FFA51F67D3360078A5FA /* TalkingBox.xib */; };
 		CF90FFAA1F67DFF80078A5FA /* TalkingBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF90FFA91F67DFF80078A5FA /* TalkingBoxView.swift */; };
 		CF95B41C2006135400DE4B51 /* ExtensionTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF95B41B2006135400DE4B51 /* ExtensionTableview.swift */; };
@@ -129,7 +133,6 @@
 		932A00D11CFEBA460036E1EA /* ToolsFunction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolsFunction.swift; sourceTree = "<group>"; };
 		932A00D21CFEBA460036E1EA /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		932A00D31CFEBA460036E1EA /* ＨttpRequestCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ＨttpRequestCenter.swift"; sourceTree = "<group>"; };
-		932A00D41CFEBA460036E1EA /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		932A00D51CFEBA460036E1EA /* TopicTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicTableViewController.swift; sourceTree = "<group>"; };
 		932A00D61CFEBA460036E1EA /* TopicCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicCellTableViewCell.swift; sourceTree = "<group>"; };
 		932A00D91CFEBA460036E1EA /* TopicNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicNavViewController.swift; sourceTree = "<group>"; };
@@ -174,6 +177,11 @@
 		CF89EF771DD34E1F00876298 /* NotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		CF89EF791DD498C700876298 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		CF8F64D61EA4F6820073D433 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		CF8FEEE22050CB3500D441AE /* PublicTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicTopicViewController.swift; sourceTree = "<group>"; };
+		CF8FEEE42050CC6E00D441AE /* TopicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicData.swift; sourceTree = "<group>"; };
+		CF8FEEE62050D07500D441AE /* PublicObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicObject.swift; sourceTree = "<group>"; };
+		CF8FEEE82050D0D900D441AE /* PublicVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicVariable.swift; sourceTree = "<group>"; };
+		CF8FEEEA2050D0E700D441AE /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		CF90FFA51F67D3360078A5FA /* TalkingBox.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TalkingBox.xib; sourceTree = "<group>"; };
 		CF90FFA91F67DFF80078A5FA /* TalkingBoxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TalkingBoxView.swift; sourceTree = "<group>"; };
 		CF95B41B2006135400DE4B51 /* ExtensionTableview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTableview.swift; sourceTree = "<group>"; };
@@ -278,14 +286,15 @@
 		931FF1931CFEA848000E7F8A /* paeban_ios_beta */ = {
 			isa = PBXGroup;
 			children = (
+				CF8FEEE62050D07500D441AE /* PublicObject.swift */,
+				CF8FEEE82050D0D900D441AE /* PublicVariable.swift */,
+				CF8FEEEA2050D0E700D441AE /* AppSetting.swift */,
+				CF8FEEE02050C69900D441AE /* Chat */,
 				CFBC10561F7BB9D700A79EDE /* iap_center */,
 				1909C16D1EF2768D00EE5183 /* Localize */,
 				CF9D62D51D903B61003ECB3F /* paeban_ios_beta.entitlements */,
 				CF9E372C1E21E2F40077C7C9 /* all_filed_work */,
 				CF79265C1DA0E6E500821860 /* sing_in */,
-				93AEF2901D0141FB007FDE51 /* topic */,
-				93AEF28D1D0140DC007FDE51 /* myTopics */,
-				93AEF2911D01427D007FDE51 /* recent */,
 				93AEF28E1D01410A007FDE51 /* friends */,
 				93AEF28F1D01419D007FDE51 /* launchScreen */,
 				CF13867A1D98C43D00E70990 /* setting */,
@@ -354,7 +363,6 @@
 				CFD48D661DCB13FD006C48A2 /* EditViewController.swift */,
 				9301F6031D1D16F900D1F8C0 /* TopicSearchBar.swift */,
 				9301F6051D1D1A2800D1F8C0 /* TopicSearchController.swift */,
-				932A00D41CFEBA460036E1EA /* Topic.swift */,
 				930983E71D056971005B8E3B /* HashTagsContorller.swift */,
 				932A00DA1CFEBA460036E1EA /* TopicViewController.swift */,
 				932A00DE1CFEBA460036E1EA /* ChatViewController.swift */,
@@ -391,6 +399,18 @@
 				93B40BE81DB8B7DB00AC3D48 /* SignInNavViewController.swift */,
 			);
 			name = sing_in;
+			sourceTree = "<group>";
+		};
+		CF8FEEE02050C69900D441AE /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				93AEF2901D0141FB007FDE51 /* topic */,
+				93AEF2911D01427D007FDE51 /* recent */,
+				93AEF28D1D0140DC007FDE51 /* myTopics */,
+				CF8FEEE42050CC6E00D441AE /* TopicData.swift */,
+				CF8FEEE22050CB3500D441AE /* PublicTopicViewController.swift */,
+			);
+			name = Chat;
 			sourceTree = "<group>";
 		};
 		CF90FFA41F67CFF00078A5FA /* CustomTalkingBox */ = {
@@ -620,12 +640,14 @@
 				930BBCCC1DED627D00939C0D /* TPage_2ViewController.swift in Sources */,
 				9390D06D1DE82EE400FEC14A /* FriendInvitedListTableViewCell.swift in Sources */,
 				CFAC257F1D310EE300149CC6 /* TopicSecTableViewCell.swift in Sources */,
+				CF8FEEE72050D07500D441AE /* PublicObject.swift in Sources */,
 				932D0D731DA0F65700ACA795 /* FriendNavViewController.swift in Sources */,
 				CF89EF7A1DD498C700876298 /* TabBarController.swift in Sources */,
 				932A00F21CFEBA460036E1EA /* Login_paeban.swift in Sources */,
 				CFB83DF61DFFA7370029C475 /* MyTopicTableViewModel.swift in Sources */,
 				930983E81D056971005B8E3B /* HashTagsContorller.swift in Sources */,
 				CFCC8A8B1D78336500D5EDF6 /* RecentTableViewController.swift in Sources */,
+				CF8FEEE92050D0D900D441AE /* PublicVariable.swift in Sources */,
 				9301F6041D1D16F900D1F8C0 /* TopicSearchBar.swift in Sources */,
 				932A00E81CFEBA460036E1EA /* TopicCellTableViewCell.swift in Sources */,
 				933B77921DCDCD5800110D8C /* SettingProfilePicViewController.swift in Sources */,
@@ -642,11 +664,11 @@
 				190F3A1C1F07840000AF9851 /* UIViewX.swift in Sources */,
 				932A00E71CFEBA460036E1EA /* TopicTableViewController.swift in Sources */,
 				CFF6C4161E9F4D5200A191FD /* suport_func.swift in Sources */,
-				932A00E61CFEBA460036E1EA /* Topic.swift in Sources */,
 				CF2A076C1D7D42CE005B0358 /* FriendChatUpViewController.swift in Sources */,
 				930BBCCA1DED626900939C0D /* TPage_1ViewController.swift in Sources */,
 				CFE94B611FCF069500AA7F50 /* language_profile.swift in Sources */,
 				CF58181A1FF69C930064CE51 /* Location_manager.swift in Sources */,
+				CF8FEEE52050CC6E00D441AE /* TopicData.swift in Sources */,
 				CF90FFAA1F67DFF80078A5FA /* TalkingBoxView.swift in Sources */,
 				CF9E372E1E21E41D0077C7C9 /* Sql_center.swift in Sources */,
 				93077EEA1E20DDB3004900FF /* CustomMessagesCollectionViewCellIncoming.swift in Sources */,
@@ -673,10 +695,12 @@
 				934EBB001DCB0A3600FB9748 /* Designable.swift in Sources */,
 				CF2E9D6A1D7C76D600F485BB /* FriendChatViewController.swift in Sources */,
 				CF95B41C2006135400DE4B51 /* ExtensionTableview.swift in Sources */,
+				CF8FEEEB2050D0E700D441AE /* AppSetting.swift in Sources */,
 				932A00E21CFEBA460036E1EA /* AppDelegate.swift in Sources */,
 				CFE9E4D41D376F7F007B5D76 /* TableViewLoadingCell.swift in Sources */,
 				932A00E31CFEBA460036E1EA /* ToolsFunction.swift in Sources */,
 				932A00F01CFEBA460036E1EA /* ChatViewController.swift in Sources */,
+				CF8FEEE32050CB3500D441AE /* PublicTopicViewController.swift in Sources */,
 				932A00EE1CFEBA460036E1EA /* MyTopicTableViewCell.swift in Sources */,
 				932A00EF1CFEBA460036E1EA /* MyTopicTableViewController.swift in Sources */,
 				CF8F64D71EA4F6820073D433 /* LoadingView.swift in Sources */,
